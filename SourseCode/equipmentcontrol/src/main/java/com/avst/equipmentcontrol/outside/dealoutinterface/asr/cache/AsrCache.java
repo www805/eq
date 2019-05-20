@@ -116,6 +116,17 @@ public class AsrCache {
             List<AsrTxtParam> list=asrTxtMap.get(asrEquipmentssid);
             if(null==list){
                 list=new ArrayList<AsrTxtParam>();
+            }else{
+                if(list.size() > 0){
+                    int i=0;
+                    for(AsrTxtParam asrTxtParam:list){
+                        if(asrTxtParam.getAsrid().equals(param.getAsrid())){
+                            list.remove(i);
+                            break;
+                        }
+                        i++;
+                    }
+                }
             }
             list.add(param);
             asrTxtMap.put(asrEquipmentssid,list);
@@ -183,6 +194,7 @@ public class AsrCache {
                 }
                 asrlist.add(param);//如果没有直接插入
                 asrTxtParam.setAsrlist(asrlist);
+                asrTxtParam.setAsrid(asrid);
                 setAsrByEquipmentssid(asrEquipmentssid,asrTxtParam);
 
             }else{
