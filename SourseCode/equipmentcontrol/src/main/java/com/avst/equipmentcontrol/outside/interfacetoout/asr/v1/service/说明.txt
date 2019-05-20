@@ -1,0 +1,6 @@
+
+BaseToOutServiceImpl 处理业务中的关于设备的增删改查的接口
+
+ToOutService 提供设备/服务的高级接口服务的接口
+
+ToOutServiceImpl_avst 提供设备/服务的高级接口服务的接口的实现类

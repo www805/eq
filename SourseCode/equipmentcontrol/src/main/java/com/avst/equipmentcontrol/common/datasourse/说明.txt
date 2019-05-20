@@ -1,0 +1,6 @@
+
+datasourse 数据库关联
+
+publicsourse 通用的设备数据库
+
+extrasourse 有些类型型号的设备需要额外的数据库

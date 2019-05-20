@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_ettypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_ettype">
+        <id column="id" property="id" />
+        <result column="ettypenum" property="ettypenum" />
+        <result column="explain" property="explain" />
+        <result column="string1" property="string1" />
+        <result column="string2" property="string2" />
+        <result column="integer1" property="integer1" />
+        <result column="integer2" property="integer2" />
+        <result column="ssid" property="ssid" />
+    </resultMap>
+
+</mapper>

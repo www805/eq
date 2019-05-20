@@ -1,0 +1,8 @@
+
+dealoutinterface处理设备的接口，一对一实现设备api的接口，每类设备还需要分型号实现api
+
+asr语音服务器
+
+flushbonading嵌入式设备
+
+polygraph测谎仪
