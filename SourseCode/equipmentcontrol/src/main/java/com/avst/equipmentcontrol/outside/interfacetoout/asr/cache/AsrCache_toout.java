@@ -33,10 +33,10 @@ public class AsrCache_toout {
      * 这句话可能会识别多次，但是返回给用户的都是最后一次识别（流式识别的）
      * @return
      */
-    public synchronized static List<AsrTxtParam_toout> getAsrTxtList(String asrssid){
+    public synchronized static List<AsrTxtParam_toout> getAsrTxtList(String asrid){
 
-        if(null!=asrTxtMap&&asrTxtMap.containsKey(asrssid)){
-            List<AsrTxtParam_toout> list=asrTxtMap.get(asrssid);
+        if(null!=asrTxtMap&&asrTxtMap.containsKey(asrid)){
+            List<AsrTxtParam_toout> list=asrTxtMap.get(asrid);
             if(null!=list&&list.size() > 0){
                 return list;
             }
@@ -44,10 +44,10 @@ public class AsrCache_toout {
         return null;
     }
 
-    public synchronized static int getAsrTxtCount(String asrssid){
+    public synchronized static int getAsrTxtCount(String asrid){
 
-        if(null!=asrTxtMap&&asrTxtMap.containsKey(asrssid)){
-            List<AsrTxtParam_toout> list=asrTxtMap.get(asrssid);
+        if(null!=asrTxtMap&&asrTxtMap.containsKey(asrid)){
+            List<AsrTxtParam_toout> list=asrTxtMap.get(asrid);
             if(null!=list&&list.size() > 0){
                 return list.size();
             }
@@ -60,9 +60,9 @@ public class AsrCache_toout {
      * 通过这句话的第一次识别的开始时间来判断
      * @return
      */
-    public synchronized static AsrTxtParam_toout getAsrTxtByStartTime(String asrssid,String time){
+    public synchronized static AsrTxtParam_toout getAsrTxtByStartTime(String asrid,String time){
 
-        List<AsrTxtParam_toout> list = getAsrTxtList(asrssid);
+        List<AsrTxtParam_toout> list = getAsrTxtList(asrid);
         if(null!=list&&list.size() > 0){
             for(AsrTxtParam_toout out:list){
                 if(time.equals(out.getStarttime())){
@@ -88,18 +88,18 @@ public class AsrCache_toout {
 
     /**
      * 往缓存里面插入数据
-     * @param asrssid 本次语音识别的ssid
+     * @param asrid 本次语音识别的ssid
      * @param param 识别返回的结果集，注意里面的几个int参数
      * @return
      */
-    public synchronized static boolean setAsrTxtLastOne(String asrssid, AsrTxtParam_toout param){
+    public synchronized static boolean setAsrTxtLastOne(String asrid, AsrTxtParam_toout param){
 
         if(null==asrTxtMap){
             asrTxtMap=new HashMap<String, List<AsrTxtParam_toout>>();
         }
 
-        if(asrTxtMap.containsKey(asrssid)){
-            List<AsrTxtParam_toout> list=asrTxtMap.get(asrssid);
+        if(asrTxtMap.containsKey(asrid)){
+            List<AsrTxtParam_toout> list=asrTxtMap.get(asrid);
             if(null==list){
                 list=new ArrayList<AsrTxtParam_toout>();
             }
@@ -114,11 +114,11 @@ public class AsrCache_toout {
                 }
             }
             list.add(param);
-            asrTxtMap.put(asrssid,list);
+            asrTxtMap.put(asrid,list);
         }else{
             List<AsrTxtParam_toout> list=new ArrayList<AsrTxtParam_toout>();
             list.add(param);
-            asrTxtMap.put(asrssid,list);
+            asrTxtMap.put(asrid,list);
         }
         return false;
     }
@@ -126,12 +126,12 @@ public class AsrCache_toout {
 
     /**
      * 删除识别结果集缓存，一般用于识别结束后
-     * @param asrssid
+     * @param asrid
      * @return
      */
-    public synchronized static boolean delAsrTxt(String asrssid){
-        if(null!=asrTxtMap&&asrTxtMap.containsKey(asrssid)){
-            asrTxtMap.remove(asrssid);
+    public synchronized static boolean delAsrTxt(String asrid){
+        if(null!=asrTxtMap&&asrTxtMap.containsKey(asrid)){
+            asrTxtMap.remove(asrid);
             return true;
         }
         return false;
@@ -141,35 +141,35 @@ public class AsrCache_toout {
     //一个语音识别的缓存，区别于数据存储，这里存的是本次语音识别的基本信息
     private static Map<String , AsrMessageParam> asrMassegeMap=null;
 
-    public synchronized static AsrMessageParam getAsrMassege(String asrssid){
+    public synchronized static AsrMessageParam getAsrMassege(String asrid){
 
-        if(null!=asrMassegeMap&&asrMassegeMap.containsKey(asrssid)){
-            return asrMassegeMap.get(asrssid);
+        if(null!=asrMassegeMap&&asrMassegeMap.containsKey(asrid)){
+            return asrMassegeMap.get(asrid);
         }
 
         return null;
     }
 
-    public synchronized static boolean setAsrMassege(String asrssid,AsrMessageParam asr){
+    public synchronized static boolean setAsrMassege(String asrid,AsrMessageParam asr){
 
         if(null==asrMassegeMap){
             asrMassegeMap=new HashMap<String,AsrMessageParam>();
         }
-        asrMassegeMap.put(asrssid,asr);
+        asrMassegeMap.put(asrid,asr);
 
         return false;
     }
 
-    public synchronized static boolean delAsrMassege(String asrssid){
+    public synchronized static boolean delAsrMassege(String asrid){
 
-        if(null!=asrMassegeMap&&asrMassegeMap.containsKey(asrssid)){
+        if(null!=asrMassegeMap&&asrMassegeMap.containsKey(asrid)){
 
-            AsrHeartbeatThread thread=asrMassegeMap.get(asrssid).getAsrHeartbeatThread();
+            AsrHeartbeatThread thread=asrMassegeMap.get(asrid).getAsrHeartbeatThread();
             if(null!=thread){
                 thread.bool=false;//强制关闭线程；
             }
 
-            asrMassegeMap.remove(asrssid);
+            asrMassegeMap.remove(asrid);
             return true;
         }
         return false;

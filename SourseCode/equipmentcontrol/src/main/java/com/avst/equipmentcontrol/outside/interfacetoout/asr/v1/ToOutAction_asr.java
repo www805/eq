@@ -71,7 +71,6 @@ public class ToOutAction_asr extends BaseAction {
 
         StartAsrParam sparam=param.getParam();
         if(null!=sparam){
-            String asrEquipmentssid=sparam.getAsrEquipmentssid();//通过asrEquipmentssid找到语音识别的类型
             String asrtype=sparam.getAsrtype();//这里测试使用，后期要去查询
             rResult=getToOutService(asrtype).startAsr(sparam,rResult);
 

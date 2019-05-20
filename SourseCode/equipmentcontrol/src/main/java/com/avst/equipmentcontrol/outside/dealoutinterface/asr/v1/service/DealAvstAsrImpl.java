@@ -2,6 +2,7 @@ package com.avst.equipmentcontrol.outside.dealoutinterface.asr.v1.service;
 
 import com.avst.equipmentcontrol.common.util.XMLUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RRParam;
+import com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache.AsrCache;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.req.AVSTAsrParam_heartbeat;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.req.AVSTAsrParam_quit;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.req.AVSTAsrParam_reg;
@@ -11,6 +12,8 @@ import com.avst.equipmentcontrol.outside.dealoutinterface.asr.vo.AvstSDKInterfac
 import com.avst.requestUtil.HttpRequest;
 import com.sun.org.apache.xml.internal.security.utils.Base64;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.Collections;
 
 /**
  * 处理avst SDK接口请求返回
@@ -24,6 +27,7 @@ public class DealAvstAsrImpl {
             String port=param.getPort();
             String audiourl=param.getAudiourl();
             String txtcallbackurl=param.getTxtcallbackurl();
+            String asrverssid=param.getAsrserverssid();
             if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(port)||
                     StringUtils.isEmpty(audiourl)||StringUtils.isEmpty(txtcallbackurl)){
                 vo.setMessage("有部分参数为空");
@@ -52,6 +56,10 @@ public class DealAvstAsrImpl {
                     }else{
                         vo.setT(id);
                         vo.setCode(1);
+
+                        //存到语音唯一码对应服务ssid中去
+                        AsrCache.setAsrServerssidByAsrid(id,asrverssid);
+                        System.out.println(id+":asrid 开启识别成功存到语音唯一码对应服务ssid中  asrverssid:"+asrverssid);
                     }
                 }
             }else{

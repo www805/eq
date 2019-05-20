@@ -67,7 +67,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
             return rResult;
         }
 
-        AVSTAsrParam_reg reg=new AVSTAsrParam_reg(asr_et_ettype.getEtip(),asr_et_ettype.getPort()+"",audiourl);
+        AVSTAsrParam_reg reg=new AVSTAsrParam_reg(asr_et_ettype.getEtip(),asr_et_ettype.getPort()+"",audiourl,asrserverssid);
         //参数txtcallbackurl如果接口不传就去缓存中拿
         reg.setTxtcallbackurl(AsrCache_toout.avstbacktxtinterface);
         RRParam<String> rrParam= AvstAsrImpl.reg(reg);
@@ -126,4 +126,6 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         }
         return rResult;
     }
+
+
 }

@@ -11,9 +11,9 @@ import java.util.*;
 /**
  * 关于第三方语音识别的缓存
  * asrEquipmentssid和asrssid都是唯一的，所以通过asrssid个就可以找到asrEquipmentssid
- * 这里的缓存直接关联数据库语音服务的ssid（不是原始设备的ssid，是语音服务的ssid）
+ * 这里的缓存直接关联数据库语音服务的id（不是原始设备的ssid，是语音服务的ssid）
  * 最外层 map 每种语音识别服务的识别结果
- * AsrTxtParam_toout 这一次语音识别的结果集，一次语音识别有很多句
+ * AsrTxtParam 这一次语音识别的结果集，一次语音识别有很多句
  * List<T> T每句话的识别结果
  */
 public class AsrCache {
@@ -43,17 +43,16 @@ public class AsrCache {
     /**
      * 获取这个语言服务器的某一次的任务集合
      * @param asrEquipmentssid 语音服务的ssid
-     * @param asrssid 本次语音识别的ssid（这一次识别的唯一码）
+     * @param asrid 本次语音识别的ssid（这一次识别的唯一码）
      * @return
      */
-    public synchronized static List getAsrTxtListByASRssid(String asrEquipmentssid,String asrssid){
+    public synchronized static List getAsrTxtListByASRssid(String asrEquipmentssid,String asrid){
 
         List<AsrTxtParam> list = getAsrListByEquipmentssid(asrEquipmentssid);
         if(null!=list&&list.size() > 0){
             for(AsrTxtParam asr:list){
-                Map<String, List> asrmap=asr.getAsrmap();
-                if(null!=asrmap&&asrmap.containsKey(asrssid)){
-                    return asrmap.get(asrssid);
+                if(asr.getAsrid().equals(asrid)){
+                    return asr.getAsrlist();
                 }
             }
         }
@@ -65,12 +64,12 @@ public class AsrCache {
     /**
      * 获取这个语言服务器的某一次的任务集合的最后一句
      * @param asrEquipmentssid 语音服务的ssid
-     * @param asrssid 本次语音识别的ssid（这一次识别的唯一码）
+     * @param asrid 本次语音识别的ssid（这一次识别的唯一码）
      * @return
      */
-    public synchronized static Object getAsrTxtLastOneByASRssid(String asrEquipmentssid,String asrssid){
+    public synchronized static Object getAsrTxtLastOneByASRssid(String asrEquipmentssid,String asrid){
 
-        List asrlist=getAsrTxtListByASRssid(asrEquipmentssid,asrssid);
+        List asrlist=getAsrTxtListByASRssid(asrEquipmentssid,asrid);
         if(null!=asrlist&&asrlist.size() > 0){
             return asrlist.get(asrlist.size()-1);
         }
@@ -81,13 +80,13 @@ public class AsrCache {
      * avst asr获取这个语言服务器的某一次的任务集合的某一句话
      * 每一个语音服务获取某一句话这个get方法都有一个人自己独享的方法（特别注意）
      * @param asrEquipmentssid 语音服务的ssid
-     * @param asrssid 本次语音识别的ssid（这一次识别的唯一码）
+     * @param asrid 本次语音识别的id（这一次识别的唯一码）
      * @param time 这句话识别的开始时间（不管识别几次，取它识别这句话最开始的时间）
      * @return
      */
-    public synchronized static AsrTxtParam_avst getAsrTxtOneByASRssid(String asrEquipmentssid,String asrssid,String time){
+    public synchronized static AsrTxtParam_avst getAsrTxtOneByASRssid(String asrEquipmentssid,String asrid,String time){
 
-        List<AsrTxtParam_avst> asrlist=getAsrTxtListByASRssid(asrEquipmentssid,asrssid);
+        List<AsrTxtParam_avst> asrlist=getAsrTxtListByASRssid(asrEquipmentssid,asrid);
         if(null!=asrlist&&asrlist.size() > 0){
             for(AsrTxtParam_avst asr:asrlist){
                 if(asr.getTime().equals(time)){
@@ -135,11 +134,11 @@ public class AsrCache {
      * 更新 avst asr语音识别服务服务器的某一次识别的某一句的结果
      * 每一个asr服务器有自己的一个专有的set方法
      * @param asrEquipmentssid
-     * @param asrssid
+     * @param asrid
      * @param param
      * @return
      */
-    public synchronized static boolean setAsrByASRssid(String asrEquipmentssid, String asrssid, AsrTxtParam_avst param){
+    public synchronized static boolean setAsrByASRssid(String asrEquipmentssid, String asrid, AsrTxtParam_avst param){
 
         long asrtime=(new Date()).getTime();//本句识别的本地时间
 
@@ -151,69 +150,70 @@ public class AsrCache {
             if(asrTxtMap.containsKey(asrEquipmentssid)){
                 List<AsrTxtParam> list=asrTxtMap.get(asrEquipmentssid);//这个语言服务的所有正在识别的任务
                 AsrTxtParam asrTxtParam=new AsrTxtParam();
-                List<AsrTxtParam_avst> asrTxtParam_avsts=new ArrayList<AsrTxtParam_avst>();
                 if(null==list){
                     list=new ArrayList<AsrTxtParam>();
                     asrTxtParam.setAsrtype(ASRType.AVST);//这里需要插入语音服务器类型
                     asrTxtParam.setAsrEquipmentssid(asrEquipmentssid);
+                    asrTxtParam.setAsrid(asrid);
                 }else{
-                    for(AsrTxtParam a:list){
-                        Map<String, List<AsrTxtParam_avst>> asrmap=a.getAsrmap();
-                        if(null!=asrmap&&asrmap.containsKey(asrssid)){//判断语音识别服务服务器的某一次识别任务
-                            asrTxtParam=a;
+                    if(list.size() > 0){
+                        for(AsrTxtParam a:list){
+                            if(a.getAsrid().equals(asrid)){
+                                //if(null!=a.getAsrid()&&a.getAsrid().equals(asrid)){//有问题，要调试
+                                asrTxtParam=a;
+                                break;
+                            }
                         }
                     }
                 }
-                Map<String, List<AsrTxtParam_avst>> asrmap=asrTxtParam.getAsrmap();//某一次识别任务
-                if(null==asrmap){
-                    asrmap=new HashMap<String, List<AsrTxtParam_avst>>();
-                }
-                if(asrmap.containsKey(asrssid)){
-                    asrTxtParam_avsts=asrmap.get(asrssid);
-                }
-                int i=0;
-                for(AsrTxtParam_avst asr:asrTxtParam_avsts){
-                    if(asr.getTime().equals(param.getTime())){//判断这是那一句，去掉有更新的旧语句
-                        asrTxtParam_avsts.remove(i);
-                        break;
+                 List<AsrTxtParam_avst> asrlist=asrTxtParam.getAsrlist();//某一次识别任务
+                if(null==asrlist){
+                    asrlist=new ArrayList<AsrTxtParam_avst>();
+                }else{
+                    if(asrlist.size() > 0 ){
+                        int i=0;
+                        for(AsrTxtParam_avst asr:asrlist){
+                            if(asr.getTime().equals(param.getTime())){//判断这是那一句，去掉有更新的旧语句
+                                asrlist.remove(i);
+                                break;
+                            }
+                            i++;
+                        }
                     }
-                    i++;
                 }
-                asrTxtParam_avsts.add(param);//如果没有直接插入
-                asrmap.put(asrssid,asrTxtParam_avsts);
-                asrTxtParam.setAsrmap(asrmap);
+                asrlist.add(param);//如果没有直接插入
+                asrTxtParam.setAsrlist(asrlist);
                 setAsrByEquipmentssid(asrEquipmentssid,asrTxtParam);
 
             }else{
                 List<AsrTxtParam> list=new ArrayList<AsrTxtParam>();
                 AsrTxtParam<AsrTxtParam_avst> asrTxtParam=new AsrTxtParam<AsrTxtParam_avst>();
-                Map<String, List<AsrTxtParam_avst>> asrmap=new HashMap<String, List<AsrTxtParam_avst>>();
-                List<AsrTxtParam_avst>asrTxtParam_avsts =new ArrayList<AsrTxtParam_avst>();
+                List<AsrTxtParam_avst> asrTxtParam_avsts =new ArrayList<AsrTxtParam_avst>();
                 asrTxtParam_avsts.add(param);
-                asrmap.put(asrssid,asrTxtParam_avsts);
-                asrTxtParam.setAsrmap(asrmap);
+                asrTxtParam.setAsrlist(asrTxtParam_avsts);
                 asrTxtParam.setAsrEquipmentssid(asrEquipmentssid);
                 asrTxtParam.setAsrtype(ASRType.AVST);
+                asrTxtParam.setAsrid(asrid);
                 list.add(asrTxtParam);
                 asrTxtMap.put(asrEquipmentssid,list);
             }
 
             //修改对外缓存
             String starttime=param.getTime();//这一句话的开始识别时间
-            AsrTxtParam_toout asr_out=AsrCache_toout.getAsrTxtByStartTime(asrssid,starttime);
+            AsrTxtParam_toout asr_out=AsrCache_toout.getAsrTxtByStartTime(asrid,starttime);
             int asrsort=1;
             System.out.println(asr_out==null?null:(asr_out.getAsrnum()+"--原来的out--"+asr_out.getTxt()));
             if(null==asr_out){
                 asr_out=new AsrTxtParam_toout();
-                asrsort=AsrCache_toout.getAsrTxtCount(asrssid)+1;//只有新增的句子才会在原有的基础上加1
+                asrsort=AsrCache_toout.getAsrTxtCount(asrid)+1;//只有新增的句子才会在原有的基础上加1
                 asr_out.setAsrsort(asrsort);//本次语音识别这是识别的第几句
             }
             asr_out.setAsrtime(asrtime+"");//返回本句识别的时间
             asr_out.setStarttime(starttime);
             asr_out.setTxt(param.getMsg());
-            AsrCache_toout.setAsrTxtLastOne(asrssid,asr_out);
+            AsrCache_toout.setAsrTxtLastOne(asrid,asr_out);
 
-            AsrTxtParam_toout asr_out_new=AsrCache_toout.getAsrTxtByStartTime(asrssid,starttime);
+            AsrTxtParam_toout asr_out_new=AsrCache_toout.getAsrTxtByStartTime(asrid,starttime);
             System.out.println(asr_out_new==null?null:(asr_out_new.getAsrnum()+"--现在的out--"+asr_out_new.getTxt()));
 
             return true;
@@ -245,68 +245,69 @@ public class AsrCache {
      * @param asrEquipmentssid
      * @return
      */
-    public synchronized static boolean delAsrTxtByEquipmentssid(String asrEquipmentssid,String asrssid){
+    public synchronized static boolean delAsrTxtByEquipmentssid(String asrEquipmentssid,String asrid){
         if(null!=asrTxtMap&&asrTxtMap.containsKey(asrEquipmentssid)){
 
             List<AsrTxtParam> list= asrTxtMap.get(asrEquipmentssid);
             if(null!=list&&list.size() > 0){
+                int i=0;
                 for(AsrTxtParam a:list){
-                    Map<String, List> asrmap=a.getAsrmap();
-                    if(null!=asrmap&&asrmap.containsKey(asrssid)){
-                        asrmap.remove(asrssid);
+                    if(a.getAsrid().equals(asrid)){
+                        list.remove(i);
                         return true;
                     }
+                    i++;
                 }
             }
         }
         return false;
     }
 
-    /**
-     *
-     * @param asrssid 也是唯一的，所以通过ssid也是可以查到设备ssid的
-     * @return
-     */
-    public synchronized static String getAsrEquipmentssidByAsrssid(String asrssid){
-
-        if(null!=asrTxtMap){
-            for(List<AsrTxtParam> asr1:asrTxtMap.values()){
-                for(AsrTxtParam asr2: asr1){
-                    if(asr2.getAsrmap().containsKey(asrssid)){
-                        return asr2.getAsrEquipmentssid();
-                    }
-                }
-            };
-        }
-        return null;
-    }
 
     /**
      * 删除识别结果集缓存，一般用于识别结束后
      * 删除某一个asr语音服务的某一次识别任务
-     * @param asrssid
+     * @param asrid
      * @return
      */
-    public synchronized static boolean delAsrTxtByASRSsid(String asrssid){
+    public synchronized static boolean delAsrTxtByASRSsid(String asrid){
 
-        String asrEquipmentssid=getAsrEquipmentssidByAsrssid(asrssid);//通过asrssid找到asrEquipmentssid
+        String asrEquipmentssid=getAsrServerssidByAsrid(asrid);//通过asrssid找到asrEquipmentssid
 
         if(null==asrEquipmentssid){
-            System.out.println("getAsrEquipmentssidByAsrssid(asrssid) is null ,请检查asrssid获取设备ssid的逻辑");
+            System.out.println("getAsrEquipmentssidByAsrssid(asrid) is null ,请检查asrid获取设备ssid的逻辑");
             return false;
         }
+        return delAsrTxtByEquipmentssid(asrEquipmentssid,asrid);
+    }
 
-        if(null!=asrTxtMap&&asrTxtMap.containsKey(asrEquipmentssid)){
-            List<AsrTxtParam> list= asrTxtMap.get(asrEquipmentssid);
-            if(null!=list&&list.size() > 0){
-                for(AsrTxtParam a:list){
-                    Map<String, List> asrmap=a.getAsrmap();
-                    if(null!=asrmap&&asrmap.containsKey(asrssid)){
-                        asrmap.remove(asrssid);
-                        return true;
-                    }
-                }
-            }
+
+
+    //本次语音识别唯一码asrid对应语音识别ssid
+    //key asrid
+    private static Map<String ,String > serverssidToIdMap=null;
+
+    public synchronized static String getAsrServerssidByAsrid(String asrid){
+        if(null!=serverssidToIdMap&&serverssidToIdMap.containsKey(asrid)){
+            return serverssidToIdMap.get(asrid);
+        }
+        return null;
+    }
+
+    public synchronized static boolean setAsrServerssidByAsrid(String asrid,String asrserverssid){
+
+        if(null==serverssidToIdMap){
+            serverssidToIdMap=new HashMap<String ,String >();
+        }
+        serverssidToIdMap.put(asrid,asrserverssid);
+        return true;
+    }
+
+    public synchronized static boolean delAsrServerssidByAsrid(String asrid){
+
+        if(null!=serverssidToIdMap&&serverssidToIdMap.containsKey(asrid)){
+            serverssidToIdMap.remove(asrid);
+            return true;
         }
         return false;
     }
