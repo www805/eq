@@ -214,7 +214,7 @@ public class AsrCache {
             String starttime=param.getTime();//这一句话的开始识别时间
             AsrTxtParam_toout asr_out=AsrCache_toout.getAsrTxtByStartTime(asrid,starttime);
             int asrsort=1;
-            System.out.println(asr_out==null?null:(asr_out.getAsrnum()+"--原来的out--"+asr_out.getTxt()));
+            //System.out.println(asr_out==null?null:(asr_out.getAsrnum()+"--原来的out--"+asr_out.getTxt()));
             if(null==asr_out){
                 asr_out=new AsrTxtParam_toout();
                 asrsort=AsrCache_toout.getAsrTxtCount(asrid)+1;//只有新增的句子才会在原有的基础上加1
@@ -225,8 +225,8 @@ public class AsrCache {
             asr_out.setTxt(param.getMsg());
             AsrCache_toout.setAsrTxtLastOne(asrid,asr_out);
 
-            AsrTxtParam_toout asr_out_new=AsrCache_toout.getAsrTxtByStartTime(asrid,starttime);
-            System.out.println(asr_out_new==null?null:(asr_out_new.getAsrnum()+"--现在的out--"+asr_out_new.getTxt()));
+            //AsrTxtParam_toout asr_out_new=AsrCache_toout.getAsrTxtByStartTime(asrid,starttime);
+            //System.out.println(asr_out_new==null?null:(asr_out_new.getAsrnum()+"--现在的out--"+asr_out_new.getTxt()));
 
             return true;
         } catch (Exception e) {

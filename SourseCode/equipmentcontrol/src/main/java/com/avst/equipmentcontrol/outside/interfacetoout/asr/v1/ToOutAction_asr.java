@@ -9,6 +9,7 @@ import com.avst.equipmentcontrol.common.conf.ASRType;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.GetAsrServerBySsidParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.OverAsrParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.StartAsrParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.TxtBackParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service.BaseToOutServiceImpl_asr;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service.ToOutService_asr;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service.ToOutServiceImpl_asr_avst;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/asr/v1")
@@ -45,18 +49,20 @@ public class ToOutAction_asr extends BaseAction {
 
     /**
      * 提供给其他的微服务用于读取本次语音识别的文本返回
-     * @param asrid 语音识别记录id
+     * @param txtBackParam 语音识别记录id以及该ID对应的最后一次返回的sort
+     *                     (暂时弃用)
      * @return
      */
     @RequestMapping("/toClientForTxtBack")
     @ResponseBody
-    public RResult<AsrTxtParam_toout> txtBack(@RequestBody String asrid){
+    public RResult<List<AsrTxtParam_toout>> txtBack(@RequestBody TxtBackParam txtBackParam){
 
-        RResult<AsrTxtParam_toout> vo=new RResult<AsrTxtParam_toout>();
+        RResult<List<AsrTxtParam_toout>> vo=new RResult<List<AsrTxtParam_toout>>();
         //暂时都没有做权限的限制
-        AsrTxtParam_toout asr= AsrCache_toout.getAsrTxtLastOne(asrid);
-        if(null!=asr){
-            vo.changeToTrue(asr);
+        List<AsrTxtParam_toout> asrlist= AsrCache_toout.getAsrTxtLastList(txtBackParam.getAsrid(),txtBackParam.getAsrsort());
+
+        if(null!=asrlist&&asrlist.size() > 0){
+            vo.changeToTrue(asrlist);
         }
         return vo;
     }
@@ -125,7 +131,7 @@ System.out.println("getAsrServerBySsid is coming");
 
     @RequestMapping(value = "/ceshi" )
     @ResponseBody
-    public RResult ceshi(int type,String asrid){
+    public RResult ceshi(int type,String asrid,Integer asrsort){
 
 
         RResult rResult=createNewResultOfFail();
@@ -147,7 +153,10 @@ System.out.println("getAsrServerBySsid is coming");
             param.setParam(overAsrParam);
             rResult=overAsr(param);
         }else if(type==3){
-            rResult=txtBack(asrid);
+            TxtBackParam txtBackParam=new TxtBackParam();
+            txtBackParam.setAsrid(asrid);
+            txtBackParam.setAsrsort(asrsort);
+            rResult=txtBack(txtBackParam);
         }
 
         return rResult;

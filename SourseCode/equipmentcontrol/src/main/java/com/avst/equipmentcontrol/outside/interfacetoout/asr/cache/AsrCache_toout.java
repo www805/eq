@@ -87,6 +87,33 @@ public class AsrCache_toout {
     }
 
     /**
+     * 获取本次语音识别的最后几句没有得到的话
+     * @return
+     */
+    public synchronized static List<AsrTxtParam_toout> getAsrTxtLastList(String asrid,Integer asrsort){
+
+        List<AsrTxtParam_toout> list = getAsrTxtList(asrid);
+        if(null!=list&&list.size() > 0){
+            List<AsrTxtParam_toout> rrlist=new ArrayList<AsrTxtParam_toout>();
+
+            int index=list.size()-1;
+            AsrTxtParam_toout out=list.get(index);
+            //list后面的sort总是比前面的大，所以只需要判断临界值大于这个值得写入，其他的就可以都不要
+            while(out.getAsrsort()>asrsort.intValue()){//检测那些是已经得到的数据,大于打钱观看的sort才会提那家到返回中去
+                rrlist.add(out);
+                index--;
+                if(index<0){
+                    break;
+                }
+                out=list.get(index);
+            }
+
+            return rrlist;
+        }
+        return null;
+    }
+
+    /**
      * 往缓存里面插入数据
      * @param asrid 本次语音识别的ssid
      * @param param 识别返回的结果集，注意里面的几个int参数

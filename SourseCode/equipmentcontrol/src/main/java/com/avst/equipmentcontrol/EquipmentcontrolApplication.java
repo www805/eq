@@ -4,8 +4,10 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableEurekaClient
+@EnableFeignClients
 @SpringBootApplication
 @MapperScan({"com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper","com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper","com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper","com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.mapper"})
 public class EquipmentcontrolApplication {

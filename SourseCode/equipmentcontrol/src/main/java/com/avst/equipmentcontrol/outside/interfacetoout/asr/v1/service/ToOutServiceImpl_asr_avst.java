@@ -7,6 +7,7 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.map
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RRParam;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
+import com.avst.equipmentcontrol.feignclient.MeetingControl;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.v1.action.AvstAsrImpl;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.req.AVSTAsrParam_heartbeat;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.req.AVSTAsrParam_quit;
@@ -35,6 +36,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
 
     @Autowired
     private Flushbonading_ettdMapper flushbonading_ettdMapper;
+
 
     @Override
     public RResult startAsr(StartAsrParam param,RResult rResult) {
@@ -74,9 +76,9 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         String reqendtime= new Date().getTime()+"";//当前时间long ms值，作为asr识别开始时间
         //2给一个线程用于定时刷新心跳
         if(null!=rrParam&&rrParam.getCode()==1){
-            String asrssid=rrParam.getT();
+            String asrid=rrParam.getT();
             String asrtype=param.getAsrtype();//这里需要查数据库，通过asrEquipmentssid，换着写成缓存，找出类型
-            AVSTAsrParam_heartbeat avstAsrParam_heartbeat=new AVSTAsrParam_heartbeat(reg.getIp(),reg.getPort(),asrssid);
+            AVSTAsrParam_heartbeat avstAsrParam_heartbeat=new AVSTAsrParam_heartbeat(reg.getIp(),reg.getPort(),asrid);
             AsrMessageParam<AVSTAsrParam_heartbeat> asr=new AsrMessageParam<AVSTAsrParam_heartbeat>();
             AsrHeartbeatThread<AVSTAsrParam_heartbeat> asrHeartbeatThread=
                     new AsrHeartbeatThread<AVSTAsrParam_heartbeat>(avstAsrParam_heartbeat,asrtype);
@@ -84,8 +86,8 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
             asr.setAsrtype(asrtype);
             asr.setAsrHeartbeatThread(asrHeartbeatThread);
 
-            AsrCache_toout.setAsrMassege(asrssid,asr);//写入本次语音识别信息的缓存
-            rResult.changeToTrue(asrssid);
+            AsrCache_toout.setAsrMassege(asrid,asr);//写入本次语音识别信息的缓存
+            rResult.changeToTrue(asrid);
             rResult.setEndtime(reqendtime);
         }else{
             rResult.setMessage("开启语音识别失败");
