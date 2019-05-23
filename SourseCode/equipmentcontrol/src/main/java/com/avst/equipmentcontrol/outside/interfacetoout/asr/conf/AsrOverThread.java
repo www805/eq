@@ -9,28 +9,27 @@ import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.AsrCache_toout
  */
 public class AsrOverThread<T> extends Thread{
 
-    private int heartbeatTime=20;//关闭等待时间S
+    private int heartbeatTime=10;//关闭等待时间S
 
     private String asrid;//语音识别的唯一通用标识
 
-    private String asrType;//语音识别类型，暂时只有一种 avst，这里没有写的换复杂，不知道其他类型asr的处理
 
-    public AsrOverThread(int heartbeatTime, String asrid, String asrType) {
-        this.heartbeatTime = heartbeatTime;
+    public AsrOverThread(int heartbeatTime, String asrid) {
+        if(heartbeatTime!=0){
+           this.heartbeatTime = heartbeatTime;
+        }
         this.asrid = asrid;
-        this.asrType = asrType;
     }
 
-    public AsrOverThread( String asrssid, String asrType) {
+    public AsrOverThread( String asrssid) {
         this.asrid = asrssid;
-        this.asrType = asrType;
     }
 
     @Override
     public void run() {
 
         try {
-            Thread.sleep(20*1000);
+            Thread.sleep(heartbeatTime);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

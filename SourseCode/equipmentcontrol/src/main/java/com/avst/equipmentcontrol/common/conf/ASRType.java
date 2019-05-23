@@ -6,5 +6,5 @@ package com.avst.equipmentcontrol.common.conf;
  */
 public class ASRType {
 
-    public static String AVST="AVST";
+    public static String AVST="ASR_AVST";
 }

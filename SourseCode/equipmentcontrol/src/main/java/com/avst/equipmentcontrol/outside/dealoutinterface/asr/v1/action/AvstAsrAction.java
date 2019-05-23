@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.asr.v1.action;
 
+import com.avst.equipmentcontrol.common.conf.MCType;
 import com.avst.equipmentcontrol.common.util.*;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.feignclient.MeetingControl;
@@ -86,7 +87,7 @@ public class AvstAsrAction {
                 SetMCAsrTxtBackParam_out setMCAsrTxtBackParam_out=new SetMCAsrTxtBackParam_out();
                 setMCAsrTxtBackParam_out.setAsrid(asrid);
                 setMCAsrTxtBackParam_out.setAsrTxtParam_toout(asrTxtParam_toout);
-                setMCAsrTxtBackParam_out.setMcType("AVST");//制定avstmc接受返回
+                setMCAsrTxtBackParam_out.setMcType(MCType.AVST);//制定avstmc接受返回
                 param.setParam(setMCAsrTxtBackParam_out);
                 boolean bool=meetingControl.setMCAsrTxtBack(param);
                 System.out.println(asrid+":asrid--同步给上级数据的返回--- bool："+bool+"---asrTxtParam_toout:"+ JacksonUtil.objebtToString(asrTxtParam_toout));

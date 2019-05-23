@@ -140,7 +140,7 @@ System.out.println("getAsrServerBySsid is coming");
             StartAsrParam startAsrParam =new StartAsrParam();
             startAsrParam.setTdssid("sxsbtd123gty6");
             startAsrParam.setAsrEquipmentssid("wsefscv12");
-            startAsrParam.setAsrtype("AVST");
+            startAsrParam.setAsrtype(ASRType.AVST);
             param.setParam(startAsrParam);
             rResult=startAsr(param);
             rResult.getData().toString();
@@ -149,7 +149,7 @@ System.out.println("getAsrServerBySsid is coming");
             OverAsrParam overAsrParam=new OverAsrParam();
             overAsrParam.setAsrid(asrid);
             overAsrParam.setAsrEquipmentssid("wsefscv12");
-            overAsrParam.setAsrtype("AVST");
+            overAsrParam.setAsrtype(ASRType.AVST);
             param.setParam(overAsrParam);
             rResult=overAsr(param);
         }else if(type==3){

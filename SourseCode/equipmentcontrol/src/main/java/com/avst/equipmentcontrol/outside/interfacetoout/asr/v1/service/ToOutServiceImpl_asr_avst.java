@@ -118,7 +118,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
             //结束本次心跳
             String asrEquipmentssid=param.getAsrEquipmentssid();//
             String asrtype=param.getAsrtype();//这里需要查数据库，通过asrEquipmentssid，换着写成缓存，找出类型
-            AsrOverThread asrOverThread=new AsrOverThread(qparam.getId(),asrtype);
+            AsrOverThread asrOverThread=new AsrOverThread(qparam.getId());
             asrOverThread.start();
 
             rResult.changeToTrue(true);
