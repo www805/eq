@@ -42,6 +42,9 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
 
     private String passwd;
 
+
+    private String uploadbasepath;
+
     /**
      * 中文解释
      */
@@ -56,6 +59,14 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
     private Integer integer2;
 
     private String ssid;
+
+    public String getUploadbasepath() {
+        return uploadbasepath;
+    }
+
+    public void setUploadbasepath(String uploadbasepath) {
+        this.uploadbasepath = uploadbasepath;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

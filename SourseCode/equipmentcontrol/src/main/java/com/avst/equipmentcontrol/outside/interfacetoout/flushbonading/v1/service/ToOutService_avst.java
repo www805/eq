@@ -18,6 +18,7 @@ import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.FDCa
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.param.FDCacheParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.WorkOverParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.WorkStartParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.WorkStartVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -84,6 +85,12 @@ public class ToOutService_avst implements ToOutService_qrs{
                 fdCacheParam.setUser(flushbonadinginfo.getUser());
                 fdCacheParam.setRecordFileiid(iid);
                 FDCache.setFD(fdid,fdCacheParam);
+
+
+                WorkStartVO workStartVO=new WorkStartVO();
+                workStartVO.setFdlivingurl(flushbonadinginfo.getLivingurl());
+                workStartVO.setIid(iid);
+                result.changeToTrue(workStartVO);
             }
         }
 
