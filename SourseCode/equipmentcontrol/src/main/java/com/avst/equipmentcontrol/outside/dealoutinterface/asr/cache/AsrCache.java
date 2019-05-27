@@ -9,12 +9,13 @@ import com.avst.equipmentcontrol.common.conf.ASRType;
 import java.util.*;
 
 /**
+ * 所有版本的asr的缓存都是公用的，只是有一套自己的get/set方法
  * 关于第三方语音识别的缓存
- * asrEquipmentssid和asrssid都是唯一的，所以通过asrssid个就可以找到asrEquipmentssid
  * 这里的缓存直接关联数据库语音服务的id（不是原始设备的ssid，是语音服务的ssid）
  * 最外层 map 每种语音识别服务的识别结果
  * AsrTxtParam 这一次语音识别的结果集，一次语音识别有很多句
  * List<T> T每句话的识别结果
+ * (层级关系：语音服务器ssid、本次识别唯一码asrid、每一句的识别结果starttime)
  */
 public class AsrCache {
 

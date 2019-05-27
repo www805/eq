@@ -38,6 +38,10 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
      */
     private Integer port;
 
+    private String user;
+
+    private String passwd;
+
     /**
      * 中文解释
      */
@@ -52,6 +56,26 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
     private Integer integer2;
 
     private String ssid;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPasswd() {
+        return passwd;
+    }
+
+    public void setPasswd(String passwd) {
+        this.passwd = passwd;
+    }
 
     public Integer getId() {
         return id;

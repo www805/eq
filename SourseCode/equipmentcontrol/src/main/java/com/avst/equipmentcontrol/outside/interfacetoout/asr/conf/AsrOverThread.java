@@ -1,6 +1,5 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.asr.conf;
 
-import com.avst.equipmentcontrol.outside.dealoutinterface.asr.v1.action.AvstAsrImpl;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache.AsrCache;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.AsrCache_toout;
 

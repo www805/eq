@@ -3,8 +3,8 @@ package com.avst.equipmentcontrol.outside.interfacetoout.asr.conf;
 import com.avst.equipmentcontrol.common.conf.ASRType;
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RRParam;
-import com.avst.equipmentcontrol.outside.dealoutinterface.asr.v1.action.AvstAsrImpl;
-import com.avst.equipmentcontrol.outside.dealoutinterface.asr.req.AVSTAsrParam_heartbeat;
+import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.v1.action.AvstAsrImpl;
+import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_heartbeat;
 
 /**
  * 定时检测语音服务的存在，保持一致在线的状态
