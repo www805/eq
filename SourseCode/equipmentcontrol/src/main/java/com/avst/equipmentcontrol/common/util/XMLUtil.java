@@ -5,6 +5,9 @@ import org.dom4j.*;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -16,7 +19,7 @@ import java.util.*;
 public class XMLUtil{
 
     /**
-     * xml字符串转对象
+     * xml字符串转对象(单个对象没问题)
      * @param o
      * @param rr
      * @return
@@ -35,6 +38,43 @@ public class XMLUtil{
         return null;
     }
 
+
+
+
+
+    public static Object xml2JavaBean(Object o, String xml) {
+        try {
+            Class<?> clz = Class.forName(o.getClass().getName());
+            Object javabean = clz.newInstance(); // 构建对象
+            Method[] methods = clz.getMethods(); // 获取所有方法
+            for (Method method : methods) {
+                String field = method.getName(); // 截取属性名
+                if (field.startsWith("set")) {
+                    field = field.substring(field.indexOf("set") + 3);//shuxingming
+                    field = field.toLowerCase().charAt(0) + field.substring(1);//小写化
+                    int start=xml.indexOf("<"+field+">")+field.length()+2;
+                    int end=xml.indexOf("</"+field+">");
+                    System.out.println(start+"----"+end);
+                    String v=xml.substring(start,end);
+                    System.out.println();
+                    if(!v.trim().equals("")){
+                        method.invoke(javabean, v);
+                    }
+
+                }
+            }
+            return javabean;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public static Object map2JavaBean(Object o, Map<String, Object> map) {
         try {
             Class<?> clz = Class.forName(o.getClass().getName());
@@ -44,7 +84,7 @@ public class XMLUtil{
                 String field = method.getName(); // 截取属性名
                 if (field.startsWith("set")) {
                     field = field.substring(field.indexOf("set") + 3);//shuxingming
-                    field = field.toLowerCase().charAt(0) + field.substring(1);
+                    field = field.toLowerCase().charAt(0) + field.substring(1);//小写化
                     if (map.containsKey(field)&&null!=map.get(field)) {
                         String v=map.get(field).toString();
                         if(!v.trim().equals("")){

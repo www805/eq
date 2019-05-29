@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Ss_database">
+        <id column="id" property="id" />
+        <result column="datasavessid" property="datasavessid" />
+        <result column="datasavepath" property="datasavepath" />
+        <result column="datatype" property="datatype" />
+        <result column="rtmpurl" property="rtmpurl" />
+        <result column="httpflvurl" property="httpflvurl" />
+        <result column="httpurl" property="httpurl" />
+        <result column="hlsurl" property="hlsurl" />
+        <result column="defaulturl" property="defaulturl" />
+        <result column="string1" property="string1" />
+        <result column="string2" property="string2" />
+        <result column="integer1" property="integer1" />
+        <result column="integer2" property="integer2" />
+        <result column="ssid" property="ssid" />
+        <result column="state" property="state" />
+        <result column="datasize" property="datasize" />
+        <result column="starttime" property="starttime" />
+        <result column="endtime" property="endtime" />
+        <result column="soursedatapath" property="soursedatapath" />
+        <result column="filename" property="filename" />
+    </resultMap>
+
+</mapper>

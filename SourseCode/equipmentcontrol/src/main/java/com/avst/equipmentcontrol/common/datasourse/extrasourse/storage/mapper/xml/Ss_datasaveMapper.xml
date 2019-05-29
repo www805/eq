@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_datasaveMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Ss_datasave">
+        <id column="id" property="id" />
+        <result column="saveinfossid" property="saveinfossid" />
+        <result column="datasavebasepath" property="datasavebasepath" />
+        <result column="iid" property="iid" />
+        <result column="string1" property="string1" />
+        <result column="string2" property="string2" />
+        <result column="integer1" property="integer1" />
+        <result column="integer2" property="integer2" />
+        <result column="ssid" property="ssid" />
+    </resultMap>
+
+</mapper>

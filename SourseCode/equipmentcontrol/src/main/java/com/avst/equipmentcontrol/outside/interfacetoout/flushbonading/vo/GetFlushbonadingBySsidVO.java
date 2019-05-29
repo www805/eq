@@ -46,6 +46,39 @@ public class GetFlushbonadingBySsidVO {
      */
     private String ettypenum;
 
+    private String user;
+
+    private String passwd;
+
+    /**
+     * 其实就是集中管理里面的本机设备ID，就是用来ftp上传时加以及路径，方便区分
+     */
+    private String uploadbasepath;
+
+    public String getUploadbasepath() {
+        return uploadbasepath;
+    }
+
+    public void setUploadbasepath(String uploadbasepath) {
+        this.uploadbasepath = uploadbasepath;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPasswd() {
+        return passwd;
+    }
+
+    public void setPasswd(String passwd) {
+        this.passwd = passwd;
+    }
+
     public String getEttypenum() {
         return ettypenum;
     }

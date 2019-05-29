@@ -4,12 +4,9 @@ import com.avst.equipmentcontrol.common.conf.FDType;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetFlushbonadingBySsidParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetFlushbonadingTDByETSsidParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.WorkOverParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.WorkStartParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.*;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service.BaseToOutServiceImpl_qrs;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service.ToOutService_avst;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service.ToOutService_fd_avst;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service.ToOutService_qrs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +22,7 @@ public class ToOutAction_qrs extends BaseAction {
     private BaseToOutServiceImpl_qrs baseToOutServiceImpl_qrs;
 
     @Autowired
-    private ToOutService_avst toOutService_avst;
+    private ToOutService_fd_avst toOutService_avst;
 
     private ToOutService_qrs getToOutServiceImpl(String fdType){
         if(null!=fdType){
@@ -112,9 +109,33 @@ public class ToOutAction_qrs extends BaseAction {
     }
 
 
+    /**
+     * 通过iid在主机设备中找到设备录像的文件列表
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getRecordByIid")
+    @ResponseBody
+    public RResult getRecordByIid(@RequestBody ReqParam<GetRecordByIidParam> param){
+        RResult rResult=createNewResultOfFail();
+
+        GetRecordByIidParam sparam=param.getParam();
+        if(null!=sparam){
+            //通过asrEquipmentssid
+            rResult=getToOutServiceImpl(sparam.getFdType()).getRecordByIid(sparam,rResult);
+        }else{
+            System.out.println("startAsr---param.getParam() ---参数异常");
+            rResult.setMessage("参数异常");
+        }
+        return rResult;
+    }
+
+
     @RequestMapping(value = "/ceshi" )
     @ResponseBody
-    public RResult ceshi(int type,String flushbonadingetinfossid,String fdid){
+    public RResult ceshi(int type,String fdid){
+
+
 
         RResult rResult=createNewResultOfFail();
         if(type==1){
@@ -133,9 +154,10 @@ public class ToOutAction_qrs extends BaseAction {
             workOverParam.setFlushbonadingetinfossid("sxsba1");
             param.setParam(workOverParam);
             workOver(param);
+        }else if(type==3){
+
         }
         return rResult;
     }
-
 
 }

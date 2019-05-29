@@ -1,4 +1,4 @@
-package com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity;
+package com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity;
 
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -7,18 +7,18 @@ import java.io.Serializable;
 
 /**
  * <p>
- * InnoDB free: 38912 kB
+ * InnoDB free: 37888 kB
  * </p>
  *
  * @author Mht
- * @since 2019-05-14
+ * @since 2019-05-28
  */
-public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
+public class Ss_saveinfo extends Model<Ss_saveinfo> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 审讯主机
+     * 存储设备表
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -26,29 +26,29 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
     /**
      * 设备ssid
      */
-    private String equipmentssid;
+    private String mtssid;
 
-    /**
-     * 直播地址
-     */
-    private String livingurl;
+    private String sstype;
 
-    /**
-     * 开放接口的端口
-     */
     private Integer port;
 
-    private String user;
-
-    private String passwd;
-
     /**
-     * ftp上传存储备设路径,只是一级路径，其实就是集中管理里面的本机设备ID，就是用来ftp上传时加以及路径，方便区分
+     * 存储总容量,MB为单位
      */
-    private String uploadbasepath;
+    private Integer totalcapacity;
 
     /**
-     * 中文解释
+     * 存储已用容量,MB为单位
+     */
+    private Integer usedcapacity;
+
+    /**
+     * 存储本地文件夹base路径
+     */
+    private String datasavebasepath;
+
+    /**
+     * 服务中文说明
      */
     private String explain;
 
@@ -62,34 +62,6 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
 
     private String ssid;
 
-    public String getUploadbasepath() {
-        return uploadbasepath;
-    }
-
-    public void setUploadbasepath(String uploadbasepath) {
-        this.uploadbasepath = uploadbasepath;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getPasswd() {
-        return passwd;
-    }
-
-    public void setPasswd(String passwd) {
-        this.passwd = passwd;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -97,19 +69,19 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
     public void setId(Integer id) {
         this.id = id;
     }
-    public String getEquipmentssid() {
-        return equipmentssid;
+    public String getMtssid() {
+        return mtssid;
     }
 
-    public void setEquipmentssid(String equipmentssid) {
-        this.equipmentssid = equipmentssid;
+    public void setMtssid(String mtssid) {
+        this.mtssid = mtssid;
     }
-    public String getLivingurl() {
-        return livingurl;
+    public String getSstype() {
+        return sstype;
     }
 
-    public void setLivingurl(String livingurl) {
-        this.livingurl = livingurl;
+    public void setSstype(String sstype) {
+        this.sstype = sstype;
     }
     public Integer getPort() {
         return port;
@@ -117,6 +89,27 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
 
     public void setPort(Integer port) {
         this.port = port;
+    }
+    public Integer getTotalcapacity() {
+        return totalcapacity;
+    }
+
+    public void setTotalcapacity(Integer totalcapacity) {
+        this.totalcapacity = totalcapacity;
+    }
+    public Integer getUsedcapacity() {
+        return usedcapacity;
+    }
+
+    public void setUsedcapacity(Integer usedcapacity) {
+        this.usedcapacity = usedcapacity;
+    }
+    public String getDatasavebasepath() {
+        return datasavebasepath;
+    }
+
+    public void setDatasavebasepath(String datasavebasepath) {
+        this.datasavebasepath = datasavebasepath;
     }
     public String getExplain() {
         return explain;
@@ -168,11 +161,14 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
 
     @Override
     public String toString() {
-        return "Flushbonading_etinfo{" +
+        return "Ss_saveinfo{" +
         "id=" + id +
-        ", equipmentssid=" + equipmentssid +
-        ", livingurl=" + livingurl +
+        ", mtssid=" + mtssid +
+        ", sstype=" + sstype +
         ", port=" + port +
+        ", totalcapacity=" + totalcapacity +
+        ", usedcapacity=" + usedcapacity +
+        ", datasavebasepath=" + datasavebasepath +
         ", explain=" + explain +
         ", string1=" + string1 +
         ", string2=" + string2 +

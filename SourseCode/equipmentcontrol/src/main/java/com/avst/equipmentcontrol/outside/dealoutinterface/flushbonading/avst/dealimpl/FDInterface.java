@@ -66,4 +66,26 @@ public interface FDInterface {
      */
     public RResult<GetDiskInfoVO>  getDiskInfo(GetDiskInfoParam param,RResult<GetDiskInfoVO> result);
 
+    /**
+     * 集中存储配置,配置设备ftp上传
+     * @param param
+     * @return
+     */
+    public RResult<SetMiddleware_FTPVO> setMiddleware_FTP(SetMiddleware_FTPParam param,RResult<SetMiddleware_FTPVO> result);
+
+    /**
+     * 获取设备录像文件地址，通过该录像关联的唯一码来获取
+     * @param param
+     * @return
+     */
+    public RResult<GetETRecordByIidVO> getETRecordByIid(GetETRecordByIidParam param, RResult<GetETRecordByIidVO> result);
+
+    /**
+     * API 接口-指定 ftp 上传文件
+     * 上传指定文件
+     * @param param
+     * @return
+     */
+    public RResult<UploadFileByPathVO> uploadFileByPath(UploadFileByPathParam param, RResult<UploadFileByPathVO> result);
+
 }

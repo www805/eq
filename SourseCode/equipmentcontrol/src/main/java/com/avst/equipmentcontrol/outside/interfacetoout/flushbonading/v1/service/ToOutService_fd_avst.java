@@ -1,40 +1,58 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service;
 
 import com.avst.equipmentcontrol.common.conf.FDType;
+import com.avst.equipmentcontrol.common.conf.SSType;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
 import com.avst.equipmentcontrol.common.util.DateUtil;
-import com.avst.equipmentcontrol.common.util.JacksonUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.Code;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
-import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDDealImpl;
-import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.CheckFDStateParam;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.GetETRecordByIidParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.StartRecParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.StopRecParam;
-import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.vo.StopRecVO;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.FDCache;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.param.FDCacheParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetFlushbonadingTDByETSsidParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetRecordByIidParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.WorkOverParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.WorkStartParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.WorkStartVO;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.SaveFileParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutServiceImpl_ss_avst;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutService_ss;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * avst设备的对外接口处理
  */
 @Service
-public class ToOutService_avst implements ToOutService_qrs{
+public class ToOutService_fd_avst implements ToOutService_qrs{
 
     @Autowired
     private FDDealImpl fdDeal;
 
     @Autowired
     private Flushbonading_etinfoMapper flushbonading_etinfoMapper;
+
+    @Autowired
+    private ToOutServiceImpl_ss_avst toOutServiceImpl_ss_avst;
+
+    private ToOutService_ss getToOutServiceImpl(String type){//获取存储处理对象
+
+        if(null!=type&&type.equals(SSType.AVST)){
+            return toOutServiceImpl_ss_avst;
+        }
+        return null;
+    }
 
     public RResult workStart(WorkStartParam param,RResult result){
 
@@ -45,6 +63,7 @@ public class ToOutService_avst implements ToOutService_qrs{
         if(null!=fdCacheParam){
             result.setMessage("设备已经开始工作");
             result.changeToTrue(fdid+"_"+fdssid);
+            return result;
         }
 
         //查询数据库找到设备
@@ -123,11 +142,54 @@ public class ToOutService_avst implements ToOutService_qrs{
             System.out.println("关闭设备录像失败 result："+result);
         }else{
             if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
+
+                //准备存储的处理
+                String sstype=SSType.AVST;
+                SaveFileParam saveFileParam=new SaveFileParam();
+                saveFileParam.setIid(fdCacheParam.getRecordFileiid());
+                saveFileParam.setSourseIp(fdCacheParam.getIp());
+                saveFileParam.setSsType(sstype);
+                saveFileParam.setSourseFDETSsid(fdssid);
+                RResult result2=new RResult();
+                result2=getToOutServiceImpl(sstype).saveFile(saveFileParam,result2);//v1默认给avst版的存储服务
+                if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+                    System.out.println("推送设备保存文件到服务器成功fdssid："+fdssid);
+                }else{
+                    System.out.println("推送设备保存文件到服务器失败 fdssid："+fdssid);
+                }
+
                 result.setData(fdCacheParam.getRecordFileiid());
                 FDCache.delFDList(fdid);
             }
         }
         return result;
+    }
+
+
+    public RResult getRecordByIid(GetRecordByIidParam param, RResult rResult){
+
+        String equipmentSsid=param.getFlushbonadingetinfossid();
+
+        EntityWrapper<Flushbonadinginfo> entityWrapper=new EntityWrapper<Flushbonadinginfo>();
+        entityWrapper.eq("fet.ssid",equipmentSsid);
+
+        try {
+            Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(entityWrapper);
+            if(null!=flushbonadinginfo){
+
+                GetETRecordByIidParam recordparam=new GetETRecordByIidParam();
+                recordparam.setRec_id(param.getIid());
+                recordparam.setIp(flushbonadinginfo.getEtip());
+                recordparam.setUser(flushbonadinginfo.getUser());
+                recordparam.setPort(flushbonadinginfo.getPort());
+                recordparam.setPasswd(flushbonadinginfo.getPasswd());
+                rResult=fdDeal.getETRecordByIid(recordparam,rResult);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rResult;
     }
 
 

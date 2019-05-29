@@ -1096,7 +1096,18 @@ public static String numtoStr(int digit,Integer num){
 		return false;
 	}
 
+	/**
+	 * 把字节转成MB
+	 * @param b
+	 * @return
+	 */
+	public static long B2MB(long b){
 
+		long kb=b/1024;
+		long mb=kb/1024;
+		return mb;
+
+	}
 
 	
 	
