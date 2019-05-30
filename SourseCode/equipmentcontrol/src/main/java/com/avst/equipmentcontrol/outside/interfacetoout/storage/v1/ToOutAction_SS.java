@@ -9,6 +9,7 @@ import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.GetURLToPlay
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.SaveFileParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutServiceImpl_ss_avst;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutService_ss;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.GetURLToPlayVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,7 +50,7 @@ public class ToOutAction_SS extends BaseAction {
 
     @RequestMapping("/getURLToPlay")
     @ResponseBody
-    public RResult getURLToPlay(@RequestBody GetURLToPlayParam param){
+    public RResult<GetURLToPlayVO> getURLToPlay(@RequestBody GetURLToPlayParam param){
         RResult rResult=this.createNewResultOfFail();
 
         if(null!=param&&null!=param.getSsType()){

@@ -65,7 +65,7 @@ public class ToOutServiceImpl_ss_avst implements ToOutService_ss {
     }
 
     @Override
-    public RResult getURLToPlay(GetURLToPlayParam param, RResult result) {
+    public RResult<GetURLToPlayVO> getURLToPlay(GetURLToPlayParam param, RResult result) {
 
         String iid = param.getIid();
         List<Ss_dataMessageParam> datalist = deal.getSs_databaseList(iid);
