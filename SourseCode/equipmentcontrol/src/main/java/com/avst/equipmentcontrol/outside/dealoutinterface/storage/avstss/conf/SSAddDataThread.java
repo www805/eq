@@ -194,8 +194,8 @@ public class SSAddDataThread extends  Thread{
         List<Ss_dataMessageParam> ssdatalist= ss_databaseMapper.getSs_databaseByIid(entityWrapper);
         //0和-1 还没有检测到文件上传成功
         //1和-2 还没有生产对外开放的地址
-        if(null==datalist||datalist.size() < 1){
-            System.out.println(datalist+":ssdatalist SSAddDataThread 没有查到需要处理的数据 0");
+        if(null==ssdatalist||ssdatalist.size() < 1){
+            System.out.println(ssdatalist+":ssdatalist SSAddDataThread 没有查到需要处理的数据 0");
             return ;
         }
         for(Ss_dataMessageParam dm:ssdatalist){
