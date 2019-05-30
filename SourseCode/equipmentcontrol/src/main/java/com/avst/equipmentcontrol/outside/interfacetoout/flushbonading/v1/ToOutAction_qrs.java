@@ -130,6 +130,26 @@ public class ToOutAction_qrs extends BaseAction {
         return rResult;
     }
 
+    //------------------------------------分割线-----------------------------------------
+    /**
+     * 提供给其他用的，获取liveurl
+     * @param param
+     * @returngetFDListByFdid
+     */
+    @RequestMapping("/getFDListByFdid")
+    @ResponseBody
+    public RResult getFDListByFdid(@RequestBody GetFDListByFdidParam  param){
+        RResult rResult=createNewResultOfFail();
+        if(null!=param){
+            rResult=getToOutServiceImpl(param.getFdType()).getFDListByFdid(param,rResult);
+        }else{
+            System.out.println("getFDListByFdid---param.getParam() ---参数异常");
+            rResult.setMessage("参数异常");
+        }
+        return rResult;
+    }
+
+
 
     @RequestMapping(value = "/ceshi" )
     @ResponseBody

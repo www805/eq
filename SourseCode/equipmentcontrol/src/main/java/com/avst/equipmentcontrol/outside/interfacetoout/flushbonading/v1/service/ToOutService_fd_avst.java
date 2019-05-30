@@ -15,16 +15,14 @@ import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dea
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.StopRecParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.FDCache;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.param.FDCacheParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetFlushbonadingTDByETSsidParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetRecordByIidParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.WorkOverParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.WorkStartParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.*;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.WorkStartVO;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.SaveFileParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutServiceImpl_ss_avst;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutService_ss;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -193,6 +191,19 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
             e.printStackTrace();
         }
         return rResult;
+    }
+
+
+    public RResult getFDListByFdid(GetFDListByFdidParam param,RResult result){
+        String fdid=param.getFdid();
+        if (StringUtils.isBlank(fdid)){
+            System.out.println("getFDListByFdid__fdid__"+fdid);
+            result.setMessage("参数为空");
+            return result;
+        }
+        List<FDCacheParam> list= FDCache.getFDList(fdid);
+        result.changeToTrue(list);
+        return  result;
     }
 
 
