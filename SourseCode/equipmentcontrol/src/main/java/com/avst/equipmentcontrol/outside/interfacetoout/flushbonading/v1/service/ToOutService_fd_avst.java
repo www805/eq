@@ -61,8 +61,11 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         //查询是否有一台机子多次被用
         FDCacheParam fdCacheParam=FDCache.getFDByFDSsid(fdid,fdssid);
         if(null!=fdCacheParam){
+            WorkStartVO workStartVO=new WorkStartVO();
+            workStartVO.setFdlivingurl(fdCacheParam.getLivingUrl());
+            workStartVO.setIid(fdCacheParam.getRecordFileiid());
+            result.changeToTrue(workStartVO);
             result.setMessage("设备已经开始工作");
-            result.changeToTrue(fdid+"_"+fdssid);
             return result;
         }
 

@@ -163,6 +163,21 @@
             <version>1.4.10</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/commons-discovery/commons-discovery -->
+        <dependency>
+            <groupId>commons-discovery</groupId>
+            <artifactId>commons-discovery</artifactId>
+            <version>0.5</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.wso2.wsdl4j/wsdl4j.wso2 -->
+        <dependency>
+            <groupId>org.wso2.wsdl4j</groupId>
+            <artifactId>wsdl4j.wso2</artifactId>
+            <version>1.6.3.wso2v3</version>
+        </dependency>
+
+
+
 
     </dependencies>
 
