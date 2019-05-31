@@ -109,7 +109,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
     }
 
     @Override
-    public RResult getPolygraphAnalysis(GetPolygraphAnalysisParam param, RResult result) {
+    public RResult<GetPolygraphAnalysisVO<XBOX_GetResultVO>> getPolygraphAnalysis(GetPolygraphAnalysisParam param, RResult result) {
 
         String phssid=param.getPolygraphssid();
         if(StringUtils.isEmpty(phssid)){
@@ -130,7 +130,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
         xBoxParam.setPort(polygraphInfo.getPort());
         XBOX_GetResultVO xbox_getResultVO =dealPolygraph.xBOX_GetResult(xBoxParam);
         if(null!=xbox_getResultVO){
-            GetPolygraphAnalysisVO vo=new GetPolygraphAnalysisVO();
+            GetPolygraphAnalysisVO<XBOX_GetResultVO> vo=new GetPolygraphAnalysisVO<XBOX_GetResultVO>();
             vo.setT(xbox_getResultVO);
             result.changeToTrue(vo);
         }

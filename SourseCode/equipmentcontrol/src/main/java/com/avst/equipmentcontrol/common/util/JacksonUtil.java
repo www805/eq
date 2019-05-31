@@ -46,6 +46,7 @@ public class JacksonUtil {
 			 Object obj = mapper.readValue(json, cclass);  
 				return obj;
 			} catch (Exception e) {
+			 	e.printStackTrace();
 				System.out.println("stringToObjebt_1转换出错json："+json);
 			}
 		 return null;

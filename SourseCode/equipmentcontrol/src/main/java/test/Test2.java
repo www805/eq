@@ -6,15 +6,16 @@ import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dea
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.GetETRecordByIidXml;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.UploadFileByPathXml;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.Xml2Object;
+import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.vo.XBOX_GetResultVO;
 
 public class Test2 {
 
-    public static String rr="<?xml version=\"1.0\" encoding=\"GBK\"?><root><version>AICBH:1.0</version><ftp_pasv_upload_file t=\"do\"><rs>1</rs></ftp_pasv_upload_file></root>";
+    public static String rr="{\"age\":0,\"bp\":0,\"br\":0.0002894740900956094,\"emotion\":6,\"face_rect\":{\"height\":121,\"width\":121,\"x\":159,\"y\":94},\"fps\":29.97003173828125,\"gender\":0,\"have_face\":true,\"hr\":0,\"hr_snr\":0,\"hrv\":0,\"relax\":0,\"spo2\":0,\"status\":0,\"stress\":0,\"stress_snr\":0}";
 
     public static void main(String[] args) {
 
-        UploadFileByPathXml xml=Xml2Object.uploadFileByPathXml(rr);
-        System.out.println(JacksonUtil.objebtToString(xml));
+        XBOX_GetResultVO vo= (XBOX_GetResultVO)JacksonUtil.stringToObjebt_1(rr,XBOX_GetResultVO.class);
+        System.out.println(JacksonUtil.objebtToString(vo));
 
 
 

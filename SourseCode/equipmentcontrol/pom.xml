@@ -55,11 +55,7 @@
             <artifactId>spring-boot-starter-integration</artifactId>
         </dependency>
 
-        <!--添加feign依赖-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
+
 
         <dependency>
             <groupId>io.github.openfeign.form</groupId>
@@ -176,7 +172,11 @@
             <version>1.6.3.wso2v3</version>
         </dependency>
 
-
+        <!--添加feign依赖-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
 
 
     </dependencies>

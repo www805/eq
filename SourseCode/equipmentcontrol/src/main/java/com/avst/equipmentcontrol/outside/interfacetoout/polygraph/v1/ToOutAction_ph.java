@@ -7,9 +7,12 @@ import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.*;
 import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.v1.service.ToOutServiceImpl_ph_avst;
 import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.v1.service.ToOutService_ph;
+import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.vo.GetPolygraphAnalysisVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/ph/v1")
@@ -19,7 +22,7 @@ public class ToOutAction_ph extends BaseAction {
     private ToOutServiceImpl_ph_avst toOutServiceImpl_ph_avst;
 
     private ToOutService_ph getToOutService(String phType){
-        if(phType.equals(PHType.AVST)){
+        if(phType.equals(PHType.CMCROSS)){
             return toOutServiceImpl_ph_avst;
         }
         return null;
@@ -30,7 +33,9 @@ public class ToOutAction_ph extends BaseAction {
      * @param param
      * @return
      */
-    public RResult checkPolygraphState(ReqParam<CheckPolygraphStateParam> param){
+    @RequestMapping("/checkPolygraphState")
+    @ResponseBody
+    public RResult checkPolygraphState(@RequestBody  ReqParam<CheckPolygraphStateParam> param){
 
         RResult result=this.createNewResultOfFail();
 
@@ -46,7 +51,9 @@ public class ToOutAction_ph extends BaseAction {
      * @param param
      * @return
      */
-    public RResult startPolygraph(ReqParam<StartPolygraphParam> param){
+    @RequestMapping("/startPolygraph")
+    @ResponseBody
+    public RResult startPolygraph(@RequestBody  ReqParam<StartPolygraphParam> param){
 
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
@@ -61,7 +68,9 @@ public class ToOutAction_ph extends BaseAction {
      * @param param
      * @return
      */
-    public RResult overPolygraph(ReqParam<OverPolygraphParam> param){
+    @RequestMapping("/overPolygraph")
+    @ResponseBody
+    public RResult overPolygraph(@RequestBody  ReqParam<OverPolygraphParam> param){
 
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
@@ -76,7 +85,9 @@ public class ToOutAction_ph extends BaseAction {
      * @param param
      * @return
      */
-    public RResult getPolygraphAnalysis(ReqParam<GetPolygraphAnalysisParam> param){
+    @RequestMapping("/getPolygraphAnalysis")
+    @ResponseBody
+    public RResult<GetPolygraphAnalysisVO> getPolygraphAnalysis(@RequestBody  ReqParam<GetPolygraphAnalysisParam> param){
 
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
@@ -91,7 +102,9 @@ public class ToOutAction_ph extends BaseAction {
      * @param param
      * @return
      */
-    public RResult getPolygraphRealTimeImage(ReqParam<GetPolygraphRealTimeImageParam> param){
+    @RequestMapping("/getPolygraphRealTimeImage")
+    @ResponseBody
+    public RResult getPolygraphRealTimeImage(@RequestBody  ReqParam<GetPolygraphRealTimeImageParam> param){
 
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){

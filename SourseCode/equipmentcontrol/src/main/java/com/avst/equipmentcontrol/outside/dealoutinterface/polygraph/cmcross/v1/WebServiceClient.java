@@ -3,13 +3,10 @@ package com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1;
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import javax.xml.namespace.QName;
+import java.util.Date;
 
 public class WebServiceClient {
 
-
-    private static String clientip="";
-    private static Integer clientport=10000;
-    private static String endpoint="http://"+clientip+":"+clientport+"/cmcross/api";
 
     private static String basenamespaceURL="http://api.cmcross.com/";
 
@@ -19,8 +16,9 @@ public class WebServiceClient {
         Call call=null;
         try {
             call = (Call)service.createCall();
-            clientip=ip;
-            clientport=port;
+            String clientip=ip;
+            Integer clientport=port;
+            String endpoint="http://"+clientip+":"+clientport+"/cmcross/api";
             call.setTargetEndpointAddress(endpoint);
             //设置命名空间和需要调用的方法名;第一个参数为命名空间,第二个参数为方法名,调用时候只需要根据需求修改方法名
             QName opAddEntry = new QName(basenamespaceURL,action);
@@ -43,6 +41,7 @@ public class WebServiceClient {
 
 
     public static void main (String args[]){
+        long starttime=new Date().getTime();
         String result="";
         Service service = new Service();
         Call call=null;
@@ -63,6 +62,8 @@ public class WebServiceClient {
         }catch (Exception e){
             e.printStackTrace();
         }
+        System.out.println(new Date().getTime()+"------"+starttime);
+        System.out.println(new Date().getTime()-starttime);
         System.out.println(result);
     }
 }

@@ -8,31 +8,33 @@ public class XBOX_GetResultVO {
 
     private Integer age;
 
-    private Integer br;
+    private float br;
+
+    private float bp;
 
     private Integer emotion;
 
-    private Integer fps;
+    private float fps;
 
     private Integer gender;
 
-    private Integer have_face;
+    private boolean have_face;
 
-    private Integer hr;
+    private float hr;
 
-    private Integer hr_snr;
+    private float hr_snr;
 
-    private Integer hrv;
+    private float hrv;
 
-    private Integer relax;
+    private float relax;
 
-    private Integer spo2;
+    private float spo2;
 
     private Integer status;
 
-    private Integer stress;
+    private float stress;
 
-    private Integer stress_snr;
+    private float stress_snr;
 
     public Face_rectParam getFace_rect() {
         return face_rect;
@@ -50,12 +52,20 @@ public class XBOX_GetResultVO {
         this.age = age;
     }
 
-    public Integer getBr() {
+    public float getBr() {
         return br;
     }
 
-    public void setBr(Integer br) {
+    public void setBr(float br) {
         this.br = br;
+    }
+
+    public float getBp() {
+        return bp;
+    }
+
+    public void setBp(float bp) {
+        this.bp = bp;
     }
 
     public Integer getEmotion() {
@@ -66,11 +76,11 @@ public class XBOX_GetResultVO {
         this.emotion = emotion;
     }
 
-    public Integer getFps() {
+    public float getFps() {
         return fps;
     }
 
-    public void setFps(Integer fps) {
+    public void setFps(float fps) {
         this.fps = fps;
     }
 
@@ -82,51 +92,51 @@ public class XBOX_GetResultVO {
         this.gender = gender;
     }
 
-    public Integer getHave_face() {
+    public boolean isHave_face() {
         return have_face;
     }
 
-    public void setHave_face(Integer have_face) {
+    public void setHave_face(boolean have_face) {
         this.have_face = have_face;
     }
 
-    public Integer getHr() {
+    public float getHr() {
         return hr;
     }
 
-    public void setHr(Integer hr) {
+    public void setHr(float hr) {
         this.hr = hr;
     }
 
-    public Integer getHr_snr() {
+    public float getHr_snr() {
         return hr_snr;
     }
 
-    public void setHr_snr(Integer hr_snr) {
+    public void setHr_snr(float hr_snr) {
         this.hr_snr = hr_snr;
     }
 
-    public Integer getHrv() {
+    public float getHrv() {
         return hrv;
     }
 
-    public void setHrv(Integer hrv) {
+    public void setHrv(float hrv) {
         this.hrv = hrv;
     }
 
-    public Integer getRelax() {
+    public float getRelax() {
         return relax;
     }
 
-    public void setRelax(Integer relax) {
+    public void setRelax(float relax) {
         this.relax = relax;
     }
 
-    public Integer getSpo2() {
+    public float getSpo2() {
         return spo2;
     }
 
-    public void setSpo2(Integer spo2) {
+    public void setSpo2(float spo2) {
         this.spo2 = spo2;
     }
 
@@ -138,19 +148,19 @@ public class XBOX_GetResultVO {
         this.status = status;
     }
 
-    public Integer getStress() {
+    public float getStress() {
         return stress;
     }
 
-    public void setStress(Integer stress) {
+    public void setStress(float stress) {
         this.stress = stress;
     }
 
-    public Integer getStress_snr() {
+    public float getStress_snr() {
         return stress_snr;
     }
 
-    public void setStress_snr(Integer stress_snr) {
+    public void setStress_snr(float stress_snr) {
         this.stress_snr = stress_snr;
     }
 }
