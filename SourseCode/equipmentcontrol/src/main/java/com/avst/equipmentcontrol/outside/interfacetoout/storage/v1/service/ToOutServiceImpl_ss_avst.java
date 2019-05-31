@@ -96,8 +96,8 @@ public class ToOutServiceImpl_ss_avst implements ToOutService_ss {
 
         String iid = param.getIid();
         List<Ss_dataMessageParam> ss_databaseList = deal.getSs_databaseList(iid);
+        CheckRecordFileStateVO checkRecordFileStateVO = new CheckRecordFileStateVO();
         if (null != ss_databaseList && ss_databaseList.size() > 0) {
-            CheckRecordFileStateVO checkRecordFileStateVO = new CheckRecordFileStateVO();
             checkRecordFileStateVO.setIid(iid);
             List<RecordFileParam> recordList = new ArrayList<RecordFileParam>();
             for (Ss_dataMessageParam db : ss_databaseList) {
@@ -107,10 +107,8 @@ public class ToOutServiceImpl_ss_avst implements ToOutService_ss {
                 recordList.add(recordFileParam);
             }
             checkRecordFileStateVO.setRecordList(recordList);
-
-            result.changeToTrue(checkRecordFileStateVO);
         }
-
+        result.changeToTrue(checkRecordFileStateVO);
         return result;
     }
 }
