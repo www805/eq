@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.asr.cache;
 
 
+import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.param.AsrMessageParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.param.AsrTxtParam_toout;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.conf.AsrHeartbeatThread;
@@ -20,7 +21,7 @@ public class AsrCache_toout {
     /**
      * avst语言服务器的文本返回接口
      */
-    public static String avstbacktxtinterface="http://192.168.17.175:8081/toasr/v1/toAsrServerForTxtBack";
+    public static String avstbacktxtinterface= PropertiesListenerConfig.getProperty("avstasrbacktxtinterface");
 
     /**
      * 语音识别的数据缓存

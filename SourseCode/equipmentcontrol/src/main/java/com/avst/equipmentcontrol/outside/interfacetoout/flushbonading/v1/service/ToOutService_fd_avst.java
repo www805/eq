@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 /**
  * avst设备的对外接口处理
@@ -62,6 +63,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
             WorkStartVO workStartVO=new WorkStartVO();
             workStartVO.setFdlivingurl(fdCacheParam.getLivingUrl());
             workStartVO.setIid(fdCacheParam.getRecordFileiid());
+            workStartVO.setStartrecordtime(fdCacheParam.getRecordStartTime());
             result.changeToTrue(workStartVO);
             result.setMessage("设备已经开始工作");
             return result;
@@ -87,6 +89,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         sparam.setUser(flushbonadinginfo.getUser());
         result=fdDeal.startRec(sparam,result);
 
+        long startrecordtime=(new Date()).getTime();//录音开始时间
         if(null==result){
             result=new RResult();
             result.setMessage("开启设备录像失败");
@@ -98,18 +101,19 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                 fdCacheParam.setFdType(FDType.FD_AVST);
                 fdCacheParam.setLivingUrl(flushbonadinginfo.getLivingurl());
                 fdCacheParam.setPort(flushbonadinginfo.getPort());
-                fdCacheParam.setRecordStartTime(DateUtil.getSeconds()+"");
                 fdCacheParam.setUseRecord(1);
                 fdCacheParam.setIp(flushbonadinginfo.getEtip());
                 fdCacheParam.setPasswd(flushbonadinginfo.getPasswd());
                 fdCacheParam.setUser(flushbonadinginfo.getUser());
                 fdCacheParam.setRecordFileiid(iid);
+                fdCacheParam.setRecordStartTime(startrecordtime);
                 FDCache.setFD(fdid,fdCacheParam);
 
 
                 WorkStartVO workStartVO=new WorkStartVO();
                 workStartVO.setFdlivingurl(flushbonadinginfo.getLivingurl());
                 workStartVO.setIid(iid);
+                workStartVO.setStartrecordtime(startrecordtime);
                 result.changeToTrue(workStartVO);
             }
         }

@@ -41,7 +41,7 @@ public class EquipmentcontrolApplication {
     public static void main(String[] args) {
 
         SpringApplication application = new SpringApplication(EquipmentcontrolApplication.class);
-        application.addListeners(new PropertiesListener("application.properties"));
+        application.addListeners(new PropertiesListener("application.properties","ec.properties"));
         application.run( args);
 
     }

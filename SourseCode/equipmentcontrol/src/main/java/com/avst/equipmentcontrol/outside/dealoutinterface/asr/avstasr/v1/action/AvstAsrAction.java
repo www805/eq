@@ -59,9 +59,9 @@ public class AvstAsrAction {
                 System.out.println(asrTxtParam_avst.getId()+"--"+asrTxtParam_avst.getTime()+"这一句返回返回为空 ");
                 return true;
             }
-            String newStr= JacksonUtil.objebtToString(asrTxtParam_avst);
-            String path="I:\\wubin\\笔录管理系统\\ceshi3.txt";
-            ReadWriteFile.writeApptoTxtFile(newStr+"\r\n",path);
+//            String newStr= JacksonUtil.objebtToString(asrTxtParam_avst);
+//            String path="I:\\wubin\\笔录管理系统\\ceshi3.txt";
+//            ReadWriteFile.writeApptoTxtFile(newStr+"\r\n",path);
             //查询数据库，把avst语音服务的ssid找出来，这里是avst asr语音服务的处理（以后写入缓存）
             String asrid=asrTxtParam_avst.getId();//语音识别唯一通用识别码，用于关联本次识别服务的双方
             String Equipmentssid=AsrCache.getAsrServerssidByAsrid(asrid);

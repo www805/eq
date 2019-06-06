@@ -10,8 +10,8 @@ import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.vo.AvstSDK
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.vo.AvstSDKInterfaceBackParam_hearbeat;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.vo.AvstSDKInterfaceBackParam_quit;
 import com.avst.requestUtil.HttpRequest;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,8 +36,8 @@ public class DealAvstAsrImpl {
             }
 
             String url="http://"+ip+":"+port+"/audiodiscern/impl" ;
-            String regparam=       "method=reg&audiourl="+ Base64.encode(audiourl.getBytes("utf8")) +
-                    "&txtcallbackurl="+Base64.encode(txtcallbackurl.getBytes("utf8"));
+            String regparam=       "method=reg&audiourl="+ Base64.encodeBase64String(audiourl.getBytes("utf8")) +
+                    "&txtcallbackurl="+Base64.encodeBase64String(txtcallbackurl.getBytes("utf8"));
             String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
 
             AvstSDKInterfaceBackParam_Dealreg avstRegSDKInterfaceBackParam=new AvstSDKInterfaceBackParam_Dealreg();

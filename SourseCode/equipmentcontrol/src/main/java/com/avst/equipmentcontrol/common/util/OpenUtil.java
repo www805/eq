@@ -1041,7 +1041,14 @@ public static String numtoStr(int digit,Integer num){
 		try {
 			String filePath = System.getProperty("user.dir");
 
-			filePath=filePath.substring(0,filePath.lastIndexOf("\\"));//win的截取方式
+			if(filePath.endsWith("equipmentcontrol")){//这种情况只会在编辑器下才会有
+				if(filePath.indexOf("/") > -1){//Linux截取
+					filePath=filePath.substring(0,filePath.lastIndexOf("/"));//win的截取方式
+				}else{
+					filePath=filePath.substring(0,filePath.lastIndexOf("\\"));//win的截取方式
+				}
+			}
+
 
 			System.out.println(filePath);
 			return filePath;

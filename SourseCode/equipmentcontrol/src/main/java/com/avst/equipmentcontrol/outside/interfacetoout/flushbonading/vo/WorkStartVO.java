@@ -6,6 +6,16 @@ public class WorkStartVO {
 
     private String fdlivingurl;//设备的直播地址
 
+    private long startrecordtime;//开始录音的毫秒数
+
+    public long getStartrecordtime() {
+        return startrecordtime;
+    }
+
+    public void setStartrecordtime(long startrecordtime) {
+        this.startrecordtime = startrecordtime;
+    }
+
     public String getIid() {
         return iid;
     }
