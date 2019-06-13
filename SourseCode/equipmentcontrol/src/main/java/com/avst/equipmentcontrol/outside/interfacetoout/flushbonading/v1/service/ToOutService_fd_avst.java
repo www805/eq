@@ -7,6 +7,7 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.ent
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
 import com.avst.equipmentcontrol.common.util.DateUtil;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.Code;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDDealImpl;
@@ -93,7 +94,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         if(null==result){
             result=new RResult();
             result.setMessage("开启设备录像失败");
-            System.out.println("开启设备录像失败 result："+result);
+            LogUtil.intoLog(this.getClass(),"开启设备录像失败 result："+result);
         }else{
             if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
                 fdCacheParam=new FDCacheParam();
@@ -144,7 +145,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         if(null==result){
             result=new RResult();
             result.setMessage("关闭设备录像失败");
-            System.out.println("关闭设备录像失败 result："+result);
+            LogUtil.intoLog(this.getClass(),"关闭设备录像失败 result："+result);
         }else{
             if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
 
@@ -158,9 +159,9 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                 RResult result2=new RResult();
                 result2=getToOutServiceImpl(sstype).saveFile(saveFileParam,result2);//v1默认给avst版的存储服务
                 if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
-                    System.out.println("推送设备保存文件到服务器成功fdssid："+fdssid);
+                    LogUtil.intoLog(this.getClass(),"推送设备保存文件到服务器成功fdssid："+fdssid);
                 }else{
-                    System.out.println("推送设备保存文件到服务器失败 fdssid："+fdssid);
+                    LogUtil.intoLog(this.getClass(),"推送设备保存文件到服务器失败 fdssid："+fdssid);
                 }
 
                 result.setData(fdCacheParam.getRecordFileiid());
@@ -201,7 +202,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
     public RResult getFDListByFdid(GetFDListByFdidParam param,RResult result){
         String fdid=param.getFdid();
         if (StringUtils.isBlank(fdid)){
-            System.out.println("getFDListByFdid__fdid__"+fdid);
+            LogUtil.intoLog(this.getClass(),"getFDListByFdid__fdid__"+fdid);
             result.setMessage("参数为空");
             return result;
         }

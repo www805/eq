@@ -2,6 +2,7 @@ package com.avst.equipmentcontrol.outside.interfacetoout.asr.conf;
 
 import com.avst.equipmentcontrol.common.conf.ASRType;
 import com.avst.equipmentcontrol.common.util.DateUtil;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RRParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.v1.action.AvstAsrImpl;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_heartbeat;
@@ -42,22 +43,22 @@ public class AsrHeartbeatThread<T> extends Thread{
             if(!bool){
                 break;
             }
-            System.out.println(DateUtil.getDateAndMinute()+"---AVST语音识别服务心跳检测处理中---asrType："+asrType);
+            LogUtil.intoLog(this.getClass(),DateUtil.getDateAndMinute()+"---AVST语音识别服务心跳检测处理中---asrType："+asrType);
             if(asrType.equals(ASRType.AVST)){//AVST语音识别服务的心跳处理
                 AVSTAsrParam_heartbeat heartbeat=(AVSTAsrParam_heartbeat)heartbeatParam;
                 RRParam<Boolean> booleanRRParam= AvstAsrImpl.heartbeat(heartbeat);
                 if(null!=booleanRRParam){
-                    System.out.println(booleanRRParam.getT()+"------booleanRRParam");
+                    LogUtil.intoLog(this.getClass(),booleanRRParam.getT()+"------booleanRRParam");
                 }else{
-                    System.out.println("AvstAsrImpl.heartbeat(heartbeat) is null");
+                    LogUtil.intoLog(this.getClass(),"AvstAsrImpl.heartbeat(heartbeat) is null");
                 }
             }else{
-                System.out.println("暂时没有其他asr服务器需要心跳处理---");
+                LogUtil.intoLog(this.getClass(),"暂时没有其他asr服务器需要心跳处理---");
             }
             if(!bool){
                 break;
             }
         }
-        System.out.println("AsrHeartbeatThread 定时检测语音服务的线程关闭了，asrType:"+asrType);
+        LogUtil.intoLog(this.getClass(),"AsrHeartbeatThread 定时检测语音服务的线程关闭了，asrType:"+asrType);
     }
 }

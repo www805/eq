@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache;
 
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache.param.AsrTxtParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache.param.AsrTxtParam_avst;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.AsrCache_toout;
@@ -215,7 +216,7 @@ public class AsrCache {
             String starttime=param.getTime();//这一句话的开始识别时间
             AsrTxtParam_toout asr_out=AsrCache_toout.getAsrTxtByStartTime(asrid,starttime);
             int asrsort=1;
-            //System.out.println(asr_out==null?null:(asr_out.getAsrnum()+"--原来的out--"+asr_out.getTxt()));
+            //LogUtil.intoLog(AsrCache.class,asr_out==null?null:(asr_out.getAsrnum()+"--原来的out--"+asr_out.getTxt()));
             if(null==asr_out){
                 asr_out=new AsrTxtParam_toout();
                 asrsort=AsrCache_toout.getAsrTxtCount(asrid)+1;//只有新增的句子才会在原有的基础上加1
@@ -227,7 +228,7 @@ public class AsrCache {
             AsrCache_toout.setAsrTxtLastOne(asrid,asr_out);
 
             //AsrTxtParam_toout asr_out_new=AsrCache_toout.getAsrTxtByStartTime(asrid,starttime);
-            //System.out.println(asr_out_new==null?null:(asr_out_new.getAsrnum()+"--现在的out--"+asr_out_new.getTxt()));
+            //LogUtil.intoLog(AsrCache.class,asr_out_new==null?null:(asr_out_new.getAsrnum()+"--现在的out--"+asr_out_new.getTxt()));
 
             return true;
         } catch (Exception e) {
@@ -288,7 +289,7 @@ public class AsrCache {
         String asrEquipmentssid=getAsrServerssidByAsrid(asrid);//通过asrssid找到asrEquipmentssid
 
         if(null==asrEquipmentssid){
-            System.out.println("getAsrEquipmentssidByAsrssid(asrid) is null ,请检查asrid获取设备ssid的逻辑");
+            LogUtil.intoLog(AsrCache.class,"getAsrEquipmentssidByAsrssid(asrid) is null ,请检查asrid获取设备ssid的逻辑");
             return false;
         }
         return delAsrTxtByEquipmentssid(asrEquipmentssid,asrid);

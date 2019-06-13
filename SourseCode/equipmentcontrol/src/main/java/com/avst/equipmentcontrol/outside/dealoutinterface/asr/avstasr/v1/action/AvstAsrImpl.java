@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.v1.action;
 
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RRParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_heartbeat;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_quit;
@@ -52,7 +53,7 @@ public class AvstAsrImpl {
 
         if(1==rrParam.getCode()){
              String id=rrParam.getT();
-            System.out.println(id+":id======");
+            LogUtil.intoLog(AvstAsrImpl.class,id+":id======");
 
             new Thread(){
                 @Override
@@ -70,7 +71,7 @@ public class AvstAsrImpl {
             }.start();
 
         }else{
-            System.out.println(rrParam.getMessage()+":rrParam.getMessage()======");
+            LogUtil.intoLog(AvstAsrImpl.class,rrParam.getMessage()+":rrParam.getMessage()======");
         }
 
     }

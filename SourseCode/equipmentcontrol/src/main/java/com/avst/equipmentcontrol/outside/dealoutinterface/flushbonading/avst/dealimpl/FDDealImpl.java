@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl;
 
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.XMLUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.*;
@@ -37,12 +38,13 @@ public class FDDealImpl implements FDInterface{
 
         if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
             result.setMessage("有部分参数为空");
-            System.out.println(param.toString()+"--------reg--CheckFDState");
+            LogUtil.intoLog(this.getClass(),param.toString()+"--------reg--CheckFDState");
             return result;
         }
 
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=get&type=devstatus&authvusr="+user+"&authpwd="+passwd;
+        LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
 
         CheckFDStateXml xml=new CheckFDStateXml();
@@ -61,7 +63,7 @@ public class FDDealImpl implements FDInterface{
             result.changeToTrue(CheckFDStateVO);
 
         }else{
-            System.out.println(xml+":xml 请求返回为空 reg");
+            LogUtil.intoLog(this.getClass(),xml+":xml 请求返回为空 reg");
             result.setMessage("语音服务器请求异常");
         }
         return result;
@@ -79,12 +81,13 @@ public class FDDealImpl implements FDInterface{
 
         if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
             result.setMessage("有部分参数为空");
-            System.out.println(param.toString()+"--------reg--startRec");
+            LogUtil.intoLog(this.getClass(),param.toString()+"--------reg--startRec");
             return result;
         }
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=disk&cmd=startrec&al="+al +
                 "&iid="+iid+"&authvusr="+user+"&authpwd="+passwd;
+        LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
 
         StartRecXml xml=new StartRecXml();
@@ -117,13 +120,14 @@ public class FDDealImpl implements FDInterface{
 
         if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
             result.setMessage("有部分参数为空");
-            System.out.println(param.toString()+"--------reg--stopRec");
+            LogUtil.intoLog(this.getClass(),param.toString()+"--------reg--stopRec");
             return result;
         }
 
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=disk&cmd=stoprec"+
                 "&authvusr="+user+"&authpwd="+passwd;
+        LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
 
         StopRecXml xml=new StopRecXml();
@@ -176,7 +180,7 @@ public class FDDealImpl implements FDInterface{
 
         if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
             result.setMessage("有部分参数为空");
-            System.out.println(param.toString()+"----------setMiddleware_FTP");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------setMiddleware_FTP");
             return result;
         }
 
@@ -187,6 +191,7 @@ public class FDDealImpl implements FDInterface{
                 "&svrusr="+param.getSvrusr()+"&svrpwd="+param.getSvrpwd()+
                 "&restart="+param.getRestart()+"&serverport="+param.getServerport()+"&pasvmode="+param.getPasvmode()+
                 "&authvusr="+user+"&authpwd="+passwd;
+        LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
 
         SetMiddleware_FTPXml xml=new SetMiddleware_FTPXml();
@@ -213,7 +218,7 @@ public class FDDealImpl implements FDInterface{
 
         if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
             result.setMessage("有部分参数为空");
-            System.out.println(param.toString()+"----------getETRecordPathByIid");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------getETRecordPathByIid");
             return result;
         }
 
@@ -221,9 +226,9 @@ public class FDDealImpl implements FDInterface{
         String regparam="action=api&type=get_rec_files"+
                 "&rec_id="+param.getRec_id()+"&dev_type="+param.getDev_type()+"&&partition_index="+param.getPartition_index()+
                 "&authvusr="+user+"&authpwd="+passwd;
-        System.out.println();
+        LogUtil.intoLog(this.getClass(),url+":url getETRecordByIid regparam:"+regparam);
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
-        System.out.println(rr+"--getETRecordByIid");
+        LogUtil.intoLog(this.getClass(),rr+"--getETRecordByIid");
         GetETRecordByIidXml xml=Xml2Object.xml2GetETRecordByIidXml(rr);
 
         if(null!=xml&&null!=xml.getGet_rec_files()){
@@ -254,7 +259,7 @@ public class FDDealImpl implements FDInterface{
 
         if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
             result.setMessage("有部分参数为空");
-            System.out.println(param.toString()+"----------uploadFileByPath");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------uploadFileByPath");
             return result;
         }
 
@@ -263,7 +268,7 @@ public class FDDealImpl implements FDInterface{
                 "&reupload="+reupload+"&path="+recordpath+
                 "&authvusr="+user+"&authpwd="+passwd;
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
-        System.out.println(rr+"--uploadFileByPath");
+        LogUtil.intoLog(this.getClass(),rr+"--uploadFileByPath");
         UploadFileByPathXml xml=Xml2Object.uploadFileByPathXml(rr);
 
         if(null!=xml&&null!=xml.getFtp_pasv_upload_file()&&xml.getFtp_pasv_upload_file().getRs().trim().equals("1")){

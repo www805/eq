@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1;
 
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import javax.xml.namespace.QName;
@@ -32,7 +33,7 @@ public class WebServiceClient {
         }catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println(result);
+        LogUtil.intoLog(WebServiceClient.class,result);
         return result;
     }
 
@@ -62,8 +63,8 @@ public class WebServiceClient {
         }catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println(new Date().getTime()+"------"+starttime);
-        System.out.println(new Date().getTime()-starttime);
-        System.out.println(result);
+        LogUtil.intoLog(WebServiceClient.class,new Date().getTime()+"------"+starttime);
+        LogUtil.intoLog(WebServiceClient.class,new Date().getTime()-starttime);
+        LogUtil.intoLog(WebServiceClient.class,result);
     }
 }

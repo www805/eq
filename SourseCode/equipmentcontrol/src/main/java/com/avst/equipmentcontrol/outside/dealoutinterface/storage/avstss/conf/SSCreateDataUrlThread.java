@@ -3,6 +3,7 @@ package com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.conf;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Ss_database;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.param.Ss_dataMessageParam;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.cache.SSThreadCache;
@@ -30,13 +31,13 @@ public class SSCreateDataUrlThread extends  Thread{
     @Override
     public void run() {
 
-        System.out.println("SSCreateDataUrlThread is coming "+ss_dataMessageParam.getIid());
+        LogUtil.intoLog(this.getClass(),"SSCreateDataUrlThread is coming "+ss_dataMessageParam.getIid());
 
         String filename=ss_dataMessageParam.getFilename();
         String savepath=ss_dataMessageParam.getDatasavepath();
         String iid=ss_dataMessageParam.getIid();
         if(StringUtils.isEmpty(filename)||StringUtils.isEmpty(savepath)){
-            System.out.println(filename+":filename=====有一个参数为空====savepath:"+savepath);
+            LogUtil.intoLog(this.getClass(),filename+":filename=====有一个参数为空====savepath:"+savepath);
             SSThreadCache.delSSCreateDataUrlThread(iid);//关闭这个生成网络地址的线程的缓存
             return ;
         }
@@ -44,7 +45,7 @@ public class SSCreateDataUrlThread extends  Thread{
         while (bool){
 
             if(!bool){
-                System.out.println("SSCreateDataUrlThread 被主动中止--filename："+filename);
+                LogUtil.intoLog(this.getClass(),"SSCreateDataUrlThread 被主动中止--filename："+filename);
                 break;
             }
 
@@ -61,7 +62,7 @@ public class SSCreateDataUrlThread extends  Thread{
                 ss_database.setDefaulturl("http");//暂时只提供http请求的网络地址
                 ss_database.setState(2);//文件网络请求路径完成
                 int ss_databaseupdateById=ss_databaseMapper.updateById(ss_database);
-                System.out.println(ss_databaseupdateById+":ss_databaseupdateById----SSCreateDataUrlThread ss_dataMessageParam.getId()："+ss_dataMessageParam.getId());
+                LogUtil.intoLog(this.getClass(),ss_databaseupdateById+":ss_databaseupdateById----SSCreateDataUrlThread ss_dataMessageParam.getId()："+ss_dataMessageParam.getId());
                 if(ss_databaseupdateById> -1){
                     //完了就出去了
                     break;
@@ -71,7 +72,7 @@ public class SSCreateDataUrlThread extends  Thread{
             }
 
             if(!bool){
-                System.out.println("SSCreateDataUrlThread 被主动中止--filename："+filename);
+                LogUtil.intoLog(this.getClass(),"SSCreateDataUrlThread 被主动中止--filename："+filename);
                 break;
             }
 
@@ -82,7 +83,7 @@ public class SSCreateDataUrlThread extends  Thread{
             }
         }
 
-        System.out.println("正常结束生成网络地址的线程 iid："+iid);
+        LogUtil.intoLog(this.getClass(),"正常结束生成网络地址的线程 iid："+iid);
         SSThreadCache.delSSCreateDataUrlThread(iid);//关闭这个生成网络地址的线程的缓存
 
     }

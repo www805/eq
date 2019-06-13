@@ -2,6 +2,7 @@ package com.avst.equipmentcontrol.outside.interfacetoout.polygraph.v1.service;
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.param.PolygraphInfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.mapper.Polygraph_etinfoMapper;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.DealPolygraphImpl;
@@ -35,7 +36,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
 
         String phssid=param.getPolygraphssid();
         if(StringUtils.isEmpty(phssid)){
-            System.out.println(" phssid is null---"+phssid);
+            LogUtil.intoLog(this.getClass()," phssid is null---"+phssid);
             result.setMessage("测谎仪标识为空");
             return result;
         }
@@ -43,7 +44,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
         entityWrapper.eq("pet.ssid",phssid);
         PolygraphInfo polygraphInfo=polygraph_etinfoMapper.getPolygraphInfo(entityWrapper);
         if(null==polygraphInfo){
-            System.out.println("测谎仪没有找到，请查看 phssid："+phssid);
+            LogUtil.intoLog(this.getClass(),"测谎仪没有找到，请查看 phssid："+phssid);
             result.setMessage("测谎仪没有找到");
             return result;
         }
@@ -58,7 +59,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
                 vo.setWorkstate(1);
                 result.changeToTrue(vo);
             }else if(status==10){//正在初始化
-                System.out.println("正在初始化请稍后 polygraphInfo.getEtip()："+polygraphInfo.getEtip());
+                LogUtil.intoLog(this.getClass(),"正在初始化请稍后 polygraphInfo.getEtip()："+polygraphInfo.getEtip());
                 result.setMessage("正在初始化请稍后");
             }
         }
@@ -79,7 +80,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
 
         String phssid=param.getPolygraphssid();
         if(StringUtils.isEmpty(phssid)){
-            System.out.println(" phssid is null---"+phssid);
+            LogUtil.intoLog(this.getClass()," phssid is null---"+phssid);
             result.setMessage("测谎仪标识为空");
             return result;
         }
@@ -87,7 +88,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
         entityWrapper.eq("pet.ssid",phssid);
         PolygraphInfo polygraphInfo=polygraph_etinfoMapper.getPolygraphInfo(entityWrapper);
         if(null==polygraphInfo){
-            System.out.println("测谎仪没有找到，请查看 phssid："+phssid);
+            LogUtil.intoLog(this.getClass(),"测谎仪没有找到，请查看 phssid："+phssid);
             result.setMessage("测谎仪没有找到");
             return result;
         }
@@ -101,7 +102,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
                 OverPolygraphVO vo=new OverPolygraphVO();//暂时没有数据
                 result.changeToTrue(vo);
             }else if(status==10){//正在初始化
-                System.out.println("正在初始化请稍后 polygraphInfo.getEtip()："+polygraphInfo.getEtip());
+                LogUtil.intoLog(this.getClass(),"正在初始化请稍后 polygraphInfo.getEtip()："+polygraphInfo.getEtip());
                 result.setMessage("正在初始化请稍后");
             }
         }
@@ -113,7 +114,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
 
         String phssid=param.getPolygraphssid();
         if(StringUtils.isEmpty(phssid)){
-            System.out.println(" phssid is null---"+phssid);
+            LogUtil.intoLog(this.getClass()," phssid is null---"+phssid);
             result.setMessage("测谎仪标识为空");
             return result;
         }
@@ -121,7 +122,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
         entityWrapper.eq("pet.ssid",phssid);
         PolygraphInfo polygraphInfo=polygraph_etinfoMapper.getPolygraphInfo(entityWrapper);
         if(null==polygraphInfo){
-            System.out.println("测谎仪没有找到，请查看 phssid："+phssid);
+            LogUtil.intoLog(this.getClass(),"测谎仪没有找到，请查看 phssid："+phssid);
             result.setMessage("测谎仪没有找到");
             return result;
         }
@@ -142,7 +143,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
 
         String phssid=param.getPolygraphssid();
         if(StringUtils.isEmpty(phssid)){
-            System.out.println(" phssid is null---"+phssid);
+            LogUtil.intoLog(this.getClass()," phssid is null---"+phssid);
             result.setMessage("测谎仪标识为空");
             return result;
         }
@@ -150,7 +151,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
         entityWrapper.eq("pet.ssid",phssid);
         PolygraphInfo polygraphInfo=polygraph_etinfoMapper.getPolygraphInfo(entityWrapper);
         if(null==polygraphInfo){
-            System.out.println("测谎仪没有找到，请查看 phssid："+phssid);
+            LogUtil.intoLog(this.getClass(),"测谎仪没有找到，请查看 phssid："+phssid);
             result.setMessage("测谎仪没有找到");
             return result;
         }

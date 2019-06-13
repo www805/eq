@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1;
 
 import com.avst.equipmentcontrol.common.conf.FDType;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
@@ -42,7 +43,7 @@ public class ToOutAction_qrs extends BaseAction {
         if(null!=sparam){
             rResult=getToOutServiceImpl(sparam.getFdType()).workStart(sparam,rResult);
         }else{
-            System.out.println("workStart---param.getParam() ---参数异常");
+            LogUtil.intoLog(this.getClass(),"workStart---param.getParam() ---参数异常");
             rResult.setMessage("参数异常");
         }
         return rResult;
@@ -57,7 +58,7 @@ public class ToOutAction_qrs extends BaseAction {
         if(null!=sparam){
             rResult=getToOutServiceImpl(sparam.getFdType()).workOver(sparam,rResult);
         }else{
-            System.out.println("workOver---param.getParam() ---参数异常");
+            LogUtil.intoLog(this.getClass(),"workOver---param.getParam() ---参数异常");
             rResult.setMessage("参数异常");
         }
         return rResult;
@@ -81,7 +82,7 @@ public class ToOutAction_qrs extends BaseAction {
         if(null!=sparam){
             rResult=baseToOutServiceImpl_qrs.getFlushbonadingBySsid(sparam,rResult);
         }else{
-            System.out.println("startAsr---param.getParam() ---参数异常");
+            LogUtil.intoLog(this.getClass(),"startAsr---param.getParam() ---参数异常");
             rResult.setMessage("参数异常");
         }
         return rResult;
@@ -102,7 +103,7 @@ public class ToOutAction_qrs extends BaseAction {
             //通过asrEquipmentssid
             rResult=baseToOutServiceImpl_qrs.getFlushbonadingTDByETSsid(sparam,rResult);
         }else{
-            System.out.println("startAsr---param.getParam() ---参数异常");
+            LogUtil.intoLog(this.getClass(),"startAsr---param.getParam() ---参数异常");
             rResult.setMessage("参数异常");
         }
         return rResult;
@@ -124,7 +125,7 @@ public class ToOutAction_qrs extends BaseAction {
             //通过asrEquipmentssid
             rResult=getToOutServiceImpl(sparam.getFdType()).getRecordByIid(sparam,rResult);
         }else{
-            System.out.println("startAsr---param.getParam() ---参数异常");
+            LogUtil.intoLog(this.getClass(),"startAsr---param.getParam() ---参数异常");
             rResult.setMessage("参数异常");
         }
         return rResult;
@@ -143,7 +144,7 @@ public class ToOutAction_qrs extends BaseAction {
         if(null!=param){
             rResult=getToOutServiceImpl(param.getFdType()).getFDListByFdid(param,rResult);
         }else{
-            System.out.println("getFDListByFdid---param.getParam() ---参数异常");
+            LogUtil.intoLog(this.getClass(),"getFDListByFdid---param.getParam() ---参数异常");
             rResult.setMessage("参数异常");
         }
         return rResult;

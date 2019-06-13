@@ -44,19 +44,19 @@ public class AvstAsrAction {
 
             String rr = new String(data,"utf8");
             rr= URLDecoder.decode(rr,"utf-8");
-            System.out.println(rr+":rr--"+ DateUtil.getDateAndMinute());
+            LogUtil.intoLog(this.getClass(),rr+":rr--"+ DateUtil.getDateAndMinute());
 
             AsrTxtParam_avst asrTxtParam_avst=new AsrTxtParam_avst();
             asrTxtParam_avst=(AsrTxtParam_avst)XMLUtil.xmlToStr(asrTxtParam_avst,rr);
-            System.out.println(asrTxtParam_avst.getId()+"-------------asrTxtParam_avst.getId()");
+            LogUtil.intoLog(this.getClass(),asrTxtParam_avst.getId()+"-------------asrTxtParam_avst.getId()");
 
             if("1".equals(asrTxtParam_avst.getTime())){//过滤掉本句结束
-                System.out.println(asrTxtParam_avst.getId()+"--"+asrTxtParam_avst.getTime()+"这一句已经结束 ");
+                LogUtil.intoLog(this.getClass(),asrTxtParam_avst.getId()+"--"+asrTxtParam_avst.getTime()+"这一句已经结束 ");
                 return true;
             }
 
             if(StringUtils.isEmpty(asrTxtParam_avst.getMsg())){//过滤掉本句结束
-                System.out.println(asrTxtParam_avst.getId()+"--"+asrTxtParam_avst.getTime()+"这一句返回返回为空 ");
+                LogUtil.intoLog(this.getClass(),asrTxtParam_avst.getId()+"--"+asrTxtParam_avst.getTime()+"这一句返回返回为空 ");
                 return true;
             }
 //            String newStr= JacksonUtil.objebtToString(asrTxtParam_avst);
@@ -73,12 +73,12 @@ public class AvstAsrAction {
 
             //往缓存中插数据
             AsrCache.setAsrByASRssid(Equipmentssid,asrid,asrTxtParam_avst);
-            System.out.println(asrTxtParam_avst.getTime()+"--现在--"+asrTxtParam_avst.getMsg());
+            LogUtil.intoLog(this.getClass(),asrTxtParam_avst.getTime()+"--现在--"+asrTxtParam_avst.getMsg());
 
             //把对外缓存的最后一句返回给上一级系统
             AsrTxtParam_toout asrTxtParam_toout=AsrCache_toout.getAsrTxtLastOne(asrid);//如果为空的话就是有问题的
             if(null==asrTxtParam_toout){
-                System.out.println(asrTxtParam_toout+"--如果为空的话就是有问题的--- ");
+                LogUtil.intoLog(this.getClass(),asrTxtParam_toout+"--如果为空的话就是有问题的--- ");
             }else{
                 //这里直接返回给了avstmc,以后加判断
                 ReqParam<SetMCAsrTxtBackParam_out> param=new ReqParam<SetMCAsrTxtBackParam_out>();
@@ -88,7 +88,7 @@ public class AvstAsrAction {
                 setMCAsrTxtBackParam_out.setMcType(MCType.AVST);//制定avstmc接受返回
                 param.setParam(setMCAsrTxtBackParam_out);
                 boolean bool=meetingControl.setMCAsrTxtBack(param);
-                System.out.println(asrid+":asrid--同步给上级数据的返回--- bool："+bool+"---asrTxtParam_toout:"+ JacksonUtil.objebtToString(asrTxtParam_toout));
+                LogUtil.intoLog(this.getClass(),asrid+":asrid--同步给上级数据的返回--- bool："+bool+"---asrTxtParam_toout:"+ JacksonUtil.objebtToString(asrTxtParam_toout));
 
             }
             return true ;

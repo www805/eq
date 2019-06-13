@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.v1.service;
 
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.XMLUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RRParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache.AsrCache;
@@ -31,7 +32,7 @@ public class DealAvstAsrImpl {
             if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(port)||
                     StringUtils.isEmpty(audiourl)||StringUtils.isEmpty(txtcallbackurl)){
                 vo.setMessage("有部分参数为空");
-                System.out.println(param.toString()+"--------reg--DealAvstAsrImpl");
+                LogUtil.intoLog(DealAvstAsrImpl.class,param.toString()+"--------reg--DealAvstAsrImpl");
                 return vo;
             }
 
@@ -46,12 +47,12 @@ public class DealAvstAsrImpl {
             if(null!=avstRegSDKInterfaceBackParam){//说明请求有正确的返回
                 String code=avstRegSDKInterfaceBackParam.getCode();
                 if(StringUtils.isEmpty(code)||!code.equals("1")){
-                    System.out.println(code+":code 请求返回异常 reg  avstRegSDKInterfaceBackParam.getMsg():"+avstRegSDKInterfaceBackParam.getMsg());
+                    LogUtil.intoLog(DealAvstAsrImpl.class,code+":code 请求返回异常 reg  avstRegSDKInterfaceBackParam.getMsg():"+avstRegSDKInterfaceBackParam.getMsg());
                     vo.setMessage("语音服务器请求返回异常");
                 }else{
                     String id=avstRegSDKInterfaceBackParam.getId();
                     if(StringUtils.isEmpty(id)){
-                        System.out.println(code+":code 请求返回异常 reg  id:"+id);
+                        LogUtil.intoLog(DealAvstAsrImpl.class,code+":code 请求返回异常 reg  id:"+id);
                         vo.setMessage("语音服务器请求返回异常");
                     }else{
                         vo.setT(id);
@@ -59,11 +60,11 @@ public class DealAvstAsrImpl {
 
                         //存到语音唯一码对应服务ssid中去
                         AsrCache.setAsrServerssidByAsrid(id,asrverssid);
-                        System.out.println(id+":asrid 开启识别成功存到语音唯一码对应服务ssid中  asrverssid:"+asrverssid);
+                        LogUtil.intoLog(DealAvstAsrImpl.class,id+":asrid 开启识别成功存到语音唯一码对应服务ssid中  asrverssid:"+asrverssid);
                     }
                 }
             }else{
-                System.out.println(avstRegSDKInterfaceBackParam+":avstRegSDKInterfaceBackParam 请求返回为空 reg");
+                LogUtil.intoLog(DealAvstAsrImpl.class,avstRegSDKInterfaceBackParam+":avstRegSDKInterfaceBackParam 请求返回为空 reg");
                 vo.setMessage("语音服务器请求异常");
             }
         } catch (Exception e) {
@@ -80,7 +81,7 @@ public class DealAvstAsrImpl {
         String id=param.getId();
         if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(port)||StringUtils.isEmpty(id)){
             vo.setMessage("有部分参数为空");
-            System.out.println(param.toString()+"---------heartbeat--DealAvstAsrImpl");
+            LogUtil.intoLog(DealAvstAsrImpl.class,param.toString()+"---------heartbeat--DealAvstAsrImpl");
             return vo;
         }
 
@@ -94,14 +95,14 @@ public class DealAvstAsrImpl {
         if(null!=hearbeat){//说明请求有正确的返回
             String code=hearbeat.getCode();
             if(StringUtils.isEmpty(code)||!code.equals("1")){
-                System.out.println(code+":code 请求返回异常 heartbeat  hearbeat.getMsg():"+hearbeat.getMsg());
+                LogUtil.intoLog(DealAvstAsrImpl.class,code+":code 请求返回异常 heartbeat  hearbeat.getMsg():"+hearbeat.getMsg());
                 vo.setMessage("语音服务器请求返回异常");
             }else{
                 vo.setT(true);
                 vo.setCode(1);
             }
         }else{
-            System.out.println(hearbeat+":hearbeat 请求返回为空 hearbeat");
+            LogUtil.intoLog(DealAvstAsrImpl.class,hearbeat+":hearbeat 请求返回为空 hearbeat");
             vo.setMessage("语音服务器请求异常");
         }
 
@@ -116,7 +117,7 @@ public class DealAvstAsrImpl {
         String id=param.getId();
         if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(port)||StringUtils.isEmpty(id)){
             vo.setMessage("有部分参数为空");
-            System.out.println(param.toString()+"--------quit--DealAvstAsrImpl");
+            LogUtil.intoLog(DealAvstAsrImpl.class,param.toString()+"--------quit--DealAvstAsrImpl");
             return vo;
         }
 
@@ -130,14 +131,14 @@ public class DealAvstAsrImpl {
         if(null!=quit){//说明请求有正确的返回
             String code=quit.getCode();
             if(StringUtils.isEmpty(code)||!code.equals("1")){
-                System.out.println(code+":code 请求返回异常 quit  quit.getMsg():"+quit.getMsg());
+                LogUtil.intoLog(DealAvstAsrImpl.class,code+":code 请求返回异常 quit  quit.getMsg():"+quit.getMsg());
                 vo.setMessage("语音服务器请求返回异常");
             }else{
                 vo.setT(true);
                 vo.setCode(1);
             }
         }else{
-            System.out.println(quit+":quit 请求返回为空 quit");
+            LogUtil.intoLog(DealAvstAsrImpl.class,quit+":quit 请求返回为空 quit");
             vo.setMessage("语音服务器请求异常");
         }
         return vo;

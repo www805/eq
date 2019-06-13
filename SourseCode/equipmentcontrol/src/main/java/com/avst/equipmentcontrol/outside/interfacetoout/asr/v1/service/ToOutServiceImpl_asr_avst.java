@@ -4,6 +4,7 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_et
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper.Asr_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_ettdMapper;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RRParam;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.v1.action.AvstAsrImpl;
@@ -45,7 +46,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         ew.eq("aet.ssid",asrserverssid);
         Asr_et_ettype asr_et_ettype= asr_etinfoMapper.getAsrinfo(ew);
         if(null==asr_et_ettype){
-            System.out.println(asrserverssid+":asrserverssid 没有找到这个asr服务器，开启失败");
+            LogUtil.intoLog(this.getClass(),asrserverssid+":asrserverssid 没有找到这个asr服务器，开启失败");
             rResult.setMessage("没有找到这个asr服务器，开启失败");
             return rResult;
         }
@@ -56,7 +57,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
             ew2.eq("ssid",tdssid);
             Flushbonading_ettd flushbonading_ettd=flushbonading_ettdMapper.selectList(ew2).get(0);
             if(null==flushbonading_ettd|| StringUtils.isEmpty(flushbonading_ettd.getPullflowurl())){
-                System.out.println(tdssid+":tdssid 没有找到这个设备通道，开启失败");
+                LogUtil.intoLog(this.getClass(),tdssid+":tdssid 没有找到这个设备通道，开启失败");
                 rResult.setMessage("没有找到这个设备通道，开启失败");
                 return rResult;
             }
@@ -102,7 +103,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         ew.eq("aet.ssid",asrserverssid);
         Asr_et_ettype asr_et_ettype= asr_etinfoMapper.getAsrinfo(ew);
         if(null==asr_et_ettype){
-            System.out.println(asrserverssid+":asrserverssid 没有找到这个asr服务器，开启失败");
+            LogUtil.intoLog(this.getClass(),asrserverssid+":asrserverssid 没有找到这个asr服务器，开启失败");
             rResult.setMessage("没有找到这个asr服务器，开启失败");
             return rResult;
         }
@@ -121,7 +122,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
 
             rResult.changeToTrue(true);
         }else{
-            System.out.println("AvstAsrImpl.quit 关闭失败，qparam.getId()："+qparam.getId());
+            LogUtil.intoLog(this.getClass(),"AvstAsrImpl.quit 关闭失败，qparam.getId()："+qparam.getId());
             rResult.setMessage("关闭"+qparam.getId()+"语音识别失败");
         }
         return rResult;

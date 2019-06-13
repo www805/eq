@@ -220,13 +220,13 @@ public class DateUtil {
     public static long getDaymillisecond(String time){
     	long l=0;
     	if(time.contains("天")){
-    		//System.out.println("yes");
+    		//LogUtil.intoLog(this.class,"yes");
     		String tian=time.substring(0, time.indexOf("天"));
     		if(null!=tian&&!"".equals(tian)){
     			l = Long.valueOf(tian).longValue();
     			l=l*24*60*60*1000;
-    			//System.out.println("--天-----"+l);
-    			//System.out.println(longToTime_all(9335000));
+    			//LogUtil.intoLog(this.class,"--天-----"+l);
+    			//LogUtil.intoLog(this.class,longToTime_all(9335000));
     		}
     		String times=time.substring(time.indexOf("天")+1).trim();
     		if(times.contains(":")){
@@ -236,25 +236,25 @@ public class DateUtil {
     					long hour =Long.valueOf(timelist[i]).longValue();
     					hour=hour*60*60*1000;
     					l+=hour;
-    					//System.out.println("--H--"+l);
+    					//LogUtil.intoLog(this.class,"--H--"+l);
     				}else if(i==1){
     					long minute =Long.valueOf(timelist[i]).longValue();
     					minute=minute*60*1000;
     					l+=minute;
-    					//System.out.println("--m--"+l);
+    					//LogUtil.intoLog(this.class,"--m--"+l);
     				}else if(i==2){
     					long second =Long.valueOf(timelist[i]).longValue();
     					second=second*1000;
     					l+=second;
-    					//System.out.println("---s-"+l);
+    					//LogUtil.intoLog(this.class,"---s-"+l);
     				}
-        			//System.out.println("-timelist[i]-----"+i+"------"+timelist[i]);
+        			//LogUtil.intoLog(this.class,"-timelist[i]-----"+i+"------"+timelist[i]);
     			}
     		}
-    		//System.out.println("-------"+times);
+    		//LogUtil.intoLog(this.class,"-------"+times);
     		
     	}else{
-    		//System.out.println("NO");
+    		//LogUtil.intoLog(this.class,"NO");
     		if(time.contains(":")){
     			String[] timelist=time.split(":");
     			for (int i = 0; i < timelist.length; i++) {
@@ -262,23 +262,23 @@ public class DateUtil {
     					long hour =Long.valueOf(timelist[i]).longValue();
     					hour=hour*60*60*1000;
     					l+=hour;
-    					//System.out.println("--H--"+l);
+    					//LogUtil.intoLog(this.class,"--H--"+l);
     				}else if(i==1){
     					long minute =Long.valueOf(timelist[i]).longValue();
     					minute=minute*60*1000;
     					l+=minute;
-    					//System.out.println("--m--"+l);
+    					//LogUtil.intoLog(this.class,"--m--"+l);
     				}else if(i==2){
     					long second =Long.valueOf(timelist[i]).longValue();
     					second=second*1000;
     					l+=second;
-    					//System.out.println("---s-"+l);
+    					//LogUtil.intoLog(this.class,"---s-"+l);
     				}
-        			//System.out.println("-timelist[i]-----"+i+"------"+timelist[i]);
+        			//LogUtil.intoLog(this.class,"-timelist[i]-----"+i+"------"+timelist[i]);
     			}
     		}
     	}
-    	//System.out.println(longToTime_all(l));
+    	//LogUtil.intoLog(this.class,longToTime_all(l));
 		return l;
     }
     
@@ -424,7 +424,7 @@ public class DateUtil {
 			String dateString = df.format(date);  
 			return dateString;
 		} catch (ParseException e) {
-			System.out.println("转换失败");
+			LogUtil.intoLog(DateUtil.class,"转换失败");
 			e.printStackTrace();
 		}
     	return null;
@@ -680,7 +680,7 @@ public class DateUtil {
     	c.setTime(new Date());
     	c.add(c.DAY_OF_YEAR, day);
     	date=new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
-    	//System.out.println(date);
+    	//LogUtil.intoLog(DateUtil.class,date);
     	return date;
     }
 	 /**
@@ -826,7 +826,7 @@ public class DateUtil {
     	      // 设置时间,当前时间不用设置
     	      calendar.set(Calendar.YEAR, Integer.parseInt(year));
     	      calendar.set(Calendar.MONTH, Integer.parseInt(month)-1);
-    	      // System.out.println(calendar.getTime());
+    	      // LogUtil.intoLog(DateUtil.class,calendar.getTime());
     	      calendar.set(Calendar.DAY_OF_MONTH, 1); 
     	      calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));
     	      DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -834,7 +834,7 @@ public class DateUtil {
     	}
     public static void main(String[] args) {
 		
-			System.out.println(fromToday(new Date()));
+			LogUtil.intoLog(DateUtil.class,fromToday(new Date()));
 			
 	}
  

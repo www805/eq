@@ -17,8 +17,8 @@ public class JacksonUtil {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		 try {
-				String json = mapper.writeValueAsString(object);  
-				System.out.println(json);
+				String json = mapper.writeValueAsString(object);
+				LogUtil.intoLog(JacksonUtil.class,json+":json");
 				return json;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -47,7 +47,7 @@ public class JacksonUtil {
 				return obj;
 			} catch (Exception e) {
 			 	e.printStackTrace();
-				System.out.println("stringToObjebt_1转换出错json："+json);
+			 	LogUtil.intoLog(JacksonUtil.class,"stringToObjebt_1转换出错json："+json);
 			}
 		 return null;
 	}
@@ -72,7 +72,8 @@ public class JacksonUtil {
 			List<Object> lendReco = mapper.readValue(json,new TypeReference<List<Object>>() { });
 			return lendReco;
 		} catch (Exception e) {
-			System.out.println("stringToObjebt_1转换出错json："+json);
+			LogUtil.intoLog(1,JacksonUtil.class,"stringToObjebt_1转换出错json："+json);
+
 		}
 		return null;
 	}
@@ -95,7 +96,7 @@ public class JacksonUtil {
 			 Map<String, Object> map = mapper.readValue(json, Map.class);  
 				return map;
 			} catch (Exception e) {
-				System.out.println("stringToObjebt_1转换出错json："+json);
+			 LogUtil.intoLog(1,JacksonUtil.class,"stringToObjebt_1转换出错json："+json);
 			}
 		 return null;
 	}
@@ -116,7 +117,7 @@ public class JacksonUtil {
 			 Object obj2=mapper.readValue(objebtToString(obj), cclass); 
 				return obj2;
 			} catch (Exception e) {
-				System.out.println("stringToObjebt_2转换出错json："+obj);
+			 LogUtil.intoLog(1,JacksonUtil.class,"stringToObjebt_2转换出错json："+obj);
 			}
 		 return null;
 	}

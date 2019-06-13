@@ -5,6 +5,7 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Ss
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.param.Ss_dataMessageParam;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_datasaveMapper;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.Code;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
@@ -61,7 +62,7 @@ public class SSAddDataThread extends  Thread{
         ew.eq("iid",iid);
         List<Ss_datasave> datalist=ss_datasaveMapper.selectList(ew);
         if(null!=datalist&&datalist.size() > 0){
-            System.out.println(iid+":iid不是唯一的，已存在数据库，外部没有判断吗？？？？");
+            LogUtil.intoLog(this.getClass(),iid+":iid不是唯一的，已存在数据库，外部没有判断吗？？？？");
             SSThreadCache.delSSAddDataThread(iid);//删除这个等待新增
             return ;
         }
@@ -76,12 +77,12 @@ public class SSAddDataThread extends  Thread{
         }else{
             fdbasepath=savebasepath;
         }
-        System.out.println("该文件的原始存储位置--fdbasepath:"+fdbasepath);
+        LogUtil.intoLog(this.getClass(),"该文件的原始存储位置--fdbasepath:"+fdbasepath);
 
         while(bool){
 
             if(!bool){
-                System.out.println(bool+"---中断线程SSAddDataThread");
+                LogUtil.intoLog(this.getClass(),bool+"---中断线程SSAddDataThread");
                 break;
             }
 
@@ -118,7 +119,7 @@ public class SSAddDataThread extends  Thread{
                             String filename=file.getName();
                             if(null==path||path.trim().equals("")||
                                     null==filename||filename.trim().equals("")){
-                                System.out.println("文件路径或者文件名为空，直接退出，下次再查--file.getName()："+file.getName());
+                                LogUtil.intoLog(this.getClass(),"文件路径或者文件名为空，直接退出，下次再查--file.getName()："+file.getName());
                                 break;
                             }else{
                                 path=path.trim();
@@ -135,7 +136,7 @@ public class SSAddDataThread extends  Thread{
                             ufresult=fdDeal.uploadFileByPath(ufparam,ufresult);
                             if(null==ufresult||!ufresult.getActioncode().equals(Code.SUCCESS.toString())){
                                 //请求文件上传失败，直接退出去
-                                System.out.println("请求文件上传失败，直接退出去 ");
+                                LogUtil.intoLog(this.getClass(),"请求文件上传失败，直接退出去 ");
                                 break;
                             }
 
@@ -154,25 +155,25 @@ public class SSAddDataThread extends  Thread{
                             if(databaseinsert > -1){
                                 boolinsert++;
                             }else{
-                                System.out.println(iid+":iid  ss_datasaveMapper.insert is error datasaveinsert:"+datasaveinsert);
+                                LogUtil.intoLog(this.getClass(),iid+":iid  ss_datasaveMapper.insert is error datasaveinsert:"+datasaveinsert);
                             }
                         }
 
                         if(fileList.size()==boolinsert){//说明新增成功，可以跳出
                             bool=false;
-                            System.out.println(iid+":iid  数据库新增成功，可以跳出循环");
+                            LogUtil.intoLog(this.getClass(),iid+":iid  数据库新增成功，可以跳出循环");
                             break;
                         }
                     }else{
-                        System.out.println(iid+":iid  ss_datasaveMapper.insert is error datasaveinsert:"+datasaveinsert);
+                        LogUtil.intoLog(this.getClass(),iid+":iid  ss_datasaveMapper.insert is error datasaveinsert:"+datasaveinsert);
                     }
                 }
             }else{
-                System.out.println("fdDeal.getETRecordByIid 从设备中获取录像文件信息失败--等待再次请求 iid:"+iid);
+                LogUtil.intoLog(this.getClass(),"fdDeal.getETRecordByIid 从设备中获取录像文件信息失败--等待再次请求 iid:"+iid);
             }
 
             if(!bool){
-                System.out.println(bool+"---中断线程SSAddDataThread");
+                LogUtil.intoLog(this.getClass(),bool+"---中断线程SSAddDataThread");
                 break;
             }
 
@@ -185,7 +186,7 @@ public class SSAddDataThread extends  Thread{
 
         SSThreadCache.delSSAddDataThread(iid);//删除这个等待新增
 
-        System.out.println(iid+":iid----这个新增线程出来了");
+        LogUtil.intoLog(this.getClass(),iid+":iid----这个新增线程出来了");
 
         //进入检查文件地址和大小的线程
         EntityWrapper entityWrapper=new EntityWrapper();
@@ -195,7 +196,7 @@ public class SSAddDataThread extends  Thread{
         //0和-1 还没有检测到文件上传成功
         //1和-2 还没有生产对外开放的地址
         if(null==ssdatalist||ssdatalist.size() < 1){
-            System.out.println(ssdatalist+":ssdatalist SSAddDataThread 没有查到需要处理的数据 0");
+            LogUtil.intoLog(this.getClass(),ssdatalist+":ssdatalist SSAddDataThread 没有查到需要处理的数据 0");
             return ;
         }
         for(Ss_dataMessageParam dm:ssdatalist){

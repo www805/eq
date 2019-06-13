@@ -29,7 +29,7 @@ public class XMLUtil{
         //定义序列化对象
         Serializer serializer = new Persister();
         try {
-            System.out.println("--xmlToStr rr:"+rr);
+            LogUtil.intoLog(XMLUtil.class,"--xmlToStr rr:"+rr);
             o=serializer.read(o, rr);
             return o;
         } catch (Exception e) {
@@ -54,9 +54,8 @@ public class XMLUtil{
                     field = field.toLowerCase().charAt(0) + field.substring(1);//小写化
                     int start=xml.indexOf("<"+field+">")+field.length()+2;
                     int end=xml.indexOf("</"+field+">");
-                    System.out.println(start+"----"+end);
+                    LogUtil.intoLog(XMLUtil.class,start+"----"+end);
                     String v=xml.substring(start,end);
-                    System.out.println();
                     if(!v.trim().equals("")){
                         method.invoke(javabean, v);
                     }
@@ -115,7 +114,6 @@ public class XMLUtil{
             map = new HashMap<>();
             ele2map(map, rootElement);
 
-            System.out.println(map);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -124,7 +122,6 @@ public class XMLUtil{
 
 
     private static void ele2map(Map map, Element ele) {
-        System.out.println(ele);
         // 获得当前节点的子节点
         List<Element> elements = ele.elements();
         if (elements.size() == 0) {

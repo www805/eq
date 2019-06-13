@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.asr.v1;
 
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
@@ -81,7 +82,7 @@ public class ToOutAction_asr extends BaseAction {
             rResult=getToOutService(asrtype).startAsr(sparam,rResult);
 
         }else{
-            System.out.println("startAsr---param.getParam() ---参数异常");
+            LogUtil.intoLog(this.getClass(),"startAsr---param.getParam() ---参数异常");
             rResult.setMessage("参数异常");
         }
         return rResult;
@@ -98,7 +99,7 @@ public class ToOutAction_asr extends BaseAction {
             String asrtype=oparam.getAsrtype();//这里测试使用，后期要去查询
             rResult=getToOutService(asrtype).overAsr(oparam,rResult);
         }else{
-            System.out.println("overAsr---param.getParam() ---参数异常");
+            LogUtil.intoLog(this.getClass(),"overAsr---param.getParam() ---参数异常");
             rResult.setMessage("参数异常");
         }
 
@@ -116,13 +117,13 @@ public class ToOutAction_asr extends BaseAction {
     @ResponseBody
     public RResult getAsrServerBySsid(@RequestBody ReqParam<GetAsrServerBySsidParam> param){
         RResult rResult=createNewResultOfFail();
-System.out.println("getAsrServerBySsid is coming");
+LogUtil.intoLog(this.getClass(),"getAsrServerBySsid is coming");
         GetAsrServerBySsidParam sparam=param.getParam();
         if(null!=sparam){
             //通过asrEquipmentssid
             rResult=baseToOutService.getAsrServerBySsid(sparam,rResult);
         }else{
-            System.out.println("getAsrServerBySsid---param.getParam() ---参数异常");
+            LogUtil.intoLog(this.getClass(),"getAsrServerBySsid---param.getParam() ---参数异常");
             rResult.setMessage("参数异常");
         }
         return rResult;

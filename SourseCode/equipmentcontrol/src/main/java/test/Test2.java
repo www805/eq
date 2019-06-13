@@ -1,6 +1,7 @@
 package test;
 
 import com.avst.equipmentcontrol.common.util.JacksonUtil;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.XMLUtil;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDDealImpl;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.GetETRecordByIidXml;
@@ -15,7 +16,7 @@ public class Test2 {
     public static void main(String[] args) {
 
         XBOX_GetResultVO vo= (XBOX_GetResultVO)JacksonUtil.stringToObjebt_1(rr,XBOX_GetResultVO.class);
-        System.out.println(JacksonUtil.objebtToString(vo));
+        LogUtil.intoLog(Test2.class,JacksonUtil.objebtToString(vo));
 
 
 
