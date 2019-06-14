@@ -8,6 +8,7 @@ import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dea
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.UploadFileByPathXml;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.Xml2Object;
 import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.vo.XBOX_GetResultVO;
+import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.vo.XBOX_ShutdownVO;
 
 public class Test2 {
 
@@ -15,7 +16,7 @@ public class Test2 {
 
     public static void main(String[] args) {
 
-        XBOX_GetResultVO vo= (XBOX_GetResultVO)JacksonUtil.stringToObjebt_1(rr,XBOX_GetResultVO.class);
+        XBOX_GetResultVO vo= (XBOX_GetResultVO)JacksonUtil.stringToObjebt_1(rr, XBOX_ShutdownVO.class);
         LogUtil.intoLog(Test2.class,JacksonUtil.objebtToString(vo));
 
 

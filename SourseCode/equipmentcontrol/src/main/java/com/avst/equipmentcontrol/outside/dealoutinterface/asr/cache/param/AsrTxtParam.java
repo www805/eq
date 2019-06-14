@@ -16,7 +16,7 @@ public class AsrTxtParam<T> {
     private String asrid;//语音识别的唯一码
 
     /**
-     * //这种类型的所有识别任务，asrid 是关联语音服务的唯一识别码，avst asr 是id
+     * //这种类型的所有识别任务，asrid 是关联语音服务的唯一识别码，avst asrhtml 是id
      * T 每句话都是一个对象，（流式识别）这句话不管识别了几次，永远记录最后一次识别
      */
     private  List<T> asrlist;

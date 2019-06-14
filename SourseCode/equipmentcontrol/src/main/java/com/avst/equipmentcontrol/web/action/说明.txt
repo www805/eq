@@ -1,0 +1,8 @@
+
+interfacetoout给外部提供统一的控制接口，一种类型一套控制接口
+
+asr语音服务器
+
+flushbonading嵌入式设备
+
+polygraph测谎仪

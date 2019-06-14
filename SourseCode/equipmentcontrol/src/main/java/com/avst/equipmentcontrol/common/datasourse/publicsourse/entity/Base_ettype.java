@@ -24,7 +24,7 @@ public class Base_ettype extends Model<Base_ettype> {
     private Integer id;
 
     /**
-     * 设备类型标号,asr,flushbonading
+     * 设备类型标号,asrhtml,flushbonadinghtml
      */
     private String ettypenum;
 
