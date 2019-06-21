@@ -24,7 +24,7 @@ public class ToOutAction  extends BaseAction {
      * @return
      */
     @RequestMapping("/checkClient")
-    public RResult checkClient(@RequestBody ReqParam param){
+    public RResult<ToOutVO> checkClient(@RequestBody ReqParam param){
         RResult rresult=createNewResultOfFail();
         rresult=toOutService.checkClient(rresult,param);
         return rresult;

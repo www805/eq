@@ -16,9 +16,9 @@ public class InterceptorConfig implements WebMvcConfigurer {
         //登录拦截的管理器
         InterceptorRegistration registration = registry.addInterceptor(new ManagerInterceptor());     //拦截的对象会进入这个类中进行判断
         registration.addPathPatterns("/");
-        registration.addPathPatterns("/ec/**");
+//        registration.addPathPatterns("/ec/**");
         registration.addPathPatterns("/sweb/**");
-        registration.excludePathPatterns("/gotologin","/logining","/error","/static/**","/logout");       //添加不拦截路径
+        registration.excludePathPatterns("/gotologin", "/logining", "/error", "/static/**", "/logout", "/ec/**");       //添加不拦截路径
 
         //权限拦截的管理器
 
