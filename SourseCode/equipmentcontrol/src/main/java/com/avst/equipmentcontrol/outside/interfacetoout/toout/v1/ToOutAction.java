@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 对外提供接口
  */
 @RestController
-@RequestMapping("/ec/v1")
+@RequestMapping("/et/v1")
 public class ToOutAction  extends BaseAction {
     @Autowired
     private ToOutService toOutService;
@@ -32,3 +32,4 @@ public class ToOutAction  extends BaseAction {
 
 
 }
+
