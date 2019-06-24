@@ -3,8 +3,8 @@ package com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.v1.action
 import com.avst.equipmentcontrol.common.conf.MCType;
 import com.avst.equipmentcontrol.common.util.*;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.feignclient.MeetingControl;
-import com.avst.equipmentcontrol.feignclient.req.SetMCAsrTxtBackParam_out;
+import com.avst.equipmentcontrol.feignclient.mc.MeetingControl;
+import com.avst.equipmentcontrol.feignclient.mc.req.SetMCAsrTxtBackParam_out;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache.AsrCache;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache.param.AsrTxtParam_avst;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.AsrCache_toout;

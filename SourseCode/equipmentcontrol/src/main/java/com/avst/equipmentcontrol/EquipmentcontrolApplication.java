@@ -24,7 +24,6 @@ import java.util.Map;
 @EnableScheduling
 public class EquipmentcontrolApplication {
 
-
     /**
      *
      * 第四种方式：通过注册监听器(`Listeners`) + `PropertiesLoaderUtils`的方式

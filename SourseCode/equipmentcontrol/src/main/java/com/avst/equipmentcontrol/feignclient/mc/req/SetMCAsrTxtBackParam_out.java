@@ -1,4 +1,4 @@
-package com.avst.equipmentcontrol.feignclient.req;
+package com.avst.equipmentcontrol.feignclient.mc.req;
 
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.param.AsrTxtParam_toout;
 

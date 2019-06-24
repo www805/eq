@@ -1,4 +1,4 @@
-package com.avst.equipmentcontrol.feignclient.req;
+package com.avst.equipmentcontrol.feignclient.mc.req;
 
 /**
  * 一般放的都是权限验证的东西
