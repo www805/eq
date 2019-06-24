@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ToOutService extends BaseService {
 
-    public RResult checkClient(RResult rresult, ReqParam param){
+    public RResult checkClient(RResult rresult, ReqParam<ToOutVO> param){
         ToOutVO toOutVO=new ToOutVO();
         toOutVO.setTotal_item(4);
         toOutVO.setUse_item(4);
