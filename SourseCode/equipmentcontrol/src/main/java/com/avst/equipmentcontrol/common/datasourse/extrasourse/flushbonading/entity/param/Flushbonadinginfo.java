@@ -1,6 +1,10 @@
 package com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param;
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
+import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_ettype;
+import com.avst.equipmentcontrol.web.vo.baseEttype.EquipmentBasicsVO;
+
+import java.util.List;
 
 /**
  * 详细的审讯设备信息
@@ -10,7 +14,7 @@ public class Flushbonadinginfo extends Flushbonading_etinfo {
     /**
      * 设备编号
      */
-    private Integer etnum;
+    private String etnum;
 
     /**
      * 设备IP
@@ -27,6 +31,17 @@ public class Flushbonadinginfo extends Flushbonading_etinfo {
      */
     private String ettypenum;
 
+    //设备类型集合
+    private List<Base_ettype> ettypeList;
+
+    public List<Base_ettype> getEttypeList() {
+        return ettypeList;
+    }
+
+    public void setEttypeList(List<Base_ettype> ettypeList) {
+        this.ettypeList = ettypeList;
+    }
+
     public String getEttypenum() {
         return ettypenum;
     }
@@ -35,11 +50,11 @@ public class Flushbonadinginfo extends Flushbonading_etinfo {
         this.ettypenum = ettypenum;
     }
 
-    public Integer getEtnum() {
+    public String getEtnum() {
         return etnum;
     }
 
-    public void setEtnum(Integer etnum) {
+    public void setEtnum(String etnum) {
         this.etnum = etnum;
     }
 

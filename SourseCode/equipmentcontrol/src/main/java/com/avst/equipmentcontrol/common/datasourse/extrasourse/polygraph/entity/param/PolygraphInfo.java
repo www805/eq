@@ -1,13 +1,16 @@
 package com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.param;
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.Polygraph_etinfo;
+import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_ettype;
+
+import java.util.List;
 
 public class PolygraphInfo extends Polygraph_etinfo {
 
     /**
      * 设备编号
      */
-    private Integer etnum;
+    private String etnum;
 
     /**
      * 设备IP
@@ -24,6 +27,16 @@ public class PolygraphInfo extends Polygraph_etinfo {
      */
     private String ettypenum;
 
+    private List<Base_ettype> ettypeList;
+
+    public List<Base_ettype> getEttypeList() {
+        return ettypeList;
+    }
+
+    public void setEttypeList(List<Base_ettype> ettypeList) {
+        this.ettypeList = ettypeList;
+    }
+
     public String getEttypenum() {
         return ettypenum;
     }
@@ -32,11 +45,11 @@ public class PolygraphInfo extends Polygraph_etinfo {
         this.ettypenum = ettypenum;
     }
 
-    public Integer getEtnum() {
+    public String getEtnum() {
         return etnum;
     }
 
-    public void setEtnum(Integer etnum) {
+    public void setEtnum(String etnum) {
         this.etnum = etnum;
     }
 

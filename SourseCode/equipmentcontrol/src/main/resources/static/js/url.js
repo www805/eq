@@ -26,8 +26,53 @@ function getUrl_manage() {
 
 		logining:getPath()+basepath+"main/logining",
 
-		main:getPath()+basepath+"main/main",
-		logout:getPath()+basepath+"main/logout",
+		main:getPath()+basepath+"main/gotomain",
+		logout:getPath()+basepath+"main/logout"
+	};
+}
+
+function getUrl_manageZk() {
+
+	return {
+		//后台请求
+		getFlushbonadingList:getPath()+"/Flushbonading/getFlushbonadingList",
+		getFlushbonadingById:getPath()+"/Flushbonading/getFlushbonadingById",
+		addFlushbonading:getPath()+"/Flushbonading/addFlushbonading",
+		updateFlushbonading:getPath()+"/Flushbonading/updateFlushbonading",
+		delFlushbonading:getPath()+"/Flushbonading/delFlushbonading",
+		getFlushbonadingBaseEttype:getPath()+"/Flushbonading/getBaseEttype",
+
+		getPolygraphList:getPath()+"/Polygraph/getPolygraphList",
+		getPolygraphById:getPath()+"/Polygraph/getPolygraphById",
+		addPolygraph:getPath()+"/Polygraph/addPolygraph",
+		updatePolygraph:getPath()+"/Polygraph/updatePolygraph",
+		delPolygraph:getPath()+"/Polygraph/delPolygraph",
+
+		getAsrList:getPath()+"/Asr/getAsrList",
+		getAsrById:getPath()+"/Asr/getAsrById",
+		addAsr:getPath()+"/Asr/addAsr",
+		updateAsr:getPath()+"/Asr/updateAsr",
+		delAsr:getPath()+"/Asr/delAsr",
+
+		getStorageList:getPath()+"/Storage/getStorageList",
+		getStorageById:getPath()+"/Storage/getStorageById",
+		addStorage:getPath()+"/Storage/addStorage",
+		updateStorage:getPath()+"/Storage/updateStorage",
+		delStorage:getPath()+"/Storage/delStorage",
+
+		getEquipmentBasics:getPath()+"/BaseEquipmentinfo/getEquipmentBasics",
+		getEquipmentBasicsById:getPath()+"/BaseEquipmentinfo/getEquipmentBasicsById",
+		addEquipmentBasics:getPath()+"/BaseEquipmentinfo/addEquipmentBasics",
+		updateEquipmentBasics:getPath()+"/BaseEquipmentinfo/updateEquipmentBasics",
+		delEquipmentBasics:getPath()+"/BaseEquipmentinfo/delEquipmentBasics",
+
+		getBaseEttype:getPath()+"/BaseEttype/getBaseEttype",
+		getBaseEttypeById:getPath()+"/BaseEttype/getBaseEttypeById",
+		addBaseEttype:getPath()+"/BaseEttype/addBaseEttype",
+		updateBaseEttype:getPath()+"/BaseEttype/updateBaseEttype",
+		delBaseEttype:getPath()+"/BaseEttype/delBaseEttype"
+
+
 	};
 }
 

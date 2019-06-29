@@ -6,7 +6,7 @@ import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.feignclient.zk.ZkControl;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class ClientResult extends BaseAction implements ZkControl {
 
     @Override

@@ -1,18 +1,20 @@
 package com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity;
 
+import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_ettype;
+
+import java.util.List;
+
 public class Asr_et_ettype extends Asr_etinfo {
 
     /**
      * 设备编号
      */
-    private Integer etnum;
+    private String etnum;
 
     /**
      * 设备IP
      */
     private String etip;
-
-
 
     /**
      * 设备类型ssid
@@ -24,11 +26,21 @@ public class Asr_et_ettype extends Asr_etinfo {
      */
     private String ettypenum;
 
-    public Integer getEtnum() {
+    private List<Base_ettype> ettypeList;
+
+    public List<Base_ettype> getEttypeList() {
+        return ettypeList;
+    }
+
+    public void setEttypeList(List<Base_ettype> ettypeList) {
+        this.ettypeList = ettypeList;
+    }
+
+    public String getEtnum() {
         return etnum;
     }
 
-    public void setEtnum(Integer etnum) {
+    public void setEtnum(String etnum) {
         this.etnum = etnum;
     }
 

@@ -31,10 +31,9 @@ public class MainAction extends BaseAction {
     }
 
 
-    @RequestMapping(value = "/main")
+    @RequestMapping(value = "/gotomain")
     public ModelAndView gotomain(Model model) {
-
-        model.addAttribute("title", "智能提讯管理系统");
+        model.addAttribute("title", "设备管理系统");
         return new ModelAndView("sweb/main", "main", model);
     }
 
@@ -43,7 +42,7 @@ public class MainAction extends BaseAction {
 
         //获取统计数据信息
 
-        model.addAttribute("title", "智能提讯管理系统");
+        model.addAttribute("title", "设备管理系统");
         return new ModelAndView("sweb/home", "main", model);
     }
 

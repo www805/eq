@@ -26,7 +26,7 @@ public class Base_equipmentinfo extends Model<Base_equipmentinfo> {
     /**
      * 设备编号
      */
-    private Integer etnum;
+    private String etnum;
 
     /**
      * 设备IP
@@ -60,11 +60,11 @@ public class Base_equipmentinfo extends Model<Base_equipmentinfo> {
     public void setId(Integer id) {
         this.id = id;
     }
-    public Integer getEtnum() {
+    public String getEtnum() {
         return etnum;
     }
 
-    public void setEtnum(Integer etnum) {
+    public void setEtnum(String etnum) {
         this.etnum = etnum;
     }
     public String getEtip() {
