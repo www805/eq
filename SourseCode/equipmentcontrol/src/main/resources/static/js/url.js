@@ -60,6 +60,12 @@ function getUrl_manageZk() {
 		updateStorage:getPath()+"/Storage/updateStorage",
 		delStorage:getPath()+"/Storage/delStorage",
 
+		getFlushbonadingEttdList:getPath()+"/FlushbonadingEttd/getFlushbonadingEttdList",
+		getFlushbonadingEttdById:getPath()+"/FlushbonadingEttd/getFlushbonadingEttdById",
+		updateFlushbonadingEttd:getPath()+"/FlushbonadingEttd/updateFlushbonadingEttd",
+		addFlushbonadingEttd:getPath()+"/FlushbonadingEttd/addFlushbonadingEttd",
+		delFlushbonadingEttd:getPath()+"/FlushbonadingEttd/delFlushbonadingEttd",
+
 		getEquipmentBasics:getPath()+"/BaseEquipmentinfo/getEquipmentBasics",
 		getEquipmentBasicsById:getPath()+"/BaseEquipmentinfo/getEquipmentBasicsById",
 		addEquipmentBasics:getPath()+"/BaseEquipmentinfo/addEquipmentBasics",

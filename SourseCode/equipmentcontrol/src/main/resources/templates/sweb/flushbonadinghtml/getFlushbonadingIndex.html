@@ -72,7 +72,8 @@
             <td>{{value.etip==null?"":value.etip}}</td>
             <td>{{value.explain==null?"":value.explain}}</td>
             <td>
-                <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/Flushbonading/addOrUpdateFlushbonading/?ssid={{value.ssid}}';">修改</a>
+                <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/FlushbonadingEttd/getFlushbonadingEttdIndex?ssid={{value.ssid}}';">添加设备通道</a>
+                <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/Flushbonading/addOrUpdateFlushbonading?ssid={{value.ssid}}';">修改</a>
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="delFlushbonading('{{value.ssid}}');">删除</a>
             </td>
         </tr>

@@ -1,8 +1,15 @@
 package com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper;
 
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.FlushbonadingEttd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +21,25 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public interface Flushbonading_ettdMapper extends BaseMapper<Flushbonading_ettd> {
+
+    //查询单个
+    @Select("select e.* from flushbonading_etinfo f " +
+            " left join flushbonading_ettd e on f.ssid = e.flushbonadingssid " +
+            " where 1=1 ${ew.sqlSegment}")
+    public FlushbonadingEttd getFlushbonadingEttd(@Param("ew") EntityWrapper ew);
+
+
+    //查询总条数
+    @Select("select count(e.id) from flushbonading_etinfo f " +
+            " left join flushbonading_ettd e on f.ssid = e.flushbonadingssid " +
+            " where 1=1 ${ew.sqlSegment}")
+    public int getFlushbonadingEttdCount(@Param("ew") EntityWrapper ew);
+
+
+    //查询列表+带分页
+    @Select("select e.* from flushbonading_etinfo f " +
+            " left join flushbonading_ettd e on f.ssid = e.flushbonadingssid " +
+            " where 1=1 ${ew.sqlSegment}")
+    public List<FlushbonadingEttd> getFlushbonadingEttdPage(Page page, @Param("ew") EntityWrapper ew);
 
 }

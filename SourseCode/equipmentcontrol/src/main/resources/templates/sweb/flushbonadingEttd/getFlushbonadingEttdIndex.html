@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title  th:text="${getFlushbonadingEttdIndexModel.title}">智能提讯系统</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/uimaker/css/common.css">
+</head>
+<body>
+<div class="layui-fluid layadmin-message-fluid" style="padding: 0 15px">
+    <div class="layui-elem-quote" style=" padding: 10px;margin-top: 15px;">
+        <h3 th:text="${getFlushbonadingEttdIndexModel.title}">新增 / 修改模板</h3>
+    </div>
+
+    <form class="layui-form" >
+        <div class="layui-form-item">
+            <input type="button" class="layui-btn layui-btn-normal" value="< 返回" onclick="javascript:window.history.go(-1);return false;" >
+            <input type="button" class="layui-btn layui-btn-normal" value="添加" onclick="window.location.href='addOrUpdateFlushbonadingEttd?masterssid='+MasterSsid;" >
+        </div>
+    </form>
+
+    <div id="wushuju" style="display: none;font-size: 24px;color: #90a2bc;text-align: center;margin-top: 30px;">该审讯主机尚未添加设备通道，请新增设备通道</div>
+    <div th:replace="page :: page">...</div>
+    <div th:replace="footer :: footer">...</div>
+</div>
+<script id="pagelisttemplates" type="text/html">
+
+    <table class="layui-table">
+        <colgroup>
+            <col width="100">
+            <col>
+            <col>
+            <col>
+            <col width="200">
+        </colgroup>
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>通道编号</th>
+            <th>通道拉流地址</th>
+            <th>通道类型</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody id="pagelisttemplates_tbody">
+        {{#  layui.each(pagelist, function(index, value){ }}
+        <tr>
+            <td>{{index+1}}</td>
+            <td>{{value.tdnum==null?"":value.tdnum}}</td>
+            <td>{{value.pullflowurl==null?"":value.pullflowurl}}</td>
+            <td>{{value.tdtype==null?"":value.tdtype}}</td>
+            <td>
+                <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/FlushbonadingEttd/addOrUpdateFlushbonadingEttd?ssid={{value.ssid}}&masterssid='+MasterSsid;">修改</a>
+                <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="delFlushbonadingEttd('{{value.ssid}}');">删除</a>
+            </td>
+        </tr>
+        {{#  }); }}
+        </tbody>
+    </table>
+
+</script>
+
+<script th:src="@{/js/jquery-1.11.1.js}" type="text/javascript"></script>
+<script th:src="@{/layui/layui.js}"type="text/javascript"></script>
+<script th:src="@{/layui/lay/modules/laytpl.js}" type="text/javascript"></script>
+<script th:src="@{/js/common.js}"  type="text/javascript" ></script>
+<script th:src="@{/js/actionid.js}" type="text/javascript"></script>
+<script th:src="@{/js/list.js}" type="text/javascript"></script>
+<script th:src="@{/js/flushbonadingEttd/flushbonadingEttdIndex.js}" type="text/javascript"></script>
+<script th:inline="javascript">
+    var INIT_CLIENT;
+    var INIT_CLIENTKEY;
+    $(function(){
+
+        ssid = getQueryString("ssid");
+        MasterSsid = getQueryString("ssid");
+
+        getFlushbonadingEttdList_init(1,10);
+    });
+</script>
+</body>
+</html>
