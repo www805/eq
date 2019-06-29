@@ -6,6 +6,7 @@ import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.web.req.LoginParam;
 import com.avst.equipmentcontrol.web.service.MainService;
+import com.avst.equipmentcontrol.web.vo.EcCountVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +42,9 @@ public class MainAction extends BaseAction {
     public ModelAndView gotohome(Model model) {
 
         //获取统计数据信息
+        EcCountVO ecCountVO = mainService.homeCount();
 
+        model.addAttribute("ecCountVO", ecCountVO);
         model.addAttribute("title", "设备管理系统");
         return new ModelAndView("sweb/home", "main", model);
     }
