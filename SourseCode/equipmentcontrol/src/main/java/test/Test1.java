@@ -12,6 +12,10 @@ public class Test1 {
 
     public static void main(String[] args) {
 
+        String path="/ds/fh//njy/56/nh.txt";
+        path=path.substring(path.lastIndexOf("/")+1);
+        System.out.println(path.split("\\.")[0]);
+
 
     }
 }

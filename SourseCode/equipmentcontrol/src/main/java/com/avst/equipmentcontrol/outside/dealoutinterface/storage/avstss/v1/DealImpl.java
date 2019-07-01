@@ -12,6 +12,7 @@ import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dea
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.cache.SSThreadCache;
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.conf.SSAddDataThread;
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.req.SaveFileByIidParam;
+import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.req.SaveFileByIid_localParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetFlushbonadingBySsidParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service.BaseToOutServiceImpl_qrs;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.GetFlushbonadingBySsidVO;
@@ -67,6 +68,34 @@ public class DealImpl {
             result.changeToTrue(true);
 
         }
+
+        return result;
+    };
+
+    public RResult saveFileByIid_local(SaveFileByIid_localParam param, RResult result){
+
+        String iid=param.getIid();
+        String savessid=param.getSaveinfossid();
+        String sourseRelativePath=param.getSourseRelativePath();
+        String savebasepath=  param.getUploadbasepath();
+
+        SSAddDataThread ssAddDataThread=new SSAddDataThread(iid,savessid,sourseRelativePath,savebasepath,
+                ss_databaseMapper,ss_datasaveMapper);
+        ssAddDataThread.start();
+        //写入缓存
+        SSThreadCache.setSSAddDataThread(iid,ssAddDataThread);
+
+        String filepath="";
+        if(sourseRelativePath.startsWith("/") && savebasepath.endsWith("/")){
+            filepath=savebasepath+sourseRelativePath.substring(1);
+        }else if(sourseRelativePath.startsWith("/")||savebasepath.endsWith("/")){
+            filepath=savebasepath+sourseRelativePath;
+        }else{
+            filepath=savebasepath+"/"+sourseRelativePath;
+        }
+        filepath=savebasepath+sourseRelativePath;
+
+        result.changeToTrue(filepath);//把该存储服务的出事路径返回
 
         return result;
     };

@@ -35,6 +35,8 @@ public class SSAddDataThread extends  Thread{
 
     private String savebasepath;//存储服务的本地位置
 
+    private String sourseRelativePath;//源文件的相对路径，相对存储服务器的base路径
+
     private Ss_databaseMapper ss_databaseMapper;
 
     private Ss_datasaveMapper ss_datasaveMapper;
@@ -42,6 +44,8 @@ public class SSAddDataThread extends  Thread{
     private FDDealImpl fdDeal;
 
     public boolean bool=true;
+
+    private int addtype=1;//1设备ftp存储，2本地文件存储
 
     public SSAddDataThread(String iid, String saveinfossid, GetFlushbonadingBySsidVO getFlushbonadingBySsidVO,String savebasepath,
                            Ss_databaseMapper ss_databaseMapper,Ss_datasaveMapper ss_datasaveMapper,FDDealImpl fdDeal) {
@@ -52,6 +56,17 @@ public class SSAddDataThread extends  Thread{
         this.fdDeal=fdDeal;
         this.getFlushbonadingBySsidVO=getFlushbonadingBySsidVO;
         this.savebasepath=savebasepath;
+    }
+
+    public SSAddDataThread(String iid, String saveinfossid, String sourseRelativePath,String savebasepath,
+                           Ss_databaseMapper ss_databaseMapper,Ss_datasaveMapper ss_datasaveMapper) {
+        this.iid = iid;
+        this.saveinfossid = saveinfossid;
+        this.ss_databaseMapper = ss_databaseMapper;
+        this.ss_datasaveMapper = ss_datasaveMapper;
+        this.savebasepath=savebasepath;
+        this.sourseRelativePath=sourseRelativePath;
+        this.addtype=2;
     }
 
     @Override
@@ -66,6 +81,122 @@ public class SSAddDataThread extends  Thread{
             SSThreadCache.delSSAddDataThread(iid);//删除这个等待新增
             return ;
         }
+
+        if(addtype==1){
+            run_ftp();
+        }else{
+            run_local();
+        }
+
+    }
+
+    /**
+     * 本地文件的保存
+     */
+    private void run_local(){
+
+        String filepath="";
+        String filename="";
+        String filetype="";
+        if(StringUtils.isNotEmpty(sourseRelativePath)){
+            if(sourseRelativePath.startsWith("/")||savebasepath.endsWith("/")){
+                filepath=savebasepath+sourseRelativePath;
+            }else{
+                filepath=savebasepath+"/"+sourseRelativePath;
+            }
+            if(sourseRelativePath.indexOf("/") > -1){
+
+                filename=sourseRelativePath.substring(sourseRelativePath.lastIndexOf("/")+1);
+            }else{
+                filename=sourseRelativePath.substring(sourseRelativePath.lastIndexOf("\\")+1);
+            }
+
+            if(filename.indexOf(".") <  0){
+                LogUtil.intoLog(this.getClass(),"该路径不是一个文件--filepath:"+filepath);
+                return ;
+            };
+            filetype=filename.split("\\.")[1];
+            filename=filename.split("\\.")[0];
+
+        }else{
+            LogUtil.intoLog(this.getClass(),sourseRelativePath+"：sourseRelativePath，该文件的存储地址有问题savebasepath，"+savebasepath);
+            return ;
+        }
+        LogUtil.intoLog(this.getClass(),"该文件的原始存储位置--filepath:"+filepath);
+
+        //开始新增数据库
+
+        //先新增数据存储记录表
+        String ss_datasavessid= OpenUtil.getUUID_32();
+        Ss_datasave ss_datasave=new Ss_datasave();
+        ss_datasave.setIid(iid);
+        ss_datasave.setSaveinfossid(saveinfossid);
+        ss_datasave.setSsid(ss_datasavessid);
+        ss_datasave.setDatasavebasepath(savebasepath);
+        int datasaveinsert=ss_datasaveMapper.insert(ss_datasave);
+        if(datasaveinsert > -1){
+
+            //再新增数据基表
+
+            if(null==filepath||filepath.trim().equals("")){
+                LogUtil.intoLog(this.getClass(),"文件路径或者文件名为空，直接退出，filepath："+filepath);
+                return ;
+            }
+
+            Ss_database ss_database=new Ss_database();
+            ss_database.setDatasavessid(ss_datasavessid);
+            ss_database.setDatatype(filetype);
+            //ss_database.setDatasize(datasize);//暂时不用给，可能还在增长中
+            ss_database.setState(1);//新增状态为1，因为本地文件保存不需要检测大小
+            ss_database.setSsid(OpenUtil.getUUID_32());
+            ss_database.setSoursedatapath(filepath);
+            ss_database.setDatasavepath(filepath);
+            ss_database.setFilename(filename);
+            int databaseinsert=ss_databaseMapper.insert(ss_database);
+            if(databaseinsert > -1){
+                LogUtil.intoLog(this.getClass(),iid+":iid  数据库新增成功，");
+            }else{
+                LogUtil.intoLog(this.getClass(),iid+":iid  ss_datasaveMapper.insert is error datasaveinsert:"+datasaveinsert);
+            }
+
+        }else{
+            LogUtil.intoLog(this.getClass(),iid+":iid  ss_datasaveMapper.insert is error datasaveinsert:"+datasaveinsert);
+        }
+
+        SSThreadCache.delSSAddDataThread(iid);//删除这个等待新增
+
+        LogUtil.intoLog(this.getClass(),iid+":iid----这个新增线程出来了");
+
+        //进入检查文件地址和大小的线程
+        EntityWrapper ew=new EntityWrapper();
+        ew.eq("db.state",1);//查询状态1，新增成功的数据
+        ew.eq("ds.iid",iid);
+        List<Ss_dataMessageParam> ssdatalist= ss_databaseMapper.getSs_databaseByIid(ew);
+        //0和-1 还没有检测到文件上传成功
+        //1和-2 还没有生产对外开放的地址
+        if(null==ssdatalist||ssdatalist.size() < 1){
+            LogUtil.intoLog(this.getClass(),ssdatalist+":ssdatalist SSAddDataThread 没有查到需要处理的数据 1");
+            return ;
+        }
+
+        for(Ss_dataMessageParam dm:ssdatalist){
+            String iid=dm.getIid();
+            if(1==dm.getState().intValue()||-2==dm.getState().intValue()){//1
+
+                //进入创建网络地址的线程
+                SSCreateDataUrlThread ssThread=new SSCreateDataUrlThread(ss_databaseMapper,dm);
+                ssThread.start();
+                SSThreadCache.setSSCreateDataUrlThread(iid,ssThread);
+
+            }
+        }
+
+    }
+
+    /**
+     * ftp的文件的保存
+     */
+    private void run_ftp(){
 
         String fdbasepath=getFlushbonadingBySsidVO.getUploadbasepath();
         if(StringUtils.isNotEmpty(fdbasepath)){
@@ -190,7 +321,7 @@ public class SSAddDataThread extends  Thread{
 
         //进入检查文件地址和大小的线程
         EntityWrapper entityWrapper=new EntityWrapper();
-        entityWrapper.eq("db.state",0);//查询状态1，新增成功的数据
+        entityWrapper.eq("db.state",0);//查询状态0，新增成功的数据
         entityWrapper.eq("ds.iid",iid);
         List<Ss_dataMessageParam> ssdatalist= ss_databaseMapper.getSs_databaseByIid(entityWrapper);
         //0和-1 还没有检测到文件上传成功
@@ -208,6 +339,5 @@ public class SSAddDataThread extends  Thread{
 
             }
         }
-
     }
 }

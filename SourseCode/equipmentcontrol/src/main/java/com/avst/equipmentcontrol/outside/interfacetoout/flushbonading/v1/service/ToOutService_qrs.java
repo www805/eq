@@ -1,10 +1,7 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service;
 
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetFDListByFdidParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetRecordByIidParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.WorkOverParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.WorkStartParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.*;
 
 public interface ToOutService_qrs {
 
@@ -15,4 +12,7 @@ public interface ToOutService_qrs {
     public RResult getRecordByIid(GetRecordByIidParam param, RResult result);
 
     public RResult getFDListByFdid(GetFDListByFdidParam param, RResult result);
+
+    public RResult getFTPUploadSpeedByIp(GetFTPUploadSpeedByIpParam param, RResult result);
+
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -61,6 +62,10 @@ public class Ss_saveinfo extends Model<Ss_saveinfo> {
     private Integer integer2;
 
     private String ssid;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public Integer getId() {
         return id;

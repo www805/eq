@@ -47,11 +47,7 @@ public class FDDealImpl implements FDInterface{
         LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
 
-        CheckFDStateXml xml=new CheckFDStateXml();
-//        xml=(CheckFDStateXml)XMLUtil.xmlToStr(xml,rr);
-
-        Gson gson=new Gson();
-        xml= (CheckFDStateXml)XMLUtil.map2JavaBean(xml,XMLUtil.xml2map(rr));
+        CheckFDStateXml xml=Xml2Object.getCheckFDStateXml(rr);
 
         if(null!=xml){//说明请求有正确的返回
 
@@ -64,7 +60,7 @@ public class FDDealImpl implements FDInterface{
 
         }else{
             LogUtil.intoLog(this.getClass(),xml+":xml 请求返回为空 reg");
-            result.setMessage("语音服务器请求异常");
+            result.setMessage("设备状态请求异常");
         }
         return result;
     }
@@ -157,6 +153,35 @@ public class FDDealImpl implements FDInterface{
 
     @Override
     public RResult<GetFTPUploadSpeedVO> getFTPUploadSpeed(GetFTPUploadSpeedParam param,RResult<GetFTPUploadSpeedVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------setMiddleware_FTP");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=api&type=ftp_process_status"+
+                "&authvusr="+user+"&authpwd="+passwd;
+        LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+
+        GetFTPUploadSpeedXml xml=Xml2Object.getFTPUploadSpeedXml(rr);
+
+        if(null!=xml){
+            //设置ftp成功
+            result.changeToTrue();
+            System.out.println(xml);
+
+        }else{
+            result.setMessage("ftp请求进度条失败 --");
+        }
+
         return null;
     }
 

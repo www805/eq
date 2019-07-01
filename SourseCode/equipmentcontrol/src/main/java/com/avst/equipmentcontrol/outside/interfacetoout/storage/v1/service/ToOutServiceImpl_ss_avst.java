@@ -8,14 +8,15 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.req.SaveFileByIidParam;
+import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.req.SaveFileByIid_localParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.v1.DealImpl;
-import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.CheckRecordFileStateParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.GetURLToPlayParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.SaveFileParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.*;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.CheckRecordFileStateVO;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.GetSavepathVO;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.GetURLToPlayVO;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.param.RecordFileParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.param.RecordPlayParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.param.RecordSavepathParam;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,42 @@ public class ToOutServiceImpl_ss_avst implements ToOutService_ss {
     }
 
     @Override
+    public RResult saveFile_local(SaveFile_localParam param, RResult result) {
+
+        try {
+            String iid = param.getIid();
+            String sourseRelativePath = param.getSourseRelativePath();
+            String sstype = param.getSsType();
+            //根据类型找存储服务器
+            EntityWrapper<Ss_saveinfo> ew = new EntityWrapper<Ss_saveinfo>();
+            ew.eq("sstype", sstype);
+            List<Ss_saveinfo> savelist = ss_saveinfoMapper.selectList(ew);
+            if (null == savelist || savelist.size() < 1) {
+                result.setMessage("没有找到存储服务");
+                return result;
+            }
+            //检查这个存储服务是否在正常工作
+            //获取正常工作的存储服务（暂时取0）
+            Ss_saveinfo ss_saveinfo = savelist.get(0);
+
+            SaveFileByIid_localParam sfparam = new SaveFileByIid_localParam();
+            sfparam.setIid(iid);
+            sfparam.setSaveinfossid(ss_saveinfo.getSsid());
+            sfparam.setSourseRelativePath(sourseRelativePath);
+            sfparam.setUploadbasepath(ss_saveinfo.getDatasavebasepath());
+            result = deal.saveFileByIid_local(sfparam, result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtil.intoLog(this.getClass(),"saveFile is error");
+        }
+
+        return result;
+    }
+
+
+
+
+    @Override
     public RResult<GetURLToPlayVO> getURLToPlay(GetURLToPlayParam param, RResult result) {
 
         String iid = param.getIid();
@@ -101,6 +138,38 @@ public class ToOutServiceImpl_ss_avst implements ToOutService_ss {
 
         return result;
     }
+
+    @Override
+    public RResult<GetSavepathVO> getSavePath(GetSavePathParam param, RResult result) {
+
+        String iid = param.getIid();
+        try {
+            List<Ss_dataMessageParam> datalist = deal.getSs_databaseList(iid);
+            if (null != datalist && datalist.size() > 0) {
+                GetSavepathVO vo = new GetSavepathVO();
+                vo.setIid(iid);
+                List<RecordSavepathParam> recordList = new ArrayList<RecordSavepathParam>();
+                for (Ss_dataMessageParam data : datalist) {
+                    RecordSavepathParam recordPathParam = new RecordSavepathParam();
+                    recordPathParam.setDatatype(data.getDatatype());
+                    recordPathParam.setFilename(data.getFilename());
+                    String dxy = data.getDefaulturl();//默认协议
+                    recordPathParam.setXyType(dxy);
+                    recordPathParam.setSavepath(data.getDatasavepath());
+                    recordList.add(recordPathParam);
+                }
+                vo.setRecordList(recordList);
+                result.changeToTrue(vo);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtil.intoLog(this.getClass(),"getSavePath is error");
+        }
+
+        return result;
+    }
+
+
 
     @Override
     public RResult checkRecordFileState(CheckRecordFileStateParam param, RResult result) {

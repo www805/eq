@@ -4,9 +4,7 @@ import com.avst.equipmentcontrol.common.conf.SSType;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service.ToOutServiceImpl_asr_avst;
-import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.CheckRecordFileStateParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.GetURLToPlayParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.SaveFileParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.*;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutServiceImpl_ss_avst;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutService_ss;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.GetURLToPlayVO;
@@ -35,7 +33,11 @@ public class ToOutAction_SS extends BaseAction {
     }
 
 
-
+    /**
+     * 存储嵌入式设备的数据
+     * @param param
+     * @return
+     */
     @RequestMapping("/saveFile")
     @ResponseBody
     public RResult saveFile(@RequestBody SaveFileParam param){
@@ -48,6 +50,23 @@ public class ToOutAction_SS extends BaseAction {
         return rResult;
     };
 
+    /**
+     * 存储本地服务的数据
+     * @param param
+     * @return
+     */
+    @RequestMapping("/saveFile_local")
+    @ResponseBody
+    public RResult saveFile_local(@RequestBody SaveFile_localParam param){
+        RResult rResult=this.createNewResultOfFail();
+
+        if(null!=param&&null!=param.getSsType()){
+            rResult=getToOutServiceImpl(param.getSsType()).saveFile_local(param,rResult);
+        }
+
+        return rResult;
+    };
+
     @RequestMapping("/getURLToPlay")
     @ResponseBody
     public RResult<GetURLToPlayVO> getURLToPlay(@RequestBody GetURLToPlayParam param){
@@ -55,6 +74,23 @@ public class ToOutAction_SS extends BaseAction {
 
         if(null!=param&&null!=param.getSsType()){
             rResult=getToOutServiceImpl(param.getSsType()).getURLToPlay(param,rResult);
+        }
+
+        return rResult;
+    }
+
+    /**
+     * 获取iid对应的本地存储地址
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getSavePath")
+    @ResponseBody
+    public RResult<GetURLToPlayVO> getSavePath(@RequestBody GetSavePathParam param){
+        RResult rResult=this.createNewResultOfFail();
+
+        if(null!=param&&null!=param.getSsType()){
+            rResult=getToOutServiceImpl(param.getSsType()).getSavePath(param,rResult);
         }
 
         return rResult;

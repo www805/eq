@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * 到底需不需要加密验证的环节，
+ * 如果是只给自己人用就不需要，以后给被人用就需要
+ */
 @Controller
 @RequestMapping("/flushbonading/v1")
 public class ToOutAction_qrs extends BaseAction {
@@ -150,11 +154,29 @@ public class ToOutAction_qrs extends BaseAction {
         return rResult;
     }
 
+    /**
+     * 获取当前设备的ftp上传的进度列表
+     * @param param
+     * @return rResult
+     */
+    @RequestMapping("/getFTPUploadSpeedByIp")
+    @ResponseBody
+    public RResult getFTPUploadSpeedByIp(@RequestBody GetFTPUploadSpeedByIpParam  param){
+        RResult rResult=createNewResultOfFail();
+        if(null!=param){
+            rResult=getToOutServiceImpl(param.getFdType()).getFTPUploadSpeedByIp(param,rResult);
+        }else{
+            LogUtil.intoLog(this.getClass(),"getFTPUploadSpeedByIp---param.getParam() ---参数异常");
+            rResult.setMessage("参数异常");
+        }
+        return rResult;
+    }
+
 
 
     @RequestMapping(value = "/ceshi" )
     @ResponseBody
-    public RResult ceshi(int type,String fdid){
+    public RResult ceshi(int type){
 
 
 
@@ -177,6 +199,10 @@ public class ToOutAction_qrs extends BaseAction {
             workOver(param);
         }else if(type==3){
 
+            GetFTPUploadSpeedByIpParam  param=new GetFTPUploadSpeedByIpParam();
+            param.setFdType(FDType.FD_AVST);
+            param.setFlushbonadingetinfossid("sxsba2");
+            getFTPUploadSpeedByIp(param);
         }
         return rResult;
     }

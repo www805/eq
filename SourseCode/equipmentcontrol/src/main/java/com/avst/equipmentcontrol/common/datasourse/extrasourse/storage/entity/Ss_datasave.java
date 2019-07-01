@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -35,6 +36,16 @@ public class Ss_datasave extends Model<Ss_datasave> {
     private Integer integer2;
 
     private String ssid;
+
+    private Date createtime;
+
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
+    }
 
     public Integer getId() {
         return id;

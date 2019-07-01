@@ -7,11 +7,13 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.ent
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
 import com.avst.equipmentcontrol.common.util.DateUtil;
+import com.avst.equipmentcontrol.common.util.JacksonUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.Code;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDDealImpl;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.GetETRecordByIidParam;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.GetFTPUploadSpeedParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.StartRecParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.StopRecParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.FDCache;
@@ -90,7 +92,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         sparam.setUser(flushbonadinginfo.getUser());
         result=fdDeal.startRec(sparam,result);
 
-        long startrecordtime=(new Date()).getTime();//录音开始时间
+        long startrecordtime=(new Date()).getTime();//录音开始时间 ms
         if(null==result){
             result=new RResult();
             result.setMessage("开启设备录像失败");
@@ -211,5 +213,45 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         return  result;
     }
 
+    public RResult getFTPUploadSpeedByIp(GetFTPUploadSpeedByIpParam param,RResult result){
+        String fdssid=param.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"getFTPUploadSpeedByIp"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        GetFTPUploadSpeedParam fparam=new GetFTPUploadSpeedParam();
+        fparam.setIp(flushbonadinginfo.getEtip());
+        fparam.setUser(flushbonadinginfo.getUser());
+        fparam.setPort(flushbonadinginfo.getPort());
+        fparam.setPasswd(flushbonadinginfo.getPasswd());
+        result=fdDeal.getFTPUploadSpeed(fparam,result);
+        if(null==result){
+            result=new RResult();
+            result.setMessage("查询设备当前ftp上传进度失败");
+            LogUtil.intoLog(this.getClass(),"查询设备当前ftp上传进度失败 fdssid："+fdssid);
+        }else{
+            if(null!=result&&result.getActioncode().equals(Code.SUCCESS.toString())){
+
+                System.out.println(JacksonUtil.objebtToString(result)+"请求成功");
+
+            }else{
+                LogUtil.intoLog(this.getClass(),"查询设备当前ftp上传进度返回失败,result.getMessage()："+result.getMessage());
+            }
+        }
+
+
+        return  result;
+    }
 
 }

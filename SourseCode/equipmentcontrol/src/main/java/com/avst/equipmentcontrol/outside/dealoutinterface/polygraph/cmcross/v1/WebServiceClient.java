@@ -52,7 +52,7 @@ public class WebServiceClient {
         try {
             call = (Call)service.createCall();
             //endpoint 值为上面提到的调用地址
-            String endpoint = "http://192.168.17.155:10000/cmcross/api";
+            String endpoint = "http://192.168.17.144:10000/cmcross/api";
             call.setTargetEndpointAddress(endpoint);
             //设置命名空间和需要调用的方法名;第一个参数为命名空间,第二个参数为方法名,调用时候只需要根据需求修改方法名
             QName opAddEntry = new QName("http://api.cmcross.com/","XBOX_GetImage");

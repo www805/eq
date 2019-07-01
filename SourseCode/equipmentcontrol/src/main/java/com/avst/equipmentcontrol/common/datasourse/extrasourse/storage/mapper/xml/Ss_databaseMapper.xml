@@ -24,6 +24,7 @@
         <result column="endtime" property="endtime" />
         <result column="soursedatapath" property="soursedatapath" />
         <result column="filename" property="filename" />
+        <result column="createtime" property="createtime" />
     </resultMap>
 
 </mapper>

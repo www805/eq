@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.polygraph.v1;
 
 import com.avst.equipmentcontrol.common.conf.PHType;
+import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
@@ -43,6 +44,7 @@ public class ToOutAction_ph extends BaseAction {
             CheckPolygraphStateParam pParam=param.getParam();
             result=getToOutService(pParam.getPhType()).checkPolygraphState(pParam,result);
         }
+        result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     };
 
@@ -60,6 +62,7 @@ public class ToOutAction_ph extends BaseAction {
             StartPolygraphParam pParam=param.getParam();
             result=getToOutService(pParam.getPhType()).startPolygraph(pParam,result);
         }
+        result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     };
 
@@ -77,6 +80,7 @@ public class ToOutAction_ph extends BaseAction {
             OverPolygraphParam pParam=param.getParam();
             result=getToOutService(pParam.getPhType()).OverPolygraph(pParam,result);
         }
+        result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     };
 
@@ -94,6 +98,7 @@ public class ToOutAction_ph extends BaseAction {
             GetPolygraphAnalysisParam pParam=param.getParam();
             result=getToOutService(pParam.getPhType()).getPolygraphAnalysis(pParam,result);
         }
+        result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     };
 
@@ -111,6 +116,7 @@ public class ToOutAction_ph extends BaseAction {
             GetPolygraphRealTimeImageParam pParam=param.getParam();
             result=getToOutService(pParam.getPhType()).getPolygraphRealTimeImage(pParam,result);
         }
+        result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     };
 
