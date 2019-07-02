@@ -29,7 +29,7 @@ public class GetFlushbonadingBySsidVO {
     /**
      * 设备编号
      */
-    private Integer etnum;
+    private String etnum;
 
     /**
      * 设备IP
@@ -87,11 +87,11 @@ public class GetFlushbonadingBySsidVO {
         this.ettypenum = ettypenum;
     }
 
-    public Integer getEtnum() {
+    public String getEtnum() {
         return etnum;
     }
 
-    public void setEtnum(Integer etnum) {
+    public void setEtnum(String etnum) {
         this.etnum = etnum;
     }
 
