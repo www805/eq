@@ -36,28 +36,28 @@
                 <div class="layui-card-header"><h3>设备个数</h3></div>
                 <div class="layui-card-body " style="overflow:hidden;">
                     <div class="piece piece_left" >
-                        <a >
+                        <a th:href="@{/Flushbonading/getFlushbonadingIndex}" >
                             <p>审讯主机</p>
                             <h1 class="p_num" th:text="${ecCountVO.flushbonadingCount}" >36</h1>
                         </a>
                     </div>
 
                     <div  class="piece">
-                        <a >
+                        <a th:href="@{/Asr/getAsrIndex}" >
                             <p>识别服务器</p>
                             <h1 class="p_num" th:text="${ecCountVO.polygraphCount}" >578</h1>
                         </a>
                     </div>
 
                     <div class="piece piece_left piece_bottom">
-                        <a >
+                        <a th:href="@{/Polygraph/getPolygraphIndex}" >
                             <p>测谎仪</p>
                             <h1 class="p_num" th:text="${ecCountVO.asrCount}" >1280</h1>
                         </a>
                     </div>
 
                     <div  class="piece piece_bottom">
-                        <a >
+                        <a th:href="@{/Storage/getStorageIndex}" >
                             <p>存储设备</p>
                             <h1 class="p_num" th:text="${ecCountVO.ssCount}" >8888</h1>
                         </a>
@@ -70,7 +70,7 @@
                 <div class="layui-card-header"><h3>设备基础</h3></div>
                 <div class="layui-card-body" style="overflow:hidden;">
                     <div class="piece piece_left">
-                        <a >
+                        <a th:href="@{/BaseEttype/getBaseEttypeList}" >
                             <p>设备类型</p>
                             <h1 class="p_num" th:text="${ecCountVO.ettypeCount}" >17</h1>
                         </a>

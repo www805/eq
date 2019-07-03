@@ -2,8 +2,8 @@ var ssid;
 
 function getBaseEttypeList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().problemIndex_getProblemTypes);
-    // var url = getUrl_manageZk.getBaseEttype;
-    var url = "/BaseEttype/getBaseEttype";
+    var url = getUrl_manageZk().getBaseEttype;
+
     var keyword=$("input[name='keyword']").val();
     var data={
         token:INIT_CLIENTKEY,
@@ -18,8 +18,8 @@ function getBaseEttypeList_init(currPage,pageSize) {
 
 function getBaseEttypeList(keyword, currPage, pageSize) {
     // var url=getActionURL(getactionid_manage().problemIndex_getProblemTypes);
-    // var url = getUrl_manageZk.getBaseEttype;
-    var url = "/BaseEttype/getBaseEttype";
+    var url = getUrl_manageZk().getBaseEttype;
+
     var data={
         token:INIT_CLIENTKEY,
         param:{
@@ -33,8 +33,8 @@ function getBaseEttypeList(keyword, currPage, pageSize) {
 
 function getBaseEttypeById(ssidd) {
     // var url=getActionURL(getactionid_manage().problemIndex_getTemplateTypeById);
-    // var url = getUrl_manageZk.getBaseEttypeById;
-    var url = "/BaseEttype/getBaseEttypeById";
+    var url = getUrl_manageZk().getBaseEttypeById;
+
     ssid = ssidd;
     var data={
         token:INIT_CLIENTKEY,
@@ -47,15 +47,15 @@ function getBaseEttypeById(ssidd) {
 
 function AddOrUpdateBaseEttype(version) {
     // var url=getActionURL(getactionid_manage().problemIndex_updateProblemType);
-    // var url = getUrl_manageZk.updateBaseEttype;
-    var url = "/BaseEttype/updateBaseEttype";
+    var url = getUrl_manageZk().updateBaseEttype;
+
     var ettypenum=$("input[name='ettypenum']").val();
     var explain=$("textarea[name='explain']").val();
     if (isNotEmpty(version)) {
         //添加
         // url=getActionURL(getactionid_manage().problemIndex_addProblemType);
-        // url = getUrl_manageZk.addBaseEttype;
-        url = "/BaseEttype/addBaseEttype";
+        url = getUrl_manageZk().addBaseEttype;
+        // url = "/BaseEttype/addBaseEttype";
     }
     var data = {
         token: INIT_CLIENTKEY,
@@ -70,8 +70,8 @@ function AddOrUpdateBaseEttype(version) {
 
 function delBaseEttype(ssidd) {
     // var url=getActionURL(getactionid_manage().problemIndex_getTemplateTypeById);
-    // var url = getUrl_manageZk.delBaseEttype;
-    var url = "/BaseEttype/delBaseEttype";
+    var url = getUrl_manageZk().delBaseEttype;
+
     ssid = ssidd;
 
     layer.confirm('真的要删除该设备类型？', {

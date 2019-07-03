@@ -22,6 +22,10 @@ public class ManagerInterceptor extends HandlerInterceptorAdapter {
         //获取session，判断用户
         HttpSession session=request.getSession();
 
+        Object attribute = session.getAttribute(Constant.MANAGE_WEB);
+
+        System.out.println(attribute);
+
         boolean disbool=true;
         String forstpageid="/ec/main/gotologin";//登录界面
         if(null==session.getAttribute(Constant.MANAGE_WEB)){//web客户端session

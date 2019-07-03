@@ -63,7 +63,7 @@ public class MainAction extends BaseAction {
         model.addAttribute("result", rResult);
         model.addAttribute("title", "欢迎进入设备管理系统");
 
-        request.getSession().setAttribute(Constant.MANAGE_WEB,null);
+//        request.getSession().setAttribute(Constant.MANAGE_WEB,null);
 
         return new ModelAndView("sweb/login", "login", model);
     }
