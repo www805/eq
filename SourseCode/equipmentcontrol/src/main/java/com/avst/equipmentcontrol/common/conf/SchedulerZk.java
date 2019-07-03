@@ -47,9 +47,11 @@ public class SchedulerZk {
 
         param.setParam(controlInfoParamVO);
 
-        RResult heartbeat = zkControl.getHeartbeat(param);
-
-        System.out.println("执行完毕");
+        try {
+            RResult heartbeat = zkControl.getHeartbeat(param);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

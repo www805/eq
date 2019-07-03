@@ -14,16 +14,39 @@
 
     <form class="layui-form" >
         <div class="layui-form-item">
-            <label class="layui-form-label" style="text-align: right;padding: 9px;">端口号：</label>
+            <label class="layui-form-label" style="padding-left: 0;">识别语种</label>
+            <div class="layui-input-inline">
+                <input type="text" name="language" id="language" lay-verify="required" placeholder="请输入识别语种" autocomplete="off" class="layui-input">
+            </div>
+
+            <label class="layui-form-label" style="text-align: right;padding: 9px 9px 9px 0;">端口号：</label>
             <div class="layui-input-inline">
                 <input type="text" name="port" id="port" lay-verify="required" placeholder="请输入开放接口的端口" autocomplete="off" class="layui-input">
             </div>
+
+            <label class="layui-form-label" style="padding-left: 0;">验证密匙</label>
+            <div class="layui-input-inline">
+                <input type="text" name="asrkey" id="asrkey" lay-verify="required" placeholder="请输入识别验证密匙" autocomplete="off" class="layui-input">
+            </div>
+
+            <label class="layui-form-label" style="padding-left: 0;">设备编号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="etnum" id="etnum" lay-verify="required" placeholder="请输入设备编号" autocomplete="off" class="layui-input">
+            </div>
+
+            <label class="layui-form-label" style="padding-left: 0;">设备类型</label>
+            <div class="layui-input-inline">
+                <select name="etypessid" id="etypessid" lay-filter="aihao">
+                    <option value="">全部</option>
+                </select>
+            </div>
             <input type="button" class="layui-btn layui-btn-normal" value="查询" onclick="getAsrList_init(1,10);" >
             <input type="button" class="layui-btn layui-btn-normal" value="添加" onclick="window.location.href='addOrUpdateAsr';" >
+
         </div>
     </form>
 
-    <div id="wushuju" style="display: none;font-size: 24px;color: #90a2bc;text-align: center;margin-top: 30px;">暂无该识别服务器，请新增识别服务器</div>
+    <div id="wushuju" style="display: none;font-size: 24px;color: #90a2bc;text-align: center;margin-top: 40px;">暂无该识别服务器，请新增识别服务器</div>
     <div th:replace="page :: page">...</div>
     <div th:replace="footer :: footer">...</div>
 </div>
@@ -91,8 +114,8 @@
     var INIT_CLIENT;
     var INIT_CLIENTKEY;
     $(function(){
-
-        getAsrList_init(1,10);
+        getAsrListParam();
+        getBaseEttype();
     });
 </script>
 </body>

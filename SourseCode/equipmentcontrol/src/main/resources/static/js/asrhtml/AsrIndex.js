@@ -3,11 +3,19 @@ var ssid;
 function getAsrList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
     var url = getUrl_manageZk().getAsrList;
+    var language=$("input[name='language']").val();
     var port=$("input[name='port']").val();
+    var asrkey=$("input[name='asrkey']").val();
+    var etnum=$("input[name='etnum']").val();
+    var etypessid=$("#etypessid").val();
     var data={
         token:INIT_CLIENTKEY,
         param:{
+            language: language,
             port: port,
+            asrkey: asrkey,
+            etnum: etnum,
+            etypessid: etypessid,
             currPage:currPage,
             pageSize:pageSize
         }
@@ -16,15 +24,19 @@ function getAsrList_init(currPage,pageSize) {
     ajaxSubmitByJson(url,data,callAsrList);
 }
 
-function AsrIndex(port, currPage, pageSize) {
+function AsrIndex(language, port, asrkey, etnum, etypessid, currPage, pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
     var url = getUrl_manageZk().getAsrList;
-    var data={
-        token:INIT_CLIENTKEY,
-        param:{
+    var data = {
+        token: INIT_CLIENTKEY,
+        param: {
+            language: language,
             port: port,
-            currPage:currPage,
-            pageSize:pageSize
+            asrkey: asrkey,
+            etnum: etnum,
+            etypessid: etypessid,
+            currPage: currPage,
+            pageSize: pageSize
         }
     };
     ajaxSubmitByJson(url, data, callAsrList);
@@ -155,13 +167,11 @@ function callBaseEttype(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data.data)){
             var ettypeList = data.data.ettypeList;
-            var ettypeListHTML = "";
+            var ettypeListHTML = $("#etypessid");
             for (var i = 0; i < ettypeList.length; i++) {
                 var ettype = ettypeList[i];
-                ettypeListHTML += "<option value='" + ettype.ssid + "'>" + ettype.explain + "</option>";
+                ettypeListHTML.append("<option value='" + ettype.ssid + "'>" + ettype.explain + "</option>");
             }
-            $("#etypessid").html(ettypeListHTML);
-
         }
     }else{
         layer.msg(data.message,{icon: 2});
@@ -229,7 +239,7 @@ function getAsrListParam() {
     }  else if (len == 2) {
         AsrIndex('', arguments[0], arguments[1]);
     } else if (len > 2) {
-        AsrIndex(arguments[0], arguments[1], arguments[2]);
+        AsrIndex(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5], arguments[6]);
     }
 }
 
@@ -240,9 +250,17 @@ function showpagetohtml(){
         var pageCount=pageparam.pageCount;
         var currPage=pageparam.currPage;
 
-        var keyword=$("input[name='port']").val();
+        var language=$("input[name='language']").val();
+        var port=$("input[name='port']").val();
+        var asrkey=$("input[name='asrkey']").val();
+        var etnum=$("input[name='etnum']").val();
+        var etypessid=$("#etypessid").val();
         var arrparam=new Array();
-        arrparam[0]=keyword;
+        arrparam[0]=language;
+        arrparam[1]=port;
+        arrparam[2]=asrkey;
+        arrparam[3]=etnum;
+        arrparam[4]=etypessid;
         showpage("paging",arrparam,'getPolygraphListParam',currPage,pageCount,pageSize);
     }
 }

@@ -19,12 +19,30 @@
             <div class="layui-input-inline">
                 <input type="text" name="livingurl" id="livingurl" lay-verify="required" placeholder="请输入审讯主机直播地址" autocomplete="off" class="layui-input">
             </div>
+
+            <label class="layui-form-label" style="padding-left: 0;">登录用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="user" id="user" lay-verify="required" placeholder="请输入登录用户名" autocomplete="off" class="layui-input">
+            </div>
+
+            <label class="layui-form-label" style="padding-left: 0;">设备编号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="etnum" id="etnum" lay-verify="required" placeholder="请输入设备编号" autocomplete="off" class="layui-input">
+            </div>
+
+            <label class="layui-form-label" style="padding-left: 0;">设备类型</label>
+            <div class="layui-input-inline">
+                <select name="etypessid" id="etypessid" lay-filter="leixing">
+                    <option value="">全部</option>
+                </select>
+            </div>
+
             <input type="button" class="layui-btn layui-btn-normal" value="查询" onclick="getFlushbonadingList_init(1,10);" >
             <input type="button" class="layui-btn layui-btn-normal" value="添加" onclick="window.location.href='addOrUpdateFlushbonading';" >
         </div>
     </form>
 
-    <div id="wushuju" style="display: none;font-size: 24px;color: #90a2bc;text-align: center;margin-top: 30px;">暂无该审讯主机，请新增审讯主机</div>
+    <div id="wushuju" style="display: none;font-size: 24px;color: #90a2bc;text-align: center;margin-top: 40px;">暂无该审讯主机，请新增审讯主机</div>
     <div th:replace="page :: page">...</div>
     <div th:replace="footer :: footer">...</div>
 </div>
@@ -94,8 +112,8 @@
     var INIT_CLIENT;
     var INIT_CLIENTKEY;
     $(function(){
-
-        getFlushbonadingListParam('',1,10);
+        getFlushbonadingListParam();
+        getBaseEttype();
     });
 </script>
 </body>

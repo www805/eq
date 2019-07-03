@@ -47,8 +47,20 @@ public class AsrService extends BaseService {
         }
 
         EntityWrapper ew=new EntityWrapper();
+        if (StringUtils.isNotBlank(paramParam.getLanguage())){
+            ew.like("aet.language",paramParam.getLanguage());
+        }
         if (StringUtils.isNotBlank(paramParam.getPort())){
             ew.like("aet.port",paramParam.getPort());
+        }
+        if (StringUtils.isNotBlank(paramParam.getAsrkey())){
+            ew.like("aet.asrkey",paramParam.getAsrkey());
+        }
+        if (StringUtils.isNotBlank(paramParam.getEtnum())){
+            ew.like("et.etnum",paramParam.getEtnum());
+        }
+        if (StringUtils.isNotBlank(paramParam.getEtypessid())){
+            ew.eq("et.etypessid",paramParam.getEtypessid());
         }
 
         int count = asr_etinfoMapper.getAsrInfoCount(ew);

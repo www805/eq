@@ -50,6 +50,15 @@ public class FlushbonadingService extends BaseService {
         if (StringUtils.isNotBlank(flushbonadinginfoParam.getLivingurl())){
             ew.like("fet.livingurl",flushbonadinginfoParam.getLivingurl());
         }
+        if (StringUtils.isNotBlank(flushbonadinginfoParam.getUser())){
+            ew.like("fet.user",flushbonadinginfoParam.getUser());
+        }
+        if (StringUtils.isNotBlank(flushbonadinginfoParam.getEtnum())){
+            ew.like("et.etnum",flushbonadinginfoParam.getEtnum());
+        }
+        if (StringUtils.isNotBlank(flushbonadinginfoParam.getEtypessid())){
+            ew.eq("et.etypessid",flushbonadinginfoParam.getEtypessid());
+        }
 
         int count = flushbonading_etinfoMapper.getFlushbonadingCount(ew);
         flushbonadinginfoParam.setRecordCount(count);

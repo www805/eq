@@ -4,10 +4,16 @@ function getStorageList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
     var url = getUrl_manageZk().getStorageList;
     var port=$("input[name='port']").val();
+    var totalcapacity=$("input[name='totalcapacity']").val();
+    var etnum=$("input[name='etnum']").val();
+    var etypessid=$("#etypessid").val();
     var data={
         token:INIT_CLIENTKEY,
         param:{
             port: port,
+            totalcapacity: totalcapacity,
+            etnum: etnum,
+            etypessid: etypessid,
             currPage:currPage,
             pageSize:pageSize
         }
@@ -16,15 +22,18 @@ function getStorageList_init(currPage,pageSize) {
     ajaxSubmitByJson(url,data,callStorageList);
 }
 
-function StorageIndex(port, currPage, pageSize) {
+function StorageIndex(port, totalcapacity, etnum, etypessid, currPage, pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
     var url = getUrl_manageZk().getStorageList;
-    var data={
-        token:INIT_CLIENTKEY,
-        param:{
+    var data = {
+        token: INIT_CLIENTKEY,
+        param: {
             port: port,
-            currPage:currPage,
-            pageSize:pageSize
+            totalcapacity: totalcapacity,
+            etnum: etnum,
+            etypessid: etypessid,
+            currPage: currPage,
+            pageSize: pageSize
         }
     };
     ajaxSubmitByJson(url, data, callStorageList);
@@ -153,13 +162,11 @@ function callBaseEttype(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data.data)){
             var ettypeList = data.data.ettypeList;
-            var ettypeListHTML = "";
+            var ettypeListHTML = $("#etypessid");
             for (var i = 0; i < ettypeList.length; i++) {
                 var ettype = ettypeList[i];
-                ettypeListHTML += "<option value='" + ettype.ssid + "'>" + ettype.explain + "</option>";
+                ettypeListHTML.append("<option value='" + ettype.ssid + "'>" + ettype.explain + "</option>");
             }
-            $("#etypessid").html(ettypeListHTML);
-
         }
     }else{
         layer.msg(data.message,{icon: 2});
@@ -226,7 +233,7 @@ function getStorageListParam() {
     }  else if (len == 2) {
         StorageIndex('', arguments[0], arguments[1]);
     } else if (len > 2) {
-        StorageIndex(arguments[0], arguments[1], arguments[2]);
+        StorageIndex(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
     }
 }
 
@@ -237,9 +244,15 @@ function showpagetohtml(){
         var pageCount=pageparam.pageCount;
         var currPage=pageparam.currPage;
 
-        var keyword=$("input[name='port']").val();
+        var port=$("input[name='port']").val();
+        var totalcapacity=$("input[name='totalcapacity']").val();
+        var etnum=$("input[name='etnum']").val();
+        var etypessid=$("#etypessid").val();
         var arrparam=new Array();
-        arrparam[0]=keyword;
+        arrparam[0]=port;
+        arrparam[1]=totalcapacity;
+        arrparam[2]=etnum;
+        arrparam[3]=etypessid;
         showpage("paging",arrparam,'getStorageListParam',currPage,pageCount,pageSize);
     }
 }

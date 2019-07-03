@@ -50,6 +50,15 @@ public class PolygraphService extends BaseService {
         if (StringUtils.isNotBlank(paramParam.getPort())){
             ew.like("pet.port",paramParam.getPort());
         }
+        if (StringUtils.isNotBlank(paramParam.getPolygraphkey())){
+            ew.like("pet.polygraphkey",paramParam.getPolygraphkey());
+        }
+        if (StringUtils.isNotBlank(paramParam.getEtnum())){
+            ew.like("et.etnum",paramParam.getEtnum());
+        }
+        if (StringUtils.isNotBlank(paramParam.getEtypessid())){
+            ew.eq("et.etypessid",paramParam.getEtypessid());
+        }
 
         int count = polygraph_etinfoMapper.getPolygraphInfoCount(ew);
         paramParam.setRecordCount(count);

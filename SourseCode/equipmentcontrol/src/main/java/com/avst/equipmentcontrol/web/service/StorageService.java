@@ -50,6 +50,15 @@ public class StorageService extends BaseService {
         if (StringUtils.isNotBlank(paramParam.getPort())){
             ew.like("ss.port",paramParam.getPort());
         }
+        if (StringUtils.isNotBlank(paramParam.getTotalcapacity())){
+            ew.ge("ss.totalcapacity",paramParam.getTotalcapacity());
+        }
+        if (StringUtils.isNotBlank(paramParam.getEtnum())){
+            ew.like("et.etnum",paramParam.getEtnum());
+        }
+        if (StringUtils.isNotBlank(paramParam.getEtypessid())){
+            ew.eq("et.etypessid",paramParam.getEtypessid());
+        }
 
         int count = ss_saveinfoMapper.getStorageInfoCount(ew);
         paramParam.setRecordCount(count);
