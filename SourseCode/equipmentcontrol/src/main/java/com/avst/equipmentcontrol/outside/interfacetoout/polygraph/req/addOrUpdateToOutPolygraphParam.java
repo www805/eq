@@ -1,10 +1,9 @@
-package com.avst.equipmentcontrol.outside.interfacetoout.asr.req;
+package com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req;
 
-
-public class addOrUpdateToOutAsrParam extends BaseReqParam {
+public class addOrUpdateToOutPolygraphParam extends BaseParam{
 
     /**
-     * 识别服务器表
+     * 测谎表
      */
     private Integer id;
 
@@ -14,24 +13,14 @@ public class addOrUpdateToOutAsrParam extends BaseReqParam {
     private String equipmentssid;
 
     /**
-     * 识别语种
+     * 服务类型
      */
-    private String language;
+    private String polygraphtype;
 
     /**
-     * 并发数
+     * 验证密匙
      */
-    private Integer maxnum;
-
-    /**
-     * 语音服务类型
-     */
-    private String asrtype;
-
-    /**
-     * 识别验证密匙
-     */
-    private String asrkey;
+    private String polygraphkey;
 
     /**
      * 服务中文说明
@@ -41,6 +30,7 @@ public class addOrUpdateToOutAsrParam extends BaseReqParam {
     private String ssid;
 
     private Integer port;
+
 
     /**
      * 设备编号
@@ -78,36 +68,20 @@ public class addOrUpdateToOutAsrParam extends BaseReqParam {
         this.equipmentssid = equipmentssid;
     }
 
-    public String getLanguage() {
-        return language;
+    public String getPolygraphtype() {
+        return polygraphtype;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setPolygraphtype(String polygraphtype) {
+        this.polygraphtype = polygraphtype;
     }
 
-    public Integer getMaxnum() {
-        return maxnum;
+    public String getPolygraphkey() {
+        return polygraphkey;
     }
 
-    public void setMaxnum(Integer maxnum) {
-        this.maxnum = maxnum;
-    }
-
-    public String getAsrtype() {
-        return asrtype;
-    }
-
-    public void setAsrtype(String asrtype) {
-        this.asrtype = asrtype;
-    }
-
-    public String getAsrkey() {
-        return asrkey;
-    }
-
-    public void setAsrkey(String asrkey) {
-        this.asrkey = asrkey;
+    public void setPolygraphkey(String polygraphkey) {
+        this.polygraphkey = polygraphkey;
     }
 
     public String getExplain() {

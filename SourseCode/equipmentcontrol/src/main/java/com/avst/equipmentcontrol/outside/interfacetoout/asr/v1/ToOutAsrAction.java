@@ -37,7 +37,9 @@ public class ToOutAsrAction extends BaseAction {
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
             getToOutAsrListParam pParam=param.getParam();
-            result=getToOutService(pParam.getPhType()).getToOutAsrList(pParam,result);
+            if(null != pParam.getAsrtype()){
+                result=getToOutService(pParam.getAsrtype()).getToOutAsrList(pParam,result);
+            }
         }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
@@ -50,7 +52,9 @@ public class ToOutAsrAction extends BaseAction {
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
             getToOutAsrListParam pParam=param.getParam();
-            result=getToOutService(pParam.getPhType()).getToOutAsrById(pParam,result);
+            if(null != pParam.getAsrtype()){
+                result=getToOutService(pParam.getAsrtype()).getToOutAsrById(pParam,result);
+            }
         }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
@@ -63,7 +67,9 @@ public class ToOutAsrAction extends BaseAction {
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
             addOrUpdateToOutAsrParam pParam=param.getParam();
-            result=getToOutService(pParam.getPhType()).addToOutAsr(pParam,result);
+            if(null != pParam.getAsrtype()){
+                result=getToOutService(pParam.getAsrtype()).addToOutAsr(pParam,result);
+            }
         }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
@@ -76,7 +82,9 @@ public class ToOutAsrAction extends BaseAction {
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
             addOrUpdateToOutAsrParam pParam=param.getParam();
-            result=getToOutService(pParam.getPhType()).updateToOutAsr(pParam,result);
+            if(null != pParam.getAsrtype()){
+                result=getToOutService(pParam.getAsrtype()).updateToOutAsr(pParam,result);
+            }
         }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;

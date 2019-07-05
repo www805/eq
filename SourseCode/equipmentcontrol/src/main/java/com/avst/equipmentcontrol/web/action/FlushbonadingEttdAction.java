@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-//存储设备
+//设备通道
 @RestController
 @RequestMapping("/FlushbonadingEttd")
 public class FlushbonadingEttdAction extends BaseAction {

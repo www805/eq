@@ -1,8 +1,6 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.asr.req;
 
-import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.BaseParam;
-
-public class getToOutAsrListParam extends BaseParam {
+public class getToOutAsrListParam extends BaseReqParam {
 
     private String ssid;
 

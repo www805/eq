@@ -1,6 +1,6 @@
-package com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req;
+package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req;
 
-public class CheckPolygraphStateParam extends BaseParam {
+public class getToOutFlushbonadingListParam extends BaseParam{
 
     private String ssid;
 

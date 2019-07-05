@@ -106,9 +106,11 @@ public class FlushbonadingService extends BaseService {
 
         Flushbonadinginfo flushbonadinginfo = flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
 
-        EntityWrapper wrapper = new EntityWrapper();
-        List<Base_ettype> ettypeList = base_ettypeMapper.selectList(wrapper);
-        flushbonadinginfo.setEttypeList(ettypeList);
+        if (null != flushbonadinginfo) {
+            EntityWrapper wrapper = new EntityWrapper();
+            List<Base_ettype> ettypeList = base_ettypeMapper.selectList(wrapper);
+            flushbonadinginfo.setEttypeList(ettypeList);
+        }
 
 //        EntityWrapper ew2 = new EntityWrapper();
 //        List<EquipmentBasicsVO> equipmentBasicsAll = base_equipmentinfoMapper.getEquipmentBasicsAll(ew2);

@@ -10,7 +10,7 @@ public interface ToOutEttypeService {
     public RResult getToOutEttypeList(getToOutEttypeListParam param, RResult result);
 
     //单个查询
-    public RResult getToOutEttypeByTerm(getToOutEttypeListParam param, RResult result);
+    public RResult getToOutEttypeById(getToOutEttypeListParam param, RResult result);
 
     //新增
     public RResult addToOutEttype(addOrUpdateToOutEttypeParam param, RResult result);

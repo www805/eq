@@ -1,6 +1,6 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req;
 
-public class CheckPolygraphStateParam extends BaseParam {
+public class getToOutPolygraphListParam extends BaseParam{
 
     private String ssid;
 

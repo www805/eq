@@ -48,13 +48,13 @@ public class ToOutEttypeAction extends BaseAction {
     };
 
     //单个查询
-    @RequestMapping("/getToOutEttypeByTerm")
+    @RequestMapping("/getToOutEttypeById")
     @ResponseBody
-    public RResult getToOutEttypeByTerm(@RequestBody ReqParam<getToOutEttypeListParam> param){
+    public RResult getToOutEttypeById(@RequestBody ReqParam<getToOutEttypeListParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
             getToOutEttypeListParam pParam=param.getParam();
-            result=getToOutService(pParam.getPhType()).getToOutEttypeByTerm(pParam,result);
+            result=getToOutService(pParam.getPhType()).getToOutEttypeById(pParam,result);
         }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;

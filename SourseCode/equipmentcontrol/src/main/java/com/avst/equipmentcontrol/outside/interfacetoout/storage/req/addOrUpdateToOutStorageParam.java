@@ -1,37 +1,35 @@
-package com.avst.equipmentcontrol.outside.interfacetoout.asr.req;
+package com.avst.equipmentcontrol.outside.interfacetoout.storage.req;
 
-
-public class addOrUpdateToOutAsrParam extends BaseReqParam {
+public class addOrUpdateToOutStorageParam extends BaseParam {
 
     /**
-     * 识别服务器表
+     * 存储设备表
      */
     private Integer id;
 
     /**
      * 设备ssid
      */
-    private String equipmentssid;
+    private String mtssid;
+
+    private String sstype;
+
+    private Integer port;
 
     /**
-     * 识别语种
+     * 存储总容量,MB为单位
      */
-    private String language;
+    private Integer totalcapacity;
 
     /**
-     * 并发数
+     * 存储已用容量,MB为单位
      */
-    private Integer maxnum;
+    private Integer usedcapacity;
 
     /**
-     * 语音服务类型
+     * 存储本地文件夹base路径
      */
-    private String asrtype;
-
-    /**
-     * 识别验证密匙
-     */
-    private String asrkey;
+    private String datasavebasepath;
 
     /**
      * 服务中文说明
@@ -39,8 +37,6 @@ public class addOrUpdateToOutAsrParam extends BaseReqParam {
     private String explain;
 
     private String ssid;
-
-    private Integer port;
 
     /**
      * 设备编号
@@ -62,6 +58,7 @@ public class addOrUpdateToOutAsrParam extends BaseReqParam {
      */
     private String ettypenum;
 
+
     public Integer getId() {
         return id;
     }
@@ -70,44 +67,52 @@ public class addOrUpdateToOutAsrParam extends BaseReqParam {
         this.id = id;
     }
 
-    public String getEquipmentssid() {
-        return equipmentssid;
+    public String getMtssid() {
+        return mtssid;
     }
 
-    public void setEquipmentssid(String equipmentssid) {
-        this.equipmentssid = equipmentssid;
+    public void setMtssid(String mtssid) {
+        this.mtssid = mtssid;
     }
 
-    public String getLanguage() {
-        return language;
+    public String getSstype() {
+        return sstype;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setSstype(String sstype) {
+        this.sstype = sstype;
     }
 
-    public Integer getMaxnum() {
-        return maxnum;
+    public Integer getPort() {
+        return port;
     }
 
-    public void setMaxnum(Integer maxnum) {
-        this.maxnum = maxnum;
+    public void setPort(Integer port) {
+        this.port = port;
     }
 
-    public String getAsrtype() {
-        return asrtype;
+    public Integer getTotalcapacity() {
+        return totalcapacity;
     }
 
-    public void setAsrtype(String asrtype) {
-        this.asrtype = asrtype;
+    public void setTotalcapacity(Integer totalcapacity) {
+        this.totalcapacity = totalcapacity;
     }
 
-    public String getAsrkey() {
-        return asrkey;
+    public Integer getUsedcapacity() {
+        return usedcapacity;
     }
 
-    public void setAsrkey(String asrkey) {
-        this.asrkey = asrkey;
+    public void setUsedcapacity(Integer usedcapacity) {
+        this.usedcapacity = usedcapacity;
+    }
+
+    public String getDatasavebasepath() {
+        return datasavebasepath;
+    }
+
+    public void setDatasavebasepath(String datasavebasepath) {
+        this.datasavebasepath = datasavebasepath;
     }
 
     public String getExplain() {
@@ -124,14 +129,6 @@ public class addOrUpdateToOutAsrParam extends BaseReqParam {
 
     public void setSsid(String ssid) {
         this.ssid = ssid;
-    }
-
-    public Integer getPort() {
-        return port;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
     }
 
     public String getEtnum() {

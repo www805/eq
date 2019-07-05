@@ -1,10 +1,12 @@
-package com.avst.equipmentcontrol.outside.interfacetoout.asr.req;
+package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
 
-public class addOrUpdateToOutAsrParam extends BaseReqParam {
+public class addOrUpdateToOutFlushbonadingParam extends BaseParam {
 
     /**
-     * 识别服务器表
+     * 审讯主机
      */
     private Integer id;
 
@@ -14,33 +16,30 @@ public class addOrUpdateToOutAsrParam extends BaseReqParam {
     private String equipmentssid;
 
     /**
-     * 识别语种
+     * 直播地址
      */
-    private String language;
+    private String livingurl;
 
     /**
-     * 并发数
+     * 开放接口的端口
      */
-    private Integer maxnum;
+    private Integer port;
+
+    private String user;
+
+    private String passwd;
 
     /**
-     * 语音服务类型
+     * ftp上传存储备设路径,只是一级路径，其实就是集中管理里面的本机设备ID，就是用来ftp上传时加以及路径，方便区分
      */
-    private String asrtype;
+    private String uploadbasepath;
 
     /**
-     * 识别验证密匙
-     */
-    private String asrkey;
-
-    /**
-     * 服务中文说明
+     * 中文解释
      */
     private String explain;
 
     private String ssid;
-
-    private Integer port;
 
     /**
      * 设备编号
@@ -78,36 +77,44 @@ public class addOrUpdateToOutAsrParam extends BaseReqParam {
         this.equipmentssid = equipmentssid;
     }
 
-    public String getLanguage() {
-        return language;
+    public String getLivingurl() {
+        return livingurl;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setLivingurl(String livingurl) {
+        this.livingurl = livingurl;
     }
 
-    public Integer getMaxnum() {
-        return maxnum;
+    public Integer getPort() {
+        return port;
     }
 
-    public void setMaxnum(Integer maxnum) {
-        this.maxnum = maxnum;
+    public void setPort(Integer port) {
+        this.port = port;
     }
 
-    public String getAsrtype() {
-        return asrtype;
+    public String getUser() {
+        return user;
     }
 
-    public void setAsrtype(String asrtype) {
-        this.asrtype = asrtype;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-    public String getAsrkey() {
-        return asrkey;
+    public String getPasswd() {
+        return passwd;
     }
 
-    public void setAsrkey(String asrkey) {
-        this.asrkey = asrkey;
+    public void setPasswd(String passwd) {
+        this.passwd = passwd;
+    }
+
+    public String getUploadbasepath() {
+        return uploadbasepath;
+    }
+
+    public void setUploadbasepath(String uploadbasepath) {
+        this.uploadbasepath = uploadbasepath;
     }
 
     public String getExplain() {
@@ -124,14 +131,6 @@ public class addOrUpdateToOutAsrParam extends BaseReqParam {
 
     public void setSsid(String ssid) {
         this.ssid = ssid;
-    }
-
-    public Integer getPort() {
-        return port;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
     }
 
     public String getEtnum() {

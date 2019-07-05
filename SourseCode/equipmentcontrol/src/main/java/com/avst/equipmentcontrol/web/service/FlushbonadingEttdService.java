@@ -47,6 +47,11 @@ public class FlushbonadingEttdService extends BaseService {
             return;
         }
 
+        if (StringUtils.isBlank(paramParam.getSsid())){
+            result.setMessage("查询的参数不能为空");
+            return;
+        }
+
         EntityWrapper ew=new EntityWrapper();
         ew.eq("f.ssid", paramParam.getSsid());
 

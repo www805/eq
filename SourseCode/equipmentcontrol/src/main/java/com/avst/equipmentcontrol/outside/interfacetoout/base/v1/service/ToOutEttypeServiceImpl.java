@@ -32,7 +32,7 @@ public class ToOutEttypeServiceImpl implements ToOutEttypeService{
 
     //单个查询
     @Override
-    public RResult getToOutEttypeByTerm(getToOutEttypeListParam param, RResult result) {
+    public RResult getToOutEttypeById(getToOutEttypeListParam param, RResult result) {
 
         ReqParam<BaseEttypeParam> reqParam = new ReqParam<BaseEttypeParam>();
 
