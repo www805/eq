@@ -109,9 +109,11 @@ public class AsrService extends BaseService {
 
         Asr_et_ettype asrinfo = asr_etinfoMapper.getAsrinfo(ew);
 
-        EntityWrapper wrapper = new EntityWrapper();
-        List<Base_ettype> ettypeList = base_ettypeMapper.selectList(wrapper);
-        asrinfo.setEttypeList(ettypeList);
+        if (null != asrinfo) {
+            EntityWrapper wrapper = new EntityWrapper();
+            List<Base_ettype> ettypeList = base_ettypeMapper.selectList(wrapper);
+            asrinfo.setEttypeList(ettypeList);
+        }
 
         result.setData(asrinfo);
         changeResultToSuccess(result);
@@ -254,7 +256,7 @@ public class AsrService extends BaseService {
         asrEtEttype.setExplain(paramParam.getExplain());
         asrEtEttype.setEquipmentssid(equipmentinfo.getSsid());
 
-        Integer update = asr_etinfoMapper.update(asr_et_ettype, ew);
+        Integer update = asr_etinfoMapper.update(asrEtEttype, ew);
         System.out.println("update_boot：" + update);
 
         result.setData(update);

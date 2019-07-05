@@ -27,23 +27,32 @@ public class SchedulerZk {
     @Value("${spring.application.name}")
     private String servername;
 
+    @Value("${control.servser.url}")
+    private String url;
+
     //每个小时的第五分钟执行
 
     /**
      * 10秒心跳一次
      */
 //    @Scheduled(cron = "0 05 1/1 * * *")
-    @Scheduled(fixedRate = 10000)
+//    @Scheduled(fixedRate = 10000)
     public void testTasks2() {
 
         ReqParam<ControlInfoParamVO> param = new ReqParam<>();
 
         ControlInfoParamVO controlInfoParamVO = new ControlInfoParamVO();
-        controlInfoParamVO.setServername(servername);//服务器名
+        controlInfoParamVO.setServername(servername);//服务器注册名
+        controlInfoParamVO.setServertitle("设备系统");//服务器中文名
+        controlInfoParamVO.setUrl(url);
+        controlInfoParamVO.setLoginusername("admin");
+        controlInfoParamVO.setLoginpassword("admin123");
         controlInfoParamVO.setTotal_item(4);
         controlInfoParamVO.setUse_item(4);
 //        controlInfoParamVO.setCreatetime(DateUtil.getDateAndMinute());//设置当前时间
         controlInfoParamVO.setStatus(1);//状态
+
+//        System.out.println(controlInfoParamVO);
 
         param.setParam(controlInfoParamVO);
 

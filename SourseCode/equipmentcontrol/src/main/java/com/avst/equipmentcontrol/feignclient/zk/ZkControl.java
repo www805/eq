@@ -22,7 +22,8 @@ public interface ZkControl {
     @ResponseBody
     public RResult getControlTime();
 
-    @RequestMapping("/zk/getHeartbeat")
+    //心跳接口
+    @RequestMapping(value = "/zk/getHeartbeat")
     public RResult getHeartbeat(@RequestBody ReqParam<ControlInfoParamVO> param);
 
 }

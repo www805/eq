@@ -148,9 +148,13 @@ public class BaseEttypeService extends BaseService {
         ew.eq("ssid", paramParam.getSsid());
 
         Integer update = base_ettypeMapper.update(base_equipmentinfo, ew);
-
         result.setData(update);
-        changeResultToSuccess(result);
+
+        if (update == 1) {
+            changeResultToSuccess(result);
+        }else{
+            result.setMessage("ssid不存在或请求失败!");
+        }
         return;
     }
 
