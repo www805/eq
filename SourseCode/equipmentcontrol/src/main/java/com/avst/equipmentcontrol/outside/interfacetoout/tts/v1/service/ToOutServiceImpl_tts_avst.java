@@ -39,6 +39,14 @@ public class ToOutServiceImpl_tts_avst implements ToOutService_tts {
             result.setMessage("需要转语音的文本为空");
             return result;
         }
+        int textlength=text.length();
+        if(textlength > 1024){//（utf8）tts最大只能识别4096个字节，绝大多数汉字都是3个字节，很少部分是4个字节，这里杜绝一切可能，最大只能有1024个字
+            LogUtil.intoLog(this.getClass()," text is too long---text.length()："+textlength);
+            result.setMessage("需要转语音的文本太长了，请按照标点截取一下，重新多次提交");
+            return result;
+        }
+
+
         List<TTS_et_ettype> ttslist=tts_etinfoMapper.getttsinfoList();
         if(null==ttslist||ttslist.size()==0){
             LogUtil.intoLog(this.getClass(),"tts没有没有找到一个可以用的");
