@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.common.conf;
 
 import com.avst.equipmentcontrol.common.util.DateUtil;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.feignclient.zk.ZkControl;
 import org.apache.commons.jexl3.JexlBuilder;
@@ -107,7 +108,7 @@ public class ZkTimeConfig implements ApplicationRunner {
 //                System.out.println("服务器获取到的时间：" + date);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtil.intoLog(4,this.getClass(),"getControlTime ZkTimeConfig。run 请求异常");
         } finally {
             System.out.println("结束");
         }

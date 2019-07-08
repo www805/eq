@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.common.conf;
 
 import com.avst.equipmentcontrol.common.util.DateUtil;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.feignclient.base.req.ControlInfoParam;
@@ -59,7 +60,7 @@ public class SchedulerZk {
         try {
             RResult heartbeat = zkControl.getHeartbeat(param);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtil.intoLog(4,this.getClass(),"zkControl.getHeartbeat 请求异常");
         }
     }
 
