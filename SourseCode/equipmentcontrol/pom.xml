@@ -198,6 +198,14 @@
             <version>1.6.3.wso2v3</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/commons-httpclient/commons-httpclient -->
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.0</version>
+        </dependency>
+
+
         <!--添加feign依赖-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

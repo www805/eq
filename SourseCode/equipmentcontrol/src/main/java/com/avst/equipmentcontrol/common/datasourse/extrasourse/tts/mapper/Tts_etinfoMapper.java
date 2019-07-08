@@ -1,0 +1,37 @@
+package com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.mapper;
+
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.entity.Tts_etinfo;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.entity.param.TTS_et_ettype;
+import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+/**
+ * <p>
+ * InnoDB free: 37888 kB Mapper 接口
+ * </p>
+ *
+ * @author Mht
+ * @since 2019-07-04
+ */
+@Component
+public interface Tts_etinfoMapper extends BaseMapper<Tts_etinfo> {
+
+
+    //查询单个
+    @Select("select aet.*,et.etnum,et.etip,et.etypessid,ett.ettypenum from tts_etinfo aet " +
+            " left join base_equipmentinfo et on aet.equipmentssid=et.ssid" +
+            " left join base_ettype ett on et.etypessid=ett.ssid" +
+            " where 1=1 ${ew.sqlSegment}")
+    public TTS_et_ettype getttsinfo(@Param("ew") EntityWrapper ew);
+
+
+    @Select("select aet.*,et.etnum,et.etip,et.etypessid,ett.ettypenum from tts_etinfo aet " +
+            " left join base_equipmentinfo et on aet.equipmentssid=et.ssid" +
+            " left join base_ettype ett on et.etypessid=ett.ssid")
+    public List<TTS_et_ettype> getttsinfoList();
+}

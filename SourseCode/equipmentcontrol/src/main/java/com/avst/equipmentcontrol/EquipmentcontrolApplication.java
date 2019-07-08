@@ -20,7 +20,8 @@ import java.util.Map;
         "com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper",
         "com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper",
         "com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.mapper",
-        "com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper"})
+        "com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper",
+        "com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.mapper"})
 @EnableScheduling
 public class EquipmentcontrolApplication {
 
