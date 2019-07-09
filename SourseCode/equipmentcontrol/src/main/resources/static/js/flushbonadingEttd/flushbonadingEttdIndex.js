@@ -1,4 +1,3 @@
-var MasterSsid;
 
 function getFlushbonadingEttdList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);

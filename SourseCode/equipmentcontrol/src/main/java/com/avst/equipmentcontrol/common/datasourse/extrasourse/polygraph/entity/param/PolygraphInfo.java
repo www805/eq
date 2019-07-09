@@ -27,16 +27,6 @@ public class PolygraphInfo extends Polygraph_etinfo {
      */
     private String ettypenum;
 
-    private List<Base_ettype> ettypeList;
-
-    public List<Base_ettype> getEttypeList() {
-        return ettypeList;
-    }
-
-    public void setEttypeList(List<Base_ettype> ettypeList) {
-        this.ettypeList = ettypeList;
-    }
-
     public String getEttypenum() {
         return ettypenum;
     }
