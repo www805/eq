@@ -11,7 +11,7 @@ function getFlushbonadingList_init(currPage,pageSize) {
             livingurl: livingurl,
             user: user,
             etnum: etnum,
-            etypessid: etypessid,
+            etypessid: getQueryString("etypessid"),
             currPage:currPage,
             pageSize:pageSize
         }
@@ -29,7 +29,7 @@ function getFlushbonadingIndex(livingurl, user, etnum, currPage, pageSize) {
             livingurl: livingurl,
             user: user,
             etnum: etnum,
-            etypessid: etypessid,
+            etypessid: getQueryString("etypessid"),
             currPage: currPage,
             pageSize: pageSize
         }
@@ -100,7 +100,7 @@ function AddOrUpdateFlushbonading(version) {
             user: user,
             passwd: passwd,
             uploadbasepath: uploadbasepath,
-            etypessid: etypessid,
+            etypessid: getQueryString("etypessid"),
             etnum: etnum,
             etip: etip,
             explain: explain
@@ -113,7 +113,7 @@ function AddOrUpdateFlushbonading(version) {
 function callAddOrUpdate(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
-            if (data.data == 1) {
+            if (data.data != 0) {
                 layer.msg("操作成功",{icon: 1});
             }else{
                 layer.msg("操作失败",{icon: 2});

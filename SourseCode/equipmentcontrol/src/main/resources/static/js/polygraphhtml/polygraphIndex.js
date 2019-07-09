@@ -111,7 +111,7 @@ function AddOrUpdatePolygraph(version) {
 function callAddOrUpdate(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
-            if (data.data == 1) {
+            if (data.data != 0) {
                 layer.msg("操作成功",{icon: 1});
             }else{
                 layer.msg("操作失败",{icon: 2});

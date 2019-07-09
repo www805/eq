@@ -107,8 +107,11 @@ public class BaseEttypeService extends BaseService {
         base_ettype.setExplain(paramParam.getExplain());
 
         Integer insert = base_ettypeMapper.insert(base_ettype);
-
-        result.setData(insert);
+        if(insert == 1){
+            result.setData(base_ettype.getSsid());
+        }else{
+            result.setData(insert);
+        }
         changeResultToSuccess(result);
         return;
     }
@@ -148,11 +151,12 @@ public class BaseEttypeService extends BaseService {
         ew.eq("ssid", paramParam.getSsid());
 
         Integer update = base_ettypeMapper.update(base_equipmentinfo, ew);
-        result.setData(update);
 
         if (update == 1) {
+            result.setData(paramParam.getSsid());
             changeResultToSuccess(result);
         }else{
+            result.setData(update);
             result.setMessage("ssid不存在或请求失败!");
         }
         return;

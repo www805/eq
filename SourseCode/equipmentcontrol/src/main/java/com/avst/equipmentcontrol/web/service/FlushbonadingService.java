@@ -165,8 +165,12 @@ public class FlushbonadingService extends BaseService {
 
         Integer insert = flushbonading_etinfoMapper.insert(flushbonading_etinfo);
         System.out.println("add_boot：" + insert);
+        if(insert == 1){
+            result.setData(flushbonading_etinfo.getSsid());
+        }else{
+            result.setData(insert);
+        }
 
-        result.setData(insert);
         changeResultToSuccess(result);
     }
 
@@ -247,8 +251,11 @@ public class FlushbonadingService extends BaseService {
 
         Integer update = flushbonading_etinfoMapper.update(flushbonading_etinfo, ew);
         System.out.println("update_boot：" + update);
-
-        result.setData(update);
+        if(update == 1){
+            result.setData(flushbonading_etinfo.getSsid());
+        }else{
+            result.setData(update);
+        }
         changeResultToSuccess(result);
     }
 

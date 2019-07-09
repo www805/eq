@@ -156,8 +156,12 @@ public class PolygraphService extends BaseService {
 
         Integer insert = polygraph_etinfoMapper.insert(polygraph_etinfo);
         System.out.println("add_boot：" + insert);
+        if(insert == 1){
+            result.setData(polygraph_etinfo.getSsid());
+        }else{
+            result.setData(insert);
+        }
 
-        result.setData(insert);
         changeResultToSuccess(result);
     }
 
@@ -229,8 +233,11 @@ public class PolygraphService extends BaseService {
 
         Integer update = polygraph_etinfoMapper.update(polygraphEtinfo, ew);
         System.out.println("update_boot：" + update);
-
-        result.setData(update);
+        if(update == 1){
+            result.setData(paramParam.getSsid());
+        }else{
+            result.setData(update);
+        }
         changeResultToSuccess(result);
     }
 

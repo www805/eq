@@ -171,8 +171,11 @@ public class TtsEtinfoService extends BaseService {
 
         Integer insert = tts_etinfoMapper.insert(tts_etinfo);
         System.out.println("add_boot：" + insert);
-
-        result.setData(insert);
+        if(insert == 1){
+            result.setData(tts_etinfo.getSsid());
+        }else{
+            result.setData(insert);
+        }
         changeResultToSuccess(result);
     }
 
@@ -254,8 +257,11 @@ public class TtsEtinfoService extends BaseService {
 
         Integer update = tts_etinfoMapper.update(etinfo, ew);
         System.out.println("update_boot：" + update);
-
-        result.setData(update);
+        if(update == 1){
+            result.setData(paramParam.getSsid());
+        }else{
+            result.setData(update);
+        }
         changeResultToSuccess(result);
     }
 

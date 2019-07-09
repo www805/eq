@@ -168,7 +168,7 @@ function callTtsetinfoById(data){
 function calldelttsetinfo(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
-            if (data.data == 1) {
+            if (data.data != 0) {
                 layer.msg("删除成功",{icon: 1});
             }else{
                 layer.msg("删除失败",{icon: 2});

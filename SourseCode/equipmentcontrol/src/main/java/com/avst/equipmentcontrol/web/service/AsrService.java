@@ -163,8 +163,12 @@ public class AsrService extends BaseService {
 
         Integer insert = asr_etinfoMapper.insert(asr_et_ettype);
         System.out.println("add_boot：" + insert);
+        if(insert == 1){
+            result.setData(asr_et_ettype.getSsid());
+        }else{
+            result.setData(insert);
+        }
 
-        result.setData(insert);
         changeResultToSuccess(result);
     }
 
@@ -242,8 +246,11 @@ public class AsrService extends BaseService {
 
         Integer update = asr_etinfoMapper.update(asrEtEttype, ew);
         System.out.println("update_boot：" + update);
-
-        result.setData(update);
+        if(update == 1){
+            result.setData(paramParam.getSsid());
+        }else{
+            result.setData(update);
+        }
         changeResultToSuccess(result);
 
     }

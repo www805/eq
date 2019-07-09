@@ -158,8 +158,11 @@ public class StorageService extends BaseService {
 
         Integer insert = ss_saveinfoMapper.insert(ss_saveinfo);
         System.out.println("add_boot：" + insert);
-
-        result.setData(insert);
+        if(insert == 1){
+            result.setData(ss_saveinfo.getSsid());
+        }else{
+            result.setData(insert);
+        }
         changeResultToSuccess(result);
 
     }
@@ -237,8 +240,11 @@ public class StorageService extends BaseService {
 
         Integer update = ss_saveinfoMapper.update(saveinfo, ew);
         System.out.println("update_boot：" + update);
-
-        result.setData(update);
+        if(update == 1){
+            result.setData(paramParam.getSsid());
+        }else{
+            result.setData(update);
+        }
         changeResultToSuccess(result);
     }
 
