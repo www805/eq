@@ -19,7 +19,7 @@
         </div>
     </form>
 
-    <div id="wushuju" style="display: none;font-size: 24px;color: #90a2bc;text-align: center;margin-top: 30px;">该审讯主机尚未添加设备通道，请新增设备通道</div>
+    <div id="wushuju" style="display: none;font-size: 24px;color: #90a2bc;text-align: center;margin-top: 30px;">该审讯设备尚未添加设备通道，请新增设备通道</div>
     <div th:replace="page :: page">...</div>
     <div th:replace="footer :: footer">...</div>
 </div>
@@ -70,8 +70,8 @@
 <script th:inline="javascript">
     var INIT_CLIENT;
     var INIT_CLIENTKEY;
-    ssid = getQueryString("ssid");
-    MasterSsid = getQueryString("ssid");
+    var ssid = getQueryString("ssid");
+    var MasterSsid = getQueryString("ssid");
     $(function(){
         getFlushbonadingEttdList_init(1,10);
     });

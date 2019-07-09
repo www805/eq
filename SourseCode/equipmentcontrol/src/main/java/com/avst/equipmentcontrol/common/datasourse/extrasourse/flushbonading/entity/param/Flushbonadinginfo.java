@@ -31,17 +31,6 @@ public class Flushbonadinginfo extends Flushbonading_etinfo {
      */
     private String ettypenum;
 
-    //设备类型集合
-    private List<Base_ettype> ettypeList;
-
-    public List<Base_ettype> getEttypeList() {
-        return ettypeList;
-    }
-
-    public void setEttypeList(List<Base_ettype> ettypeList) {
-        this.ettypeList = ettypeList;
-    }
-
     public String getEttypenum() {
         return ettypenum;
     }

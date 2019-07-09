@@ -26,8 +26,6 @@ public class Storage_ettype extends Ss_saveinfo{
      */
     private String ettypenum;
 
-    private List<Base_ettype> ettypeList;
-
     public String getEtnum() {
         return etnum;
     }
@@ -60,11 +58,4 @@ public class Storage_ettype extends Ss_saveinfo{
         this.ettypenum = ettypenum;
     }
 
-    public List<Base_ettype> getEttypeList() {
-        return ettypeList;
-    }
-
-    public void setEttypeList(List<Base_ettype> ettypeList) {
-        this.ettypeList = ettypeList;
-    }
 }

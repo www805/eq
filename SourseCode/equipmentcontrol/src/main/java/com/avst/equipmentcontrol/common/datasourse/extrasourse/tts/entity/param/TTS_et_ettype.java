@@ -28,16 +28,6 @@ public class TTS_et_ettype extends Tts_etinfo {
      */
     private String ettypenum;
 
-    private List<Base_ettype> ettypeList;
-
-    public List<Base_ettype> getEttypeList() {
-        return ettypeList;
-    }
-
-    public void setEttypeList(List<Base_ettype> ettypeList) {
-        this.ettypeList = ettypeList;
-    }
-
     public String getEtnum() {
         return etnum;
     }
