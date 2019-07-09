@@ -285,6 +285,11 @@ public class TtsEtinfoService extends BaseService {
         tts_etinfo.setSsid(paramParam.getSsid());
         Tts_etinfo ttsEtinfo = tts_etinfoMapper.selectOne(tts_etinfo);
 
+        if (null == ttsEtinfo){
+            result.setMessage("没找到相应的设备ssid");
+            return;
+        }
+
         EntityWrapper ew2 = new EntityWrapper();
         ew2.eq("ssid", ttsEtinfo.getEquipmentssid());
         base_equipmentinfoMapper.delete(ew2);

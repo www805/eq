@@ -1,3 +1,5 @@
+var etypessid;
+var ssid;
 
 function getPolygraphList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -116,7 +118,7 @@ function callAddOrUpdate(data){
             }else{
                 layer.msg("操作失败",{icon: 2});
             }
-            setTimeout("window.location.href = \"/Polygraph/getPolygraphIndex\";",1500);
+            setTimeout("window.location.href = \"/Polygraph/getPolygraphIndex?etypessid=\"+etypessid;",1500);
         }
     }else{
         layer.msg(data.message,{icon: 2});

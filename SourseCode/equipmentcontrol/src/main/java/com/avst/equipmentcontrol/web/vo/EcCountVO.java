@@ -6,6 +6,7 @@ public class EcCountVO {
     private Integer asrCount;
     private Integer polygraphCount;
     private Integer ssCount;
+    private Integer ttsCount;
 
     //设备类型总数
     private Integer ettypeCount;
@@ -49,4 +50,13 @@ public class EcCountVO {
     public void setEttypeCount(Integer ettypeCount) {
         this.ettypeCount = ettypeCount;
     }
+
+    public Integer getTtsCount() {
+        return ttsCount;
+    }
+
+    public void setTtsCount(Integer ttsCount) {
+        this.ttsCount = ttsCount;
+    }
 }
+

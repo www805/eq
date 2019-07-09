@@ -1,3 +1,5 @@
+var etypessid;
+var ssid;
 
 function getFlushbonadingList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -11,7 +13,7 @@ function getFlushbonadingList_init(currPage,pageSize) {
             livingurl: livingurl,
             user: user,
             etnum: etnum,
-            etypessid: getQueryString("etypessid"),
+            etypessid: etypessid,
             currPage:currPage,
             pageSize:pageSize
         }
@@ -29,7 +31,7 @@ function getFlushbonadingIndex(livingurl, user, etnum, currPage, pageSize) {
             livingurl: livingurl,
             user: user,
             etnum: etnum,
-            etypessid: getQueryString("etypessid"),
+            etypessid: etypessid,
             currPage: currPage,
             pageSize: pageSize
         }
@@ -100,7 +102,7 @@ function AddOrUpdateFlushbonading(version) {
             user: user,
             passwd: passwd,
             uploadbasepath: uploadbasepath,
-            etypessid: getQueryString("etypessid"),
+            etypessid: etypessid,
             etnum: etnum,
             etip: etip,
             explain: explain
@@ -118,7 +120,7 @@ function callAddOrUpdate(data){
             }else{
                 layer.msg("操作失败",{icon: 2});
             }
-            setTimeout("window.location.href = \"/Flushbonading/getFlushbonadingIndex\";",1500);
+            setTimeout("window.location.href = \"/Flushbonading/getFlushbonadingIndex?etypessid=\"+etypessid;",1500);
         }
     }else{
         layer.msg(data.message,{icon: 2});

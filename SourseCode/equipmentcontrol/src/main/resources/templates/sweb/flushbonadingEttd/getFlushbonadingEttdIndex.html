@@ -14,8 +14,8 @@
 
     <form class="layui-form" >
         <div class="layui-form-item">
-            <input type="button" class="layui-btn layui-btn-normal" value="< 返回" onclick="javascript:window.history.go(-1);return false;" >
-            <input type="button" class="layui-btn layui-btn-normal" value="添加" onclick="window.location.href='addOrUpdateFlushbonadingEttd?masterssid='+MasterSsid;" >
+            <input type="button" class="layui-btn layui-btn-normal" value="< 返回" onclick="window.location.href='/Flushbonading/getFlushbonadingIndex?etypessid='+etypessid;" >
+            <input type="button" class="layui-btn layui-btn-normal" value="添加" onclick="window.location.href='addOrUpdateFlushbonadingEttd?masterssid='+MasterSsid+'&etypessid='+etypessid;" >
         </div>
     </form>
 
@@ -50,7 +50,7 @@
             <td>{{value.pullflowurl==null?"":value.pullflowurl}}</td>
             <td>{{value.tdtype==null?"":value.tdtype}}</td>
             <td>
-                <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/FlushbonadingEttd/addOrUpdateFlushbonadingEttd?ssid={{value.ssid}}&masterssid='+MasterSsid;">修改</a>
+                <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/FlushbonadingEttd/addOrUpdateFlushbonadingEttd?ssid={{value.ssid}}&masterssid='+MasterSsid+'&etypessid='+etypessid;">修改</a>
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="delFlushbonadingEttd('{{value.ssid}}');">删除</a>
             </td>
         </tr>
@@ -70,9 +70,13 @@
 <script th:inline="javascript">
     var INIT_CLIENT;
     var INIT_CLIENTKEY;
-    var ssid = getQueryString("ssid");
+    ssid = getQueryString("ssid");
     MasterSsid = getQueryString("ssid");
+    etypessid = getQueryString("etypessid");
     $(function(){
+        console.log("ssid：" + ssid);
+        console.log("MasterSsid：" + MasterSsid);
+        console.log("etypessid："+etypessid);
         getFlushbonadingEttdList_init(1,10);
     });
 

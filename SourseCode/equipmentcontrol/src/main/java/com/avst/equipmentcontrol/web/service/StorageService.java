@@ -268,6 +268,11 @@ public class StorageService extends BaseService {
         ss_saveinfo.setSsid(paramParam.getSsid());
         Ss_saveinfo ssSaveinfo = ss_saveinfoMapper.selectOne(ss_saveinfo);
 
+        if (null == ssSaveinfo){
+            result.setMessage("没找到相应的设备ssid");
+            return;
+        }
+
         EntityWrapper ew2 = new EntityWrapper();
         ew2.eq("ssid", ssSaveinfo.getMtssid());
         base_equipmentinfoMapper.delete(ew2);

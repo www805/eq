@@ -74,8 +74,9 @@
 <script  th:inline="javascript">
     var INIT_CLIENT;
     var INIT_CLIENTKEY;
-    var MasterSsid = getQueryString("masterssid");
-    var ssid = getQueryString("ssid");
+    MasterSsid = getQueryString("masterssid");
+    etypessid = getQueryString("etypessid");
+    ssid = getQueryString("ssid");
     $(function(){
         console.log(MasterSsid);
         if(ssid){

@@ -275,6 +275,11 @@ public class AsrService extends BaseService {
         asr_et_ettype.setSsid(paramParam.getSsid());
         Asr_etinfo asr_etinfo = asr_etinfoMapper.selectOne(asr_et_ettype);
 
+        if (null == asr_etinfo){
+            result.setMessage("没找到相应的设备ssid");
+            return;
+        }
+
         EntityWrapper ew2 = new EntityWrapper();
         ew2.eq("ssid", asr_etinfo.getEquipmentssid());
         base_equipmentinfoMapper.delete(ew2);

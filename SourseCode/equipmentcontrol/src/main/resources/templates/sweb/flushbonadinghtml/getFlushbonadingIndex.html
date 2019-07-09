@@ -31,7 +31,7 @@
             </div>
 
             <input type="button" class="layui-btn layui-btn-normal" value="查询" onclick="getFlushbonadingList_init(1,10);" >
-            <input type="button" class="layui-btn layui-btn-normal" value="添加" onclick="window.location.href='addOrUpdateFlushbonading?etypessid='+etypessid;" >
+            <input type="button" class="layui-btn layui-btn-normal" value="添加" onclick="window.location.href='addOrUpdateFlushbonading?ssid=&etypessid='+etypessid;" >
         </div>
     </form>
 
@@ -101,7 +101,7 @@
 <script th:inline="javascript">
     var INIT_CLIENT;
     var INIT_CLIENTKEY;
-    var etypessid = getQueryString("etypessid");
+    etypessid = getQueryString("etypessid");
     $(function(){
         getFlushbonadingListParam();
     });

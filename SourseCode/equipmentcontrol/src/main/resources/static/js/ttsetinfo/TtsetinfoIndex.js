@@ -1,3 +1,5 @@
+var etypessid;
+var ssid;
 
 function getTtsetinfoList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -115,12 +117,12 @@ function AddOrUpdateTtsetinfo(version) {
 function callAddOrUpdate(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
-            if (data.data == 1) {
+            if (data.data != 0) {
                 layer.msg("操作成功",{icon: 1});
             }else{
                 layer.msg("操作失败",{icon: 2});
             }
-            setTimeout("window.location.href = \"/ttsetinfo/getTtsetinfoIndex\";",1500);
+            setTimeout("window.location.href = \"/ttsetinfo/getTtsetinfoIndex?etypessid=\"+etypessid;",1500);
         }
     }else{
         layer.msg(data.message,{icon: 2});

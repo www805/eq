@@ -261,6 +261,11 @@ public class PolygraphService extends BaseService {
         flushbonadinginfo.setSsid(paramParam.getSsid());
         Polygraph_etinfo polygraph_etinfo = polygraph_etinfoMapper.selectOne(flushbonadinginfo);
 
+        if (null == polygraph_etinfo){
+            result.setMessage("没找到相应的设备ssid");
+            return;
+        }
+
         EntityWrapper ew2 = new EntityWrapper();
         ew2.eq("ssid", polygraph_etinfo.getEquipmentssid());
         base_equipmentinfoMapper.delete(ew2);

@@ -1,3 +1,5 @@
+var etypessid;
+var ssid;
 
 function getAsrList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -122,7 +124,7 @@ function callAddOrUpdate(data){
             }else{
                 layer.msg("操作失败",{icon: 2});
             }
-            setTimeout("window.location.href = \"/Asr/getAsrIndex\";",1500);
+            setTimeout("window.location.href = \"/Asr/getAsrIndex?etypessid=\"+etypessid;",1500);
         }
     }else{
         layer.msg(data.message,{icon: 2});
@@ -170,7 +172,7 @@ function callAsrById(data){
 function calldelAsr(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
-            if (data.data == 1) {
+            if (data.data != 0) {
                 layer.msg("删除成功",{icon: 1});
             }else{
                 layer.msg("删除失败",{icon: 2});
@@ -211,7 +213,6 @@ function showpagetohtml(){
         var port=$("input[name='port']").val();
         var asrkey=$("input[name='asrkey']").val();
         var etnum=$("input[name='etnum']").val();
-        var etypessid=$("#etypessid").val();
         var arrparam=new Array();
         arrparam[0]=language;
         arrparam[1]=port;

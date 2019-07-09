@@ -5,6 +5,7 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper.Asr_et
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.mapper.Polygraph_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_saveinfoMapper;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.mapper.Tts_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_equipmentinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_ettypeMapper;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
@@ -34,6 +35,9 @@ public class MainService {
     @Autowired
     private Base_ettypeMapper base_ettypeMapper;
 
+    @Autowired
+    private Tts_etinfoMapper tts_etinfoMapper;
+
     public RResult logining(RResult result, HttpServletRequest request, LoginParam loginParam){
 
         if(loginParam.getLoginaccount().equals("admin")&&loginParam.getPassword().equals("admin123")){
@@ -59,6 +63,7 @@ public class MainService {
         Integer ssCount = ss_saveinfoMapper.selectCount(ew);
         //设备类型总数
         Integer ettypeCount = base_ettypeMapper.selectCount(ew);
+        Integer ttsCount = tts_etinfoMapper.selectCount(ew);
 
         EcCountVO ecCountVO = new EcCountVO();
         ecCountVO.setFlushbonadingCount(flushbonadingCount);
@@ -66,6 +71,7 @@ public class MainService {
         ecCountVO.setPolygraphCount(polygraphCount);
         ecCountVO.setSsCount(ssCount);
         ecCountVO.setEttypeCount(ettypeCount);
+        ecCountVO.setTtsCount(ttsCount);
 
         return ecCountVO;
     }

@@ -3,6 +3,7 @@ package com.avst.equipmentcontrol.web.service;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_ettdMapper;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_equipmentinfo;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_ettype;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_equipmentinfoMapper;
@@ -12,6 +13,7 @@ import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.web.req.flushbonading.FlushbonadinginfoParam;
+import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttdParam;
 import com.avst.equipmentcontrol.web.vo.baseEttype.EquipmentBasicsVO;
 import com.avst.equipmentcontrol.web.vo.flushbonading.BaseEquipmentinfoOrEttypeVO;
 import com.avst.equipmentcontrol.web.vo.flushbonading.FlushbonadinginfoVO;
@@ -34,6 +36,9 @@ public class FlushbonadingService extends BaseService {
 
     @Autowired
     private Base_ettypeMapper base_ettypeMapper;
+
+    @Autowired
+    private Flushbonading_ettdMapper flushbonading_ettdMapper;
 
     //查询
     public void getFlushbonadingList(RResult result, ReqParam<FlushbonadinginfoParam> param){
@@ -279,9 +284,18 @@ public class FlushbonadingService extends BaseService {
         flushbonadinginfo.setSsid(paramParam.getSsid());
         Flushbonading_etinfo flushbonadingEtinfo = flushbonading_etinfoMapper.selectOne(flushbonadinginfo);
 
+        if (null == flushbonadingEtinfo){
+            result.setMessage("没找到相应的设备ssid");
+            return;
+        }
+
         EntityWrapper ew2 = new EntityWrapper();
         ew2.eq("ssid", flushbonadingEtinfo.getEquipmentssid());
         base_equipmentinfoMapper.delete(ew2);
+
+        EntityWrapper ew3 = new EntityWrapper();
+        ew3.eq("flushbonadingssid", flushbonadingEtinfo.getSsid());
+        flushbonading_ettdMapper.delete(ew3);
 
         EntityWrapper ew = new EntityWrapper();
         ew.eq("ssid", paramParam.getSsid());

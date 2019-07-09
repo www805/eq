@@ -109,9 +109,11 @@
 <script  th:inline="javascript">
     var INIT_CLIENT;
     var INIT_CLIENTKEY;
-    var etypessid = getQueryString("etypessid");
-    var ssid = getQueryString("ssid");
+    etypessid = getQueryString("etypessid");
+    ssid = getQueryString("ssid");
     $(function(){
+        console.log(etypessid);
+        console.log(ssid);
         if(ssid){
             getAsrById(ssid);
         }
