@@ -3,15 +3,9 @@ package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.servic
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.addOrUpdateToOutAsrParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.getToOutAsrListParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service.ToOutAsrService;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.addOrUpdateToOutFlushbonadingParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.getToOutFlushbonadingListParam;
-import com.avst.equipmentcontrol.web.req.asr.AsrParam;
-import com.avst.equipmentcontrol.web.req.asr.UpdateAsrParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.AddOrUpdateToOutFlushbonadingParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetToOutFlushbonadingListParam;
 import com.avst.equipmentcontrol.web.req.flushbonading.FlushbonadinginfoParam;
-import com.avst.equipmentcontrol.web.service.AsrService;
 import com.avst.equipmentcontrol.web.service.FlushbonadingService;
 import com.avst.equipmentcontrol.web.vo.flushbonading.FlushbonadinginfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +21,7 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
 
     //查询列表
     @Override
-    public RResult getToOutFlushbonadingList(getToOutFlushbonadingListParam param, RResult result) {
+    public RResult getToOutFlushbonadingList(GetToOutFlushbonadingListParam param, RResult result) {
 
         ReqParam<FlushbonadinginfoParam> reqParam = new ReqParam<FlushbonadinginfoParam>();
 
@@ -47,7 +41,7 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
 
     //查询单个
     @Override
-    public RResult getToOutFlushbonadingById(getToOutFlushbonadingListParam param, RResult result) {
+    public RResult getToOutFlushbonadingById(GetToOutFlushbonadingListParam param, RResult result) {
 
         ReqParam<FlushbonadinginfoParam> reqParam = new ReqParam<FlushbonadinginfoParam>();
 
@@ -62,7 +56,7 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
 
     //新增
     @Override
-    public RResult addToOutFlushbonading(addOrUpdateToOutFlushbonadingParam param, RResult result) {
+    public RResult addToOutFlushbonading(AddOrUpdateToOutFlushbonadingParam param, RResult result) {
 
         ReqParam<Flushbonadinginfo> reqParam = new ReqParam<Flushbonadinginfo>();
 
@@ -85,7 +79,7 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
 
     //修改
     @Override
-    public RResult updateToOutFlushbonading(addOrUpdateToOutFlushbonadingParam param, RResult result) {
+    public RResult updateToOutFlushbonading(AddOrUpdateToOutFlushbonadingParam param, RResult result) {
 
         ReqParam<Flushbonadinginfo> reqParam = new ReqParam<Flushbonadinginfo>();
 

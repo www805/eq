@@ -1,6 +1,5 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service;
 
-import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.FlushbonadingEttd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.param.Ss_dataMessageParam;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
@@ -17,7 +16,6 @@ import com.avst.equipmentcontrol.web.req.storage.StorageParam;
 import com.avst.equipmentcontrol.web.req.storage.UpdateStorageParam;
 import com.avst.equipmentcontrol.web.service.FlushbonadingEttdService;
 import com.avst.equipmentcontrol.web.service.StorageService;
-import com.avst.equipmentcontrol.web.vo.flushbonadingEttd.FlushbonadingEttdVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,7 @@ public class ToOutFlushbonadingEttdServiceImpl implements ToOutFlushbonadingEttd
 
     //查询列表
     @Override
-    public RResult getToOutFlushbonadingEttdList(getToOutFlushbonadingEttdListParam param, RResult result) {
+    public RResult getToOutFlushbonadingEttdList(GetToOutFlushbonadingEttdListParam param, RResult result) {
 
         ReqParam<FlushbonadingEttdParam> reqParam = new ReqParam<FlushbonadingEttdParam>();
 
@@ -43,19 +41,12 @@ public class ToOutFlushbonadingEttdServiceImpl implements ToOutFlushbonadingEttd
 
         flushbonadingEttdService.getFlushbonadingEttdList(result, reqParam);
 
-        if(!"FAIL".equals(result.getActioncode())){
-            FlushbonadingEttdVO data = (FlushbonadingEttdVO) result.getData();
-            List<FlushbonadingEttd> list = data.getPagelist();
-            result.setData(list);
-        }
-
-
         return result;
     }
 
     //查询单个
     @Override
-    public RResult getToOutFlushbonadingEttdById(getToOutFlushbonadingEttdListParam param, RResult result) {
+    public RResult getToOutFlushbonadingEttdById(GetToOutFlushbonadingEttdListParam param, RResult result) {
 
         ReqParam<FlushbonadingEttdParam> reqParam = new ReqParam<FlushbonadingEttdParam>();
 
@@ -70,7 +61,7 @@ public class ToOutFlushbonadingEttdServiceImpl implements ToOutFlushbonadingEttd
 
     //新增
     @Override
-    public RResult addToOutFlushbonadingEttd(addOrUpdateToOutFlushbonadingEttdParam param, RResult result) {
+    public RResult addToOutFlushbonadingEttd(AddOrUpdateToOutFlushbonadingEttdParam param, RResult result) {
 
         ReqParam<UpdateFlushbonadingEttdParam> reqParam = new ReqParam<UpdateFlushbonadingEttdParam>();
 
@@ -88,7 +79,7 @@ public class ToOutFlushbonadingEttdServiceImpl implements ToOutFlushbonadingEttd
 
     //修改
     @Override
-    public RResult updateToOutFlushbonadingEttd(addOrUpdateToOutFlushbonadingEttdParam param, RResult result) {
+    public RResult updateToOutFlushbonadingEttd(AddOrUpdateToOutFlushbonadingEttdParam param, RResult result) {
 
         ReqParam<UpdateFlushbonadingEttdParam> reqParam = new ReqParam<UpdateFlushbonadingEttdParam>();
 
