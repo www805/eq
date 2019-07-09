@@ -13,8 +13,11 @@ import com.avst.equipmentcontrol.web.req.asr.UpdateAsrParam;
 import com.avst.equipmentcontrol.web.req.flushbonading.FlushbonadinginfoParam;
 import com.avst.equipmentcontrol.web.service.AsrService;
 import com.avst.equipmentcontrol.web.service.FlushbonadingService;
+import com.avst.equipmentcontrol.web.vo.flushbonading.FlushbonadinginfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService {
@@ -32,6 +35,12 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
         reqParam.setParam(flushbonadinginfoParam);
 
         flushbonadingService.getFlushbonadingList(result, reqParam);
+
+        if(!"FAIL".equals(result.getActioncode())){
+            FlushbonadinginfoVO data = (FlushbonadinginfoVO) result.getData();
+            List<Flushbonadinginfo> list = data.getPagelist();
+            result.setData(list);
+        }
 
         return result;
     }

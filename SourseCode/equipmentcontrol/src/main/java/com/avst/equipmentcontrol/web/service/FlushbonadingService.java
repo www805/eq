@@ -68,16 +68,6 @@ public class FlushbonadingService extends BaseService {
 
         List<Flushbonadinginfo> flushbonadingList = flushbonading_etinfoMapper.getFlushbonadingList(page,ew);
 
-        if (null != flushbonadingList && flushbonadingList.size() > 0) {
-
-            for (Flushbonadinginfo flushbonadinginfo : flushbonadingList) {
-                Base_ettype base_ettype = new Base_ettype();
-                base_ettype.setSsid(flushbonadinginfo.getEtypessid());
-                Base_ettype ettype = base_ettypeMapper.selectOne(base_ettype);
-                flushbonadinginfo.setEtypessid(ettype.getExplain());
-            }
-        }
-
         flushbonadinginfoVO.setPagelist(flushbonadingList);
         flushbonadinginfoVO.setPageparam(flushbonadinginfoParam);
 
@@ -105,16 +95,6 @@ public class FlushbonadingService extends BaseService {
         ew.eq("fet.ssid",flushbonadinginfoParam.getSsid());
 
         Flushbonadinginfo flushbonadinginfo = flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
-
-        if (null != flushbonadinginfo) {
-            EntityWrapper wrapper = new EntityWrapper();
-            List<Base_ettype> ettypeList = base_ettypeMapper.selectList(wrapper);
-            flushbonadinginfo.setEttypeList(ettypeList);
-        }
-
-//        EntityWrapper ew2 = new EntityWrapper();
-//        List<EquipmentBasicsVO> equipmentBasicsAll = base_equipmentinfoMapper.getEquipmentBasicsAll(ew2);
-//        flushbonadinginfo.setEquipmentBasicsList(equipmentBasicsAll);
 
         result.setData(flushbonadinginfo);
         changeResultToSuccess(result);
@@ -201,7 +181,7 @@ public class FlushbonadingService extends BaseService {
         }
 
         if (StringUtils.isBlank(paramParam.getSsid())){
-            result.setMessage("删除的ssid不能为空");
+            result.setMessage("修改的ssid不能为空");
             return;
         }
         if (StringUtils.isBlank(paramParam.getLivingurl())){

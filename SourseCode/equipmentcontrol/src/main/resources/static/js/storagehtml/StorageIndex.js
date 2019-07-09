@@ -1,4 +1,3 @@
-var ssid;
 
 function getStorageList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -6,7 +5,6 @@ function getStorageList_init(currPage,pageSize) {
     var port=$("input[name='port']").val();
     var totalcapacity=$("input[name='totalcapacity']").val();
     var etnum=$("input[name='etnum']").val();
-    var etypessid=$("#etypessid").val();
     var data={
         token:INIT_CLIENTKEY,
         param:{
@@ -22,7 +20,7 @@ function getStorageList_init(currPage,pageSize) {
     ajaxSubmitByJson(url,data,callStorageList);
 }
 
-function StorageIndex(port, totalcapacity, etnum, etypessid, currPage, pageSize) {
+function StorageIndex(port, totalcapacity, etnum, currPage, pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
     var url = getUrl_manageZk().getStorageList;
     var data = {
@@ -75,19 +73,6 @@ function delStorage(ssidd) {
 
 }
 
-//查询设备类型
-function getBaseEttype() {
-    // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypeById);
-    var url = getUrl_manageZk().getFlushbonadingBaseEttype;
-    var data={
-        token:INIT_CLIENTKEY,
-        param:{
-            ssid: ssid
-        }
-    };
-    ajaxSubmitByJson(url,data,callBaseEttype);
-}
-
 function AddOrUpdateStorage(version) {
     // var url=getActionURL(getactionid_manage().templateTypeList_updateTemplateType);
 
@@ -99,7 +84,6 @@ function AddOrUpdateStorage(version) {
     var datasavebasepath=$("input[name='datasavebasepath']").val();
     var etnum=$("input[name='etnum']").val();
     var etip=$("input[name='etip']").val();
-    var etypessid=$("#etypessid").val();
     var explain=$("textarea[name='explain']").val();
     if (!isNotEmpty(ssid)) {
         //添加
@@ -158,21 +142,6 @@ function callStorageList(data){
     }
 }
 
-function callBaseEttype(data){
-    if(null!=data&&data.actioncode=='SUCCESS'){
-        if (isNotEmpty(data.data)){
-            var ettypeList = data.data.ettypeList;
-            var ettypeListHTML = $("#etypessid");
-            for (var i = 0; i < ettypeList.length; i++) {
-                var ettype = ettypeList[i];
-                ettypeListHTML.append("<option value='" + ettype.ssid + "'>" + ettype.explain + "</option>");
-            }
-        }
-    }else{
-        layer.msg(data.message,{icon: 2});
-    }
-}
-
 function callStorageById(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data.data)){
@@ -187,17 +156,6 @@ function callStorageById(data){
             $("input[name='etip']").val(storage.etip);
             $("#explain").text(storage.explain);
 
-            var ettypeList = storage.ettypeList;
-            var ettypeListHTML = "";
-            for (var i = 0; i < ettypeList.length; i++) {
-                var ettype = ettypeList[i];
-                if(storage.etypessid == ettype.ssid){
-                    ettypeListHTML += "<option selected value='" + ettype.ssid + "'>" + ettype.explain + "</option>";
-                }else{
-                    ettypeListHTML += "<option value='" + ettype.ssid + "'>" + ettype.explain + "</option>";
-                }
-            }
-            $("#etypessid").html(ettypeListHTML);
         }
     }else{
         layer.msg(data.message,{icon: 2});
@@ -233,7 +191,7 @@ function getStorageListParam() {
     }  else if (len == 2) {
         StorageIndex('', arguments[0], arguments[1]);
     } else if (len > 2) {
-        StorageIndex(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
+        StorageIndex(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     }
 }
 
@@ -247,12 +205,10 @@ function showpagetohtml(){
         var port=$("input[name='port']").val();
         var totalcapacity=$("input[name='totalcapacity']").val();
         var etnum=$("input[name='etnum']").val();
-        var etypessid=$("#etypessid").val();
         var arrparam=new Array();
         arrparam[0]=port;
         arrparam[1]=totalcapacity;
         arrparam[2]=etnum;
-        arrparam[3]=etypessid;
         showpage("paging",arrparam,'getStorageListParam',currPage,pageCount,pageSize);
     }
 }

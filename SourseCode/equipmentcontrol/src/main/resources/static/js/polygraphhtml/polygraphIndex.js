@@ -1,4 +1,3 @@
-var ssid;
 
 function getPolygraphList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -6,7 +5,6 @@ function getPolygraphList_init(currPage,pageSize) {
     var port=$("input[name='port']").val();
     var polygraphkey=$("input[name='polygraphkey']").val();
     var etnum=$("input[name='etnum']").val();
-    var etypessid=$("#etypessid").val();
 
     var data={
         token:INIT_CLIENTKEY,
@@ -23,7 +21,7 @@ function getPolygraphList_init(currPage,pageSize) {
     ajaxSubmitByJson(url,data,callPolygraphList);
 }
 
-function polygraphIndex(port, polygraphkey, etnum, etypessid, currPage, pageSize) {
+function polygraphIndex(port, polygraphkey, etnum, currPage, pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
     var url = getUrl_manageZk().getPolygraphList;
     var data = {
@@ -76,19 +74,6 @@ function delPolygraph(ssidd) {
 
 }
 
-//查询设备类型
-function getBaseEttype() {
-    // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypeById);
-    var url = getUrl_manageZk().getFlushbonadingBaseEttype;
-    var data={
-        token:INIT_CLIENTKEY,
-        param:{
-            ssid: ssid
-        }
-    };
-    ajaxSubmitByJson(url,data,callBaseEttype);
-}
-
 function AddOrUpdatePolygraph(version) {
     // var url=getActionURL(getactionid_manage().templateTypeList_updateTemplateType);
 
@@ -99,7 +84,6 @@ function AddOrUpdatePolygraph(version) {
     var polygraphkey=$("input[name='polygraphkey']").val();
     var etnum=$("input[name='etnum']").val();
     var etip=$("input[name='etip']").val();
-    var etypessid=$("#etypessid").val();
     var explain=$("textarea[name='explain']").val();
     if (!isNotEmpty(ssid)) {
         //添加
@@ -157,21 +141,6 @@ function callPolygraphList(data){
     }
 }
 
-function callBaseEttype(data){
-    if(null!=data&&data.actioncode=='SUCCESS'){
-        if (isNotEmpty(data.data)){
-            var ettypeList = data.data.ettypeList;
-            var ettypeListHTML = $("#etypessid");
-            for (var i = 0; i < ettypeList.length; i++) {
-                var ettype = ettypeList[i];
-                ettypeListHTML.append("<option value='" + ettype.ssid + "'>" + ettype.explain + "</option>");
-            }
-        }
-    }else{
-        layer.msg(data.message,{icon: 2});
-    }
-}
-
 function callPolygraphById(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data.data)){
@@ -184,17 +153,6 @@ function callPolygraphById(data){
             $("input[name='etip']").val(polygraph.etip);
             $("#explain").text(polygraph.explain);
 
-            var ettypeList = polygraph.ettypeList;
-            var ettypeListHTML = "";
-            for (var i = 0; i < ettypeList.length; i++) {
-                var ettype = ettypeList[i];
-                if(polygraph.etypessid == ettype.ssid){
-                    ettypeListHTML += "<option selected value='" + ettype.ssid + "'>" + ettype.explain + "</option>";
-                }else{
-                    ettypeListHTML += "<option value='" + ettype.ssid + "'>" + ettype.explain + "</option>";
-                }
-            }
-            $("#etypessid").html(ettypeListHTML);
         }
     }else{
         layer.msg(data.message,{icon: 2});
@@ -230,7 +188,7 @@ function getPolygraphListParam() {
     }  else if (len == 2) {
         polygraphIndex('', arguments[0], arguments[1]);
     } else if (len > 2) {
-        polygraphIndex(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
+        polygraphIndex(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     }
 }
 
@@ -244,12 +202,10 @@ function showpagetohtml(){
         var port=$("input[name='port']").val();
         var polygraphkey=$("input[name='polygraphkey']").val();
         var etnum=$("input[name='etnum']").val();
-        var etypessid=$("#etypessid").val();
         var arrparam=new Array();
         arrparam[0]=port;
-        arrparam[0]=polygraphkey;
-        arrparam[0]=etnum;
-        arrparam[0]=etypessid;
+        arrparam[1]=polygraphkey;
+        arrparam[2]=etnum;
         showpage("paging",arrparam,'getPolygraphListParam',currPage,pageCount,pageSize);
     }
 }

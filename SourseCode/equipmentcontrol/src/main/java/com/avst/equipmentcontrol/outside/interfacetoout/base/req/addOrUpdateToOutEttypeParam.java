@@ -2,11 +2,20 @@ package com.avst.equipmentcontrol.outside.interfacetoout.base.req;
 
 import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.BaseParam;
 
-public class addOrUpdateToOutEttypeParam extends BaseParam {
+public class addOrUpdateToOutEttypeParam {
 
+    private String type;
     private String ettypenum;
     private String ssid;
     private String explain;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getEttypenum() {
         return ettypenum;

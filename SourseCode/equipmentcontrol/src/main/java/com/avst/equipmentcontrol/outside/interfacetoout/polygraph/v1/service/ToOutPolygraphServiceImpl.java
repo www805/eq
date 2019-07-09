@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.polygraph.v1.service;
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.param.PolygraphInfo;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.addOrUpdateToOutFlushbonadingParam;
@@ -13,8 +14,11 @@ import com.avst.equipmentcontrol.web.req.polygraph.PolygraphParam;
 import com.avst.equipmentcontrol.web.req.polygraph.UpdatePolygraphParam;
 import com.avst.equipmentcontrol.web.service.FlushbonadingService;
 import com.avst.equipmentcontrol.web.service.PolygraphService;
+import com.avst.equipmentcontrol.web.vo.polygraph.PolygraphVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ToOutPolygraphServiceImpl implements ToOutPolygraphService {
@@ -32,6 +36,12 @@ public class ToOutPolygraphServiceImpl implements ToOutPolygraphService {
         reqParam.setParam(polygraphParam);
 
         polygraphService.getPolygraphList(result, reqParam);
+
+        if(!"FAIL".equals(result.getActioncode())){
+            PolygraphVO data = (PolygraphVO) result.getData();
+            List<PolygraphInfo> list = data.getPagelist();
+            result.setData(list);
+        }
 
         return result;
     }

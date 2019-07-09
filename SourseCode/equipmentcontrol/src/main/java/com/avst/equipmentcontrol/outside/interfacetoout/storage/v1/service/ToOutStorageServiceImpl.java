@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service;
 
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Storage_ettype;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.param.Ss_dataMessageParam;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
@@ -10,6 +11,7 @@ import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.getToOutStor
 import com.avst.equipmentcontrol.web.req.storage.StorageParam;
 import com.avst.equipmentcontrol.web.req.storage.UpdateStorageParam;
 import com.avst.equipmentcontrol.web.service.StorageService;
+import com.avst.equipmentcontrol.web.vo.storage.StorageVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,12 @@ public class ToOutStorageServiceImpl extends BaseService implements ToOutStorage
         reqParam.setParam(StorageParam);
 
         storageService.getStorageList(result, reqParam);
+
+        if(!"FAIL".equals(result.getActioncode())){
+            StorageVO data = (StorageVO) result.getData();
+            List<Storage_ettype> list = data.getPagelist();
+            result.setData(list);
+        }
 
         return result;
     }

@@ -56,9 +56,6 @@ public class StorageService extends BaseService {
         if (StringUtils.isNotBlank(paramParam.getEtnum())){
             ew.like("et.etnum",paramParam.getEtnum());
         }
-        if (StringUtils.isNotBlank(paramParam.getEtypessid())){
-            ew.eq("et.etypessid",paramParam.getEtypessid());
-        }
 
         int count = ss_saveinfoMapper.getStorageInfoCount(ew);
         paramParam.setRecordCount(count);
@@ -67,16 +64,6 @@ public class StorageService extends BaseService {
         Page<Storage_ettype> page=new Page<Storage_ettype>(paramParam.getCurrPage(),paramParam.getPageSize());
 
         List<Storage_ettype> storageInfoPage = ss_saveinfoMapper.getStorageInfoPage(page, ew);
-
-        if (null != storageInfoPage && storageInfoPage.size() > 0) {
-
-            for (Storage_ettype asrEtEttype : storageInfoPage) {
-                Base_ettype base_ettype = new Base_ettype();
-                base_ettype.setSsid(asrEtEttype.getEtypessid());
-                Base_ettype ettype = base_ettypeMapper.selectOne(base_ettype);
-                asrEtEttype.setEtypessid(ettype.getExplain());
-            }
-        }
 
         storageVO.setPagelist(storageInfoPage);
         storageVO.setPageparam(paramParam);
@@ -105,10 +92,6 @@ public class StorageService extends BaseService {
         ew.eq("ss.ssid",paramParam.getSsid());
 
         Storage_ettype storageinfo = ss_saveinfoMapper.getStorageinfo(ew);
-
-        EntityWrapper wrapper = new EntityWrapper();
-        List<Base_ettype> ettypeList = base_ettypeMapper.selectList(wrapper);
-        storageinfo.setEttypeList(ettypeList);
 
         result.setData(storageinfo);
         changeResultToSuccess(result);
@@ -192,7 +175,7 @@ public class StorageService extends BaseService {
         }
 
         if (StringUtils.isBlank(paramParam.getSsid())){
-            result.setMessage("删除的ssid不能为空");
+            result.setMessage("修改的ssid不能为空");
             return;
         }
         if (null == paramParam.getTotalcapacity()) {

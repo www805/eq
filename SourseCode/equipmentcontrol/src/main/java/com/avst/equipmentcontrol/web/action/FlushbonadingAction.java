@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-//审讯主机
+//审讯设备
 @RestController
 @RequestMapping("/Flushbonading")
 public class FlushbonadingAction extends BaseAction {
@@ -79,14 +79,14 @@ public class FlushbonadingAction extends BaseAction {
     //显示列表页面
     @RequestMapping(value = "/getFlushbonadingIndex")
     public ModelAndView getFlushbonadingIndex(Model model) {
-        model.addAttribute("title", "审讯主机列表");
+        model.addAttribute("title", "审讯设备列表");
         return new ModelAndView("sweb/flushbonadinghtml/getFlushbonadingIndex", "getFlushbonadingIndexModel", model);
     }
 
     //显示增改页面
     @RequestMapping(value = "/addOrUpdateFlushbonading")
     public ModelAndView addOrUpdateFlushbonading(Model model) {
-        model.addAttribute("title", "审讯主机新增/修改");
+        model.addAttribute("title", "审讯设备新增/修改");
         return new ModelAndView("sweb/flushbonadinghtml/addOrUpdateFlushbonading", "addOrUpdateFlushbonadingModel", model);
     }
 

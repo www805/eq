@@ -70,14 +70,14 @@ public class AsrAction extends BaseAction {
     //显示列表页面
     @RequestMapping(value = "/getAsrIndex")
     public ModelAndView getAsrIndex(Model model) {
-        model.addAttribute("title", "识别服务器列表");
+        model.addAttribute("title", "语音服务器列表");
         return new ModelAndView("sweb/asrhtml/getAsrIndex", "getAsrIndexModel", model);
     }
 
     //显示新增/修改页面
     @RequestMapping(value = "/addOrUpdateAsr")
     public ModelAndView addOrUpdateAsr(Model model) {
-        model.addAttribute("title", "识别服务器 新增/修改");
+        model.addAttribute("title", "语音服务器 新增/修改");
         return new ModelAndView("sweb/asrhtml/addOrUpdateAsr", "addOrUpdateAsrModel", model);
     }
 

@@ -29,14 +29,8 @@
                 <input type="text" name="etnum" id="etnum" lay-verify="required" placeholder="请输入设备编号" autocomplete="off" class="layui-input">
             </div>
 
-            <label class="layui-form-label" style="padding-left: 0;">设备类型</label>
-            <div class="layui-input-inline">
-                <select name="etypessid" id="etypessid" lay-filter="aihao">
-                    <option value="">全部</option>
-                </select>
-            </div>
             <input type="button" class="layui-btn layui-btn-normal" value="查询" onclick="getPolygraphList_init(1,10);" >
-            <input type="button" class="layui-btn layui-btn-normal" value="添加" onclick="window.location.href='addOrUpdatePolygraph';" >
+            <input type="button" class="layui-btn layui-btn-normal" value="添加" onclick="window.location.href='addOrUpdatePolygraph?etypessid='+etypessid;" >
         </div>
     </form>
 
@@ -55,7 +49,6 @@
             <col>
             <col>
             <col>
-            <col>
             <col width="200">
         </colgroup>
         <thead>
@@ -64,7 +57,6 @@
             <th>开放接口的端口</th>
             <th>服务类型</th>
             <th>验证密匙</th>
-            <th>设备类型</th>
             <th>设备编号</th>
             <th>设备IP</th>
             <th>服务中文说明</th>
@@ -78,12 +70,11 @@
             <td>{{value.port==null?"":value.port}}</td>
             <td>{{value.polygraphtype==null?"":value.polygraphtype}}</td>
             <td>{{value.polygraphkey==null?"":value.polygraphkey}}</td>
-            <td>{{value.etypessid==null?"":value.etypessid}}</td>
             <td>{{value.etnum==null?"":value.etnum}}</td>
             <td>{{value.etip==null?"":value.etip}}</td>
             <td>{{value.explain==null?"":value.explain}}</td>
             <td>
-                <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/Polygraph/addOrUpdatePolygraph/?ssid={{value.ssid}}';">修改</a>
+                <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/Polygraph/addOrUpdatePolygraph/?ssid={{value.ssid}}&etypessid='+etypessid;">修改</a>
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="delPolygraph('{{value.ssid}}');">删除</a>
             </td>
         </tr>
@@ -103,10 +94,9 @@
 <script th:inline="javascript">
     var INIT_CLIENT;
     var INIT_CLIENTKEY;
+    etypessid = getQueryString("etypessid");
     $(function(){
-
         getPolygraphListParam();
-        getBaseEttype();
     });
 </script>
 </body>

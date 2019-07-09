@@ -70,11 +70,9 @@
 <script th:inline="javascript">
     var INIT_CLIENT;
     var INIT_CLIENTKEY;
+    ssid = getQueryString("ssid");
+    MasterSsid = getQueryString("ssid");
     $(function(){
-
-        ssid = getQueryString("ssid");
-        MasterSsid = getQueryString("ssid");
-
         getFlushbonadingEttdList_init(1,10);
     });
 </script>

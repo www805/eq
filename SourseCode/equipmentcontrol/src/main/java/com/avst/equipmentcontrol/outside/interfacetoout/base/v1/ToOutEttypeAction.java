@@ -41,7 +41,7 @@ public class ToOutEttypeAction extends BaseAction {
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
             getToOutEttypeListParam pParam=param.getParam();
-            result=getToOutService(pParam.getPhType()).getToOutEttypeList(pParam,result);
+            result=getToOutService(pParam.getType()).getToOutEttypeList(pParam,result);
         }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
@@ -54,7 +54,7 @@ public class ToOutEttypeAction extends BaseAction {
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
             getToOutEttypeListParam pParam=param.getParam();
-            result=getToOutService(pParam.getPhType()).getToOutEttypeById(pParam,result);
+            result=getToOutService(pParam.getType()).getToOutEttypeById(pParam,result);
         }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
@@ -67,7 +67,7 @@ public class ToOutEttypeAction extends BaseAction {
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
             addOrUpdateToOutEttypeParam pParam=param.getParam();
-            result=getToOutService(pParam.getPhType()).addToOutEttype(pParam,result);
+            result=getToOutService(pParam.getType()).addToOutEttype(pParam,result);
         }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
@@ -80,7 +80,7 @@ public class ToOutEttypeAction extends BaseAction {
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
             addOrUpdateToOutEttypeParam pParam=param.getParam();
-            result=getToOutService(pParam.getPhType()).updateToOutEttype(pParam,result);
+            result=getToOutService(pParam.getType()).updateToOutEttype(pParam,result);
         }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;

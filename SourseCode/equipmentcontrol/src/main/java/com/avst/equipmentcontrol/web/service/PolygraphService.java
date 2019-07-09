@@ -68,16 +68,6 @@ public class PolygraphService extends BaseService {
 
         List<PolygraphInfo> polygraphInfoPage = polygraph_etinfoMapper.getPolygraphInfoPage(page,ew);
 
-        if (null != polygraphInfoPage && polygraphInfoPage.size() > 0) {
-
-            for (PolygraphInfo polygraphInfo : polygraphInfoPage) {
-                Base_ettype base_ettype = new Base_ettype();
-                base_ettype.setSsid(polygraphInfo.getEtypessid());
-                Base_ettype ettype = base_ettypeMapper.selectOne(base_ettype);
-                polygraphInfo.setEtypessid(ettype.getExplain());
-            }
-        }
-
         polygraphVO.setPagelist(polygraphInfoPage);
         polygraphVO.setPageparam(paramParam);
 
@@ -106,10 +96,6 @@ public class PolygraphService extends BaseService {
         ew.eq("pet.ssid",paramParam.getSsid());
 
         PolygraphInfo polygraphInfo = polygraph_etinfoMapper.getPolygraphInfo(ew);
-
-        EntityWrapper wrapper = new EntityWrapper();
-        List<Base_ettype> ettypeList = base_ettypeMapper.selectList(wrapper);
-        polygraphInfo.setEttypeList(ettypeList);
 
         result.setData(polygraphInfo);
         changeResultToSuccess(result);
@@ -186,7 +172,7 @@ public class PolygraphService extends BaseService {
         }
 
         if (StringUtils.isBlank(paramParam.getSsid())){
-            result.setMessage("删除的ssid不能为空");
+            result.setMessage("修改的ssid不能为空");
             return;
         }
         if (null == paramParam.getPort()) {

@@ -1,8 +1,11 @@
 package com.avst.equipmentcontrol.web.service;
 
-import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_et_ettype;
-import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_etinfo;
-import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper.Asr_etinfoMapper;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.Polygraph_etinfo;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.param.PolygraphInfo;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.mapper.Polygraph_etinfoMapper;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.entity.Tts_etinfo;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.entity.param.TTS_et_ettype;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.mapper.Tts_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_equipmentinfo;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_ettype;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_equipmentinfoMapper;
@@ -11,9 +14,12 @@ import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.web.req.asr.AsrParam;
-import com.avst.equipmentcontrol.web.req.asr.UpdateAsrParam;
-import com.avst.equipmentcontrol.web.vo.asr.AsrVO;
+import com.avst.equipmentcontrol.web.req.polygraph.PolygraphParam;
+import com.avst.equipmentcontrol.web.req.polygraph.UpdatePolygraphParam;
+import com.avst.equipmentcontrol.web.req.tts.TtsetinfoParam;
+import com.avst.equipmentcontrol.web.req.tts.UpdateTtsetinfoParam;
+import com.avst.equipmentcontrol.web.vo.polygraph.PolygraphVO;
+import com.avst.equipmentcontrol.web.vo.tts.TtsetinfoVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.commons.lang.StringUtils;
@@ -23,24 +29,24 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AsrService extends BaseService {
+public class TtsEtinfoService extends BaseService {
 
     @Autowired
-    private Asr_etinfoMapper asr_etinfoMapper;
-
-    @Autowired
-    private Base_ettypeMapper base_ettypeMapper;
+    private Tts_etinfoMapper tts_etinfoMapper;
 
     @Autowired
     private Base_equipmentinfoMapper base_equipmentinfoMapper;
 
-    //查询
-    public void getAsrList(RResult result, ReqParam<AsrParam> param){
+    @Autowired
+    private Base_ettypeMapper base_ettypeMapper;
 
-        AsrVO asrVO = new AsrVO();
+    //查询
+    public void getTtsetinfoList(RResult result, ReqParam<TtsetinfoParam> param){
+
+        TtsetinfoVO ttsetinfoVO = new TtsetinfoVO();
 
         //请求参数转换
-        AsrParam paramParam = param.getParam();
+        TtsetinfoParam paramParam = param.getParam();
         if (null==paramParam){
             result.setMessage("参数为空");
             return;
@@ -50,40 +56,38 @@ public class AsrService extends BaseService {
         if (StringUtils.isNotBlank(paramParam.getLanguage())){
             ew.like("aet.language",paramParam.getLanguage());
         }
-        if (StringUtils.isNotBlank(paramParam.getPort())){
-            ew.like("aet.port",paramParam.getPort());
+        if (null != paramParam.getPort()){
+            ew.like("aet.port", paramParam.getPort() + "");
         }
-        if (StringUtils.isNotBlank(paramParam.getAsrkey())){
-            ew.like("aet.asrkey",paramParam.getAsrkey());
+        if (StringUtils.isNotBlank(paramParam.getTtstype())){
+            ew.like("aet.ttstype",paramParam.getTtstype());
         }
         if (StringUtils.isNotBlank(paramParam.getEtnum())){
             ew.like("et.etnum",paramParam.getEtnum());
         }
-        if (StringUtils.isNotBlank(paramParam.getEtypessid())){
-            ew.eq("et.etypessid",paramParam.getEtypessid());
-        }
 
-        int count = asr_etinfoMapper.getAsrInfoCount(ew);
+        int count = tts_etinfoMapper.getttsinfoCount(ew);
         paramParam.setRecordCount(count);
 
         ew.orderBy("aet.id",false);
-        Page<Asr_et_ettype> page=new Page<Asr_et_ettype>(paramParam.getCurrPage(),paramParam.getPageSize());
+        Page<TTS_et_ettype> page=new Page<TTS_et_ettype>(paramParam.getCurrPage(),paramParam.getPageSize());
 
-        List<Asr_et_ettype> asrEtEttypeList = asr_etinfoMapper.getAsrInfoPage(page,ew);
+        List<TTS_et_ettype> tts_et_ettypes = tts_etinfoMapper.getttsinfoListPage(page, ew);
 
-        asrVO.setPagelist(asrEtEttypeList);
-        asrVO.setPageparam(paramParam);
+        ttsetinfoVO.setPagelist(tts_et_ettypes);
+        ttsetinfoVO.setPageparam(paramParam);
 
-        result.setData(asrVO);
+
+        result.setData(ttsetinfoVO);
         changeResultToSuccess(result);
     }
 
 
     //查询单次
-    public void getAsrById(RResult result, ReqParam<AsrParam> param){
+    public void getTtsetinfoById(RResult result, ReqParam<TtsetinfoParam> param){
 
         //请求参数转换
-        AsrParam paramParam = param.getParam();
+        TtsetinfoParam paramParam = param.getParam();
         if (null==paramParam){
             result.setMessage("参数为空");
             return;
@@ -97,41 +101,45 @@ public class AsrService extends BaseService {
         EntityWrapper ew=new EntityWrapper();
         ew.eq("aet.ssid",paramParam.getSsid());
 
-        Asr_et_ettype asrinfo = asr_etinfoMapper.getAsrinfo(ew);
+        TTS_et_ettype ttsEtEttype = tts_etinfoMapper.getttsinfo(ew);
 
-        result.setData(asrinfo);
+        result.setData(ttsEtEttype);
         changeResultToSuccess(result);
     }
 
 
     //新增
-    public void addAsr(RResult result, ReqParam<UpdateAsrParam> param){
+    public void addTtsetinfo(RResult result, ReqParam<UpdateTtsetinfoParam> param){
 
         //请求参数转换
-        UpdateAsrParam paramParam = param.getParam();
+        UpdateTtsetinfoParam paramParam = param.getParam();
         if (null==paramParam){
             result.setMessage("参数为空");
             return;
         }
 
-        if (null == paramParam.getMaxnum()) {
-            result.setMessage("并发数不能为空");
-            return;
-        }
         if (null == paramParam.getPort()) {
             result.setMessage("开放接口的端口不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getAsrtype())){
-            result.setMessage("服务类型不能为空");
+        if (StringUtils.isBlank(paramParam.getEtypessid())) {
+            result.setMessage("类型ssid不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getAsrkey())){
-            result.setMessage("验证密匙不能为空");
+        if (StringUtils.isBlank(paramParam.getLanguage())){
+            result.setMessage("识别语种不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getEtypessid())){
-            result.setMessage("设备类型不能为空");
+        if (null == paramParam.getMaxnum()){
+            result.setMessage("并发数不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getTtstype())){
+            result.setMessage("tts服务类型不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getTtskeys())){
+            result.setMessage("TTS密匙集不能为空");
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtnum())){
@@ -151,17 +159,17 @@ public class AsrService extends BaseService {
 
         base_equipmentinfoMapper.insert(base_equipmentinfo);
 
-        Asr_et_ettype asr_et_ettype = new Asr_et_ettype();
-        asr_et_ettype.setLanguage(paramParam.getLanguage());
-        asr_et_ettype.setMaxnum(paramParam.getMaxnum());
-        asr_et_ettype.setPort(paramParam.getPort());
-        asr_et_ettype.setAsrtype(paramParam.getAsrtype());
-        asr_et_ettype.setAsrkey(paramParam.getAsrkey());
-        asr_et_ettype.setExplain(paramParam.getExplain());
-        asr_et_ettype.setEquipmentssid(base_equipmentinfo.getSsid());
-        asr_et_ettype.setSsid(OpenUtil.getUUID_32());
+        Tts_etinfo tts_etinfo = new Tts_etinfo();
+        tts_etinfo.setLanguage(paramParam.getLanguage());
+        tts_etinfo.setMaxnum(paramParam.getMaxnum());
+        tts_etinfo.setPort(paramParam.getPort());
+        tts_etinfo.setTtskeys(paramParam.getTtskeys());
+        tts_etinfo.setTtstype(paramParam.getTtstype());
+        tts_etinfo.setExplain(paramParam.getExplain());
+        tts_etinfo.setEquipmentssid(base_equipmentinfo.getSsid());
+        tts_etinfo.setSsid(OpenUtil.getUUID_32());
 
-        Integer insert = asr_etinfoMapper.insert(asr_et_ettype);
+        Integer insert = tts_etinfoMapper.insert(tts_etinfo);
         System.out.println("add_boot：" + insert);
 
         result.setData(insert);
@@ -169,10 +177,10 @@ public class AsrService extends BaseService {
     }
 
     //修改
-    public void updateAsr(RResult result, ReqParam<UpdateAsrParam> param){
+    public void updateTtsetinfo(RResult result, ReqParam<UpdateTtsetinfoParam> param){
 
         //请求参数转换
-        UpdateAsrParam paramParam = param.getParam();
+        UpdateTtsetinfoParam paramParam = param.getParam();
         if (null==paramParam){
             result.setMessage("参数为空");
             return;
@@ -182,7 +190,11 @@ public class AsrService extends BaseService {
             result.setMessage("修改的ssid不能为空");
             return;
         }
-        if (null == paramParam.getMaxnum()) {
+        if (StringUtils.isBlank(paramParam.getLanguage())){
+            result.setMessage("识别语种不能为空");
+            return;
+        }
+        if (null == paramParam.getMaxnum()){
             result.setMessage("并发数不能为空");
             return;
         }
@@ -190,16 +202,16 @@ public class AsrService extends BaseService {
             result.setMessage("开放接口的端口不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getAsrtype())){
-            result.setMessage("服务类型不能为空");
+        if (StringUtils.isBlank(paramParam.getEtypessid())) {
+            result.setMessage("类型ssid不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getAsrkey())){
-            result.setMessage("验证密匙不能为空");
+        if (StringUtils.isBlank(paramParam.getTtstype())){
+            result.setMessage("tts服务类型不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getEtypessid())){
-            result.setMessage("设备类型不能为空");
+        if (StringUtils.isBlank(paramParam.getTtskeys())){
+            result.setMessage("TTS密匙集不能为空");
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtnum())){
@@ -212,14 +224,14 @@ public class AsrService extends BaseService {
         }
 
         //查询审讯主机从里面拿到他的设备ssid
-        Asr_et_ettype asr_et_ettype = new Asr_et_ettype();
-        asr_et_ettype.setSsid(paramParam.getSsid());
-        Asr_etinfo asr_etinfo = asr_etinfoMapper.selectOne(asr_et_ettype);
+        Tts_etinfo tts_etinfo = new Tts_etinfo();
+        tts_etinfo.setSsid(paramParam.getSsid());
+        Tts_etinfo ttsEtinfo = tts_etinfoMapper.selectOne(tts_etinfo);
 
 
         //删除设备再新增，不然就是修改那个设备
         EntityWrapper ew2 = new EntityWrapper();
-        ew2.eq("ssid", asr_etinfo.getEquipmentssid());
+        ew2.eq("ssid", ttsEtinfo.getEquipmentssid());
 
         Base_equipmentinfo equipmentinfo = new Base_equipmentinfo();
         equipmentinfo.setEtnum(paramParam.getEtnum());
@@ -231,28 +243,27 @@ public class AsrService extends BaseService {
         EntityWrapper ew = new EntityWrapper();
         ew.eq("ssid", paramParam.getSsid());
 
-        Asr_et_ettype asrEtEttype = new Asr_et_ettype();
-        asrEtEttype.setLanguage(paramParam.getLanguage());
-        asrEtEttype.setMaxnum(paramParam.getMaxnum());
-        asrEtEttype.setPort(paramParam.getPort());
-        asrEtEttype.setAsrtype(paramParam.getAsrtype());
-        asrEtEttype.setAsrkey(paramParam.getAsrkey());
-        asrEtEttype.setExplain(paramParam.getExplain());
-        asrEtEttype.setEquipmentssid(equipmentinfo.getSsid());
+        Tts_etinfo etinfo = new Tts_etinfo();
+        etinfo.setLanguage(paramParam.getLanguage());
+        etinfo.setMaxnum(paramParam.getMaxnum());
+        etinfo.setPort(paramParam.getPort());
+        etinfo.setTtskeys(paramParam.getTtskeys());
+        etinfo.setTtstype(paramParam.getTtstype());
+        etinfo.setExplain(paramParam.getExplain());
+        etinfo.setEquipmentssid(equipmentinfo.getSsid());
 
-        Integer update = asr_etinfoMapper.update(asrEtEttype, ew);
+        Integer update = tts_etinfoMapper.update(etinfo, ew);
         System.out.println("update_boot：" + update);
 
         result.setData(update);
         changeResultToSuccess(result);
-
     }
 
     //删除
-    public void delAsr(RResult result, ReqParam<AsrParam> param){
+    public void delTtsetinfo(RResult result, ReqParam<TtsetinfoParam> param){
 
         //请求参数转换
-        AsrParam paramParam = param.getParam();
+        TtsetinfoParam paramParam = param.getParam();
         if (null==paramParam){
             result.setMessage("参数为空");
             return;
@@ -264,20 +275,20 @@ public class AsrService extends BaseService {
         }
 
         //查询审讯主机从里面拿到他的设备ssid
-        Asr_et_ettype asr_et_ettype = new Asr_et_ettype();
-        asr_et_ettype.setSsid(paramParam.getSsid());
-        Asr_etinfo asr_etinfo = asr_etinfoMapper.selectOne(asr_et_ettype);
+        Tts_etinfo tts_etinfo = new Tts_etinfo();
+        tts_etinfo.setSsid(paramParam.getSsid());
+        Tts_etinfo ttsEtinfo = tts_etinfoMapper.selectOne(tts_etinfo);
 
         EntityWrapper ew2 = new EntityWrapper();
-        ew2.eq("ssid", asr_etinfo.getEquipmentssid());
+        ew2.eq("ssid", ttsEtinfo.getEquipmentssid());
         base_equipmentinfoMapper.delete(ew2);
 
         EntityWrapper ew = new EntityWrapper();
         ew.eq("ssid", paramParam.getSsid());
-        Integer delete = asr_etinfoMapper.delete(ew);
+        Integer delete = tts_etinfoMapper.delete(ew);
 
         result.setData(delete);
         changeResultToSuccess(result);
-    }
 
+    }
 }

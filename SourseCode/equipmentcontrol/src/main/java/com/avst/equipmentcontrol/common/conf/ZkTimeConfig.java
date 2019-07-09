@@ -109,8 +109,6 @@ public class ZkTimeConfig implements ApplicationRunner {
             }
         } catch (Exception e) {
             LogUtil.intoLog(4,this.getClass(),"getControlTime ZkTimeConfig。run 请求异常");
-        } finally {
-            System.out.println("结束");
         }
 
     }

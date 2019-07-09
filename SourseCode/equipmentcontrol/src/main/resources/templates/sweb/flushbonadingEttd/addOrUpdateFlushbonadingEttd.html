@@ -74,10 +74,9 @@
 <script  th:inline="javascript">
     var INIT_CLIENT;
     var INIT_CLIENTKEY;
+    var etypessid = getQueryString("etypessid");
+    var ssid = getQueryString("ssid");
     $(function(){
-
-        ssid = getQueryString("ssid");
-        MasterSsid = getQueryString("masterssid");
         if(ssid){
             getFlushbonadingEttdById(ssid);
         }

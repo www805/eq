@@ -4,6 +4,7 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.entity.Tts_et
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.entity.param.TTS_et_ettype;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -34,4 +35,21 @@ public interface Tts_etinfoMapper extends BaseMapper<Tts_etinfo> {
             " left join base_equipmentinfo et on aet.equipmentssid=et.ssid" +
             " left join base_ettype ett on et.etypessid=ett.ssid")
     public List<TTS_et_ettype> getttsinfoList();
+
+    //带分页查询
+    @Select("select aet.*,et.etnum,et.etip,et.etypessid,ett.ettypenum from tts_etinfo aet " +
+            " left join base_equipmentinfo et on aet.equipmentssid=et.ssid" +
+            " left join base_ettype ett on et.etypessid=ett.ssid" +
+            " where 1=1 ${ew.sqlSegment}")
+    public List<TTS_et_ettype> getttsinfoListPage(Page page, @Param("ew") EntityWrapper ew);
+
+
+    //查询总数量
+    @Select("select count(aet.id) from tts_etinfo aet " +
+            " left join base_equipmentinfo et on aet.equipmentssid=et.ssid" +
+            " left join base_ettype ett on et.etypessid=ett.ssid" +
+            " where 1=1 ${ew.sqlSegment}")
+    public int getttsinfoCount(@Param("ew") EntityWrapper ew);
+
+
 }

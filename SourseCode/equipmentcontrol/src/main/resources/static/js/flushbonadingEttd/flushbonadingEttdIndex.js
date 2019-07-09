@@ -1,4 +1,3 @@
-var ssid;
 var MasterSsid;
 
 function getFlushbonadingEttdList_init(currPage,pageSize) {

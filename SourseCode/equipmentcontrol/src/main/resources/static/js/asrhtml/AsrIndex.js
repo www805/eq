@@ -1,4 +1,3 @@
-var ssid;
 
 function getAsrList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -7,7 +6,6 @@ function getAsrList_init(currPage,pageSize) {
     var port=$("input[name='port']").val();
     var asrkey=$("input[name='asrkey']").val();
     var etnum=$("input[name='etnum']").val();
-    var etypessid=$("#etypessid").val();
     var data={
         token:INIT_CLIENTKEY,
         param:{
@@ -24,7 +22,7 @@ function getAsrList_init(currPage,pageSize) {
     ajaxSubmitByJson(url,data,callAsrList);
 }
 
-function AsrIndex(language, port, asrkey, etnum, etypessid, currPage, pageSize) {
+function AsrIndex(language, port, asrkey, etnum, currPage, pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
     var url = getUrl_manageZk().getAsrList;
     var data = {
@@ -78,19 +76,6 @@ function delAsr(ssidd) {
 
 }
 
-//查询设备类型
-function getBaseEttype() {
-    // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypeById);
-    var url = getUrl_manageZk().getFlushbonadingBaseEttype;
-    var data={
-        token:INIT_CLIENTKEY,
-        param:{
-            ssid: ssid
-        }
-    };
-    ajaxSubmitByJson(url,data,callBaseEttype);
-}
-
 function AddOrUpdateAsr(version) {
     // var url=getActionURL(getactionid_manage().templateTypeList_updateTemplateType);
 
@@ -103,7 +88,6 @@ function AddOrUpdateAsr(version) {
     var asrkey=$("input[name='asrkey']").val();
     var etnum=$("input[name='etnum']").val();
     var etip=$("input[name='etip']").val();
-    var etypessid=$("#etypessid").val();
     var explain=$("textarea[name='explain']").val();
     if (!isNotEmpty(ssid)) {
         //添加
@@ -163,21 +147,6 @@ function callAsrList(data){
     }
 }
 
-function callBaseEttype(data){
-    if(null!=data&&data.actioncode=='SUCCESS'){
-        if (isNotEmpty(data.data)){
-            var ettypeList = data.data.ettypeList;
-            var ettypeListHTML = $("#etypessid");
-            for (var i = 0; i < ettypeList.length; i++) {
-                var ettype = ettypeList[i];
-                ettypeListHTML.append("<option value='" + ettype.ssid + "'>" + ettype.explain + "</option>");
-            }
-        }
-    }else{
-        layer.msg(data.message,{icon: 2});
-    }
-}
-
 function callAsrById(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data.data)){
@@ -188,22 +157,10 @@ function callAsrById(data){
             $("input[name='port']").val(asr.port);
             $("input[name='asrtype']").val(asr.asrtype);
             $("input[name='asrkey']").val(asr.asrkey);
-            $("input[name='etypessid']").val(asr.etypessid);
             $("input[name='etnum']").val(asr.etnum);
             $("input[name='etip']").val(asr.etip);
             $("#explain").text(asr.explain);
 
-            var ettypeList = asr.ettypeList;
-            var ettypeListHTML = "";
-            for (var i = 0; i < ettypeList.length; i++) {
-                var ettype = ettypeList[i];
-                if(asr.etypessid == ettype.ssid){
-                    ettypeListHTML += "<option selected value='" + ettype.ssid + "'>" + ettype.explain + "</option>";
-                }else{
-                    ettypeListHTML += "<option value='" + ettype.ssid + "'>" + ettype.explain + "</option>";
-                }
-            }
-            $("#etypessid").html(ettypeListHTML);
         }
     }else{
         layer.msg(data.message,{icon: 2});
@@ -239,7 +196,7 @@ function getAsrListParam() {
     }  else if (len == 2) {
         AsrIndex('', arguments[0], arguments[1]);
     } else if (len > 2) {
-        AsrIndex(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5], arguments[6]);
+        AsrIndex(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
     }
 }
 
@@ -260,7 +217,6 @@ function showpagetohtml(){
         arrparam[1]=port;
         arrparam[2]=asrkey;
         arrparam[3]=etnum;
-        arrparam[4]=etypessid;
         showpage("paging",arrparam,'getPolygraphListParam',currPage,pageCount,pageSize);
     }
 }

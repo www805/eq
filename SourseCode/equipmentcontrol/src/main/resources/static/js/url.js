@@ -60,6 +60,12 @@ function getUrl_manageZk() {
 		updateStorage:getPath()+"/Storage/updateStorage",
 		delStorage:getPath()+"/Storage/delStorage",
 
+		getTtsetinfoList:getPath()+"/ttsetinfo/getTtsetinfoList",
+		getTtsetinfoById:getPath()+"/ttsetinfo/getTtsetinfoById",
+		addTtsetinfo:getPath()+"/ttsetinfo/addTtsetinfo",
+		updateTtsetinfo:getPath()+"/ttsetinfo/updateTtsetinfo",
+		delTtsetinfo:getPath()+"/ttsetinfo/delTtsetinfo",
+
 		getFlushbonadingEttdList:getPath()+"/FlushbonadingEttd/getFlushbonadingEttdList",
 		getFlushbonadingEttdById:getPath()+"/FlushbonadingEttd/getFlushbonadingEttdById",
 		updateFlushbonadingEttd:getPath()+"/FlushbonadingEttd/updateFlushbonadingEttd",

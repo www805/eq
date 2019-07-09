@@ -31,12 +31,15 @@ public class SchedulerZk {
     @Value("${control.servser.url}")
     private String url;
 
-    //每个小时的第五分钟执行
+    @Value("${control.servser.loginusername}")
+    private String loginusername;
+
+    @Value("${control.servser.loginpassword}")
+    private String loginpassword;
 
     /**
      * 10秒心跳一次
      */
-//    @Scheduled(cron = "0 05 1/1 * * *")
     @Scheduled(fixedRate = 10000)
     public void testTasks() {
 
@@ -46,21 +49,19 @@ public class SchedulerZk {
         controlInfoParamVO.setServername(servername);//服务器注册名
         controlInfoParamVO.setServertitle("设备系统");//服务器中文名
         controlInfoParamVO.setUrl(url);
-        controlInfoParamVO.setLoginusername("admin");
-        controlInfoParamVO.setLoginpassword("admin123");
+        controlInfoParamVO.setLoginusername(loginusername);
+        controlInfoParamVO.setLoginpassword(loginpassword);
         controlInfoParamVO.setTotal_item(4);
         controlInfoParamVO.setUse_item(4);
 //        controlInfoParamVO.setCreatetime(DateUtil.getDateAndMinute());//设置当前时间
         controlInfoParamVO.setStatus(1);//状态
-
-//        System.out.println(controlInfoParamVO);
 
         param.setParam(controlInfoParamVO);
 
         try {
             RResult heartbeat = zkControl.getHeartbeat(param);
         } catch (Exception e) {
-            LogUtil.intoLog(4,this.getClass(),"zkControl.getHeartbeat 请求异常");
+            LogUtil.intoLog(4,this.getClass(),"Scheduler.testTasks is error, 上报心跳到总控失败");
         }
     }
 
