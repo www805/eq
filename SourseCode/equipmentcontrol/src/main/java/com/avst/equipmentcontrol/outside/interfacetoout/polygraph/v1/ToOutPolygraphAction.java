@@ -1,14 +1,10 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.polygraph.v1;
 
-import com.avst.equipmentcontrol.common.conf.FDType;
 import com.avst.equipmentcontrol.common.conf.PHType;
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.addOrUpdateToOutFlushbonadingParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.getToOutFlushbonadingListParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service.ToOutFlushbonadingServiceImpl;
 import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.addOrUpdateToOutPolygraphParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.getToOutPolygraphListParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.v1.service.ToOutPolygraphServiceImpl;

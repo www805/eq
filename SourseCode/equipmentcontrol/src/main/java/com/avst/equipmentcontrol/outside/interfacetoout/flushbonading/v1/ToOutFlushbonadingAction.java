@@ -1,14 +1,12 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1;
 
 import com.avst.equipmentcontrol.common.conf.FDType;
-import com.avst.equipmentcontrol.common.conf.PHType;
-import com.avst.equipmentcontrol.common.conf.SSType;
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.addOrUpdateToOutFlushbonadingParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.getToOutFlushbonadingListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.AddOrUpdateToOutFlushbonadingParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetToOutFlushbonadingListParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service.ToOutFlushbonadingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,10 +33,10 @@ public class ToOutFlushbonadingAction extends BaseAction {
     //查询
     @RequestMapping("/getToOutFlushbonadingList")
     @ResponseBody
-    public RResult getToOutFlushbonadingList(@RequestBody ReqParam<getToOutFlushbonadingListParam> param){
+    public RResult getToOutFlushbonadingList(@RequestBody ReqParam<GetToOutFlushbonadingListParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            getToOutFlushbonadingListParam pParam=param.getParam();
+            GetToOutFlushbonadingListParam pParam=param.getParam();
             if(null != pParam.getFdType()){
                 result=getToOutService(pParam.getFdType()).getToOutFlushbonadingList(pParam,result);
             }
@@ -50,10 +48,10 @@ public class ToOutFlushbonadingAction extends BaseAction {
     //单个查询
     @RequestMapping("/getToOutFlushbonadingById")
     @ResponseBody
-    public RResult getToOutFlushbonadingById(@RequestBody ReqParam<getToOutFlushbonadingListParam> param){
+    public RResult getToOutFlushbonadingById(@RequestBody ReqParam<GetToOutFlushbonadingListParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            getToOutFlushbonadingListParam pParam=param.getParam();
+            GetToOutFlushbonadingListParam pParam=param.getParam();
             if(null != pParam.getFdType()){
                 result=getToOutService(pParam.getFdType()).getToOutFlushbonadingById(pParam,result);
             }
@@ -65,10 +63,10 @@ public class ToOutFlushbonadingAction extends BaseAction {
     //新增
     @RequestMapping("/addToOutFlushbonading")
     @ResponseBody
-    public RResult addToOutFlushbonading(@RequestBody ReqParam<addOrUpdateToOutFlushbonadingParam> param){
+    public RResult addToOutFlushbonading(@RequestBody ReqParam<AddOrUpdateToOutFlushbonadingParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            addOrUpdateToOutFlushbonadingParam pParam=param.getParam();
+            AddOrUpdateToOutFlushbonadingParam pParam=param.getParam();
             if(null != pParam.getFdType()){
                 result=getToOutService(pParam.getFdType()).addToOutFlushbonading(pParam,result);
             }
@@ -80,10 +78,10 @@ public class ToOutFlushbonadingAction extends BaseAction {
     //修改
     @RequestMapping("/updateToOutFlushbonading")
     @ResponseBody
-    public RResult updateToOutFlushbonading(@RequestBody ReqParam<addOrUpdateToOutFlushbonadingParam> param){
+    public RResult updateToOutFlushbonading(@RequestBody ReqParam<AddOrUpdateToOutFlushbonadingParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            addOrUpdateToOutFlushbonadingParam pParam=param.getParam();
+            AddOrUpdateToOutFlushbonadingParam pParam=param.getParam();
             if(null != pParam.getFdType()){
                 result=getToOutService(pParam.getFdType()).updateToOutFlushbonading(pParam,result);
             }

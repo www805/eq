@@ -48,7 +48,6 @@ public class SSChecckDataThread extends  Thread{
         LogUtil.intoLog(this.getClass(),savebasepath+"--savebasepath filename："+filename);
 
         while(bool){
-
             if(!bool){
                 LogUtil.intoLog(this.getClass(),"SSChecckDataThread 被主动中止--filename："+filename);
 
