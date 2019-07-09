@@ -2,7 +2,7 @@ package com.avst.equipmentcontrol.outside.interfacetoout.base.req;
 
 import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.BaseParam;
 
-public class getToOutEttypeListParam {
+public class GetToOutEttypeListParam {
 
     private String type;//测谎仪请求类型 avst PH_AVST
 

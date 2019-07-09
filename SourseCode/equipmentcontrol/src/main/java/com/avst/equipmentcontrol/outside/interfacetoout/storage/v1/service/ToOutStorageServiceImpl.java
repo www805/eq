@@ -6,8 +6,8 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.addOrUpdateToOutStorageParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.getToOutStorageListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.AddOrUpdateToOutStorageParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.GetToOutStorageListParam;
 import com.avst.equipmentcontrol.web.req.storage.StorageParam;
 import com.avst.equipmentcontrol.web.req.storage.UpdateStorageParam;
 import com.avst.equipmentcontrol.web.service.StorageService;
@@ -30,7 +30,7 @@ public class ToOutStorageServiceImpl extends BaseService implements ToOutStorage
 
     //查询列表
     @Override
-    public RResult getToOutStorageList(getToOutStorageListParam param, RResult result) {
+    public RResult getToOutStorageList(GetToOutStorageListParam param, RResult result) {
 
         ReqParam<StorageParam> reqParam = new ReqParam<StorageParam>();
 
@@ -50,7 +50,7 @@ public class ToOutStorageServiceImpl extends BaseService implements ToOutStorage
 
     //查询单个
     @Override
-    public RResult getToOutStorageById(getToOutStorageListParam param, RResult result) {
+    public RResult getToOutStorageById(GetToOutStorageListParam param, RResult result) {
 
         ReqParam<StorageParam> reqParam = new ReqParam<StorageParam>();
 
@@ -65,7 +65,7 @@ public class ToOutStorageServiceImpl extends BaseService implements ToOutStorage
 
     //新增
     @Override
-    public RResult addToOutStorage(addOrUpdateToOutStorageParam param, RResult result) {
+    public RResult addToOutStorage(AddOrUpdateToOutStorageParam param, RResult result) {
 
         ReqParam<UpdateStorageParam> reqParam = new ReqParam<UpdateStorageParam>();
 
@@ -87,7 +87,7 @@ public class ToOutStorageServiceImpl extends BaseService implements ToOutStorage
 
     //修改
     @Override
-    public RResult updateToOutStorage(addOrUpdateToOutStorageParam param, RResult result) {
+    public RResult updateToOutStorage(AddOrUpdateToOutStorageParam param, RResult result) {
 
         ReqParam<UpdateStorageParam> reqParam = new ReqParam<UpdateStorageParam>();
 
@@ -110,7 +110,7 @@ public class ToOutStorageServiceImpl extends BaseService implements ToOutStorage
 
     //根据iid查询
     @Override
-    public RResult getToOutStorageByiid(getToOutStorageListParam param, RResult result) {
+    public RResult getToOutStorageByiid(GetToOutStorageListParam param, RResult result) {
 
         //请求参数转换
         if (null==param){

@@ -2,7 +2,7 @@ package com.avst.equipmentcontrol.outside.interfacetoout.base.req;
 
 import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.BaseParam;
 
-public class addOrUpdateToOutEttypeParam {
+public class AddOrUpdateToOutEttypeParam {
 
     private String type;
     private String ettypenum;

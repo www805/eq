@@ -1,13 +1,12 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.storage.v1;
 
-import com.avst.equipmentcontrol.common.conf.PHType;
 import com.avst.equipmentcontrol.common.conf.SSType;
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.addOrUpdateToOutStorageParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.getToOutStorageListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.AddOrUpdateToOutStorageParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.GetToOutStorageListParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutStorageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,10 +33,10 @@ public class ToOutStorageAction extends BaseAction {
     //查询
     @RequestMapping("/getToOutStorageList")
     @ResponseBody
-    public RResult getToOutStorageList(@RequestBody ReqParam<getToOutStorageListParam> param){
+    public RResult getToOutStorageList(@RequestBody ReqParam<GetToOutStorageListParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            getToOutStorageListParam pParam=param.getParam();
+            GetToOutStorageListParam pParam=param.getParam();
             if(null != pParam.getSsType()){
                 result=getToOutService(pParam.getSsType()).getToOutStorageList(pParam,result);
             }
@@ -49,10 +48,10 @@ public class ToOutStorageAction extends BaseAction {
     //单个查询
     @RequestMapping("/getToOutStorageById")
     @ResponseBody
-    public RResult getToOutStorageById(@RequestBody ReqParam<getToOutStorageListParam> param){
+    public RResult getToOutStorageById(@RequestBody ReqParam<GetToOutStorageListParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            getToOutStorageListParam pParam=param.getParam();
+            GetToOutStorageListParam pParam=param.getParam();
             if(null != pParam.getSsType()){
                 result=getToOutService(pParam.getSsType()).getToOutStorageById(pParam,result);
             }
@@ -64,10 +63,10 @@ public class ToOutStorageAction extends BaseAction {
     //新增
     @RequestMapping("/addToOutStorage")
     @ResponseBody
-    public RResult addToOutStorage(@RequestBody ReqParam<addOrUpdateToOutStorageParam> param){
+    public RResult addToOutStorage(@RequestBody ReqParam<AddOrUpdateToOutStorageParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            addOrUpdateToOutStorageParam pParam=param.getParam();
+            AddOrUpdateToOutStorageParam pParam=param.getParam();
             if(null != pParam.getSsType()){
                 result=getToOutService(pParam.getSsType()).addToOutStorage(pParam,result);
             }
@@ -79,10 +78,10 @@ public class ToOutStorageAction extends BaseAction {
     //修改
     @RequestMapping("/updateToOutStorage")
     @ResponseBody
-    public RResult updateToOutStorage(@RequestBody ReqParam<addOrUpdateToOutStorageParam> param){
+    public RResult updateToOutStorage(@RequestBody ReqParam<AddOrUpdateToOutStorageParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            addOrUpdateToOutStorageParam pParam=param.getParam();
+            AddOrUpdateToOutStorageParam pParam=param.getParam();
             if(null != pParam.getSsType()){
                 result=getToOutService(pParam.getSsType()).updateToOutStorage(pParam,result);
             }
@@ -95,10 +94,10 @@ public class ToOutStorageAction extends BaseAction {
     //根据iid查询
     @RequestMapping("/getToOutStorageByiid")
     @ResponseBody
-    public RResult getToOutStorageByiid(@RequestBody ReqParam<getToOutStorageListParam> param){
+    public RResult getToOutStorageByiid(@RequestBody ReqParam<GetToOutStorageListParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            getToOutStorageListParam pParam=param.getParam();
+            GetToOutStorageListParam pParam=param.getParam();
             if(null != pParam.getSsType()){
                 result=getToOutService(pParam.getSsType()).getToOutStorageByiid(pParam,result);
             }

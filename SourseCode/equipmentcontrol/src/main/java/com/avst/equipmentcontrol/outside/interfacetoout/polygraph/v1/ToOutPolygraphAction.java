@@ -5,8 +5,8 @@ import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.addOrUpdateToOutPolygraphParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.getToOutPolygraphListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.AddOrUpdateToOutPolygraphParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.GetToOutPolygraphListParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.v1.service.ToOutPolygraphServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,10 +33,10 @@ public class ToOutPolygraphAction extends BaseAction {
     //查询
     @RequestMapping("/getToOutPolygraphList")
     @ResponseBody
-    public RResult getToOutPolygraphList(@RequestBody ReqParam<getToOutPolygraphListParam> param){
+    public RResult getToOutPolygraphList(@RequestBody ReqParam<GetToOutPolygraphListParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            getToOutPolygraphListParam pParam=param.getParam();
+            GetToOutPolygraphListParam pParam=param.getParam();
             if(null != pParam.getPhType()){
                 result=getToOutService(pParam.getPhType()).getToOutPolygraphList(pParam,result);
             }
@@ -48,10 +48,10 @@ public class ToOutPolygraphAction extends BaseAction {
     //单个查询
     @RequestMapping("/getToOutPolygraphById")
     @ResponseBody
-    public RResult getToOutPolygraphById(@RequestBody ReqParam<getToOutPolygraphListParam> param){
+    public RResult getToOutPolygraphById(@RequestBody ReqParam<GetToOutPolygraphListParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            getToOutPolygraphListParam pParam=param.getParam();
+            GetToOutPolygraphListParam pParam=param.getParam();
             if(null != pParam.getPhType()){
                 result=getToOutService(pParam.getPhType()).getToOutPolygraphById(pParam,result);
             }
@@ -63,10 +63,10 @@ public class ToOutPolygraphAction extends BaseAction {
     //新增
     @RequestMapping("/addToOutPolygraph")
     @ResponseBody
-    public RResult addToOutPolygraph(@RequestBody ReqParam<addOrUpdateToOutPolygraphParam> param){
+    public RResult addToOutPolygraph(@RequestBody ReqParam<AddOrUpdateToOutPolygraphParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            addOrUpdateToOutPolygraphParam pParam=param.getParam();
+            AddOrUpdateToOutPolygraphParam pParam=param.getParam();
             if(null != pParam.getPhType()){
                 result=getToOutService(pParam.getPhType()).addToOutPolygraph(pParam,result);
             }
@@ -78,10 +78,10 @@ public class ToOutPolygraphAction extends BaseAction {
     //修改
     @RequestMapping("/updateToOutPolygraph")
     @ResponseBody
-    public RResult updateToOutPolygraph(@RequestBody ReqParam<addOrUpdateToOutPolygraphParam> param){
+    public RResult updateToOutPolygraph(@RequestBody ReqParam<AddOrUpdateToOutPolygraphParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            addOrUpdateToOutPolygraphParam pParam=param.getParam();
+            AddOrUpdateToOutPolygraphParam pParam=param.getParam();
             if(null != pParam.getPhType()){
                 result=getToOutService(pParam.getPhType()).updateToOutPolygraph(pParam,result);
             }

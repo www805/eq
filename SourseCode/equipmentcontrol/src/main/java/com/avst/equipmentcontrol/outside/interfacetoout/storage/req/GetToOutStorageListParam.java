@@ -1,6 +1,6 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.storage.req;
 
-public class getToOutStorageListParam extends BaseParam{
+public class GetToOutStorageListParam extends BaseParam{
 
     private String iid;
     private String ssid;

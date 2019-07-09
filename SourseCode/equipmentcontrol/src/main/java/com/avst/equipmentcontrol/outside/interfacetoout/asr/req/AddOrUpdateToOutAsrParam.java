@@ -1,9 +1,10 @@
-package com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req;
+package com.avst.equipmentcontrol.outside.interfacetoout.asr.req;
 
-public class addOrUpdateToOutPolygraphParam extends BaseParam{
+
+public class AddOrUpdateToOutAsrParam extends BaseReqParam {
 
     /**
-     * 测谎表
+     * 识别服务器表
      */
     private Integer id;
 
@@ -13,14 +14,24 @@ public class addOrUpdateToOutPolygraphParam extends BaseParam{
     private String equipmentssid;
 
     /**
-     * 服务类型
+     * 识别语种
      */
-    private String polygraphtype;
+    private String language;
 
     /**
-     * 验证密匙
+     * 并发数
      */
-    private String polygraphkey;
+    private Integer maxnum;
+
+    /**
+     * 语音服务类型
+     */
+    private String asrtype;
+
+    /**
+     * 识别验证密匙
+     */
+    private String asrkey;
 
     /**
      * 服务中文说明
@@ -30,7 +41,6 @@ public class addOrUpdateToOutPolygraphParam extends BaseParam{
     private String ssid;
 
     private Integer port;
-
 
     /**
      * 设备编号
@@ -68,20 +78,36 @@ public class addOrUpdateToOutPolygraphParam extends BaseParam{
         this.equipmentssid = equipmentssid;
     }
 
-    public String getPolygraphtype() {
-        return polygraphtype;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setPolygraphtype(String polygraphtype) {
-        this.polygraphtype = polygraphtype;
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
-    public String getPolygraphkey() {
-        return polygraphkey;
+    public Integer getMaxnum() {
+        return maxnum;
     }
 
-    public void setPolygraphkey(String polygraphkey) {
-        this.polygraphkey = polygraphkey;
+    public void setMaxnum(Integer maxnum) {
+        this.maxnum = maxnum;
+    }
+
+    public String getAsrtype() {
+        return asrtype;
+    }
+
+    public void setAsrtype(String asrtype) {
+        this.asrtype = asrtype;
+    }
+
+    public String getAsrkey() {
+        return asrkey;
+    }
+
+    public void setAsrkey(String asrkey) {
+        this.asrkey = asrkey;
     }
 
     public String getExplain() {

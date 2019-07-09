@@ -1,11 +1,10 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.polygraph.v1.service;
 
-import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.param.PolygraphInfo;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.addOrUpdateToOutPolygraphParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.getToOutPolygraphListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.AddOrUpdateToOutPolygraphParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.GetToOutPolygraphListParam;
 import com.avst.equipmentcontrol.web.req.polygraph.PolygraphParam;
 import com.avst.equipmentcontrol.web.req.polygraph.UpdatePolygraphParam;
 import com.avst.equipmentcontrol.web.service.PolygraphService;
@@ -23,7 +22,7 @@ public class ToOutPolygraphServiceImpl implements ToOutPolygraphService {
 
     //查询列表
     @Override
-    public RResult getToOutPolygraphList(getToOutPolygraphListParam param, RResult result) {
+    public RResult getToOutPolygraphList(GetToOutPolygraphListParam param, RResult result) {
 
         ReqParam<PolygraphParam> reqParam = new ReqParam<PolygraphParam>();
 
@@ -43,7 +42,7 @@ public class ToOutPolygraphServiceImpl implements ToOutPolygraphService {
 
     //查询单个
     @Override
-    public RResult getToOutPolygraphById(getToOutPolygraphListParam param, RResult result) {
+    public RResult getToOutPolygraphById(GetToOutPolygraphListParam param, RResult result) {
 
         ReqParam<PolygraphParam> reqParam = new ReqParam<PolygraphParam>();
 
@@ -58,7 +57,7 @@ public class ToOutPolygraphServiceImpl implements ToOutPolygraphService {
 
     //新增
     @Override
-    public RResult addToOutPolygraph(addOrUpdateToOutPolygraphParam param, RResult result) {
+    public RResult addToOutPolygraph(AddOrUpdateToOutPolygraphParam param, RResult result) {
 
         ReqParam<UpdatePolygraphParam> reqParam = new ReqParam<UpdatePolygraphParam>();
 
@@ -79,7 +78,7 @@ public class ToOutPolygraphServiceImpl implements ToOutPolygraphService {
 
     //修改
     @Override
-    public RResult updateToOutPolygraph(addOrUpdateToOutPolygraphParam param, RResult result) {
+    public RResult updateToOutPolygraph(AddOrUpdateToOutPolygraphParam param, RResult result) {
 
         ReqParam<UpdatePolygraphParam> reqParam = new ReqParam<UpdatePolygraphParam>();
 

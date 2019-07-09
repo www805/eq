@@ -1,14 +1,11 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.base.v1;
 
-import com.avst.equipmentcontrol.common.conf.FDType;
-import com.avst.equipmentcontrol.common.conf.PHType;
-import com.avst.equipmentcontrol.common.conf.SSType;
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.base.req.addOrUpdateToOutEttypeParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.base.req.getToOutEttypeListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.base.req.AddOrUpdateToOutEttypeParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.base.req.GetToOutEttypeListParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.base.v1.service.ToOutEttypeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,10 +23,10 @@ public class ToOutEttypeAction extends BaseAction {
     //查询
     @RequestMapping("/getToOutEttypeList")
     @ResponseBody
-    public RResult getToOutEttypeList(@RequestBody ReqParam<getToOutEttypeListParam> param){
+    public RResult getToOutEttypeList(@RequestBody ReqParam<GetToOutEttypeListParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            getToOutEttypeListParam pParam=param.getParam();
+            GetToOutEttypeListParam pParam=param.getParam();
             result=toOutEttypeService.getToOutEttypeList(pParam,result);
         }
         result.setEndtime(DateUtil.getDateAndMinute());
@@ -39,10 +36,10 @@ public class ToOutEttypeAction extends BaseAction {
     //单个查询
     @RequestMapping("/getToOutEttypeById")
     @ResponseBody
-    public RResult getToOutEttypeById(@RequestBody ReqParam<getToOutEttypeListParam> param){
+    public RResult getToOutEttypeById(@RequestBody ReqParam<GetToOutEttypeListParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            getToOutEttypeListParam pParam=param.getParam();
+            GetToOutEttypeListParam pParam=param.getParam();
             result=toOutEttypeService.getToOutEttypeById(pParam,result);
         }
         result.setEndtime(DateUtil.getDateAndMinute());
@@ -52,10 +49,10 @@ public class ToOutEttypeAction extends BaseAction {
     //新增
     @RequestMapping("/addToOutEttype")
     @ResponseBody
-    public RResult addToOutEttype(@RequestBody ReqParam<addOrUpdateToOutEttypeParam> param){
+    public RResult addToOutEttype(@RequestBody ReqParam<AddOrUpdateToOutEttypeParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            addOrUpdateToOutEttypeParam pParam=param.getParam();
+            AddOrUpdateToOutEttypeParam pParam=param.getParam();
             result=toOutEttypeService.addToOutEttype(pParam,result);
         }
         result.setEndtime(DateUtil.getDateAndMinute());
@@ -65,10 +62,10 @@ public class ToOutEttypeAction extends BaseAction {
     //修改
     @RequestMapping("/updateToOutEttype")
     @ResponseBody
-    public RResult updateToOutEttype(@RequestBody ReqParam<addOrUpdateToOutEttypeParam> param){
+    public RResult updateToOutEttype(@RequestBody ReqParam<AddOrUpdateToOutEttypeParam> param){
         RResult result=this.createNewResultOfFail();
         if(null!=param.getParam()){
-            addOrUpdateToOutEttypeParam pParam=param.getParam();
+            AddOrUpdateToOutEttypeParam pParam=param.getParam();
             result=toOutEttypeService.updateToOutEttype(pParam,result);
         }
         result.setEndtime(DateUtil.getDateAndMinute());

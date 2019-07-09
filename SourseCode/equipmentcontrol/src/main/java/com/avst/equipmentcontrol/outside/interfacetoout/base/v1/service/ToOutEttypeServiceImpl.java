@@ -3,8 +3,8 @@ package com.avst.equipmentcontrol.outside.interfacetoout.base.v1.service;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_ettype;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.base.req.addOrUpdateToOutEttypeParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.base.req.getToOutEttypeListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.base.req.AddOrUpdateToOutEttypeParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.base.req.GetToOutEttypeListParam;
 import com.avst.equipmentcontrol.web.req.baseEttype.AddOrUpEttypeParam;
 import com.avst.equipmentcontrol.web.req.baseEttype.BaseEttypeParam;
 import com.avst.equipmentcontrol.web.service.BaseEttypeService;
@@ -22,7 +22,7 @@ public class ToOutEttypeServiceImpl implements ToOutEttypeService{
 
     //查询全部
     @Override
-    public RResult getToOutEttypeList(getToOutEttypeListParam param, RResult result) {
+    public RResult getToOutEttypeList(GetToOutEttypeListParam param, RResult result) {
 
         ReqParam<BaseEttypeParam> reqParam = new ReqParam<BaseEttypeParam>();
 
@@ -42,7 +42,7 @@ public class ToOutEttypeServiceImpl implements ToOutEttypeService{
 
     //单个查询
     @Override
-    public RResult getToOutEttypeById(getToOutEttypeListParam param, RResult result) {
+    public RResult getToOutEttypeById(GetToOutEttypeListParam param, RResult result) {
 
         ReqParam<BaseEttypeParam> reqParam = new ReqParam<BaseEttypeParam>();
 
@@ -57,7 +57,7 @@ public class ToOutEttypeServiceImpl implements ToOutEttypeService{
 
     //新增
     @Override
-    public RResult addToOutEttype(addOrUpdateToOutEttypeParam param, RResult result) {
+    public RResult addToOutEttype(AddOrUpdateToOutEttypeParam param, RResult result) {
 
         ReqParam<AddOrUpEttypeParam> reqParam = new ReqParam<AddOrUpEttypeParam>();
 
@@ -74,7 +74,7 @@ public class ToOutEttypeServiceImpl implements ToOutEttypeService{
 
     //修改
     @Override
-    public RResult updateToOutEttype(addOrUpdateToOutEttypeParam param, RResult result) {
+    public RResult updateToOutEttype(AddOrUpdateToOutEttypeParam param, RResult result) {
 
         ReqParam<AddOrUpEttypeParam> reqParam = new ReqParam<AddOrUpEttypeParam>();
 

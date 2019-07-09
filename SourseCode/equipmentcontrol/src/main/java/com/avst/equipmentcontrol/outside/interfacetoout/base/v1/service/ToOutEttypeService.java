@@ -1,22 +1,22 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.base.v1.service;
 
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
-import com.avst.equipmentcontrol.outside.interfacetoout.base.req.addOrUpdateToOutEttypeParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.base.req.getToOutEttypeListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.base.req.AddOrUpdateToOutEttypeParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.base.req.GetToOutEttypeListParam;
 
 public interface ToOutEttypeService {
 
     //查询全部
-    public RResult getToOutEttypeList(getToOutEttypeListParam param, RResult result);
+    public RResult getToOutEttypeList(GetToOutEttypeListParam param, RResult result);
 
     //单个查询
-    public RResult getToOutEttypeById(getToOutEttypeListParam param, RResult result);
+    public RResult getToOutEttypeById(GetToOutEttypeListParam param, RResult result);
 
     //新增
-    public RResult addToOutEttype(addOrUpdateToOutEttypeParam param, RResult result);
+    public RResult addToOutEttype(AddOrUpdateToOutEttypeParam param, RResult result);
 
     //修改
-    public RResult updateToOutEttype(addOrUpdateToOutEttypeParam param, RResult result);
+    public RResult updateToOutEttype(AddOrUpdateToOutEttypeParam param, RResult result);
 
 
 }

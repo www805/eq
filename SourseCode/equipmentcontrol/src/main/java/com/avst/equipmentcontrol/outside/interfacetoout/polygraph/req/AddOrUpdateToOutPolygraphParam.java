@@ -1,35 +1,26 @@
-package com.avst.equipmentcontrol.outside.interfacetoout.storage.req;
+package com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req;
 
-public class addOrUpdateToOutStorageParam extends BaseParam {
+public class AddOrUpdateToOutPolygraphParam extends BaseParam{
 
     /**
-     * 存储设备表
+     * 测谎表
      */
     private Integer id;
 
     /**
      * 设备ssid
      */
-    private String mtssid;
-
-    private String sstype;
-
-    private Integer port;
+    private String equipmentssid;
 
     /**
-     * 存储总容量,MB为单位
+     * 服务类型
      */
-    private Integer totalcapacity;
+    private String polygraphtype;
 
     /**
-     * 存储已用容量,MB为单位
+     * 验证密匙
      */
-    private Integer usedcapacity;
-
-    /**
-     * 存储本地文件夹base路径
-     */
-    private String datasavebasepath;
+    private String polygraphkey;
 
     /**
      * 服务中文说明
@@ -37,6 +28,9 @@ public class addOrUpdateToOutStorageParam extends BaseParam {
     private String explain;
 
     private String ssid;
+
+    private Integer port;
+
 
     /**
      * 设备编号
@@ -58,7 +52,6 @@ public class addOrUpdateToOutStorageParam extends BaseParam {
      */
     private String ettypenum;
 
-
     public Integer getId() {
         return id;
     }
@@ -67,52 +60,28 @@ public class addOrUpdateToOutStorageParam extends BaseParam {
         this.id = id;
     }
 
-    public String getMtssid() {
-        return mtssid;
+    public String getEquipmentssid() {
+        return equipmentssid;
     }
 
-    public void setMtssid(String mtssid) {
-        this.mtssid = mtssid;
+    public void setEquipmentssid(String equipmentssid) {
+        this.equipmentssid = equipmentssid;
     }
 
-    public String getSstype() {
-        return sstype;
+    public String getPolygraphtype() {
+        return polygraphtype;
     }
 
-    public void setSstype(String sstype) {
-        this.sstype = sstype;
+    public void setPolygraphtype(String polygraphtype) {
+        this.polygraphtype = polygraphtype;
     }
 
-    public Integer getPort() {
-        return port;
+    public String getPolygraphkey() {
+        return polygraphkey;
     }
 
-    public void setPort(Integer port) {
-        this.port = port;
-    }
-
-    public Integer getTotalcapacity() {
-        return totalcapacity;
-    }
-
-    public void setTotalcapacity(Integer totalcapacity) {
-        this.totalcapacity = totalcapacity;
-    }
-
-    public Integer getUsedcapacity() {
-        return usedcapacity;
-    }
-
-    public void setUsedcapacity(Integer usedcapacity) {
-        this.usedcapacity = usedcapacity;
-    }
-
-    public String getDatasavebasepath() {
-        return datasavebasepath;
-    }
-
-    public void setDatasavebasepath(String datasavebasepath) {
-        this.datasavebasepath = datasavebasepath;
+    public void setPolygraphkey(String polygraphkey) {
+        this.polygraphkey = polygraphkey;
     }
 
     public String getExplain() {
@@ -129,6 +98,14 @@ public class addOrUpdateToOutStorageParam extends BaseParam {
 
     public void setSsid(String ssid) {
         this.ssid = ssid;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
     }
 
     public String getEtnum() {

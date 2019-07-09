@@ -3,11 +3,10 @@ package com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_et_ettype;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.addOrUpdateToOutAsrParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.getToOutAsrListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.AddOrUpdateToOutAsrParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.GetToOutAsrListParam;
 import com.avst.equipmentcontrol.web.req.asr.AsrParam;
 import com.avst.equipmentcontrol.web.req.asr.UpdateAsrParam;
-import com.avst.equipmentcontrol.web.req.baseEttype.BaseEttypeParam;
 import com.avst.equipmentcontrol.web.service.AsrService;
 import com.avst.equipmentcontrol.web.vo.asr.AsrVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class ToOutAsrServiceImpl implements ToOutAsrService {
 
     //查询列表
     @Override
-    public RResult getToOutAsrList(getToOutAsrListParam param, RResult result) {
+    public RResult getToOutAsrList(GetToOutAsrListParam param, RResult result) {
 
         ReqParam<AsrParam> reqParam = new ReqParam<AsrParam>();
 
@@ -43,7 +42,7 @@ public class ToOutAsrServiceImpl implements ToOutAsrService {
 
     //查询单个
     @Override
-    public RResult getToOutAsrById(getToOutAsrListParam param, RResult result) {
+    public RResult getToOutAsrById(GetToOutAsrListParam param, RResult result) {
 
         ReqParam<AsrParam> reqParam = new ReqParam<AsrParam>();
 
@@ -58,7 +57,7 @@ public class ToOutAsrServiceImpl implements ToOutAsrService {
 
     //新增
     @Override
-    public RResult addToOutAsr(addOrUpdateToOutAsrParam param, RResult result) {
+    public RResult addToOutAsr(AddOrUpdateToOutAsrParam param, RResult result) {
 
         ReqParam<UpdateAsrParam> reqParam = new ReqParam<UpdateAsrParam>();
 
@@ -81,7 +80,7 @@ public class ToOutAsrServiceImpl implements ToOutAsrService {
 
     //修改
     @Override
-    public RResult updateToOutAsr(addOrUpdateToOutAsrParam param, RResult result) {
+    public RResult updateToOutAsr(AddOrUpdateToOutAsrParam param, RResult result) {
 
         ReqParam<UpdateAsrParam> reqParam = new ReqParam<UpdateAsrParam>();
 

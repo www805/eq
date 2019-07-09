@@ -1,6 +1,6 @@
-package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req;
+package com.avst.equipmentcontrol.outside.interfacetoout.asr.req;
 
-public class GetToOutFlushbonadingEttdListParam extends BaseParam {
+public class GetToOutAsrListParam extends BaseReqParam {
 
     private String ssid;
 
