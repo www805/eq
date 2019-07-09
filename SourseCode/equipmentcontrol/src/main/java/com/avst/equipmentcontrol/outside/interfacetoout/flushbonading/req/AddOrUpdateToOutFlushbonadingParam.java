@@ -1,7 +1,5 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req;
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.enums.IdType;
 
 public class AddOrUpdateToOutFlushbonadingParam extends BaseParam {
 

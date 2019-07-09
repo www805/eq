@@ -2,7 +2,7 @@ package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req;
 
 public class GetToOutFlushbonadingEttdListParam extends BaseParam {
 
-    private String ssid;
+    private String ssid;//ssid
 
     public String getSsid() {
         return ssid;
