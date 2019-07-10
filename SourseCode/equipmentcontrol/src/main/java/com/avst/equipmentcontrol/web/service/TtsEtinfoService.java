@@ -118,10 +118,6 @@ public class TtsEtinfoService extends BaseService {
             return;
         }
 
-        if (null == paramParam.getPort()) {
-            result.setMessage("开放接口的端口不能为空");
-            return;
-        }
         if (StringUtils.isBlank(paramParam.getEtypessid())) {
             result.setMessage("类型ssid不能为空");
             return;
@@ -132,6 +128,10 @@ public class TtsEtinfoService extends BaseService {
         }
         if (null == paramParam.getMaxnum()){
             result.setMessage("并发数不能为空");
+            return;
+        }
+        if (null == paramParam.getPort()) {
+            result.setMessage("开放接口的端口不能为空");
             return;
         }
         if (StringUtils.isBlank(paramParam.getTtstype())){

@@ -114,6 +114,10 @@ public class AsrService extends BaseService {
             return;
         }
 
+        if (StringUtils.isBlank(paramParam.getLanguage())){
+            result.setMessage("识别语种不能为空");
+            return;
+        }
         if (null == paramParam.getMaxnum()) {
             result.setMessage("并发数不能为空");
             return;
@@ -184,6 +188,10 @@ public class AsrService extends BaseService {
 
         if (StringUtils.isBlank(paramParam.getSsid())){
             result.setMessage("修改的ssid不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getLanguage())){
+            result.setMessage("识别语种不能为空");
             return;
         }
         if (null == paramParam.getMaxnum()) {

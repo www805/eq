@@ -59,7 +59,7 @@ function delFlushbonading(ssidd) {
     var url = getUrl_manageZk().delFlushbonading;
     ssid = ssidd;
 
-    layer.confirm('真的要删除该审讯主机？', {
+    layer.confirm('真的要删除该审讯设备？', {
         btn: ['确定','取消'] //按钮
     }, function(){
         var data={
