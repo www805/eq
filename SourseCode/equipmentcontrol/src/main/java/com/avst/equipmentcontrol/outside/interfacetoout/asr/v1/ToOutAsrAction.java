@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.asr.v1;
 
+import com.avst.equipmentcontrol.common.conf.ASRType;
 import com.avst.equipmentcontrol.common.conf.SSType;
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
@@ -23,7 +24,7 @@ public class ToOutAsrAction extends BaseAction {
 
     private ToOutAsrServiceImpl getToOutService(String fdType){
         if(null!=fdType){
-            if(fdType.equals(SSType.AVST)){//设备控制
+            if(fdType.equals(ASRType.AVST)){//设备控制
                 return toOutAsrService;
             }
         }

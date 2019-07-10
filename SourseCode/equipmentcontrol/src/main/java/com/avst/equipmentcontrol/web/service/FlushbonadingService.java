@@ -253,6 +253,7 @@ public class FlushbonadingService extends BaseService {
         flushbonading_etinfo.setPasswd(paramParam.getPasswd());
         flushbonading_etinfo.setUploadbasepath(paramParam.getUploadbasepath());
         flushbonading_etinfo.setExplain(paramParam.getExplain());
+        flushbonading_etinfo.setSsid(paramParam.getSsid());
 
         Integer update = flushbonading_etinfoMapper.update(flushbonading_etinfo, ew);
         System.out.println("update_boot：" + update);

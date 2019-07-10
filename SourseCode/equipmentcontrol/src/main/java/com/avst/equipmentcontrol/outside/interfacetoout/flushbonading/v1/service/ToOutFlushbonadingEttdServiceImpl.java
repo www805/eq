@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service;
 
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.FlushbonadingEttd;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.AddOrUpdateToOutFlushbonadingEttdParam;
@@ -7,8 +8,11 @@ import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetToO
 import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttdParam;
 import com.avst.equipmentcontrol.web.req.flushbonadingEttd.UpdateFlushbonadingEttdParam;
 import com.avst.equipmentcontrol.web.service.FlushbonadingEttdService;
+import com.avst.equipmentcontrol.web.vo.flushbonadingEttd.FlushbonadingEttdVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ToOutFlushbonadingEttdServiceImpl implements ToOutFlushbonadingEttdService {
@@ -27,7 +31,11 @@ public class ToOutFlushbonadingEttdServiceImpl implements ToOutFlushbonadingEttd
         reqParam.setParam(flushbonadingEttdParam);
 
         flushbonadingEttdService.getFlushbonadingEttdList(result, reqParam);
-
+        if(!"FAIL".equals(result.getActioncode())){
+            FlushbonadingEttdVO data = (FlushbonadingEttdVO) result.getData();
+            List<FlushbonadingEttd> list = data.getPagelist();
+            result.setData(list);
+        }
         return result;
     }
 
