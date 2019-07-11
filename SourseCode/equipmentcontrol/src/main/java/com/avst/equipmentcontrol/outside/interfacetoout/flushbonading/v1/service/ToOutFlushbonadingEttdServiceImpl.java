@@ -1,20 +1,32 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service;
 
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_ettdMapper;
+import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.AddOrUpdateToOutFlushbonadingEttdParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.Avstmt_tduserParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetToOutFlushbonadingEttdByListParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetToOutFlushbonadingEttdListParam;
 import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttdParam;
 import com.avst.equipmentcontrol.web.req.flushbonadingEttd.UpdateFlushbonadingEttdParam;
 import com.avst.equipmentcontrol.web.service.FlushbonadingEttdService;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
-public class ToOutFlushbonadingEttdServiceImpl implements ToOutFlushbonadingEttdService {
+public class ToOutFlushbonadingEttdServiceImpl extends BaseService implements ToOutFlushbonadingEttdService {
 
     @Autowired
     private FlushbonadingEttdService flushbonadingEttdService;
+
+    @Autowired
+    private Flushbonading_ettdMapper flushbonading_ettdMapper;
 
     //查询列表
     @Override
@@ -83,5 +95,30 @@ public class ToOutFlushbonadingEttdServiceImpl implements ToOutFlushbonadingEttd
         return result;
     }
 
+
+    //通过会议通道ssid查询指定的直播地址
+    @Override
+    public RResult getFlushbonadingEttdByMcSsid(GetToOutFlushbonadingEttdByListParam param, RResult result) {
+
+        if (null == param.getPagelist() || param.getPagelist().size() == 0) {
+            result.setMessage("会议通道ssid不能为空");
+            return result;
+        }
+
+        List<Avstmt_tduserParam> pagelist = param.getPagelist();
+
+        for (Avstmt_tduserParam avstmt_tduserParam : pagelist) {
+
+            EntityWrapper ew = new EntityWrapper();
+            ew.eq("td.ssid", avstmt_tduserParam.getEquipmenttdssid());
+
+            String url = flushbonading_ettdMapper.getFlushbonadingEttdByMcSsid(ew);
+            avstmt_tduserParam.setLivingurl(url);
+        }
+
+        result.setData(pagelist);
+        changeResultToSuccess(result);
+        return result;
+    }
 
 }

@@ -2,6 +2,7 @@ package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.servic
 
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.AddOrUpdateToOutFlushbonadingEttdParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetToOutFlushbonadingEttdByListParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetToOutFlushbonadingEttdListParam;
 
 public interface ToOutFlushbonadingEttdService {
@@ -17,5 +18,8 @@ public interface ToOutFlushbonadingEttdService {
 
     //修改
     public RResult updateToOutFlushbonadingEttd(AddOrUpdateToOutFlushbonadingEttdParam param, RResult result);
+
+    //通过会议通道ssid查询指定的直播地址
+    public RResult getFlushbonadingEttdByMcSsid(GetToOutFlushbonadingEttdByListParam param, RResult result);
 
 }

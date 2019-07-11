@@ -42,4 +42,13 @@ public interface Flushbonading_ettdMapper extends BaseMapper<Flushbonading_ettd>
             " where 1=1 ${ew.sqlSegment}")
     public List<FlushbonadingEttd> getFlushbonadingEttdPage(Page page, @Param("ew") EntityWrapper ew);
 
+
+    //通过会议通道ssid查询指定的直播地址
+    @Select("select ti.livingurl from flushbonading_ettd td " +
+            " LEFT JOIN flushbonading_etinfo ti ON td.flushbonadingssid = ti.ssid " +
+            " where 1=1 ${ew.sqlSegment}")
+    public String getFlushbonadingEttdByMcSsid(@Param("ew") EntityWrapper ew);
+
+
+
 }

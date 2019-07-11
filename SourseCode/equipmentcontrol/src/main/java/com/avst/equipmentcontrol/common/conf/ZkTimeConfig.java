@@ -108,7 +108,7 @@ public class ZkTimeConfig implements ApplicationRunner {
 //                System.out.println("服务器获取到的时间：" + date);
             }
         } catch (Exception e) {
-            LogUtil.intoLog(4,this.getClass(),"getControlTime ZkTimeConfig。run 请求异常");
+            LogUtil.intoLog(4,this.getClass(),"getControlTime ZkTimeConfig。run 总控同步时间，请求异常");
         }
 
     }

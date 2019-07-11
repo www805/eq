@@ -6,6 +6,7 @@ import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.AddOrUpdateToOutFlushbonadingEttdParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetToOutFlushbonadingEttdByListParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetToOutFlushbonadingEttdListParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service.ToOutFlushbonadingEttdServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +85,21 @@ public class ToOutFlushbonadingEttdAction extends BaseAction {
             AddOrUpdateToOutFlushbonadingEttdParam pParam=param.getParam();
             if(null != pParam.getFdType()){
                 result=getToOutService(pParam.getFdType()).updateToOutFlushbonadingEttd(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    //通过会议通道ssid查询指定的直播地址
+    @RequestMapping("/getFlushbonadingEttdByMcSsid")
+    @ResponseBody
+    public RResult getFlushbonadingEttdByMcSsid(@RequestBody ReqParam<GetToOutFlushbonadingEttdByListParam> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetToOutFlushbonadingEttdByListParam pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutService(pParam.getFdType()).getFlushbonadingEttdByMcSsid(pParam,result);
             }
         }
         result.setEndtime(DateUtil.getDateAndMinute());
