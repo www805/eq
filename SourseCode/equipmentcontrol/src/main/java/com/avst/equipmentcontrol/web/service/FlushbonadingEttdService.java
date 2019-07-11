@@ -171,6 +171,7 @@ public class FlushbonadingEttdService extends BaseService {
         flushbonadingEttd.setTdnum(paramParam.getTdnum());
         flushbonadingEttd.setPullflowurl(paramParam.getPullflowurl());
         flushbonadingEttd.setTdtype(paramParam.getTdtype());
+        flushbonadingEttd.setSsid(paramParam.getSsid());
 
         Integer update = flushbonading_ettdMapper.update(flushbonadingEttd, ew);
         System.out.println("update_boot：" + update);
