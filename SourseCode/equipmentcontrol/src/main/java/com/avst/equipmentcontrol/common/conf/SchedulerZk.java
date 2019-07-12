@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -45,10 +47,19 @@ public class SchedulerZk {
 
         ReqParam<ControlInfoParamVO> param = new ReqParam<>();
 
+        //获取本机ip地址
+        String hostAddress = "localhost";
+        try {
+            InetAddress addr = InetAddress.getLocalHost();
+            hostAddress = addr.getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
         ControlInfoParamVO controlInfoParamVO = new ControlInfoParamVO();
         controlInfoParamVO.setServername(servername);//服务器注册名
         controlInfoParamVO.setServertitle("设备系统");//服务器中文名
-        controlInfoParamVO.setUrl(url);
+        controlInfoParamVO.setUrl("http://" + hostAddress + url); //访问本服务器地址
         controlInfoParamVO.setLoginusername(loginusername);
         controlInfoParamVO.setLoginpassword(loginpassword);
         controlInfoParamVO.setTotal_item(4);

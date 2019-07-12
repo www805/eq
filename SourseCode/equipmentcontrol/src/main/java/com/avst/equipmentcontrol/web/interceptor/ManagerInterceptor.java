@@ -37,6 +37,12 @@ public class ManagerInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
+        //如果跳转的是没路径的，就跳到设备home页
+        if(url.endsWith("/")){
+            response.sendRedirect("ec/main/gotomain");
+            return false;
+        }
+
 //        disbool = true;  //暂时让他成功
         if (disbool) {
             return true;  //通过拦截器，继续执行请求

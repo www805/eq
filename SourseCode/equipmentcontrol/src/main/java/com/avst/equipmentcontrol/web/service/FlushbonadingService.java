@@ -1,6 +1,8 @@
 package com.avst.equipmentcontrol.web.service;
 
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.FlushbonadingEttd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_ettdMapper;
@@ -23,7 +25,11 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class FlushbonadingService extends BaseService {
@@ -227,10 +233,9 @@ public class FlushbonadingService extends BaseService {
         }
 
         //查询审讯主机从里面拿到他的设备ssid
-        Flushbonadinginfo flushbonadinginfo = new Flushbonadinginfo();
-        flushbonadinginfo.setSsid(paramParam.getSsid());
-        Flushbonading_etinfo flushbonadingEtinfo = flushbonading_etinfoMapper.selectOne(flushbonadinginfo);
-
+        EntityWrapper ew0 = new EntityWrapper();
+        ew0.eq("fet.ssid",paramParam.getSsid());
+        Flushbonadinginfo flushbonadingEtinfo = flushbonading_etinfoMapper.getFlushbonadinginfo(ew0);
 
         //删除设备再新增，不然就是修改那个设备
         EntityWrapper ew2 = new EntityWrapper();
@@ -242,6 +247,32 @@ public class FlushbonadingService extends BaseService {
         equipmentinfo.setEtypessid(paramParam.getEtypessid());
 
         base_equipmentinfoMapper.update(equipmentinfo, ew2);
+
+        //修改通道里面的直播地址
+        //如果真是要修改就进入里面
+        if (!paramParam.getEtip().equalsIgnoreCase(flushbonadingEtinfo.getEtip())) {
+
+            EntityWrapper ew3 = new EntityWrapper();
+            ew3.eq("e.flushbonadingssid",flushbonadingEtinfo.getSsid());
+            List<FlushbonadingEttd> flushbonadingEttdList = flushbonading_ettdMapper.getFlushbonadingEttdList(ew3);
+
+            if (null != flushbonadingEttdList && flushbonadingEttdList.size() > 0) {
+
+                for (FlushbonadingEttd flushbonadingEttd : flushbonadingEttdList) {
+
+                    //修改通道里面的地址
+                    String newEtip = flushbonadingEttd.getPullflowurl().replace(flushbonadingEtinfo.getEtip(), paramParam.getEtip());
+
+                    Flushbonading_ettd flushbonading_ettd = new Flushbonading_ettd();
+                    flushbonading_ettd.setPullflowurl(newEtip);
+
+                    EntityWrapper wrapper = new EntityWrapper();
+                    wrapper.eq("ssid", flushbonadingEttd.getSsid());
+
+                    flushbonading_ettdMapper.update(flushbonading_ettd, wrapper);
+                }
+            }
+        }
 
         EntityWrapper ew = new EntityWrapper();
         ew.eq("ssid", paramParam.getSsid());
@@ -323,6 +354,8 @@ public class FlushbonadingService extends BaseService {
         result.setData(baseEquipmentinfoOrEttypeVO);
         changeResultToSuccess(result);
     }
+
+
 
 
 }
