@@ -5,6 +5,7 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.ent
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_ettdMapper;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetFlushbonadingBySsidParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetFlushbonadingTDByETSsidParam;
@@ -43,6 +44,8 @@ public class BaseToOutServiceImpl_qrs {
                 Gson gson = new Gson();
                 GetFlushbonadingBySsidVO vo=gson.fromJson(gson.toJson(etinfo),GetFlushbonadingBySsidVO.class);
                 rResult.changeToTrue(vo);
+            }else{
+                LogUtil.intoLog(this.getClass(),"flushbonading_etinfoMapper.getFlushbonadinginfo is null,fet.ssid-equipmentSsid:"+equipmentSsid);
             }
         } catch (Exception e) {
             e.printStackTrace();
