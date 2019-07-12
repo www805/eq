@@ -6,6 +6,7 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.pa
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_datasaveMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_saveinfoMapper;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.Code;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDDealImpl;
@@ -67,6 +68,8 @@ public class DealImpl {
 
             result.changeToTrue(true);
 
+        }else{
+            LogUtil.intoLog(4,this.getClass(),"baseToOutServiceImpl_qrs.getFlushbonadingBySsid is error,fdssid:"+fdssid);
         }
 
         return result;
