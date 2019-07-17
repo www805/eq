@@ -1,5 +1,7 @@
 package com.avst.equipmentcontrol.web.service;
 
+import com.avst.equipmentcontrol.common.cache.AppCache;
+import com.avst.equipmentcontrol.common.cache.param.AppCacheParam;
 import com.avst.equipmentcontrol.common.conf.Constant;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper.Asr_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
@@ -8,14 +10,20 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.mapper.Tts_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_equipmentinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_ettypeMapper;
+import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.web.req.LoginParam;
 import com.avst.equipmentcontrol.web.vo.EcCountVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.Yaml;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Map;
 
 @Service
 public class MainService {
@@ -37,6 +45,9 @@ public class MainService {
 
     @Autowired
     private Tts_etinfoMapper tts_etinfoMapper;
+
+    @Value("${nav.file.client}")
+    private String swebFile;
 
     public RResult logining(RResult result, HttpServletRequest request, LoginParam loginParam){
 
@@ -76,4 +87,35 @@ public class MainService {
         return ecCountVO;
     }
 
+    public void getNavList(RResult result) {
+
+        AppCacheParam cacheParam = AppCache.getAppCacheParam();
+        if(null == cacheParam.getData()){
+            String path = OpenUtil.getXMSoursePath() + "\\" + swebFile + ".yml";
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(path);
+
+                Yaml yaml = new Yaml();
+                Map<String,Object> map = yaml.load(fis);
+                if (null != map && map.size() > 0) {
+                    cacheParam.setTitle((String) map.get("title"));
+                }
+                cacheParam.setData(map);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }finally {
+                if(null != fis){
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        result.setData(cacheParam);
+        result.changeToTrue();
+    }
 }

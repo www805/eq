@@ -27,7 +27,9 @@ function getUrl_manage() {
 		logining:getPath()+basepath+"main/logining",
 
 		main:getPath()+basepath+"main/gotomain",
-		logout:getPath()+basepath+"main/logout"
+		logout:getPath()+basepath+"main/logout",
+		getNavList: getPath() + "/ec/main/getNavList"
+
 	};
 }
 

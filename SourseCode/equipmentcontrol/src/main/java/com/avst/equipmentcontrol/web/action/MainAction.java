@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.web.action;
 
+import com.avst.equipmentcontrol.common.cache.AppCache;
 import com.avst.equipmentcontrol.common.conf.Constant;
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
@@ -73,6 +74,7 @@ public class MainAction extends BaseAction {
     public RResult checklogin(Model model, HttpServletRequest request, LoginParam loginParam) {
         RResult result=createNewResultOfFail();
         mainService.logining(result,request,loginParam);
+        AppCache.delAppCacheParam();
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }
@@ -87,6 +89,19 @@ public class MainAction extends BaseAction {
 //        Subject subject = SecurityUtils.getSubject();
 //        subject.logout();
         return rResult;
+    }
+
+    /**
+     * 获取导航栏目
+     * @return
+     */
+    @RequestMapping("/getNavList")
+    @ResponseBody
+    public  RResult getNavList(){
+        RResult result=this.createNewResultOfFail();
+        mainService.getNavList(result);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
     }
 
     @RequestMapping(value = "/404")
