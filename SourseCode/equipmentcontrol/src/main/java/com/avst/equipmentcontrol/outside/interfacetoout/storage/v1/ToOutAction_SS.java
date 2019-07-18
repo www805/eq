@@ -7,6 +7,7 @@ import com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service.ToOutServ
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.*;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutServiceImpl_ss_avst;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutService_ss;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.GetSavepathVO;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.GetURLToPlayVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -86,7 +87,7 @@ public class ToOutAction_SS extends BaseAction {
      */
     @RequestMapping("/getSavePath")
     @ResponseBody
-    public RResult<GetURLToPlayVO> getSavePath(@RequestBody GetSavePathParam param){
+    public RResult<GetSavepathVO> getSavePath(@RequestBody GetSavePathParam param){
         RResult rResult=this.createNewResultOfFail();
 
         if(null!=param&&null!=param.getSsType()){

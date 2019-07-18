@@ -14,7 +14,10 @@ public class JacksonUtil {
 	
 	
 	public static String objebtToString(Object object){
-		
+
+		if(null==object){
+			return null;
+		}
 		ObjectMapper mapper = new ObjectMapper();
 		 try {
 				String json = mapper.writeValueAsString(object);

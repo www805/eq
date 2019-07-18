@@ -6,9 +6,19 @@ public class RecordSavepathParam {
 
     private String savepath;//存储地址
 
+    private String soursedatapath;//源存储路径，从哪来的
+
     private String filename;//文件名
 
     private String datatype;//文件类型
+
+    public String getSoursedatapath() {
+        return soursedatapath;
+    }
+
+    public void setSoursedatapath(String soursedatapath) {
+        this.soursedatapath = soursedatapath;
+    }
 
     public String getXyType() {
         return xyType;

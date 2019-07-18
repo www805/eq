@@ -156,6 +156,7 @@ public class ToOutServiceImpl_ss_avst implements ToOutService_ss {
                     String dxy = data.getDefaulturl();//默认协议
                     recordPathParam.setXyType(dxy);
                     recordPathParam.setSavepath(data.getDatasavepath());
+                    recordPathParam.setSoursedatapath(data.getSoursedatapath());
                     recordList.add(recordPathParam);
                 }
                 vo.setRecordList(recordList);

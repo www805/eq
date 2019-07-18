@@ -1,6 +1,8 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1;
 
 import com.avst.equipmentcontrol.common.conf.FDType;
+import com.avst.equipmentcontrol.common.util.DateUtil;
+import com.avst.equipmentcontrol.common.util.JacksonUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
@@ -173,6 +175,20 @@ public class ToOutAction_qrs extends BaseAction {
     }
 
 
+    @RequestMapping("/getFDState")
+    @ResponseBody
+    public RResult getFDState(@RequestBody ReqParam<GetFDStateParam> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetFDStateParam pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).getFDState(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
 
     @RequestMapping(value = "/ceshi" )
     @ResponseBody
@@ -203,6 +219,14 @@ public class ToOutAction_qrs extends BaseAction {
             param.setFdType(FDType.FD_AVST);
             param.setFlushbonadingetinfossid("sxsba2");
             getFTPUploadSpeedByIp(param);
+        }else if(type==4){
+
+            ReqParam<GetFDStateParam> param=new ReqParam<GetFDStateParam>();
+            GetFDStateParam  gparam=new GetFDStateParam();
+            gparam.setFdType(FDType.FD_AVST);
+            gparam.setFlushbonadingetinfossid("sxsba2");
+            param.setParam(gparam);
+            System.out.println(JacksonUtil.objebtToString(getFDState(param)));
         }
         return rResult;
     }

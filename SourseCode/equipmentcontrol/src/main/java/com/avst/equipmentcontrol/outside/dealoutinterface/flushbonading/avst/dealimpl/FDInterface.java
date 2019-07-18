@@ -88,4 +88,12 @@ public interface FDInterface {
      */
     public RResult<UploadFileByPathVO> uploadFileByPath(UploadFileByPathParam param, RResult<UploadFileByPathVO> result);
 
+    /**
+     * API 接口-上传文件到设备指定iid的文件夹中
+     * 上传指定文件
+     * @param param
+     * @return
+     */
+    public RResult<UploadServiceByIidVO> uploadServiceByIid(UploadServiceByIidParam param, RResult<UploadServiceByIidVO> result);
+
 }

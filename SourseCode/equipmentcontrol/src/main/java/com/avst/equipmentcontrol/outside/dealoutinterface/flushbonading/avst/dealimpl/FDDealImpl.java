@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl;
 
 import com.avst.equipmentcontrol.common.util.LogUtil;
+import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.XMLUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.*;
@@ -307,6 +308,46 @@ public class FDDealImpl implements FDInterface{
         }else{
             result.setMessage("设置ftp失败 --");
         }
+        return result;
+    }
+
+    public RResult<UploadServiceByIidVO> uploadServiceByIid(UploadServiceByIidParam param, RResult<UploadServiceByIidVO> result){
+
+//        String iid=param.getIid();
+//        String soursepath=param.getSoursepath();
+//        String ip=param.getIp();
+//        String passwd=param.getPasswd();
+//        String user=param.getUser();
+//        int port=param.getPort();
+//
+//        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+//            result.setMessage("有部分参数为空");
+//            LogUtil.intoLog(this.getClass(),param.toString()+"----------uploadFileByPath");
+//            return result;
+//        }
+//
+//        String uuid=OpenUtil.getUUID_32();
+//        String url="http://"+ip+":"+port+"/httpFileUpload" ;
+//        String regparam="token="+ uuid +"&upload_task_id="+uuid+
+//                "&dstPath="+reupload+"&fileName="+recordpath+
+//                "&action="+upload_file+"&fileName="+recordpath+
+//                "&filebinary="+upload_file;
+//        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+//        LogUtil.intoLog(this.getClass(),rr+"--uploadFileByPath");
+//        UploadFileByPathXml xml=Xml2Object.uploadFileByPathXml(rr);
+//
+//        if(null!=xml&&null!=xml.getFtp_pasv_upload_file()&&xml.getFtp_pasv_upload_file().getRs().trim().equals("1")){
+//
+//            try {
+//                UploadFileByPathVO uploadFileByPathVO=new UploadFileByPathVO();
+//                result.changeToTrue(uploadFileByPathVO);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }else{
+//            result.setMessage("设置ftp失败 --");
+//        }
+
         return result;
     }
 

@@ -12,13 +12,12 @@ import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.Code;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDDealImpl;
-import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.GetETRecordByIidParam;
-import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.GetFTPUploadSpeedParam;
-import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.StartRecParam;
-import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.StopRecParam;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.*;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.vo.CheckFDStateVO;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.FDCache;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.param.FDCacheParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.*;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.GetFDStateVO;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.WorkStartVO;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.SaveFileParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutServiceImpl_ss_avst;
@@ -251,6 +250,46 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         }
 
 
+        return  result;
+    }
+
+    public RResult getFDState(GetFDStateParam param,RResult result){
+        int statetype=param.getStateType();
+
+        String fdssid=param.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        CheckFDStateParam stateparam=new CheckFDStateParam();
+        stateparam.setPort(flushbonadinginfo.getPort());
+        stateparam.setIp(flushbonadinginfo.getEtip());
+        stateparam.setPasswd(flushbonadinginfo.getPasswd());
+        stateparam.setUser(flushbonadinginfo.getUser());
+        stateparam.setStateType(statetype);
+        RResult<CheckFDStateVO> rResult2=new RResult();
+        rResult2=fdDeal.CheckFDState(stateparam,rResult2);
+        if(null!=rResult2&&rResult2.getActioncode().equals(Code.SUCCESS.toString())&&null!=rResult2.getData()){
+
+            CheckFDStateVO checkFDStateVO=rResult2.getData();
+            Gson gson=new Gson();
+
+            GetFDStateVO vo=gson.fromJson(gson.toJson(checkFDStateVO.getData()),GetFDStateVO.class);
+            result.changeToTrue(vo);
+        }else{
+            LogUtil.intoLog(4,this.getClass(),"请求fdDeal.CheckFDState异常，没有数据，rResult2："+JacksonUtil.objebtToString(rResult2));
+        }
         return  result;
     }
 

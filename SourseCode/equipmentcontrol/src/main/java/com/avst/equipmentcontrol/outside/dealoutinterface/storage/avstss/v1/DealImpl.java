@@ -98,7 +98,7 @@ public class DealImpl {
         }
         filepath=savebasepath+sourseRelativePath;
 
-        result.changeToTrue(filepath);//把该存储服务的出事路径返回
+        result.changeToTrue(filepath);//把该存储服务的路径返回
 
         return result;
     };
