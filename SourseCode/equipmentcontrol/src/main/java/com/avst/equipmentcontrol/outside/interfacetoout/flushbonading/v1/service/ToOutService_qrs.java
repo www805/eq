@@ -15,4 +15,6 @@ public interface ToOutService_qrs {
 
     public RResult getFTPUploadSpeedByIp(GetFTPUploadSpeedByIpParam param, RResult result);
 
+    public RResult getFDState(GetFDStateParam param,RResult result);
+
 }
