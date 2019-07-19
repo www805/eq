@@ -776,8 +776,8 @@ public static String numtoStr(int digit,Integer num){
 	
 	/**
 	 * 切割成字符串数组
-	 * @param wiatstr
-	 * @param splitstr
+	 * @param wiatstr 待切割的字符串
+	 * @param splitstr 切割的标识
 	 * @return
 	 */
 	public static List<String> split(String wiatstr,String splitstr){

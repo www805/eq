@@ -52,6 +52,32 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
      */
     private String explain;
 
+    /**
+     * 刻录选时时长,小时为单位（1-24）
+     */
+    private Integer burntime;
+
+    /**
+     * 是否需要光盘同刻,1需要/0不需要
+     */
+    private Integer burnbool;
+
+    /**
+     * 片头列表,设备刻录的片头,片头的名称，用,分割
+     */
+    private String ptjson;
+
+    /**
+     * 片头显示时间,秒（5-60）
+     */
+    private Integer ptshowtime;
+
+    /**
+     * 是否需要硬盘录像,
+     * 如果程序要求录，这里录像与否都会录像，当程序不要求录像，但是这里要录像也会录像1需要/0不需要
+     */
+    private Integer diskrecbool;
+
     private String string1;
 
     private String string2;
@@ -61,6 +87,46 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
     private Integer integer2;
 
     private String ssid;
+
+    public Integer getBurntime() {
+        return burntime;
+    }
+
+    public void setBurntime(Integer burntime) {
+        this.burntime = burntime;
+    }
+
+    public Integer getBurnbool() {
+        return burnbool;
+    }
+
+    public void setBurnbool(Integer burnbool) {
+        this.burnbool = burnbool;
+    }
+
+    public String getPtjson() {
+        return ptjson;
+    }
+
+    public void setPtjson(String ptjson) {
+        this.ptjson = ptjson;
+    }
+
+    public Integer getPtshowtime() {
+        return ptshowtime;
+    }
+
+    public void setPtshowtime(Integer ptshowtime) {
+        this.ptshowtime = ptshowtime;
+    }
+
+    public Integer getDiskrecbool() {
+        return diskrecbool;
+    }
+
+    public void setDiskrecbool(Integer diskrecbool) {
+        this.diskrecbool = diskrecbool;
+    }
 
     public String getUploadbasepath() {
         return uploadbasepath;

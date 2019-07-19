@@ -22,6 +22,10 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 接口处理类
  */
@@ -313,19 +317,19 @@ public class FDDealImpl implements FDInterface{
 
     public RResult<UploadServiceByIidVO> uploadServiceByIid(UploadServiceByIidParam param, RResult<UploadServiceByIidVO> result){
 
-//        String iid=param.getIid();
-//        String soursepath=param.getSoursepath();
-//        String ip=param.getIp();
-//        String passwd=param.getPasswd();
-//        String user=param.getUser();
-//        int port=param.getPort();
-//
-//        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
-//            result.setMessage("有部分参数为空");
-//            LogUtil.intoLog(this.getClass(),param.toString()+"----------uploadFileByPath");
-//            return result;
-//        }
-//
+        String iid=param.getIid();
+        String soursepath=param.getSoursepath();
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------uploadFileByPath");
+            return result;
+        }
+
 //        String uuid=OpenUtil.getUUID_32();
 //        String url="http://"+ip+":"+port+"/httpFileUpload" ;
 //        String regparam="token="+ uuid +"&upload_task_id="+uuid+
@@ -351,5 +355,295 @@ public class FDDealImpl implements FDInterface{
         return result;
     }
 
+    @Override
+    public RResult<GetptdjconstVO> getptdjconst(GetptdjconstParam param, RResult<GetptdjconstVO> result) {
 
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------getptdjconst");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=get&type=ptdjconst"+
+                "&usr="+user+"&pwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        LogUtil.intoLog(this.getClass(),rr+"--getptdjconst");
+        PtdjconstXml xml=Xml2Object.getptdjconstXml(rr);
+
+        if(null!=xml&&null!=xml.getLine1()&&!xml.getLine1().trim().equals("")){
+
+            try {
+                GetptdjconstVO vo=new GetptdjconstVO();
+                List<String> list=xml.toList();
+                vo.setLineList(list);
+                result.changeToTrue(vo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            result.setMessage("获取当前配置片头字段失败 --");
+        }
+        return result;
+    }
+
+    @Override
+    public RResult<StartRec_RomVO> startRec_Rom(StartRec_RomParam param, RResult<StartRec_RomVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+        int aldisk=param.getAldisk();
+        String bmode=param.getBmode();
+        int btime=param.getBtime();
+        int disconly=param.getDisconly();
+        int dx=param.getDx();
+        String iid=param.getIid();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------startRec_Rom");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=do&type=rom&cmd=startrec"+
+                "&dx="+dx+"&aldisk="+aldisk+"&bmode="+bmode+"&btime="+btime+"&disconly="+disconly+"&iid="+iid+
+                "&usr="+user+"&pwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        LogUtil.intoLog(this.getClass(),rr+"--startRec_Rom");
+        int i=Xml2Object.startRec_RomXml(rr);
+        if(i>0){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求开始光盘刻录失败");
+        }
+        return result;
+    }
+
+    @Override
+    public RResult<PauseRec_RomVO> pauseRec_Rom(PauseRec_RomParam param, RResult<PauseRec_RomVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------pauseRec_Rom");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=do&type=rom&cmd=pauserec"+
+                "&usr="+user+"&pwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        LogUtil.intoLog(this.getClass(),rr+"--pauseRec_Rom");
+        int i=Xml2Object.pauseRec_RomXml(rr);
+        if(i>0){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求光盘暂停刻录失败");
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult<GgoonRec_RomVO> goonRec_Rom(GgoonRec_RomParam param, RResult<GgoonRec_RomVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------goonRec_Rom");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=do&type=rom&cmd=goonrec"+
+                "&usr="+user+"&pwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        LogUtil.intoLog(this.getClass(),rr+"--goonRec_Rom");
+        int i=Xml2Object.goonRec_RomXml(rr);
+        if(i>0){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求光盘继续刻录失败");
+        }
+        return result;
+    }
+
+    @Override
+    public RResult<StopRec_RomVO> stopRec_Rom(StopRec_RomParam param, RResult<StopRec_RomVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+        int dx=param.getDx();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------stopRec_Rom");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=do&type=rom&cmd=stoprec"+
+                "&dx="+dx+
+                "&usr="+user+"&pwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        LogUtil.intoLog(this.getClass(),rr+"--stopRec_Rom");
+        int i=Xml2Object.stopRec_RomXml(rr);
+        if(i>0){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求光盘结束刻录失败");
+        }
+
+
+        return result;
+    }
+
+    @Override
+    public RResult<Eject_RomVO> eject_Rom(Eject_RomParam param, RResult<Eject_RomVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+        int dx=param.getDx();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------eject_Rom");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=do&type=rom&cmd=eject"+
+                "&dx="+dx+
+                "&usr="+user+"&pwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        LogUtil.intoLog(this.getClass(),rr+"--eject_Rom");
+        int i=Xml2Object.eject_RomXml(rr);
+        if(i>0){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求光驱出仓失败");
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult<Closetray_RomVO> closetray_Rom(Closetray_RomParam param, RResult<Closetray_RomVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+        int dx=param.getDx();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------closetray_Rom");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=do&type=rom&cmd=closetray"+
+                "&dx="+dx+
+                "&usr="+user+"&pwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        LogUtil.intoLog(this.getClass(),rr+"--closetray_Rom");
+        int i=Xml2Object.closetray_RomXml(rr);
+        if(i>0){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求光驱进仓失败");
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult<PtdjVO> ptdj(PtdjParam param, RResult<PtdjVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+        List<String> linelist=param.getLineList();
+        int ct=param.getCt();
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)||null==linelist||linelist.size()==0){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------ptdj");
+            return result;
+        }
+        String lines="";
+        int num=1;
+        for(String line:linelist){//组建片头的数据集合
+            lines+="&line"+num+"="+line;
+            num++;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=do&type=view&cmd=ptdj"+
+                "&ct="+ct+lines+
+                "&usr="+user+"&pwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        LogUtil.intoLog(this.getClass(),rr+"--ptdj");
+        int i=Xml2Object.ptdjXml(rr);
+        if(i>0){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求片头叠加失败");
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult<YuntaiControlVO> yuntaiControl(YuntaiControlParam param, RResult<YuntaiControlVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+        String ptzaction=param.getPtzaction();
+        int ptzch=param.getPtzch();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------yuntaiControl");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=do&type=ctrl&cmd=ptz"+
+                "&ptzaction="+ptzaction+"&ptzch="+ptzch+
+                "&usr="+user+"&pwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        LogUtil.intoLog(this.getClass(),rr+"--yuntaiControl");
+        int i=Xml2Object.yuntaiControlXml(rr);
+        if(i>0){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求云台控制失败");
+        }
+
+        return result;
+    }
 }

@@ -96,4 +96,83 @@ public interface FDInterface {
      */
     public RResult<UploadServiceByIidVO> uploadServiceByIid(UploadServiceByIidParam param, RResult<UploadServiceByIidVO> result);
 
+    /**
+     * API 接口-获取当前配置片头字段
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<GetptdjconstVO> getptdjconst(GetptdjconstParam param, RResult<GetptdjconstVO> result);
+
+
+    /**
+     * 开始光驱刻录（异步请求）
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<StartRec_RomVO> startRec_Rom(StartRec_RomParam param, RResult<StartRec_RomVO> result);
+
+    /**
+     * 暂停光驱刻录
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<PauseRec_RomVO> pauseRec_Rom(PauseRec_RomParam param, RResult<PauseRec_RomVO> result);
+
+    /**
+     * 继续光驱刻录
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<GgoonRec_RomVO> goonRec_Rom(GgoonRec_RomParam param, RResult<GgoonRec_RomVO> result);
+
+    /**
+     * 停止光驱刻录（异步请求）
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<StopRec_RomVO> stopRec_Rom(StopRec_RomParam param, RResult<StopRec_RomVO> result);
+
+    /**
+     * 光驱出仓
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<Eject_RomVO> eject_Rom(Eject_RomParam param, RResult<Eject_RomVO> result);
+
+    /**
+     * 光驱进仓
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<Closetray_RomVO> closetray_Rom(Closetray_RomParam param, RResult<Closetray_RomVO> result);
+
+    /**
+     * 片头叠加
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<PtdjVO> ptdj(PtdjParam param, RResult<PtdjVO> result);
+
+    /**
+     * 云台控制
+     * 这里是一个按钮点住、松开2个事件，
+     * 按住调用up、down、left、right、focus_increase(聚焦+）、 focus_decrease(聚焦-)、depth_far（倍变+）、depth_near（倍 变-）
+     * 松开调用 stop
+     * 一个操作要调用2次接口
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<YuntaiControlVO> yuntaiControl(YuntaiControlParam param, RResult<YuntaiControlVO> result);
+
+
+
 }

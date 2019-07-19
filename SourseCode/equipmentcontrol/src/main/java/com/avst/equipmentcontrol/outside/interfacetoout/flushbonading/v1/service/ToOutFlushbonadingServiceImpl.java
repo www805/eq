@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 数据库的编辑
+ */
 @Service
 public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService {
 

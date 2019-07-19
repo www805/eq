@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * 到底需不需要加密验证的环节，
  * 如果是只给自己人用就不需要，以后给被人用就需要
+ * 设备控制的接口
  */
 @Controller
 @RequestMapping("/flushbonading/v1")

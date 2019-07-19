@@ -2,6 +2,7 @@ package com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.de
 
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.param.*;
 import com.thoughtworks.xstream.XStream;
+import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -121,6 +122,187 @@ public class Xml2Object {
         return null;
     }
 
+    /**
+     * 解析获取当前配置片头字段
+     * @param xml
+     * @return
+     */
+    public static PtdjconstXml getptdjconstXml( String xml) {
+        try {
+
+            PtdjconstXml obj=new PtdjconstXml();
+            obj=(PtdjconstXml)setJavaBeanParam(obj,xml);
+
+            return obj;
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 解析开始光盘刻录
+     * @param xml
+     * @return
+     */
+    public static int startRec_RomXml( String xml) {
+        try {
+
+            String startstr="<startrec t=\"rom\">";
+            String endstr="</startrec>";
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * 解析开始光盘暂停刻录
+     * @param xml
+     * @return
+     */
+    public static int pauseRec_RomXml( String xml) {
+        try {
+
+            String startstr="<pauserec t=\"rom\">";
+            String endstr="</pauserec>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * 解析开始光盘继续刻录
+     * @param xml
+     * @return
+     */
+    public static int goonRec_RomXml( String xml) {
+        try {
+
+            String startstr="<goonrec t=\"rom\">";
+            String endstr="</goonrec>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * 解析开始光盘结束刻录
+     * @param xml
+     * @return
+     */
+    public static int stopRec_RomXml( String xml) {
+        try {
+
+            String startstr="<stoprec t=\"rom\">";
+            String endstr="</stoprec>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
+    /**
+     * 解析光驱出仓
+     * @param xml
+     * @return
+     */
+    public static int eject_RomXml( String xml) {
+        try {
+
+            String startstr="<eject t=\"rom\">";
+            String endstr="</eject>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
+    /**
+     * 解析光驱出仓
+     * @param xml
+     * @return
+     */
+    public static int closetray_RomXml( String xml) {
+        try {
+
+            String startstr="<closetray t=\"rom\">";
+            String endstr="</closetray>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * 解析片头叠加
+     * @param xml
+     * @return
+     */
+    public static int ptdjXml( String xml) {
+        try {
+
+            String startstr="<ptdj t=\"view\">";
+            String endstr="</ptdj>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * 解析云台控制
+     * @param xml
+     * @return
+     */
+    public static int yuntaiControlXml( String xml) {
+        try {
+
+            String startstr="<ptz t=\"ctrl\">";
+            String endstr="</ptz>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
+
+
+private static int jxXml(String xml,String startstr,String endstr){
+    String rr= null;
+    try {
+        if(StringUtils.isEmpty(xml)||xml.indexOf(startstr)<0||xml.indexOf(endstr)<0){
+            return-1;
+        }
+        rr = xml.substring(xml.indexOf(startstr)+(startstr.length()));
+        rr=rr.substring(0,rr.indexOf(endstr));
+        return Integer.parseInt(rr);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return -1;
+}
 
     /**
      * 给一个对象的所有属性进行自定义赋值
@@ -176,140 +358,22 @@ public class Xml2Object {
     public static void main(String[] args) {
         String xml="<root>\n" +
                 "<version>AICBH:1.0</version>\n" +
-                "<dev_version>1.906051</dev_version>\n" +
-                "<devmid_id>\n" +
-                "<![CDATA[ sb3 ]]>\n" +
-                "</devmid_id>\n" +
-                "<cpu>13</cpu>\n" +
-                "<ddr_used>45</ddr_used>\n" +
-                "<ddr_total>1008</ddr_total>\n" +
-                "<serialnumber>01-23-38-3f-61-21-38-0a-ee</serialnumber>\n" +
-                "<factory>1001</factory>\n" +
-                "<hw>350</hw>\n" +
-                "<sw>189</sw>\n" +
-                "<tcp_port>9996</tcp_port>\n" +
-                "<map_tcp_port>8000</map_tcp_port>\n" +
-                "<laninfo>\n" +
-                "<count>2</count>\n" +
-                "<lan0>\n" +
-                "<ip>192.168.1.65</ip>\n" +
-                "<mac>8A:72:3F:78:65:11</mac>\n" +
-                "<mask>255.255.255.0</mask>\n" +
-                "<gtway>0.0.0.0</gtway>\n" +
-                "<link>0</link>\n" +
-                "</lan0>\n" +
-                "<lan1>\n" +
-                "<ip>192.168.6.163</ip>\n" +
-                "<mac>00:00:00:00:00:00</mac>\n" +
-                "<mask>255.255.255.0</mask>\n" +
-                "<gtway>192.168.6.254</gtway>\n" +
-                "<link>0</link>\n" +
-                "</lan1>\n" +
-                "</laninfo>\n" +
-                "<device_ability>234087039</device_ability>\n" +
-                "<capacitys>\n" +
-                "<networkstreamset_capacity>1359020305</networkstreamset_capacity>\n" +
-                "<extinputset_capacity>66</extinputset_capacity>\n" +
-                "<viewmodeset_capacity>33540</viewmodeset_capacity>\n" +
-                "<diskset_capacity>15</diskset_capacity>\n" +
-                "<burnset_capacity>0</burnset_capacity>\n" +
-                "</capacitys>\n" +
-                "<running_taskID>0</running_taskID>\n" +
-                "<onvoicetalk>0</onvoicetalk>\n" +
-                "<onlanlinked>1</onlanlinked>\n" +
-                "<onmsgtlask>0</onmsgtlask>\n" +
-                "<oncalling>0</oncalling>\n" +
-                "<splitsize>4068474880</splitsize>\n" +
-                "<dh_set>1</dh_set>\n" +
-                "<temperature_value>30</temperature_value>\n" +
-                "<humidity_value>38</humidity_value>\n" +
-                "<diskrec_isrec>0</diskrec_isrec>\n" +
-                "<diskrec_from>0</diskrec_from>\n" +
-                "<diskrec_status>0</diskrec_status>\n" +
-                "<diskrec_begintime>00:00:00</diskrec_begintime>\n" +
-                "<diskrec_continuettime>0</diskrec_continuettime>\n" +
-                "<disk_loaded>1</disk_loaded>\n" +
-                "<disk_freespace>472309</disk_freespace>\n" +
-                "<disk_totalspace>500107</disk_totalspace>\n" +
-                "<reciid>\n" +
-                "<![CDATA[ ]]>\n" +
-                "</reciid>\n" +
-                "<disk_recdir/>\n" +
-                "<disk_recpath/>\n" +
-                "<diskrec_list>\n" +
-                "<diskrec ch=\"0\" isrec=\"0\" ispause=\"0\"/>\n" +
-                "<diskrec ch=\"1\" isrec=\"0\" ispause=\"0\"/>\n" +
-                "<diskrec ch=\"2\" isrec=\"0\" ispause=\"0\"/>\n" +
-                "<diskrec ch=\"3\" isrec=\"0\" ispause=\"0\"/>\n" +
-                "<diskrec ch=\"4\" isrec=\"0\" ispause=\"0\"/>\n" +
-                "<diskrec ch=\"5\" isrec=\"0\" ispause=\"0\"/>\n" +
-                "<diskrec ch=\"6\" isrec=\"0\" ispause=\"0\"/>\n" +
-                "<diskrec ch=\"7\" isrec=\"0\" ispause=\"0\"/>\n" +
-                "</diskrec_list>\n" +
-                "<dvdnum>2</dvdnum>\n" +
-                "<roma_status>0</roma_status>\n" +
-                "<romb_status>0</romb_status>\n" +
-                "<roma_isburn>0</roma_isburn>\n" +
-                "<romb_isburn>0</romb_isburn>\n" +
-                "<roma_isfinishburn>0</roma_isfinishburn>\n" +
-                "<romb_isfinishburn>0</romb_isfinishburn>\n" +
-                "<roma_disktype>0</roma_disktype>\n" +
-                "<romb_disktype>0</romb_disktype>\n" +
-                "<roma_discCap>0</roma_discCap>\n" +
-                "<romb_discCap>0</romb_discCap>\n" +
-                "<roma_discCapUsed>0</roma_discCapUsed>\n" +
-                "<romb_discCapUsed>0</romb_discCapUsed>\n" +
-                "<roma_setburntime>0</roma_setburntime>\n" +
-                "<romb_setburntime>0</romb_setburntime>\n" +
-                "<roma_begintime>00:00:00</roma_begintime>\n" +
-                "<romb_begintime>00:00:00</romb_begintime>\n" +
-                "<roma_lefttime>0</roma_lefttime>\n" +
-                "<romb_lefttime>0</romb_lefttime>\n" +
-                "<burn_mode>0</burn_mode>\n" +
-                "<burn_status>0</burn_status>\n" +
-                "<selburntime>21600</selburntime>\n" +
-                "<audioout_type>1</audioout_type>\n" +
-                "<burn_syn_yw>0</burn_syn_yw>\n" +
-                "<next_burndev>0</next_burndev>\n" +
-                "<prev_burndev>0</prev_burndev>\n" +
-                "<ypjl>0</ypjl>\n" +
-                "<subypjl>0</subypjl>\n" +
-                "<audswitch_mode_type>0</audswitch_mode_type>\n" +
-                "<calp>0</calp>\n" +
-                "<codecver>11</codecver>\n" +
-                "<audiosample>48000</audiosample>\n" +
-                "<tusrs>1</tusrs>\n" +
-                "<dswch>4</dswch>\n" +
-                "<maxvichannel>8</maxvichannel>\n" +
-                "<audprocessmuti_type>1</audprocessmuti_type>\n" +
-                "<aec_no_liveoutput>0</aec_no_liveoutput>\n" +
-                "<remote_audioout_type>0</remote_audioout_type>\n" +
-                "<inuse_remote_audioout_type>0</inuse_remote_audioout_type>\n" +
-                "<audmode>0</audmode>\n" +
-                "<audspeaker>1</audspeaker>\n" +
-                "<audmic>0</audmic>\n" +
-                "<audout>1</audout>\n" +
-                "<aotype>1</aotype>\n" +
-                "<audio_enable>1</audio_enable>\n" +
-                "<subscreen>0</subscreen>\n" +
-                "<dbmode>0</dbmode>\n" +
-                "<mainview_index>0</mainview_index>\n" +
-                "<subview_index>0</subview_index>\n" +
-                "<mem_mainview_index>0</mem_mainview_index>\n" +
-                "<mem_subview_index>0</mem_subview_index>\n" +
-                "<rs232baud>9600</rs232baud>\n" +
-                "<debuginfo>\n" +
-                "<dmsg_lst>BASE:0,MAIN:0,ROM1:0,ROM2:0,BUS:0</dmsg_lst>\n" +
-                "<key_lst>0</key_lst>\n" +
-                "<httpmsg_lst/>\n" +
-                "<thr_map>tasktimer[0] [1 0 1 1 1 0 0 224]</thr_map>\n" +
-                "<sys_tick>113</sys_tick>\n" +
-                "</debuginfo>\n" +
-                "<audpow>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</audpow>\n" +
+                "<ptdjconst>\n" +
+                "<line0>案件编号</line0>\n" +
+                "<line1>案件名称</line1>\n" +
+                "<line2>案件类型</line2>\n" +
+                "<line3>案 由</line3>\n" +
+                "<line4>审讯类型</line4>\n" +
+                "<line5>办案部门</line5>\n" +
+                "<line6>被询(讯)问人</line6>\n" +
+                "<line7>询(讯)问人</line7>\n" +
+                "<line8>录制(记录)员</line8>\n" +
+                "<line9>询(讯)问地址</line9>\n" +
+                "</ptdjconst>\n" +
                 "</root>";
 
-        CheckFDStateXml state=getCheckFDStateXml(xml);
-        System.out.println(state.getDevmid_id());
+        PtdjconstXml state=getptdjconstXml(xml);
+        System.out.println(state.toList().size());
     }
 
 }

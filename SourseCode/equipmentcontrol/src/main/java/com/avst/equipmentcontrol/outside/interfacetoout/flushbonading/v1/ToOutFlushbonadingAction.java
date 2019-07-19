@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 设备数据编辑的接口
+ */
 @RestController
 @RequestMapping("/flushbonading/v1")
 public class ToOutFlushbonadingAction extends BaseAction {
