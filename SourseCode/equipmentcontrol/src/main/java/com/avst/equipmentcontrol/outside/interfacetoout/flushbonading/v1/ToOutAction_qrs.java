@@ -4,6 +4,7 @@ import com.avst.equipmentcontrol.common.conf.FDType;
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.JacksonUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
+import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 到底需不需要加密验证的环节，
@@ -190,10 +194,108 @@ public class ToOutAction_qrs extends BaseAction {
         return result;
     }
 
+    @RequestMapping("/startRec_Rom")
+    @ResponseBody
+    public RResult startRec_Rom(@RequestBody ReqParam<StartRec_RomParam_out> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            StartRec_RomParam_out pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).startRec_Rom(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    @RequestMapping("/stopRec_Rom")
+    @ResponseBody
+    public RResult stopRec_Rom(@RequestBody ReqParam<StopRec_RomParam_out> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            StopRec_RomParam_out pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).stopRec_Rom(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    @RequestMapping("/pauseOrContinueRec_Rom")
+    @ResponseBody
+    public RResult pauseOrContinueRec_Rom(@RequestBody ReqParam<PauseOrContinueRec_RomParam_out> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            PauseOrContinueRec_RomParam_out pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).pauseOrContinueRec_Rom(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    @RequestMapping("/dvdOutOrIn")
+    @ResponseBody
+    public RResult dvdOutOrIn(@RequestBody ReqParam<DvdOutOrInParam_out> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            DvdOutOrInParam_out pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).dvdOutOrIn(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    @RequestMapping("/ptdj")
+    @ResponseBody
+    public RResult ptdj(@RequestBody ReqParam<PtdjParam_out> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            PtdjParam_out pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).ptdj(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    @RequestMapping("/getptdjconst")
+    @ResponseBody
+    public RResult getptdjconst(@RequestBody ReqParam<GetptdjconstParam_out> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetptdjconstParam_out pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).getptdjconst(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    @RequestMapping("/yuntaiControl")
+    @ResponseBody
+    public RResult yuntaiControl(@RequestBody ReqParam<YuntaiControlParam_out> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            YuntaiControlParam_out pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).yuntaiControl(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
 
     @RequestMapping(value = "/ceshi" )
     @ResponseBody
-    public RResult ceshi(int type){
+    public RResult ceshi(int type,Integer state,String pm){
 
 
 
@@ -228,6 +330,15 @@ public class ToOutAction_qrs extends BaseAction {
             gparam.setFlushbonadingetinfossid("sxsba2");
             param.setParam(gparam);
             System.out.println(JacksonUtil.objebtToString(getFDState(param)));
+        }else if(type==5){
+
+            ReqParam<PauseOrContinueRec_RomParam_out> param=new ReqParam<PauseOrContinueRec_RomParam_out>();
+            PauseOrContinueRec_RomParam_out  gparam=new PauseOrContinueRec_RomParam_out();
+            gparam.setFdType(FDType.FD_AVST);
+            gparam.setFlushbonadingetinfossid("sxsba2");
+            gparam.setPauseOrContinue(state);
+            param.setParam(gparam);
+            System.out.println(JacksonUtil.objebtToString(pauseOrContinueRec_Rom(param)));
         }
         return rResult;
     }

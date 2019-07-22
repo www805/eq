@@ -127,7 +127,7 @@ public interface FDInterface {
      * @param result
      * @return
      */
-    public RResult<GgoonRec_RomVO> goonRec_Rom(GgoonRec_RomParam param, RResult<GgoonRec_RomVO> result);
+    public RResult<GgoonRec_RomVO> goonRec_Rom(GoonRec_RomParam param, RResult<GgoonRec_RomVO> result);
 
     /**
      * 停止光驱刻录（异步请求）

@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject;
 
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.param.*;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.lang.StringUtils;
@@ -129,6 +130,10 @@ public class Xml2Object {
      */
     public static PtdjconstXml getptdjconstXml( String xml) {
         try {
+            if(StringUtils.isEmpty(xml)){
+                LogUtil.intoLog(4,Xml2Object.class,"getptdjconstXml xml is null,传入的xml字符串为空");
+                return null;
+            }
 
             PtdjconstXml obj=new PtdjconstXml();
             obj=(PtdjconstXml)setJavaBeanParam(obj,xml);

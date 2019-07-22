@@ -22,6 +22,8 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,7 +52,7 @@ public class FDDealImpl implements FDInterface{
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=get&type=devstatus&authvusr="+user+"&authpwd="+passwd;
         LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
 
         CheckFDStateXml xml=Xml2Object.getCheckFDStateXml(rr);
 
@@ -129,7 +131,7 @@ public class FDDealImpl implements FDInterface{
         String regparam="action=do&type=disk&cmd=stoprec"+
                 "&authvusr="+user+"&authpwd="+passwd;
         LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
 
         StopRecXml xml=new StopRecXml();
         xml=(StopRecXml)XMLUtil.xmlToStr(xml,rr);
@@ -174,7 +176,7 @@ public class FDDealImpl implements FDInterface{
         String regparam="action=api&type=ftp_process_status"+
                 "&authvusr="+user+"&authpwd="+passwd;
         LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
 
         GetFTPUploadSpeedXml xml=Xml2Object.getFTPUploadSpeedXml(rr);
 
@@ -222,7 +224,7 @@ public class FDDealImpl implements FDInterface{
                 "&restart="+param.getRestart()+"&serverport="+param.getServerport()+"&pasvmode="+param.getPasvmode()+
                 "&authvusr="+user+"&authpwd="+passwd;
         LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
 
         SetMiddleware_FTPXml xml=new SetMiddleware_FTPXml();
         xml=(SetMiddleware_FTPXml)XMLUtil.xmlToStr(xml,rr);
@@ -257,7 +259,7 @@ public class FDDealImpl implements FDInterface{
                 "&rec_id="+param.getRec_id()+"&dev_type="+param.getDev_type()+"&&partition_index="+param.getPartition_index()+
                 "&authvusr="+user+"&authpwd="+passwd;
         LogUtil.intoLog(this.getClass(),url+":url getETRecordByIid regparam:"+regparam);
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--getETRecordByIid");
         GetETRecordByIidXml xml=Xml2Object.xml2GetETRecordByIidXml(rr);
 
@@ -297,7 +299,7 @@ public class FDDealImpl implements FDInterface{
         String regparam="action=api&type=ftp_pasv_upload_file"+
                 "&reupload="+reupload+"&path="+recordpath+
                 "&authvusr="+user+"&authpwd="+passwd;
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--uploadFileByPath");
         UploadFileByPathXml xml=Xml2Object.uploadFileByPathXml(rr);
 
@@ -371,8 +373,8 @@ public class FDDealImpl implements FDInterface{
 
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=get&type=ptdjconst"+
-                "&usr="+user+"&pwd="+passwd;
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--getptdjconst");
         PtdjconstXml xml=Xml2Object.getptdjconstXml(rr);
 
@@ -415,8 +417,9 @@ public class FDDealImpl implements FDInterface{
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=rom&cmd=startrec"+
                 "&dx="+dx+"&aldisk="+aldisk+"&bmode="+bmode+"&btime="+btime+"&disconly="+disconly+"&iid="+iid+
-                "&usr="+user+"&pwd="+passwd;
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        LogUtil.intoLog(this.getClass(),regparam+"--regparam");
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--startRec_Rom");
         int i=Xml2Object.startRec_RomXml(rr);
         if(i>0){
@@ -443,8 +446,8 @@ public class FDDealImpl implements FDInterface{
 
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=rom&cmd=pauserec"+
-                "&usr="+user+"&pwd="+passwd;
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--pauseRec_Rom");
         int i=Xml2Object.pauseRec_RomXml(rr);
         if(i>0){
@@ -457,7 +460,7 @@ public class FDDealImpl implements FDInterface{
     }
 
     @Override
-    public RResult<GgoonRec_RomVO> goonRec_Rom(GgoonRec_RomParam param, RResult<GgoonRec_RomVO> result) {
+    public RResult<GgoonRec_RomVO> goonRec_Rom(GoonRec_RomParam param, RResult<GgoonRec_RomVO> result) {
 
         String ip=param.getIp();
         String passwd=param.getPasswd();
@@ -472,8 +475,9 @@ public class FDDealImpl implements FDInterface{
 
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=rom&cmd=goonrec"+
-                "&usr="+user+"&pwd="+passwd;
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        LogUtil.intoLog(this.getClass(),regparam+"--regparam");
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--goonRec_Rom");
         int i=Xml2Object.goonRec_RomXml(rr);
         if(i>0){
@@ -502,8 +506,8 @@ public class FDDealImpl implements FDInterface{
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=rom&cmd=stoprec"+
                 "&dx="+dx+
-                "&usr="+user+"&pwd="+passwd;
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--stopRec_Rom");
         int i=Xml2Object.stopRec_RomXml(rr);
         if(i>0){
@@ -511,8 +515,6 @@ public class FDDealImpl implements FDInterface{
         }else{
             result.setMessage("请求光盘结束刻录失败");
         }
-
-
         return result;
     }
 
@@ -534,8 +536,8 @@ public class FDDealImpl implements FDInterface{
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=rom&cmd=eject"+
                 "&dx="+dx+
-                "&usr="+user+"&pwd="+passwd;
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--eject_Rom");
         int i=Xml2Object.eject_RomXml(rr);
         if(i>0){
@@ -565,8 +567,8 @@ public class FDDealImpl implements FDInterface{
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=rom&cmd=closetray"+
                 "&dx="+dx+
-                "&usr="+user+"&pwd="+passwd;
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--closetray_Rom");
         int i=Xml2Object.closetray_RomXml(rr);
         if(i>0){
@@ -574,7 +576,6 @@ public class FDDealImpl implements FDInterface{
         }else{
             result.setMessage("请求光驱进仓失败");
         }
-
         return result;
     }
 
@@ -595,15 +596,19 @@ public class FDDealImpl implements FDInterface{
         String lines="";
         int num=1;
         for(String line:linelist){//组建片头的数据集合
-            lines+="&line"+num+"="+line;
+            try {
+                lines+="&line"+num+"="+URLEncoder.encode(line, "gbk");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             num++;
         }
 
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=view&cmd=ptdj"+
                 "&ct="+ct+lines+
-                "&usr="+user+"&pwd="+passwd;
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--ptdj");
         int i=Xml2Object.ptdjXml(rr);
         if(i>0){
@@ -634,8 +639,8 @@ public class FDDealImpl implements FDInterface{
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=ctrl&cmd=ptz"+
                 "&ptzaction="+ptzaction+"&ptzch="+ptzch+
-                "&usr="+user+"&pwd="+passwd;
-        String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--yuntaiControl");
         int i=Xml2Object.yuntaiControlXml(rr);
         if(i>0){

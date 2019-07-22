@@ -422,7 +422,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                 result.setMessage("请求单独的光盘暂停刻录失败");
             }
         }else if (pauseOrContinue==2){
-            GgoonRec_RomParam ggoonRec_romParam=new GgoonRec_RomParam();
+            GoonRec_RomParam ggoonRec_romParam=new GoonRec_RomParam();
             ggoonRec_romParam.setPort(flushbonadinginfo.getPort());
             ggoonRec_romParam.setIp(flushbonadinginfo.getEtip());
             ggoonRec_romParam.setPasswd(flushbonadinginfo.getPasswd());
@@ -444,19 +444,116 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
 
     @Override
     public RResult dvdOutOrIn(DvdOutOrInParam_out param, RResult result) {
+
+        int inOrOut=param.getInOrOut();
+        int dx=param.getDx();
+
+        String fdssid=param.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        if(inOrOut==1){//进仓
+            Closetray_RomParam closetray_RomParam = new Closetray_RomParam();
+            closetray_RomParam.setPort(flushbonadinginfo.getPort());
+            closetray_RomParam.setIp(flushbonadinginfo.getEtip());
+            closetray_RomParam.setPasswd(flushbonadinginfo.getPasswd());
+            closetray_RomParam.setUser(flushbonadinginfo.getUser());
+            closetray_RomParam.setDx(dx);
+            RResult<Closetray_RomVO> result2=new RResult<Closetray_RomVO>();
+            result2=fdDeal.closetray_Rom(closetray_RomParam,result2);
+            if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+                result.changeToTrue(true);
+            }else{
+                result.setMessage("请求光盘进仓失败");
+            }
+        }else if(inOrOut==2){//出仓
+            Eject_RomParam eject_romParam = new Eject_RomParam();
+            eject_romParam.setPort(flushbonadinginfo.getPort());
+            eject_romParam.setIp(flushbonadinginfo.getEtip());
+            eject_romParam.setPasswd(flushbonadinginfo.getPasswd());
+            eject_romParam.setUser(flushbonadinginfo.getUser());
+            eject_romParam.setDx(dx);
+            RResult<Eject_RomVO> result2=new RResult<Eject_RomVO>();
+            result2=fdDeal.eject_Rom(eject_romParam,result2);
+            if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+                result.changeToTrue(true);
+            }else{
+                result.setMessage("请求光盘出仓失败");
+            }
+        }else{
+            result.setMessage("请求光盘进出仓参数异常，请确认后再操作");
+        }
+
         return result;
     }
 
     @Override
     public RResult ptdj(PtdjParam_out param, RResult result) {
+
+        String fdssid=param.getFlushbonadingetinfossid();
+        int ct=param.getCt();
+        List<String> linelist=param.getLineList();
+
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        if (null==linelist||linelist.size() ==0){
+            LogUtil.intoLog(this.getClass(),"param.linelist is null");
+            result.setMessage("片头叠加的数据为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        if (ct ==0){
+            ct= flushbonadinginfo.getBurntime()==null ? 15 : flushbonadinginfo.getBurntime();
+        }
+
+        PtdjParam ptdjParam=new PtdjParam();
+        ptdjParam.setPort(flushbonadinginfo.getPort());
+        ptdjParam.setIp(flushbonadinginfo.getEtip());
+        ptdjParam.setPasswd(flushbonadinginfo.getPasswd());
+        ptdjParam.setUser(flushbonadinginfo.getUser());
+        ptdjParam.setCt(ct);
+        ptdjParam.setLineList(linelist);
+        RResult<PtdjVO> result2=new RResult<PtdjVO>();
+        result2=fdDeal.ptdj(ptdjParam,result2);
+        if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+            result.changeToTrue(true);
+        }else{
+            result.setMessage("请求片头叠加失败");
+        }
+
         return result;
     }
 
     @Override
     public RResult getptdjconst(GetptdjconstParam_out param, RResult result) {
 
-        String fdssid=param.getFlushbonadingetinfossid();
         boolean mustbool=param.isMustUpdateBool();
+        String fdssid=param.getFlushbonadingetinfossid();
         if (StringUtils.isBlank(fdssid)){
             LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
             result.setMessage("参数为空");
@@ -520,6 +617,47 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
 
     @Override
     public RResult yuntaiControl(YuntaiControlParam_out param, RResult result) {
+
+        String ptzaction=param.getPtzaction();
+        int ptzch=param.getPtzch();
+
+        String fdssid=param.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        if (StringUtils.isBlank(ptzaction)){
+            LogUtil.intoLog(this.getClass(),"is null ,param.getPtzch():"+ptzch);
+            result.setMessage("请求云台的操作参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        YuntaiControlParam yuntaiControlParam=new YuntaiControlParam();
+        yuntaiControlParam.setPort(flushbonadinginfo.getPort());
+        yuntaiControlParam.setIp(flushbonadinginfo.getEtip());
+        yuntaiControlParam.setPasswd(flushbonadinginfo.getPasswd());
+        yuntaiControlParam.setUser(flushbonadinginfo.getUser());
+        yuntaiControlParam.setPtzaction(ptzaction);
+        yuntaiControlParam.setPtzch(ptzch);
+        RResult<YuntaiControlVO> result2=new RResult<YuntaiControlVO>();
+        result2=fdDeal.yuntaiControl(yuntaiControlParam,result2);
+        if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+            result.changeToTrue(true);
+        }else{
+            result.setMessage("请求云台控制失败");
+        }
+
         return result;
     }
 }

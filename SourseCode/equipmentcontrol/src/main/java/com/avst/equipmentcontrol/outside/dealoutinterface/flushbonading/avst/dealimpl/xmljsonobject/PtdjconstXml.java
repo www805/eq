@@ -181,52 +181,52 @@ public class PtdjconstXml {
 
         List<String> list=new ArrayList<String>();
         if(null!=line0){
-            list.add(line0);
+            list.add(line0.replaceAll(" ",""));
         }
         if(null!=line1){
-            list.add(line1);
+            list.add(line1.replaceAll(" ",""));
         }
         if(null!=line2){
-            list.add(line2);
+            list.add(line2.replaceAll(" ",""));
         }
         if(null!=line3){
-            list.add(line3);
+            list.add(line3.replaceAll(" ",""));
         }
         if(null!=line4){
-            list.add(line4);
+            list.add(line4.replaceAll(" ",""));
         }
         if(null!=line5){
-            list.add(line5);
+            list.add(line5.replaceAll(" ",""));
         }
         if(null!=line6){
-            list.add(line6);
+            list.add(line6.replaceAll(" ",""));
         }
         if(null!=line7){
-            list.add(line7);
+            list.add(line7.replaceAll(" ",""));
         }
         if(null!=line8){
-            list.add(line8);
+            list.add(line8.replaceAll(" ",""));
         }
         if(null!=line9){
-            list.add(line9);
+            list.add(line9.replaceAll(" ",""));
         }
         if(null!=line10){
-            list.add(line10);
+            list.add(line10.replaceAll(" ",""));
         }
         if(null!=line11){
-            list.add(line11);
+            list.add(line11.replaceAll(" ",""));
         }
         if(null!=line12){
-            list.add(line12);
+            list.add(line12.replaceAll(" ",""));
         }
         if(null!=line13){
-            list.add(line13);
+            list.add(line13.replaceAll(" ",""));
         }
         if(null!=line14){
-            list.add(line14);
+            list.add(line14.replaceAll(" ",""));
         }
         if(null!=line15){
-            list.add(line15);
+            list.add(line15.replaceAll(" ",""));
         }
          return list;
 
