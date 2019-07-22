@@ -5,16 +5,53 @@ import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.*;
 
 public interface ToOutService_qrs {
 
+    /**
+     * 设备开始工作
+     * @param param
+     * @param result
+     * @return
+     */
     public RResult workStart(WorkStartParam param, RResult result);
 
+    /**
+     * 设备结束工作
+     * @param param
+     * @param result
+     * @return
+     */
     public RResult workOver(WorkOverParam param, RResult result);
 
+    /**
+     * 获取嵌入式设备录像文件信息
+     * @param param
+     * @param result
+     * @return
+     */
     public RResult getRecordByIid(GetRecordByIidParam param, RResult result);
 
+
+    /**
+     * 获取嵌入式设备工作缓存
+     * @param param
+     * @param result
+     * @return
+     */
     public RResult getFDListByFdid(GetFDListByFdidParam param, RResult result);
 
+    /**
+     *
+     * @param param
+     * @param result
+     * @return
+     */
     public RResult getFTPUploadSpeedByIp(GetFTPUploadSpeedByIpParam param, RResult result);
 
+    /**
+     * 获取设备状态信息
+     * @param param
+     * @param result
+     * @return
+     */
     public RResult getFDState(GetFDStateParam param,RResult result);
 
     /**
