@@ -305,6 +305,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         int dx=param.getDx();
         String iid=param.getIid();
         String bmode=param.getBmode();
+        int burntime=param.getBurntime();
 
         String fdssid=param.getFlushbonadingetinfossid();
         if (StringUtils.isBlank(fdssid)){
@@ -330,7 +331,10 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         startRec_romParam.setBmode(bmode);
         startRec_romParam.setDx(dx);
         startRec_romParam.setIid(iid);
-        startRec_romParam.setBtime(flushbonadinginfo.getBurntime()==null?6:flushbonadinginfo.getBurntime());//默认给6小时的刻录时间
+        if(burntime==0){//默认给6小时的刻录时间
+            burntime=flushbonadinginfo.getBurntime()==null?6:flushbonadinginfo.getBurntime();
+        }
+        startRec_romParam.setBtime(burntime);
         startRec_romParam.setPort(flushbonadinginfo.getPort());
         startRec_romParam.setIp(flushbonadinginfo.getEtip());
         startRec_romParam.setPasswd(flushbonadinginfo.getPasswd());
