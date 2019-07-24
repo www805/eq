@@ -32,16 +32,16 @@ public class WebServiceClient {
             //设置请求超时
             call.setTimeout(Integer.valueOf(3000));
             //此处返回 json 格式的字符串
-            result= (String)call.invoke(new Object[]{});
+
+            if(null!=call.invoke(new Object[]{})){
+                result= (String)call.invoke(new Object[]{});
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
         LogUtil.intoLog(WebServiceClient.class,result);
         return result;
     }
-
-
-
 
 
     public static void main (String args[]){

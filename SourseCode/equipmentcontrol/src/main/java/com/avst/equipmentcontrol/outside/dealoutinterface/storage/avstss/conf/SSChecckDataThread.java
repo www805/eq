@@ -5,6 +5,8 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.pa
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
 import com.avst.equipmentcontrol.common.util.FileUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
+import com.avst.equipmentcontrol.common.util.ff.VideoChangeThread;
+import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.cache.SSThreadCache;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
@@ -70,6 +72,20 @@ public class SSChecckDataThread extends  Thread{
                             long filerealsize=savefile.length();
                             LogUtil.intoLog(this.getClass(),filerealsize+":filerealsize--filename:"+filename+"--filesize_db："+filesize_db);
                             if(filerealsize==filesize_db){//判断文件是否全部上传完毕
+
+                                String changetype= PropertiesListenerConfig.getProperty("changetype");
+                                if(null==changetype || changetype.trim().equals("")){
+                                    LogUtil.intoLog(4,this.getClass(),"转video文件的属性配置参数异常，----changetype:"+changetype);
+                                }else{
+
+                                    //执行转码操作
+                                    String inputpath=path;
+                                    String outputurl=inputpath.substring(0, inputpath.lastIndexOf("."))+"."+changetype;
+                                    VideoChangeThread videoChangeThread=new VideoChangeThread(inputpath,outputurl);
+                                    videoChangeThread.start();
+                                    path=outputurl;
+                                }
+
 
                                 //修改数据库的原始保存文件记录表
                                 Gson gson=new Gson();

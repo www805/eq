@@ -5,11 +5,15 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.pa
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
+import com.avst.equipmentcontrol.common.util.ff.FFThreadCache;
+import com.avst.equipmentcontrol.common.util.ff.VideoChangeThread;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.cache.SSThreadCache;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.apache.commons.lang.StringUtils;
+
+import java.io.File;
 
 /**
  * 进入时state=1 or state=-2
@@ -44,12 +48,49 @@ public class SSCreateDataUrlThread extends  Thread{
 
         while (bool){
 
+            try {
+                Thread.sleep(20000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             if(!bool){
                 LogUtil.intoLog(this.getClass(),"SSCreateDataUrlThread 被主动中止--filename："+filename);
                 break;
             }
 
             try {
+
+                //先判断是否有转码，有的话就需要判断转码是否成功，只有成功才能生成地址
+                String leastvideolength= PropertiesListenerConfig.getProperty("leastvideolength");
+                String changetype = PropertiesListenerConfig.getProperty("changetype");
+                if(null!=leastvideolength && !leastvideolength.trim().equals("")
+                    &&null!=changetype && savepath.endsWith(changetype)){//一定要是转换后的文件类型才需要再判断一遍长度问题
+
+                    int leastvideolength_=Integer.parseInt(leastvideolength);
+
+                    VideoChangeThread videoChangeThread=FFThreadCache.getVideoChangeThread(savepath);//查看是否还有这个转码线程有的话就再等一下
+                    if(null!=videoChangeThread){
+                        LogUtil.intoLog(3,this.getClass(),"VideoChangeThread 转码线程存在，再等一下，continue，savepath："+savepath);
+                        continue;
+                    }else{
+                        LogUtil.intoLog(1,this.getClass(),"VideoChangeThread 转码线程不存在，可以继续，savepath："+savepath);
+                    }
+
+                    File file=new File(savepath);
+                    if(!file.exists()||file.length() < leastvideolength_){
+                        file=null;
+                        LogUtil.intoLog(3,this.getClass(),"转video文件正常，文件长度不正常，需要等待再次检测，----leastvideolength:"+leastvideolength);
+
+                        continue;
+                    }else{
+                        LogUtil.intoLog(1,this.getClass(),"转video文件正常，可以下一步，----leastvideolength:"+leastvideolength);
+                    }
+
+                }else{
+                    LogUtil.intoLog(3,this.getClass(),savepath+"：savepath，不是video，或者转video文件的属性配置参数异常,跳过检测环节直接生成点播地址，----leastvideolength:"+leastvideolength);
+                }
+
                 //建立对外开放的请求地址(给个NGINX，可以配置网络资源请求地址)
                 //http 最简单的
                 String staticpath= PropertiesListenerConfig.getProperty("staticpath");
@@ -76,11 +117,6 @@ public class SSCreateDataUrlThread extends  Thread{
                 break;
             }
 
-            try {
-                Thread.sleep(20000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
 
         LogUtil.intoLog(this.getClass(),"正常结束生成网络地址的线程 iid："+iid);

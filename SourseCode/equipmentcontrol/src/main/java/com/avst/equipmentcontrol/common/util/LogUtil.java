@@ -57,7 +57,9 @@ public class LogUtil {
             if(null!=aClass){
                 log= LoggerFactory.getLogger(aClass);
             }
-            log.info(logtxt.toString()+"");
+            if(null!=logtxt){
+                log.info(logtxt.toString()+"");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
