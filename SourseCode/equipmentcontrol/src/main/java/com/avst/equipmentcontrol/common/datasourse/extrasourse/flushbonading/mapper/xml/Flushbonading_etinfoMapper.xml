@@ -18,6 +18,7 @@
         <result column="user" property="user" />
         <result column="passwd" property="passwd" />
         <result column="uploadbasepath" property="uploadbasepath" />
+        <result column="previewurl" property="previewurl" />
 
     </resultMap>
 

@@ -6,6 +6,8 @@ public class WorkStartVO {
 
     private String fdlivingurl;//设备的直播地址
 
+    private String fdpreviewurl;//设备的直播预览地址
+
     private long startrecordtime;//开始录音的毫秒数
 
     public long getStartrecordtime() {
@@ -30,5 +32,13 @@ public class WorkStartVO {
 
     public void setFdlivingurl(String fdlivingurl) {
         this.fdlivingurl = fdlivingurl;
+    }
+
+    public String getFdpreviewurl() {
+        return fdpreviewurl;
+    }
+
+    public void setFdpreviewurl(String fdpreviewurl) {
+        this.fdpreviewurl = fdpreviewurl;
     }
 }

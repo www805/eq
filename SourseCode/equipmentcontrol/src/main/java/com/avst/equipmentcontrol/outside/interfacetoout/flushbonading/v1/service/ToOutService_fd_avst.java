@@ -65,6 +65,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         if(null!=fdCacheParam){
             WorkStartVO workStartVO=new WorkStartVO();
             workStartVO.setFdlivingurl(fdCacheParam.getLivingUrl());
+            workStartVO.setFdpreviewurl(fdCacheParam.getPreviewurl());
             workStartVO.setIid(fdCacheParam.getRecordFileiid());
             workStartVO.setStartrecordtime(fdCacheParam.getRecordStartTime());
             result.changeToTrue(workStartVO);
@@ -103,6 +104,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                 fdCacheParam.setFdSsid(fdssid);
                 fdCacheParam.setFdType(FDType.FD_AVST);
                 fdCacheParam.setLivingUrl(flushbonadinginfo.getLivingurl());
+                fdCacheParam.setPreviewurl(flushbonadinginfo.getPreviewurl());
                 fdCacheParam.setPort(flushbonadinginfo.getPort());
                 fdCacheParam.setUseRecord(1);
                 fdCacheParam.setIp(flushbonadinginfo.getEtip());
@@ -112,9 +114,9 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                 fdCacheParam.setRecordStartTime(startrecordtime);
                 FDCache.setFD(fdid,fdCacheParam);
 
-
                 WorkStartVO workStartVO=new WorkStartVO();
                 workStartVO.setFdlivingurl(flushbonadinginfo.getLivingurl());
+                workStartVO.setFdpreviewurl(flushbonadinginfo.getPreviewurl());
                 workStartVO.setIid(iid);
                 workStartVO.setStartrecordtime(startrecordtime);
                 result.changeToTrue(workStartVO);

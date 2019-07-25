@@ -8,6 +8,8 @@ public class FDCacheParam {
 
     private String livingUrl;//该设备的直播地址；
 
+    private String previewurl;//该设备的直播预览地址；
+
     private int port;//开放接口的端口
 
     private String ip;
@@ -100,5 +102,13 @@ public class FDCacheParam {
 
     public void setRecordStartTime(long recordStartTime) {
         this.recordStartTime = recordStartTime;
+    }
+
+    public String getPreviewurl() {
+        return previewurl;
+    }
+
+    public void setPreviewurl(String previewurl) {
+        this.previewurl = previewurl;
     }
 }

@@ -34,6 +34,12 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
     private String livingurl;
 
     /**
+     * 直播预览地址（标清）
+     */
+    private String previewurl;
+
+
+    /**
      * 开放接口的端口
      */
     private Integer port;
@@ -87,6 +93,14 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
     private Integer integer2;
 
     private String ssid;
+
+    public String getPreviewurl() {
+        return previewurl;
+    }
+
+    public void setPreviewurl(String previewurl) {
+        this.previewurl = previewurl;
+    }
 
     public Integer getBurntime() {
         return burntime;
