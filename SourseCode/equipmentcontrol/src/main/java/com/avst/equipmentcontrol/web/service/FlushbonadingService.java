@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.web.service;
 
-import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.FlushbonadingEttd;
+import com.avst.equipmentcontrol.web.req.flushbonading.UpdateBurnboolFoDiskrecboolParam;
+import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
@@ -15,8 +16,6 @@ import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.web.req.flushbonading.FlushbonadinginfoParam;
-import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttdParam;
-import com.avst.equipmentcontrol.web.vo.baseEttype.EquipmentBasicsVO;
 import com.avst.equipmentcontrol.web.vo.flushbonading.BaseEquipmentinfoOrEttypeVO;
 import com.avst.equipmentcontrol.web.vo.flushbonading.FlushbonadinginfoVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -25,11 +24,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class FlushbonadingService extends BaseService {
@@ -126,6 +122,10 @@ public class FlushbonadingService extends BaseService {
             result.setMessage("直播地址不能为空");
             return;
         }
+        if (StringUtils.isBlank(paramParam.getPreviewurl())){
+            result.setMessage("直播预览地址不能为空");
+            return;
+        }
         if (null == paramParam.getPort()) {
             result.setMessage("开放接口的端口不能为空");
             return;
@@ -154,7 +154,26 @@ public class FlushbonadingService extends BaseService {
             result.setMessage("设备IP不能为空");
             return;
         }
-
+        if (null == paramParam.getBurntime()) {
+            result.setMessage("刻录选时时长不能为空");
+            return;
+        }
+        if (null == paramParam.getBurnbool()) {
+            result.setMessage("是否需要光盘同刻不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getPtjson())){
+            result.setMessage("片头列表不能为空");
+            return;
+        }
+        if (null == paramParam.getPtshowtime()) {
+            result.setMessage("片头显示时间不能为空");
+            return;
+        }
+        if (null == paramParam.getDiskrecbool()) {
+            result.setMessage("是否需要硬盘录像不能为空");
+            return;
+        }
 
         Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
         base_equipmentinfo.setEtnum(paramParam.getEtnum());
@@ -166,10 +185,16 @@ public class FlushbonadingService extends BaseService {
 
         Flushbonading_etinfo flushbonading_etinfo = new Flushbonading_etinfo();
         flushbonading_etinfo.setLivingurl(paramParam.getLivingurl());
+        flushbonading_etinfo.setPreviewurl(paramParam.getPreviewurl());
         flushbonading_etinfo.setPort(paramParam.getPort());
         flushbonading_etinfo.setUser(paramParam.getUser());
         flushbonading_etinfo.setPasswd(paramParam.getPasswd());
         flushbonading_etinfo.setUploadbasepath(paramParam.getUploadbasepath());
+        flushbonading_etinfo.setBurntime(paramParam.getBurntime());
+        flushbonading_etinfo.setBurnbool(paramParam.getBurnbool());
+        flushbonading_etinfo.setPtjson(paramParam.getPtjson());
+        flushbonading_etinfo.setPtshowtime(paramParam.getPtshowtime());
+        flushbonading_etinfo.setDiskrecbool(paramParam.getDiskrecbool());
         flushbonading_etinfo.setExplain(paramParam.getExplain());
         flushbonading_etinfo.setEquipmentssid(base_equipmentinfo.getSsid());
         flushbonading_etinfo.setSsid(OpenUtil.getUUID_32());
@@ -185,10 +210,12 @@ public class FlushbonadingService extends BaseService {
         changeResultToSuccess(result);
     }
 
-    //修改
+    /**
+     * 修改
+     */
     public void updateFlushbonading(RResult result, ReqParam<Flushbonadinginfo> param){
 
-        //请求参数转换
+        /**请求参数转换*/
         Flushbonadinginfo paramParam = param.getParam();
         if (null==paramParam){
             result.setMessage("参数为空");
@@ -201,6 +228,10 @@ public class FlushbonadingService extends BaseService {
         }
         if (StringUtils.isBlank(paramParam.getLivingurl())){
             result.setMessage("直播地址不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getPreviewurl())){
+            result.setMessage("直播预览地址不能为空");
             return;
         }
         if (null == paramParam.getPort()) {
@@ -231,13 +262,33 @@ public class FlushbonadingService extends BaseService {
             result.setMessage("设备IP不能为空");
             return;
         }
+        if (null == paramParam.getBurntime()) {
+            result.setMessage("刻录选时时长不能为空");
+            return;
+        }
+        if (null == paramParam.getBurnbool()) {
+            result.setMessage("是否需要光盘同刻不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getPtjson())){
+            result.setMessage("片头列表不能为空");
+            return;
+        }
+        if (null == paramParam.getPtshowtime()) {
+            result.setMessage("片头显示时间不能为空");
+            return;
+        }
+        if (null == paramParam.getDiskrecbool()) {
+            result.setMessage("是否需要硬盘录像不能为空");
+            return;
+        }
 
-        //查询审讯主机从里面拿到他的设备ssid
+        /**查询审讯主机从里面拿到他的设备ssid*/
         EntityWrapper ew0 = new EntityWrapper();
         ew0.eq("fet.ssid",paramParam.getSsid());
         Flushbonadinginfo flushbonadingEtinfo = flushbonading_etinfoMapper.getFlushbonadinginfo(ew0);
 
-        //删除设备再新增，不然就是修改那个设备
+        /**删除设备再新增，不然就是修改那个设备*/
         EntityWrapper ew2 = new EntityWrapper();
         ew2.eq("ssid", flushbonadingEtinfo.getEquipmentssid());
 
@@ -248,8 +299,10 @@ public class FlushbonadingService extends BaseService {
 
         base_equipmentinfoMapper.update(equipmentinfo, ew2);
 
-        //修改通道里面的直播地址
-        //如果真是要修改就进入里面
+        
+
+        /**修改通道里面的直播地址*/
+        /**如果真是要修改就进入里面*/
         if (!paramParam.getEtip().equalsIgnoreCase(flushbonadingEtinfo.getEtip())) {
 
             EntityWrapper ew3 = new EntityWrapper();
@@ -260,8 +313,22 @@ public class FlushbonadingService extends BaseService {
 
                 for (FlushbonadingEttd flushbonadingEttd : flushbonadingEttdList) {
 
-                    //修改通道里面的地址
-                    String newEtip = flushbonadingEttd.getPullflowurl().replace(flushbonadingEtinfo.getEtip(), paramParam.getEtip());
+                    //获取通道url地址
+                    String pullflowurl = flushbonadingEttd.getPullflowurl();
+
+                    //取出ip字符串
+                    Set<String> strContainData = OpenUtil.getStrContainData(pullflowurl, "http://", "/", false);
+                    if (strContainData.size() <= 0) {
+                        strContainData = OpenUtil.getStrContainData(pullflowurl, "https://", "/", false);
+                        if (strContainData.size() <= 0) {
+                            break;//如果没有就跳出不修改了
+                        }
+                    }
+
+                    String etinfoip = (String) strContainData.toArray()[0];
+
+                    /**修改通道里面的地址*/
+                    String newEtip = pullflowurl.replace(etinfoip, paramParam.getEtip());
 
                     Flushbonading_ettd flushbonading_ettd = new Flushbonading_ettd();
                     flushbonading_ettd.setPullflowurl(newEtip);
@@ -279,10 +346,16 @@ public class FlushbonadingService extends BaseService {
 
         Flushbonading_etinfo flushbonading_etinfo = new Flushbonading_etinfo();
         flushbonading_etinfo.setLivingurl(paramParam.getLivingurl());
+        flushbonading_etinfo.setPreviewurl(paramParam.getPreviewurl());
         flushbonading_etinfo.setPort(paramParam.getPort());
         flushbonading_etinfo.setUser(paramParam.getUser());
         flushbonading_etinfo.setPasswd(paramParam.getPasswd());
         flushbonading_etinfo.setUploadbasepath(paramParam.getUploadbasepath());
+        flushbonading_etinfo.setBurntime(paramParam.getBurntime());
+        flushbonading_etinfo.setBurnbool(paramParam.getBurnbool());
+        flushbonading_etinfo.setPtjson(paramParam.getPtjson());
+        flushbonading_etinfo.setPtshowtime(paramParam.getPtshowtime());
+        flushbonading_etinfo.setDiskrecbool(paramParam.getDiskrecbool());
         flushbonading_etinfo.setExplain(paramParam.getExplain());
         flushbonading_etinfo.setSsid(paramParam.getSsid());
 
@@ -296,7 +369,9 @@ public class FlushbonadingService extends BaseService {
         changeResultToSuccess(result);
     }
 
-    //删除
+    /**
+     * 删除
+     */
     public void delFlushbonading(RResult result, ReqParam<FlushbonadinginfoParam> param){
 
         //请求参数转换
@@ -337,7 +412,10 @@ public class FlushbonadingService extends BaseService {
         changeResultToSuccess(result);
     }
 
-    //查询设备类型
+    /**
+     * 查询设备类型
+     * @param result
+     */
     public void getBaseEttype(RResult result){
 
         BaseEquipmentinfoOrEttypeVO baseEquipmentinfoOrEttypeVO = new BaseEquipmentinfoOrEttypeVO();
@@ -355,7 +433,72 @@ public class FlushbonadingService extends BaseService {
         changeResultToSuccess(result);
     }
 
+    /**
+     * 修改硬盘录像状态
+     * @param result
+     * @param param
+     */
+    public void updateDiskrecbool(RResult result, ReqParam<UpdateBurnboolFoDiskrecboolParam> param) {
 
+        UpdateBurnboolFoDiskrecboolParam paramParam = param.getParam();
 
+        if (StringUtils.isBlank(paramParam.getSsid())){
+            result.setMessage("修改的ssid不能为空");
+            return;
+        }
+        if (null == paramParam.getState()) {
+            result.setMessage("硬盘录像状态不能为空");
+            return;
+        }
 
+        EntityWrapper ew = new EntityWrapper();
+        ew.eq("ssid", paramParam.getSsid());
+
+        Flushbonading_etinfo flushbonading_etinfo = new Flushbonading_etinfo();
+        flushbonading_etinfo.setDiskrecbool(paramParam.getState());
+
+        Integer update = flushbonading_etinfoMapper.update(flushbonading_etinfo, ew);
+        System.out.println("update_boot：" + update);
+        if(update == 1){
+            result.setData(flushbonading_etinfo.getSsid());
+        }else{
+            result.setData(update);
+        }
+        changeResultToSuccess(result);
+    }
+
+    /**
+     * 修改光盘同刻状态
+     * @param result
+     * @param param
+     */
+    public void updateBurnbool(RResult result, ReqParam<UpdateBurnboolFoDiskrecboolParam> param) {
+
+        UpdateBurnboolFoDiskrecboolParam paramParam = param.getParam();
+
+        if (StringUtils.isBlank(paramParam.getSsid())){
+            result.setMessage("修改的ssid不能为空");
+            return;
+        }
+        if (null == paramParam.getState()) {
+            result.setMessage("光盘同刻状态不能为空");
+            return;
+        }
+
+        EntityWrapper ew = new EntityWrapper();
+        ew.eq("ssid", paramParam.getSsid());
+
+        Flushbonading_etinfo flushbonading_etinfo = new Flushbonading_etinfo();
+        flushbonading_etinfo.setBurnbool(paramParam.getState());
+
+        Integer update = flushbonading_etinfoMapper.update(flushbonading_etinfo, ew);
+        System.out.println("update_boot：" + update);
+        if(update == 1){
+            result.setData(flushbonading_etinfo.getSsid());
+        }else{
+            result.setData(update);
+        }
+        changeResultToSuccess(result);
+
+    }
 }

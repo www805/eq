@@ -1,6 +1,6 @@
 package com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper;
 
-import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.FlushbonadingEttd;
+import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;

@@ -29,7 +29,13 @@
         <div class="layui-form-item">
             <label class="layui-form-label">直播地址</label>
             <div class="layui-input-block">
-                <input type="text" name="livingurl" id="livingurl"   lay-verify="required" placeholder="请输入直播地址" autocomplete="off" class="layui-input">
+                <input type="text" name="livingurl" id="livingurl" required lay-verify="required" placeholder="请输入直播地址" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">直播预览地址</label>
+            <div class="layui-input-block">
+                <input type="text" name="previewurl" id="previewurl" required lay-verify="required" placeholder="请输入直播预览地址" autocomplete="off" class="layui-input">
             </div>
         </div>
 
@@ -75,6 +81,60 @@
             </div>
         </div>
 
+        <div class="layui-form-item">
+            <div style="float: left;">
+                <label class="layui-form-label">是否需要硬盘录像</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" checked="" name="diskrecbool" id="diskrecbool" lay-skin="switch" lay-filter="switchTest" lay-text="需要|不需要">
+                </div>
+            </div>
+            <div style="float: left;">
+                <label class="layui-form-label">是否需要光盘同刻</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="burnbool" id="burnbool" lay-skin="switch" lay-filter="switchTest" lay-text="需要|不需要">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">刻录选时时长</label>
+            <div class="layui-input-block">
+                <select name="burntime" id="burntime" lay-filter="burntime">
+                    <option value="1">1小时</option>
+                    <option value="4">4小时</option>
+                    <option value="8">8小时</option>
+                    <option value="12">12小时</option>
+                    <option value="16">16小时</option>
+                    <option value="20">20小时</option>
+                    <option value="24">24小时</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">片头显示时间</label>
+            <div class="layui-input-block">
+                <select name="ptshowtime" id="ptshowtime" lay-filter="ptshowtime">
+                    <option value="5">5秒</option>
+                    <option value="10" >10秒</option>
+                    <option value="20" >20秒</option>
+                    <option value="30" >30秒</option>
+                    <option value="40" >40秒</option>
+                    <option value="50" >50秒</option>
+                    <option value="60" >60秒</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">片头列表</label>
+            <div class="layui-input-inline" style="float: left;width: 360px;">
+                <input type="text" name="ptjson" id="ptjson" required lay-verify="required" placeholder="请输入片头列表" autocomplete="off" class="layui-input">
+            </div>
+            <input type="button" style="float: left;" class="layui-btn layui-btn-normal" id="getptdjconstBtn" onclick="getptdjconst(ssid)" value="获取片头列表" />
+        </div>
+
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">中文解释</label>
             <div class="layui-input-block">
@@ -115,7 +175,21 @@
         if(ssid){
             getFlushbonadingById(ssid);
         }
+
+        ptft();
+        $('#ptjson').bind('input propertychange',function(){
+            ptft();
+        });
+
     });
+
+    function ptft() {
+        if($("#ptjson").val().length == 0){
+            $("#getptdjconstBtn").val("获取片头列表");
+        }else{
+            $("#getptdjconstBtn").val("更新片头列表");
+        }
+    }
 
     // layui.use(['form', 'layedit', 'laydate','laypage', 'layer'], function(){
     //     var form = layui.form

@@ -1,7 +1,6 @@
 package com.avst.equipmentcontrol.web.vo.flushbonadingEttd;
 
-import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.FlushbonadingEttd;
-import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
+import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttd;
 import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttdParam;
 
 import java.util.List;

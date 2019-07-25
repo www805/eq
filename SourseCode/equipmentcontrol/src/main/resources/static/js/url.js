@@ -28,7 +28,8 @@ function getUrl_manage() {
 
 		main:getPath()+basepath+"main/gotomain",
 		logout:getPath()+basepath+"main/logout",
-		getNavList: getPath() + "/ec/main/getNavList"
+		getNavList: getPath() + "/ec/main/getNavList",
+		getptdjconst:getPath()+"/flushbonading/v1/getptdjconst"
 
 	};
 }
@@ -43,6 +44,8 @@ function getUrl_manageZk() {
 		updateFlushbonading:getPath()+"/Flushbonading/updateFlushbonading",
 		delFlushbonading:getPath()+"/Flushbonading/delFlushbonading",
 		getFlushbonadingBaseEttype:getPath()+"/Flushbonading/getBaseEttype",
+		UpdateDiskrecbool:getPath()+"/Flushbonading/updateDiskrecbool",
+		UpdateBurnbool:getPath()+"/Flushbonading/updateBurnbool",
 
 		getPolygraphList:getPath()+"/Polygraph/getPolygraphList",
 		getPolygraphById:getPath()+"/Polygraph/getPolygraphById",

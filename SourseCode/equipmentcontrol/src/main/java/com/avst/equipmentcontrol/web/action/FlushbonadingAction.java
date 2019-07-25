@@ -6,6 +6,7 @@ import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.web.req.flushbonading.FlushbonadinginfoParam;
+import com.avst.equipmentcontrol.web.req.flushbonading.UpdateBurnboolFoDiskrecboolParam;
 import com.avst.equipmentcontrol.web.service.FlushbonadingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -63,6 +64,24 @@ public class FlushbonadingAction extends BaseAction {
     public RResult delFlushbonading(@RequestBody ReqParam<FlushbonadinginfoParam> param){
         RResult result=this.createNewResultOfFail();
         flushbonadingService.delFlushbonading(result,param);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    //修改硬盘录像状态
+    @RequestMapping(value = "/updateDiskrecbool")
+    public RResult updateDiskrecbool(@RequestBody ReqParam<UpdateBurnboolFoDiskrecboolParam> param){
+        RResult result=this.createNewResultOfFail();
+        flushbonadingService.updateDiskrecbool(result,param);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    //修改光盘同刻状态
+    @RequestMapping(value = "/updateBurnbool")
+    public RResult updateBurnbool(@RequestBody ReqParam<UpdateBurnboolFoDiskrecboolParam> param){
+        RResult result=this.createNewResultOfFail();
+        flushbonadingService.updateBurnbool(result,param);
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }

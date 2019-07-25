@@ -9,20 +9,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@FeignClient(value = "zk", url = "192.168.17.176:8079/")//, fallback = ClientResult.class
+@FeignClient(value = "zk", url = "localhost:8079/")//, fallback = ClientResult.class
 public interface ZkControl {
 
-    //获取注册的服务器
+    /**
+     * 获取注册的服务器
+     */
     @RequestMapping( value = "/zk/getControlInfoAll")
     @ResponseBody
     public RResult getControlInfoAll();
 
-    //获取服务器时间
+    /**
+     * 获取服务器时间
+     * @return
+     */
     @RequestMapping( value = "/zk/getControlTime")
     @ResponseBody
     public RResult getControlTime();
 
-    //心跳接口
+    /**
+     * 心跳接口
+     * @param param
+     * @return
+     */
     @RequestMapping(value = "/zk/getHeartbeat")
     public RResult getHeartbeat(@RequestBody ReqParam<ControlInfoParamVO> param);
 
