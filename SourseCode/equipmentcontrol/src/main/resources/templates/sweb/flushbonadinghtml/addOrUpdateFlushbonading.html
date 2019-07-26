@@ -26,16 +26,16 @@
     </div>
     <form class="layui-form  layui-main site-inline" action="" style="margin-top: 30px;">
         <input type="hidden" name="ssid" id="ssid" value=""/>
-        <div class="layui-form-item">
+        <div class="layui-form-item" id="livingurlItem">
             <label class="layui-form-label">直播地址</label>
             <div class="layui-input-block">
-                <input type="text" name="livingurl" id="livingurl" required lay-verify="required" placeholder="请输入直播地址" autocomplete="off" class="layui-input">
+                <input type="text" disabled name="livingurl" id="livingurl" required lay-verify="required" placeholder="直播地址（只读不能手动修改）" autocomplete="off" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" id="previewurlItem">
             <label class="layui-form-label">直播预览地址</label>
             <div class="layui-input-block">
-                <input type="text" name="previewurl" id="previewurl" required lay-verify="required" placeholder="请输入直播预览地址" autocomplete="off" class="layui-input">
+                <input type="text" disabled name="previewurl" id="previewurl" required lay-verify="required" placeholder="直播预览地址（只读不能手动修改）" autocomplete="off" class="layui-input">
             </div>
         </div>
 
@@ -174,6 +174,13 @@
         console.log(ssid);
         if(ssid){
             getFlushbonadingById(ssid);
+            $("#livingurlItem").show();
+            $("#previewurlItem").show();
+            $("#getptdjconstBtn").show();
+        }else{
+            $("#livingurlItem").hide();
+            $("#previewurlItem").hide();
+            $("#getptdjconstBtn").hide();
         }
 
         ptft();

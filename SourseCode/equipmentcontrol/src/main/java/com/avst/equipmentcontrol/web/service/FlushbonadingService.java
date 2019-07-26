@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,38 +43,44 @@ public class FlushbonadingService extends BaseService {
     @Autowired
     private Flushbonading_ettdMapper flushbonading_ettdMapper;
 
+    @Value("${urlModel.livingurl}")
+    private String urlModeLlivingurl;
+
+    @Value("${urlModel.previewurl}")
+    private String urlModePreviewurl;
+
     //查询
-    public void getFlushbonadingList(RResult result, ReqParam<FlushbonadinginfoParam> param){
-        FlushbonadinginfoVO flushbonadinginfoVO=new FlushbonadinginfoVO();
+    public void getFlushbonadingList(RResult result, ReqParam<FlushbonadinginfoParam> param) {
+        FlushbonadinginfoVO flushbonadinginfoVO = new FlushbonadinginfoVO();
 
         //请求参数转换
         FlushbonadinginfoParam flushbonadinginfoParam = param.getParam();
-        if (null==flushbonadinginfoParam){
+        if (null == flushbonadinginfoParam) {
             result.setMessage("参数为空");
             return;
         }
 
-        EntityWrapper ew=new EntityWrapper();
-        if (StringUtils.isNotBlank(flushbonadinginfoParam.getLivingurl())){
-            ew.like("fet.livingurl",flushbonadinginfoParam.getLivingurl());
+        EntityWrapper ew = new EntityWrapper();
+        if (StringUtils.isNotBlank(flushbonadinginfoParam.getLivingurl())) {
+            ew.like("fet.livingurl", flushbonadinginfoParam.getLivingurl());
         }
-        if (StringUtils.isNotBlank(flushbonadinginfoParam.getUser())){
-            ew.like("fet.user",flushbonadinginfoParam.getUser());
+        if (StringUtils.isNotBlank(flushbonadinginfoParam.getUser())) {
+            ew.like("fet.user", flushbonadinginfoParam.getUser());
         }
-        if (StringUtils.isNotBlank(flushbonadinginfoParam.getEtnum())){
-            ew.like("et.etnum",flushbonadinginfoParam.getEtnum());
+        if (StringUtils.isNotBlank(flushbonadinginfoParam.getEtnum())) {
+            ew.like("et.etnum", flushbonadinginfoParam.getEtnum());
         }
-        if (StringUtils.isNotBlank(flushbonadinginfoParam.getEtypessid())){
-            ew.eq("et.etypessid",flushbonadinginfoParam.getEtypessid());
+        if (StringUtils.isNotBlank(flushbonadinginfoParam.getEtypessid())) {
+            ew.eq("et.etypessid", flushbonadinginfoParam.getEtypessid());
         }
 
         int count = flushbonading_etinfoMapper.getFlushbonadingCount(ew);
         flushbonadinginfoParam.setRecordCount(count);
 
-        ew.orderBy("fet.id",false);
-        Page<Flushbonadinginfo> page=new Page<Flushbonadinginfo>(flushbonadinginfoParam.getCurrPage(),flushbonadinginfoParam.getPageSize());
+        ew.orderBy("fet.id", false);
+        Page<Flushbonadinginfo> page = new Page<Flushbonadinginfo>(flushbonadinginfoParam.getCurrPage(), flushbonadinginfoParam.getPageSize());
 
-        List<Flushbonadinginfo> flushbonadingList = flushbonading_etinfoMapper.getFlushbonadingList(page,ew);
+        List<Flushbonadinginfo> flushbonadingList = flushbonading_etinfoMapper.getFlushbonadingList(page, ew);
 
         flushbonadinginfoVO.setPagelist(flushbonadingList);
         flushbonadinginfoVO.setPageparam(flushbonadinginfoParam);
@@ -84,22 +91,22 @@ public class FlushbonadingService extends BaseService {
     }
 
     //查询单个
-    public void getFlushbonadingById(RResult result, ReqParam<FlushbonadinginfoParam> param){
+    public void getFlushbonadingById(RResult result, ReqParam<FlushbonadinginfoParam> param) {
 
         //请求参数转换
         FlushbonadinginfoParam flushbonadinginfoParam = param.getParam();
-        if (null==flushbonadinginfoParam){
+        if (null == flushbonadinginfoParam) {
             result.setMessage("参数为空");
             return;
         }
 
-        if (StringUtils.isBlank(flushbonadinginfoParam.getSsid())){
+        if (StringUtils.isBlank(flushbonadinginfoParam.getSsid())) {
             result.setMessage("查询的参数不能为空");
             return;
         }
 
-        EntityWrapper ew=new EntityWrapper();
-        ew.eq("fet.ssid",flushbonadinginfoParam.getSsid());
+        EntityWrapper ew = new EntityWrapper();
+        ew.eq("fet.ssid", flushbonadinginfoParam.getSsid());
 
         Flushbonadinginfo flushbonadinginfo = flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
 
@@ -109,48 +116,39 @@ public class FlushbonadingService extends BaseService {
     }
 
     //新增
-    public void addFlushbonading(RResult result, ReqParam<Flushbonadinginfo> param){
+    public void addFlushbonading(RResult result, ReqParam<Flushbonadinginfo> param) {
 
         //请求参数转换
         Flushbonadinginfo paramParam = param.getParam();
-        if (null==paramParam){
+        if (null == paramParam) {
             result.setMessage("参数为空");
-            return;
-        }
-
-        if (StringUtils.isBlank(paramParam.getLivingurl())){
-            result.setMessage("直播地址不能为空");
-            return;
-        }
-        if (StringUtils.isBlank(paramParam.getPreviewurl())){
-            result.setMessage("直播预览地址不能为空");
             return;
         }
         if (null == paramParam.getPort()) {
             result.setMessage("开放接口的端口不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getUser())){
+        if (StringUtils.isBlank(paramParam.getUser())) {
             result.setMessage("登录用户名不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getPasswd())){
+        if (StringUtils.isBlank(paramParam.getPasswd())) {
             result.setMessage("登录密码不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getUploadbasepath())){
+        if (StringUtils.isBlank(paramParam.getUploadbasepath())) {
             result.setMessage("ftp上传存储路径不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getEtypessid())){
+        if (StringUtils.isBlank(paramParam.getEtypessid())) {
             result.setMessage("设备类型不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getEtnum())){
+        if (StringUtils.isBlank(paramParam.getEtnum())) {
             result.setMessage("设备编号不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getEtip())){
+        if (StringUtils.isBlank(paramParam.getEtip())) {
             result.setMessage("设备IP不能为空");
             return;
         }
@@ -162,16 +160,20 @@ public class FlushbonadingService extends BaseService {
             result.setMessage("是否需要光盘同刻不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getPtjson())){
-            result.setMessage("片头列表不能为空");
-            return;
-        }
         if (null == paramParam.getPtshowtime()) {
             result.setMessage("片头显示时间不能为空");
             return;
         }
         if (null == paramParam.getDiskrecbool()) {
             result.setMessage("是否需要硬盘录像不能为空");
+            return;
+        }
+
+        Flushbonading_etinfo etinfo = new Flushbonading_etinfo();
+        etinfo.setUser(paramParam.getUser());
+        Flushbonading_etinfo etinfoOne = flushbonading_etinfoMapper.selectOne(etinfo);
+        if (null != etinfoOne) {
+            result.setMessage("用户名已经存在！");
             return;
         }
 
@@ -183,9 +185,14 @@ public class FlushbonadingService extends BaseService {
 
         base_equipmentinfoMapper.insert(base_equipmentinfo);
 
+
+        //拼接直播地址，直播预览地址
+        String livingurl = urlModeLlivingurl.replace("@url", paramParam.getEtip());
+        String previewurl = urlModePreviewurl.replace("@url", paramParam.getEtip());
+
         Flushbonading_etinfo flushbonading_etinfo = new Flushbonading_etinfo();
-        flushbonading_etinfo.setLivingurl(paramParam.getLivingurl());
-        flushbonading_etinfo.setPreviewurl(paramParam.getPreviewurl());
+        flushbonading_etinfo.setLivingurl(livingurl);
+        flushbonading_etinfo.setPreviewurl(previewurl);
         flushbonading_etinfo.setPort(paramParam.getPort());
         flushbonading_etinfo.setUser(paramParam.getUser());
         flushbonading_etinfo.setPasswd(paramParam.getPasswd());
@@ -201,9 +208,9 @@ public class FlushbonadingService extends BaseService {
 
         Integer insert = flushbonading_etinfoMapper.insert(flushbonading_etinfo);
         System.out.println("add_boot：" + insert);
-        if(insert == 1){
+        if (insert == 1) {
             result.setData(flushbonading_etinfo.getSsid());
-        }else{
+        } else {
             result.setData(insert);
         }
 
@@ -213,52 +220,44 @@ public class FlushbonadingService extends BaseService {
     /**
      * 修改
      */
-    public void updateFlushbonading(RResult result, ReqParam<Flushbonadinginfo> param){
+    public void updateFlushbonading(RResult result, ReqParam<Flushbonadinginfo> param) {
 
         /**请求参数转换*/
         Flushbonadinginfo paramParam = param.getParam();
-        if (null==paramParam){
+        if (null == paramParam) {
             result.setMessage("参数为空");
             return;
         }
 
-        if (StringUtils.isBlank(paramParam.getSsid())){
+        if (StringUtils.isBlank(paramParam.getSsid())) {
             result.setMessage("修改的ssid不能为空");
-            return;
-        }
-        if (StringUtils.isBlank(paramParam.getLivingurl())){
-            result.setMessage("直播地址不能为空");
-            return;
-        }
-        if (StringUtils.isBlank(paramParam.getPreviewurl())){
-            result.setMessage("直播预览地址不能为空");
             return;
         }
         if (null == paramParam.getPort()) {
             result.setMessage("开放接口的端口不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getUser())){
+        if (StringUtils.isBlank(paramParam.getUser())) {
             result.setMessage("登录用户名不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getPasswd())){
+        if (StringUtils.isBlank(paramParam.getPasswd())) {
             result.setMessage("登录密码不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getUploadbasepath())){
+        if (StringUtils.isBlank(paramParam.getUploadbasepath())) {
             result.setMessage("ftp上传存储路径不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getEtypessid())){
+        if (StringUtils.isBlank(paramParam.getEtypessid())) {
             result.setMessage("设备类型不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getEtnum())){
+        if (StringUtils.isBlank(paramParam.getEtnum())) {
             result.setMessage("设备编号不能为空");
             return;
         }
-        if (StringUtils.isBlank(paramParam.getEtip())){
+        if (StringUtils.isBlank(paramParam.getEtip())) {
             result.setMessage("设备IP不能为空");
             return;
         }
@@ -268,10 +267,6 @@ public class FlushbonadingService extends BaseService {
         }
         if (null == paramParam.getBurnbool()) {
             result.setMessage("是否需要光盘同刻不能为空");
-            return;
-        }
-        if (StringUtils.isBlank(paramParam.getPtjson())){
-            result.setMessage("片头列表不能为空");
             return;
         }
         if (null == paramParam.getPtshowtime()) {
@@ -285,7 +280,7 @@ public class FlushbonadingService extends BaseService {
 
         /**查询审讯主机从里面拿到他的设备ssid*/
         EntityWrapper ew0 = new EntityWrapper();
-        ew0.eq("fet.ssid",paramParam.getSsid());
+        ew0.eq("fet.ssid", paramParam.getSsid());
         Flushbonadinginfo flushbonadingEtinfo = flushbonading_etinfoMapper.getFlushbonadinginfo(ew0);
 
         /**删除设备再新增，不然就是修改那个设备*/
@@ -299,14 +294,13 @@ public class FlushbonadingService extends BaseService {
 
         base_equipmentinfoMapper.update(equipmentinfo, ew2);
 
-        
 
         /**修改通道里面的直播地址*/
         /**如果真是要修改就进入里面*/
         if (!paramParam.getEtip().equalsIgnoreCase(flushbonadingEtinfo.getEtip())) {
 
             EntityWrapper ew3 = new EntityWrapper();
-            ew3.eq("e.flushbonadingssid",flushbonadingEtinfo.getSsid());
+            ew3.eq("e.flushbonadingssid", flushbonadingEtinfo.getSsid());
             List<FlushbonadingEttd> flushbonadingEttdList = flushbonading_ettdMapper.getFlushbonadingEttdList(ew3);
 
             if (null != flushbonadingEttdList && flushbonadingEttdList.size() > 0) {
@@ -344,9 +338,13 @@ public class FlushbonadingService extends BaseService {
         EntityWrapper ew = new EntityWrapper();
         ew.eq("ssid", paramParam.getSsid());
 
+        //拼接直播地址，直播预览地址
+        String livingurl = urlModeLlivingurl.replace("@url", paramParam.getEtip());
+        String previewurl = urlModePreviewurl.replace("@url", paramParam.getEtip());
+
         Flushbonading_etinfo flushbonading_etinfo = new Flushbonading_etinfo();
-        flushbonading_etinfo.setLivingurl(paramParam.getLivingurl());
-        flushbonading_etinfo.setPreviewurl(paramParam.getPreviewurl());
+        flushbonading_etinfo.setLivingurl(livingurl);
+        flushbonading_etinfo.setPreviewurl(previewurl);
         flushbonading_etinfo.setPort(paramParam.getPort());
         flushbonading_etinfo.setUser(paramParam.getUser());
         flushbonading_etinfo.setPasswd(paramParam.getPasswd());
@@ -361,9 +359,9 @@ public class FlushbonadingService extends BaseService {
 
         Integer update = flushbonading_etinfoMapper.update(flushbonading_etinfo, ew);
         System.out.println("update_boot：" + update);
-        if(update == 1){
+        if (update == 1) {
             result.setData(flushbonading_etinfo.getSsid());
-        }else{
+        } else {
             result.setData(update);
         }
         changeResultToSuccess(result);
@@ -372,16 +370,16 @@ public class FlushbonadingService extends BaseService {
     /**
      * 删除
      */
-    public void delFlushbonading(RResult result, ReqParam<FlushbonadinginfoParam> param){
+    public void delFlushbonading(RResult result, ReqParam<FlushbonadinginfoParam> param) {
 
         //请求参数转换
         FlushbonadinginfoParam paramParam = param.getParam();
-        if (null==paramParam){
+        if (null == paramParam) {
             result.setMessage("参数为空");
             return;
         }
 
-        if (StringUtils.isBlank(paramParam.getSsid())){
+        if (StringUtils.isBlank(paramParam.getSsid())) {
             result.setMessage("删除的ssid不能为空");
             return;
         }
@@ -391,7 +389,7 @@ public class FlushbonadingService extends BaseService {
         flushbonadinginfo.setSsid(paramParam.getSsid());
         Flushbonading_etinfo flushbonadingEtinfo = flushbonading_etinfoMapper.selectOne(flushbonadinginfo);
 
-        if (null == flushbonadingEtinfo){
+        if (null == flushbonadingEtinfo) {
             result.setMessage("没找到相应的设备ssid");
             return;
         }
@@ -414,9 +412,10 @@ public class FlushbonadingService extends BaseService {
 
     /**
      * 查询设备类型
+     *
      * @param result
      */
-    public void getBaseEttype(RResult result){
+    public void getBaseEttype(RResult result) {
 
         BaseEquipmentinfoOrEttypeVO baseEquipmentinfoOrEttypeVO = new BaseEquipmentinfoOrEttypeVO();
 
@@ -435,6 +434,7 @@ public class FlushbonadingService extends BaseService {
 
     /**
      * 修改硬盘录像状态
+     *
      * @param result
      * @param param
      */
@@ -442,7 +442,7 @@ public class FlushbonadingService extends BaseService {
 
         UpdateBurnboolFoDiskrecboolParam paramParam = param.getParam();
 
-        if (StringUtils.isBlank(paramParam.getSsid())){
+        if (StringUtils.isBlank(paramParam.getSsid())) {
             result.setMessage("修改的ssid不能为空");
             return;
         }
@@ -459,9 +459,9 @@ public class FlushbonadingService extends BaseService {
 
         Integer update = flushbonading_etinfoMapper.update(flushbonading_etinfo, ew);
         System.out.println("update_boot：" + update);
-        if(update == 1){
+        if (update == 1) {
             result.setData(flushbonading_etinfo.getSsid());
-        }else{
+        } else {
             result.setData(update);
         }
         changeResultToSuccess(result);
@@ -469,6 +469,7 @@ public class FlushbonadingService extends BaseService {
 
     /**
      * 修改光盘同刻状态
+     *
      * @param result
      * @param param
      */
@@ -476,7 +477,7 @@ public class FlushbonadingService extends BaseService {
 
         UpdateBurnboolFoDiskrecboolParam paramParam = param.getParam();
 
-        if (StringUtils.isBlank(paramParam.getSsid())){
+        if (StringUtils.isBlank(paramParam.getSsid())) {
             result.setMessage("修改的ssid不能为空");
             return;
         }
@@ -493,9 +494,9 @@ public class FlushbonadingService extends BaseService {
 
         Integer update = flushbonading_etinfoMapper.update(flushbonading_etinfo, ew);
         System.out.println("update_boot：" + update);
-        if(update == 1){
+        if (update == 1) {
             result.setData(flushbonading_etinfo.getSsid());
-        }else{
+        } else {
             result.setData(update);
         }
         changeResultToSuccess(result);

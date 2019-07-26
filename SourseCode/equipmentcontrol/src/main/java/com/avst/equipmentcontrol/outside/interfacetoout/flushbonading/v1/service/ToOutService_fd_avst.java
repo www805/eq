@@ -615,7 +615,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         if(null!=linelist&&linelist.size() > 0){
             result.changeToTrue(linelist);
         }else{
-            result.setMessage("数据库中存储的片头字段集合不正确，需要强制修改");
+            result.setMessage("数据库中存储的片头字段集合不正确，需要强制修改(或修改正确的ip和端口地址)");
         }
 
         return result;
