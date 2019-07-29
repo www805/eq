@@ -13,6 +13,7 @@ import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_etty
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
+import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.web.req.LoginParam;
 import com.avst.equipmentcontrol.web.vo.EcCountVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -46,11 +47,6 @@ public class MainService {
 
     @Autowired
     private Tts_etinfoMapper tts_etinfoMapper;
-
-    @Value("${spring.application.name}")
-    private String application_name;
-    @Value("${nav.file.name}")
-    private String nav_file_name;
 
     public RResult logining(RResult result, HttpServletRequest request, LoginParam loginParam){
 
@@ -94,6 +90,9 @@ public class MainService {
 
         AppCacheParam cacheParam = AppCache.getAppCacheParam();
         if(null == cacheParam.getData()){
+            String application_name = PropertiesListenerConfig.getProperty("spring.application.name");
+            String nav_file_name = PropertiesListenerConfig.getProperty("nav.file.name");
+
             String path = OpenUtil.getXMSoursePath() + "\\" + nav_file_name + ".yml";
             FileInputStream fis = null;
             try {
