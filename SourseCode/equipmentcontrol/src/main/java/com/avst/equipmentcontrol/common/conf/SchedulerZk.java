@@ -4,6 +4,7 @@ import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
+import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.feignclient.base.req.ControlInfoParam;
 import com.avst.equipmentcontrol.feignclient.base.vo.ControlInfoParamVO;
 import com.avst.equipmentcontrol.feignclient.zk.ZkControl;
@@ -27,18 +28,6 @@ public class SchedulerZk {
     @Autowired
     private ZkControl zkControl;
 
-    @Value("${spring.application.name}")
-    private String servername;
-
-    @Value("${control.servser.url}")
-    private String url;
-
-    @Value("${control.servser.loginusername}")
-    private String loginusername;
-
-    @Value("${control.servser.loginpassword}")
-    private String loginpassword;
-
 
 //    @Scheduled(fixedRate = 10000) //10秒心跳一次
     /**
@@ -58,10 +47,19 @@ public class SchedulerZk {
             e.printStackTrace();
         }
 
+        String servername = PropertiesListenerConfig.getProperty("spring.application.name");
+        String url = PropertiesListenerConfig.getProperty("control.servser.url");
+        String port = PropertiesListenerConfig.getProperty("server.port");
+        String loginusername = PropertiesListenerConfig.getProperty("control.servser.loginusername");
+        String loginpassword = PropertiesListenerConfig.getProperty("control.servser.loginpassword");
+
+        System.out.println(servername);
+        System.out.println(port);
+
         ControlInfoParamVO controlInfoParamVO = new ControlInfoParamVO();
         controlInfoParamVO.setServername(servername);//服务器注册名
         controlInfoParamVO.setServertitle("设备系统");//服务器中文名
-        controlInfoParamVO.setUrl("http://" + hostAddress + url); //访问本服务器地址
+        controlInfoParamVO.setUrl("http://" + hostAddress + ":" + port + url); //访问本服务器地址
         controlInfoParamVO.setLoginusername(loginusername);
         controlInfoParamVO.setLoginpassword(loginpassword);
         controlInfoParamVO.setTotal_item(4);
@@ -70,6 +68,8 @@ public class SchedulerZk {
         controlInfoParamVO.setStatus(1);//状态
 
         param.setParam(controlInfoParamVO);
+
+        System.out.println(controlInfoParamVO);
 
         try {
             RResult heartbeat = zkControl.getHeartbeat(param);

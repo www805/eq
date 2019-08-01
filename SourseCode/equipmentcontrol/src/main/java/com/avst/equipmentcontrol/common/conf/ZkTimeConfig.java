@@ -3,6 +3,7 @@ package com.avst.equipmentcontrol.common.conf;
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
+import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.feignclient.zk.ZkControl;
 import org.apache.commons.jexl3.JexlBuilder;
 import org.apache.commons.jexl3.JexlEngine;
@@ -29,13 +30,6 @@ public class ZkTimeConfig implements ApplicationRunner {
     @Autowired
     private ZkControl zkControl;
 
-    @Value("${control.servser.date}")
-    private Integer servserDate;
-
-    @Value("${control.servser.formulas}")
-    private String formulas;
-
-
     //获取服务器时间进行比对
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -58,6 +52,9 @@ public class ZkTimeConfig implements ApplicationRunner {
                     //把转成总控时间和当前服务器时间戳进行计算
                     Date newday = dateFormatter.parse(newTime);
                     Date oldDay = dateFormatter.parse(createTime);
+
+                    Integer servserDate = Integer.parseInt(PropertiesListenerConfig.getProperty("control.servser.date"));
+                    String formulas = PropertiesListenerConfig.getProperty("control.servser.formulas");
 
                     //计算公式转换成整数
                     JexlEngine jexlEngine = new JexlBuilder().create();
