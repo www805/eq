@@ -53,9 +53,6 @@ public class SchedulerZk {
         String loginusername = PropertiesListenerConfig.getProperty("control.servser.loginusername");
         String loginpassword = PropertiesListenerConfig.getProperty("control.servser.loginpassword");
 
-        System.out.println(servername);
-        System.out.println(port);
-
         ControlInfoParamVO controlInfoParamVO = new ControlInfoParamVO();
         controlInfoParamVO.setServername(servername);//服务器注册名
         controlInfoParamVO.setServertitle("设备系统");//服务器中文名
@@ -68,8 +65,6 @@ public class SchedulerZk {
         controlInfoParamVO.setStatus(1);//状态
 
         param.setParam(controlInfoParamVO);
-
-        System.out.println(controlInfoParamVO);
 
         try {
             RResult heartbeat = zkControl.getHeartbeat(param);
