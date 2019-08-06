@@ -62,8 +62,8 @@ public class PropertiesListenerConfig {
                         }
                         String[] arr=pro.split("=");
                         if(null!=arr&&arr.length==2){
-                            LogUtil.intoLog(PropertiesListenerConfig.class,arr[0]+":key----val:"+arr[1]);
-                            propertiesMap.put(arr[0],arr[1]);
+//                            LogUtil.intoLog(PropertiesListenerConfig.class,arr[0]+":key----val:"+arr[1]);
+                            propertiesMap.put(arr[0].trim(),arr[1].trim());
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -81,9 +81,11 @@ public class PropertiesListenerConfig {
 
     public static String getProperty(String name) {
 
+        if(null==propertiesMap||null==propertiesMap.entrySet()||propertiesMap.entrySet().size()==0){
+            new PropertiesListener("application.properties","ec.properties");
+        }
         String s = propertiesMap.get(name);
-
-        return propertiesMap.get(name).toString();
+        return s;
     }
 
     public static Map<String, String> getAllProperty() {

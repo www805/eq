@@ -3,6 +3,7 @@ package com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.conf;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Ss_database;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.param.Ss_dataMessageParam;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
+import com.avst.equipmentcontrol.common.util.FileUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.ff.FFThreadCache;
@@ -85,10 +86,20 @@ public class SSCreateDataUrlThread extends  Thread{
                         continue;
                     }else{
                         LogUtil.intoLog(1,this.getClass(),"转video文件正常，可以下一步，----leastvideolength:"+leastvideolength);
+
                     }
 
                 }else{
                     LogUtil.intoLog(3,this.getClass(),savepath+"：savepath，不是video，或者转video文件的属性配置参数异常,跳过检测环节直接生成点播地址，----leastvideolength:"+leastvideolength);
+                }
+
+                try {
+                    //去掉名字的特殊字符
+                    String savename=OpenUtil.getfilename(savepath);
+                    String newsavename=OpenUtil.replaceSpecialChar(savename,null);
+                    savepath= OpenUtil.FileRenameTo(savepath,newsavename);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 //建立对外开放的请求地址(给个NGINX，可以配置网络资源请求地址)

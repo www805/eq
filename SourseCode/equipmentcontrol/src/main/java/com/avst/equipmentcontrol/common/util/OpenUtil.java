@@ -85,6 +85,31 @@ public class OpenUtil {
 		Matcher m = p.matcher(mobiles);
 		return m.matches();
 	}
+
+	/**
+	 * 去掉特殊字符
+	 * @param str
+	 * @return
+	 */
+	public static String  replaceSpecialChar(String str,String specialChar) {
+
+		if(null==specialChar||specialChar.trim().equals("")){//为空就是去掉所有的特殊字符
+			specialChar="[\n`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。， 、？]";
+		}
+		str=str.replaceAll(specialChar,"");
+
+
+//可以在中括号内加上任何想要替换的字符
+
+		Pattern p = Pattern.compile(specialChar);
+
+		Matcher m = p.matcher(str);//这里把想要替换的字符串传进来
+
+		String newString= m.replaceAll(str).trim();
+		return newString;
+	}
+
+
 	/**
 	 * 新增文件夹路径使用自带的参数（）
 	 * @param files
@@ -592,6 +617,31 @@ public static String numtoStr(int digit,Integer num){
         return null;
         
 	}
+
+	/**
+	 * 获取文件的文件名，不带后缀
+	 * @param filepath
+	 * @return
+	 */
+	public static String getfilename(String filepath){
+
+		try {
+			if(StringUtils.isNotEmpty(filepath)){
+
+				File file=new File(filepath);
+				if(file.exists()&&file.isFile()){
+					String name=file.getName();
+					name=name.substring(0,name.lastIndexOf("."));
+					return name;
+				}
+			}
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
 	
 	/**
 	 * 按要求字符切割字符串
@@ -1007,10 +1057,14 @@ public static String numtoStr(int digit,Integer num){
             return null;
         }
         String newFilePath = null;
+        String splitstr="/";
+        if(filePath.indexOf("\\") > -1){
+			splitstr="\\";
+		}
         if (f.isDirectory()) { // 判断是否为文件夹
-            newFilePath = filePath.substring(0, filePath.lastIndexOf("/")) + "/" + newFileName;
+            newFilePath = filePath.substring(0, filePath.lastIndexOf(splitstr)) + splitstr + newFileName;
         } else {
-            newFilePath = filePath.substring(0, filePath.lastIndexOf("/"))+ "/"  + newFileName + filePath.substring(filePath.lastIndexOf("."));
+            newFilePath = filePath.substring(0, filePath.lastIndexOf(splitstr))+ splitstr  + newFileName + filePath.substring(filePath.lastIndexOf("."));
         }
         File nf = new File(newFilePath);
         if (!f.exists()) { // 判断需要修改为的文件是否存在（防止文件名冲突）
@@ -1148,9 +1202,8 @@ public static String numtoStr(int digit,Integer num){
 //
 //		LogUtil.intoLog(OpenUtil.class,setFileHide(str));
 
-		LogUtil.intoLog(OpenUtil.class,System.getProperty("user.dir"));
+		LogUtil.intoLog(FileRenameTo("C:\\Users\\Administrator\\Desktop\\common\\nginx-1.8.1\\conf\\nginx-old.conf","nginx2-old"));
 
-		getUUID_32();
 
 
 	}
