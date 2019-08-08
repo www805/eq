@@ -7,10 +7,7 @@ import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.AsrCache_toout;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.param.AsrTxtParam_toout;
 import com.avst.equipmentcontrol.common.conf.ASRType;
-import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.GetAsrServerBySsidParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.OverAsrParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.StartAsrParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.TxtBackParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.*;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service.BaseToOutServiceImpl_asr;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service.ToOutService_asr;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service.ToOutServiceImpl_asr_avst;
@@ -106,6 +103,25 @@ public class ToOutAction_asr extends BaseAction {
 
         return rResult;
     }
+
+    @RequestMapping("/pauseOrContinueAsr")
+    @ResponseBody
+    public RResult pauseOrContinueAsr(@RequestBody ReqParam<PauseOrContinueAsrParam> param){
+        RResult rResult=createNewResultOfFail();
+
+        PauseOrContinueAsrParam sparam=param.getParam();
+        if(null!=sparam){
+            String asrtype=sparam.getAsrtype();//这里测试使用，后期要去查询
+            rResult=getToOutService(asrtype).pauseOrContinueAsr(sparam,rResult);
+
+        }else{
+            LogUtil.intoLog(this.getClass(),"startAsr---param.getParam() ---参数异常");
+            rResult.setMessage("参数异常");
+        }
+        return rResult;
+    }
+
+
 
     //一套语音服务器的增删改查接口
 

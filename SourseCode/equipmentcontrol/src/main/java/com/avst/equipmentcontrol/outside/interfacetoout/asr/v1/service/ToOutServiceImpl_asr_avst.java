@@ -11,11 +11,14 @@ import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.v1.action.
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_heartbeat;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_quit;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_reg;
+import com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache.AsrCache;
+import com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache.param.AsrTxtParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.AsrCache_toout;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.param.AsrMessageParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.conf.AsrHeartbeatThread;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.conf.AsrOverThread;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.OverAsrParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.PauseOrContinueAsrParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.StartAsrParam;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.apache.commons.lang.StringUtils;
@@ -93,6 +96,48 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         }
         return rResult;
     }
+
+    public RResult pauseOrContinueAsr(PauseOrContinueAsrParam param, RResult rResult){
+
+        int PauseOrContinue=param.getPauseOrContinue();
+        String asrid=param.getAsrid();
+        String asrssid=param.getAsrEquipmentssid();
+        //给缓存状态添加一个暂停
+        AsrTxtParam asrTxtParam=AsrCache.getAsrByEquipmentssid(asrssid,asrid);
+        if(null==asrTxtParam){
+            LogUtil.intoLog(this.getClass(),asrssid+":asrssid 没有找到这个asr服务器对应的通道的识别服务,asrid:"+asrid);
+            rResult.setMessage("没有找到这个语音识别服务器对应的通道的识别服务");
+            return rResult;
+        }
+        boolean workbool=asrTxtParam.isWorkbool();
+        if(PauseOrContinue==1){//要暂停
+            if(!workbool){
+                rResult.setMessage("已经是暂停状态不需要再一次暂停");
+                rResult.changeToTrue();
+                return rResult;
+            }
+            asrTxtParam.setWorkbool(false);
+            AsrCache.setAsrByEquipmentssid(asrssid,asrTxtParam);
+            rResult.changeToTrue();
+        }else if(PauseOrContinue==2){//要继续
+            if(workbool){
+                rResult.setMessage("已经是工作状态不需要再一次继续");
+                rResult.changeToTrue();
+                return rResult;
+            }
+            asrTxtParam.setWorkbool(true);
+            AsrCache.setAsrByEquipmentssid(asrssid,asrTxtParam);
+            rResult.changeToTrue();
+        }else{
+            LogUtil.intoLog(this.getClass(),PauseOrContinue+":PauseOrContinue 请求暂停/继续语音识别的状态参数不对,只能是1/2");
+            rResult.setMessage("请求暂停/继续语音识别的状态参数不对");
+        }
+
+        asrTxtParam.isWorkbool();
+
+        return rResult;
+    }
+
 
     @Override
     public RResult overAsr(OverAsrParam param,RResult rResult) {

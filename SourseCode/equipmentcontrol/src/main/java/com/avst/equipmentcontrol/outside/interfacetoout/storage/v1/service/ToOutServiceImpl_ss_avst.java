@@ -44,6 +44,7 @@ public class ToOutServiceImpl_ss_avst implements ToOutService_ss {
             String sourseip = param.getSourseIp();
             String sstype = param.getSsType();
             String fdssid = param.getSourseFDETSsid();
+            long startrecordtime=param.getStartrecordtime();
             //根据类型找存储服务器
             EntityWrapper<Ss_saveinfo> ew = new EntityWrapper<Ss_saveinfo>();
             ew.eq("sstype", sstype);
@@ -62,6 +63,7 @@ public class ToOutServiceImpl_ss_avst implements ToOutService_ss {
             sfparam.setIp(sourseip);
             sfparam.setFdssid(fdssid);
             sfparam.setUploadbasepath(ss_saveinfo.getDatasavebasepath());
+            sfparam.setStartrecordtime(startrecordtime);
             result = deal.saveFileByIid(sfparam, result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,9 +106,6 @@ public class ToOutServiceImpl_ss_avst implements ToOutService_ss {
         return result;
     }
 
-
-
-
     @Override
     public RResult<GetURLToPlayVO> getURLToPlay(GetURLToPlayParam param, RResult result) {
 
@@ -121,6 +120,9 @@ public class ToOutServiceImpl_ss_avst implements ToOutService_ss {
                     RecordPlayParam recordPlayParam = new RecordPlayParam();
                     recordPlayParam.setDatatype(data.getDatatype());
                     recordPlayParam.setFilename(data.getFilename());
+                    recordPlayParam.setFilenum(data.getFilenum());
+                    recordPlayParam.setRepeattime(data.getRepeattime());
+                    recordPlayParam.setRecordstarttime(data.getRecordstarttime());
                     String dxy = data.getDefaulturl();//默认协议
                     recordPlayParam.setXyType(dxy);
                     if (null != dxy && dxy.equals("http")) {//根据协议的不同播放地址也不一样
@@ -157,6 +159,8 @@ public class ToOutServiceImpl_ss_avst implements ToOutService_ss {
                     recordPathParam.setXyType(dxy);
                     recordPathParam.setSavepath(data.getDatasavepath());
                     recordPathParam.setSoursedatapath(data.getSoursedatapath());
+                    recordPathParam.setFilenum(data.getFilenum());
+                    recordPathParam.setRepeattime(data.getRepeattime());
                     recordList.add(recordPathParam);
                 }
                 vo.setRecordList(recordList);

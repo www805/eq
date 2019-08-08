@@ -75,6 +75,21 @@ public class ToOutAction_qrs extends BaseAction {
         return rResult;
     }
 
+    //暂停/继续工作
+    @RequestMapping("/workPauseOrContinue")
+    @ResponseBody
+    public RResult workPauseOrContinue(@RequestBody ReqParam<WorkPauseOrContinueParam> param){
+        RResult rResult=createNewResultOfFail();
+        WorkPauseOrContinueParam sparam=param.getParam();
+        if(null!=sparam){
+            rResult=getToOutServiceImpl(sparam.getFdType()).workPauseOrContinue(sparam,rResult);
+        }else{
+            LogUtil.intoLog(this.getClass(),"workOver---param.getParam() ---参数异常");
+            rResult.setMessage("参数异常");
+        }
+        return rResult;
+    }
+
     //设备状态查询
 
     //加上一套设备的增删改查（有一套base？）(后期所有的增删改查都可以合成一套用泛型接受传参，多带一个类型参数就可以了)

@@ -2,10 +2,7 @@ package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache;
 
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.param.FDCacheParam;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 嵌入式设备工作缓存
@@ -76,5 +73,35 @@ public class FDCache {
         }
         return false;
     }
+
+
+    /**
+     * 结束录像再开始录像的最小间隔时间ms 10秒
+     */
+    public static int minRecordinterval=10000;
+
+    /**
+     * 最后一次录像的时间
+     * K  fdssid
+     * V long类型 ms格式的时间
+     */
+    private static Map<String ,Long> leastRecordTimeMap=new HashMap<String ,Long>();
+
+    public static long getLeastRecordTime(String fdssid){
+
+        if(null!=leastRecordTimeMap&&leastRecordTimeMap.containsKey(fdssid)){
+            return leastRecordTimeMap.get(fdssid);
+        }
+        return 0;
+    }
+
+    public static void setLeastRecordTime(String fdssid,long leastRecordTime){
+
+        if(null!=leastRecordTimeMap&&leastRecordTimeMap.containsKey(fdssid)){
+            leastRecordTimeMap.remove(fdssid);
+        }
+        leastRecordTimeMap.put(fdssid,leastRecordTime);
+    }
+
 
 }

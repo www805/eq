@@ -60,7 +60,6 @@ public void videoChange(String inputurl, String outputurl) {
 	@Override
 	public void dealString(String str, String inputurl) {
 
-		System.out.println("转化输出时间："+(new Date()).getTime());
 		System.out.println(inputurl+"转化输出==dealString==="+str);
 		
 	}

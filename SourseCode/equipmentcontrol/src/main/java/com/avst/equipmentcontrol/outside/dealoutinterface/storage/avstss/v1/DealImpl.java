@@ -54,14 +54,13 @@ public class DealImpl {
         String fdssid=param.getFdssid();
         String savebasepath=  param.getUploadbasepath();
 
-
         GetFlushbonadingBySsidParam getfdparam=new GetFlushbonadingBySsidParam();
         getfdparam.setFlushbonadingEquipmentSsid(fdssid);
         RResult<GetFlushbonadingBySsidVO> result2=baseToOutServiceImpl_qrs.getFlushbonadingBySsid(getfdparam,result);
         if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
 
             SSAddDataThread ssAddDataThread=new SSAddDataThread(iid,savessid,result2.getData(),savebasepath,
-                                                                            ss_databaseMapper,ss_datasaveMapper,fdDeal);
+                                                                ss_databaseMapper,ss_datasaveMapper,fdDeal,param.getStartrecordtime());
             ssAddDataThread.start();
             //写入缓存
             SSThreadCache.setSSAddDataThread(iid,ssAddDataThread);

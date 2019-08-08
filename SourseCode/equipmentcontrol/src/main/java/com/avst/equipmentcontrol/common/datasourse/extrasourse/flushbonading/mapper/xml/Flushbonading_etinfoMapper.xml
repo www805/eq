@@ -19,6 +19,8 @@
         <result column="passwd" property="passwd" />
         <result column="uploadbasepath" property="uploadbasepath" />
         <result column="previewurl" property="previewurl" />
+        <result column="repeattime" property="repeattime" />
+
 
     </resultMap>
 

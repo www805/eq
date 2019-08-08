@@ -21,6 +21,15 @@ public class AsrTxtParam<T> {
      */
     private  List<T> asrlist;
 
+    private boolean workbool=true;//true正常工作，false暂停工作
+    public boolean isWorkbool() {
+        return workbool;
+    }
+
+    public void setWorkbool(boolean workbool) {
+        this.workbool = workbool;
+    }
+
     public String getAsrtype() {
         return asrtype;
     }

@@ -10,6 +10,16 @@ public class SaveFileByIidParam extends BaseParam {
 
     private String fdssid;//这里是嵌入式设备ssid，V1版本的数据都是从
 
+    private long startrecordtime;//本次录像的服务器开始时间
+
+    public long getStartrecordtime() {
+        return startrecordtime;
+    }
+
+    public void setStartrecordtime(long startrecordtime) {
+        this.startrecordtime = startrecordtime;
+    }
+
     public String getUploadbasepath() {
         return uploadbasepath;
     }

@@ -10,6 +10,16 @@ public class SaveFileParam {
 
     private String iid;//文件在源设备中的唯一识别码
 
+    private long startrecordtime;//本次录像开始时间
+
+    public long getStartrecordtime() {
+        return startrecordtime;
+    }
+
+    public void setStartrecordtime(long startrecordtime) {
+        this.startrecordtime = startrecordtime;
+    }
+
     public String getSourseFDETSsid() {
         return sourseFDETSsid;
     }

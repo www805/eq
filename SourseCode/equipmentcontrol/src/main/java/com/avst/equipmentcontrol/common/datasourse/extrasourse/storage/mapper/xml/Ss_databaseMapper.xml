@@ -25,6 +25,9 @@
         <result column="soursedatapath" property="soursedatapath" />
         <result column="filename" property="filename" />
         <result column="createtime" property="createtime" />
+        <result column="recordstarttime" property="recordstarttime" />
+        <result column="repeattime" property="repeattime" />
+        <result column="filenum" property="filenum" />
     </resultMap>
 
 </mapper>

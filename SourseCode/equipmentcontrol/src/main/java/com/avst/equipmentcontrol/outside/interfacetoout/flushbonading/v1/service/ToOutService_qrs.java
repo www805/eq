@@ -22,6 +22,15 @@ public interface ToOutService_qrs {
     public RResult workOver(WorkOverParam param, RResult result);
 
     /**
+     * 设备暂停或者继续工作
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult workPauseOrContinue(WorkPauseOrContinueParam param, RResult result);
+
+
+    /**
      * 获取嵌入式设备录像文件信息
      * @param param
      * @param result

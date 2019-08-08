@@ -82,6 +82,13 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
             return result;
         }
 
+        long leastRecordTime=FDCache.getLeastRecordTime(fdssid);//最后一次关闭录像时间
+        long nowtime=(new Date()).getTime();
+        if((nowtime - leastRecordTime) < FDCache.minRecordinterval){
+            result.setMessage("小于最小关闭再开启间隔时间，请稍后开启，最小开启间隔时间（秒）："+FDCache.minRecordinterval);
+            return result;
+        }
+
         //开启设备工作
         StartRecParam sparam=new StartRecParam();
         sparam.setAl("1");//
@@ -111,6 +118,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                 fdCacheParam.setPasswd(flushbonadinginfo.getPasswd());
                 fdCacheParam.setUser(flushbonadinginfo.getUser());
                 fdCacheParam.setRecordFileiid(iid);
+                fdCacheParam.setWorkbool(true);
                 fdCacheParam.setRecordStartTime(startrecordtime);
                 FDCache.setFD(fdid,fdCacheParam);
 
@@ -160,6 +168,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                 saveFileParam.setSourseIp(fdCacheParam.getIp());
                 saveFileParam.setSsType(sstype);
                 saveFileParam.setSourseFDETSsid(fdssid);
+                saveFileParam.setStartrecordtime(fdCacheParam.getRecordStartTime());
                 RResult result2=new RResult();
                 result2=getToOutServiceImpl(sstype).saveFile(saveFileParam,result2);//v1默认给avst版的存储服务
                 if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
@@ -170,8 +179,116 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
 
                 result.setData(fdCacheParam.getRecordFileiid());
                 FDCache.delFDList(fdid);
+
+                FDCache.setLeastRecordTime(fdssid,(new Date()).getTime());//最后一次关闭录像时间
             }
         }
+        return result;
+    }
+
+
+
+    public RResult workPauseOrContinue(WorkPauseOrContinueParam param, RResult result){
+
+        String iid =param.getIid();
+        int pauseOrContinue=param.getPauseOrContinue();
+        String fdssid=param.getFlushbonadingetinfossid();
+        String fdid=param.getFdid();
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        if(pauseOrContinue==1){
+            //查询是否存在任务
+            FDCacheParam fdCacheParam=FDCache.getFDByFDSsid(fdid,fdssid);
+            if(null==fdCacheParam){
+                result.setMessage("该设备可能已经停止录像了，不需要暂停");
+                return result;
+            }
+            if(!fdCacheParam.isWorkbool()){
+                result.setMessage("该设备已经暂停");
+                result.changeToTrue();
+                return result;
+            }
+
+            //关闭设备工作
+            StopRecParam sparam=new StopRecParam();
+            sparam.setIp(fdCacheParam.getIp());
+            sparam.setPort(fdCacheParam.getPort());
+            sparam.setPasswd(fdCacheParam.getPasswd());
+            sparam.setUser(fdCacheParam.getUser());
+            result=fdDeal.stopRec(sparam,result);
+            if(null==result){
+                result=new RResult();
+                result.setMessage("关闭设备录像失败");
+                LogUtil.intoLog(this.getClass(),"关闭设备录像失败,请求设备竟然返回了空，可能设备连接中断了 ");
+            }else{
+                if(result.getActioncode().equals(Code.SUCCESS.toString())){
+                    fdCacheParam.setWorkbool(false);
+                    FDCache.setFD(fdid,fdCacheParam);
+                    FDCache.setLeastRecordTime(fdssid,(new Date()).getTime());//最后一次关闭录像时间
+                }else{
+                    LogUtil.intoLog(this.getClass(),"暂停设备录像失败 result："+JacksonUtil.objebtToString(result));
+                }
+            }
+        }else if(pauseOrContinue==2){
+
+            //查询是否有一台机子多次被用
+            FDCacheParam fdCacheParam=FDCache.getFDByFDSsid(fdid,fdssid);
+
+            if(null==fdCacheParam){
+                result.setMessage("该设备可能已经停止录像了，不能继续录像");
+                return result;
+            }
+
+            if(fdCacheParam.isWorkbool()){
+                result.setMessage("该设备已经在工作中，不需要继续");
+                result.changeToTrue();
+                return result;
+            }
+
+            long leastRecordTime=FDCache.getLeastRecordTime(fdssid);//最后一次关闭录像时间
+            long nowtime=(new Date()).getTime();
+            if((nowtime - leastRecordTime) < FDCache.minRecordinterval){
+                result.setMessage("小于最小关闭再开启间隔时间，请稍后开启，最小开启间隔时间（秒）："+FDCache.minRecordinterval);
+                LogUtil.intoLog(4,this.getClass(),"小于最小关闭再开启间隔时间，请稍后开启，最小开启间隔时间（秒）："+FDCache.minRecordinterval);
+                return result;
+            }
+
+            //开启设备工作
+            StartRecParam sparam=new StartRecParam();
+            sparam.setAl("1");//
+            sparam.setIid(iid);
+            sparam.setIp(flushbonadinginfo.getEtip());
+            sparam.setPort(flushbonadinginfo.getPort());
+            sparam.setPasswd(flushbonadinginfo.getPasswd());
+            sparam.setUser(flushbonadinginfo.getUser());
+            result=fdDeal.startRec(sparam,result);
+
+            if(null==result){
+                result=new RResult();
+                result.setMessage("开启设备录像失败");
+                LogUtil.intoLog(this.getClass(),"开启设备录像失败 result："+result);
+            }else{
+                if(result.getActioncode().equals(Code.SUCCESS.toString())){
+                    fdCacheParam.setWorkbool(true);
+                    FDCache.setFD(fdid,fdCacheParam);
+                }else{
+                    LogUtil.intoLog(this.getClass(),"继续设备录像失败 result："+JacksonUtil.objebtToString(result));
+                }
+            }
+
+        }else{
+            LogUtil.intoLog(3,this.getClass(),"请求动作不是暂停或者继续设备工作,pauseOrContinue："+pauseOrContinue);
+            result.setMessage("请求动作不是暂停或者继续设备工作："+pauseOrContinue);
+        }
+
         return result;
     }
 
@@ -299,7 +416,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
 
     @Override
     /**
-     * 这里只是零时的开启刻盘，不能影响硬盘的录制
+     * 这里只是临时的开启刻盘，不能影响硬盘的录制
      * 开启设备哪里才会有是否关联硬盘录像
      */
     public RResult startRec_Rom(StartRec_RomParam_out param, RResult result) {

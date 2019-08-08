@@ -84,6 +84,12 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
      */
     private Integer diskrecbool;
 
+    /**
+     * 分盘重复时间
+     * 设备录像，视频文件超出录制时长，重新录制一个新文件，2个文件之间的重复的视频的时间s(秒)
+     */
+    private Integer repeattime;
+
     private String string1;
 
     private String string2;
@@ -93,6 +99,14 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
     private Integer integer2;
 
     private String ssid;
+
+    public Integer getRepeattime() {
+        return repeattime;
+    }
+
+    public void setRepeattime(Integer repeattime) {
+        this.repeattime = repeattime;
+    }
 
     public String getPreviewurl() {
         return previewurl;

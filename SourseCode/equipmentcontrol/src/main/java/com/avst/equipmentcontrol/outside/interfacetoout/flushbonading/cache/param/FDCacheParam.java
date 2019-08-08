@@ -24,6 +24,16 @@ public class FDCacheParam {
 
     private String recordFileiid;//录音文件的唯一识别码
 
+    private boolean workbool=true;//是否工作中，true工作中，false暂停中
+
+    public boolean isWorkbool() {
+        return workbool;
+    }
+
+    public void setWorkbool(boolean workbool) {
+        this.workbool = workbool;
+    }
+
     public String getRecordFileiid() {
         return recordFileiid;
     }

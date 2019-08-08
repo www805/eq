@@ -18,7 +18,6 @@ import com.avst.equipmentcontrol.web.req.LoginParam;
 import com.avst.equipmentcontrol.web.vo.EcCountVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 

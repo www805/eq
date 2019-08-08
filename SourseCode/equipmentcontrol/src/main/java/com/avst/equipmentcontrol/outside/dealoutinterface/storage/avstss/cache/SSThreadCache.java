@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 管理2个工作线程
+ * 管理3个工作线程
  */
 public class SSThreadCache {
 

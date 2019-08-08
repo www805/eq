@@ -16,6 +16,7 @@ import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dea
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.vo.UploadFileByPathVO;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.param.File;
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.cache.SSThreadCache;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.FDCache;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.GetFlushbonadingBySsidVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.apache.commons.lang.StringUtils;
@@ -47,8 +48,15 @@ public class SSAddDataThread extends  Thread{
 
     private int addtype=1;//1设备ftp存储，2本地文件存储
 
+    /**
+     * 传过来的是第一个录音文件的开始时间（系统中的时间），
+     * 后面的录像开始时间就需要计算
+     */
+    private long startrecordtime;//本次录像的开始时间（系统中的时间）
+
     public SSAddDataThread(String iid, String saveinfossid, GetFlushbonadingBySsidVO getFlushbonadingBySsidVO,String savebasepath,
-                           Ss_databaseMapper ss_databaseMapper,Ss_datasaveMapper ss_datasaveMapper,FDDealImpl fdDeal) {
+                           Ss_databaseMapper ss_databaseMapper,Ss_datasaveMapper ss_datasaveMapper,FDDealImpl fdDeal,
+                            long startrecordtime) {
         this.iid = iid;
         this.saveinfossid = saveinfossid;
         this.ss_databaseMapper = ss_databaseMapper;
@@ -56,6 +64,7 @@ public class SSAddDataThread extends  Thread{
         this.fdDeal=fdDeal;
         this.getFlushbonadingBySsidVO=getFlushbonadingBySsidVO;
         this.savebasepath=savebasepath;
+        this.startrecordtime=startrecordtime;
     }
 
     public SSAddDataThread(String iid, String saveinfossid, String sourseRelativePath,String savebasepath,
@@ -83,6 +92,7 @@ public class SSAddDataThread extends  Thread{
         }
 
         if(addtype==1){
+
             run_ftp();
         }else{
             run_local();
@@ -244,7 +254,20 @@ public class SSAddDataThread extends  Thread{
                         //再新增数据基表
                         int boolinsert=0;
                         List<File> fileList=getETRecordByIidVO.getFileList();
+                        int i=1;
+                        long thepreviousendtime=0;//上一个录像文件的设备推送过来的结束时间
+
+                        long recoredstarttime_sys2fd=0;//系统录像开始时间与第一个设备开始录像时间的时间差
+
+                        int filenum=1;//文件排序
                         for(File file:fileList){
+                            long starttime=Long.valueOf(file.getStime());
+                            long endtime=Long.valueOf(file.getEtime());
+                            if(filenum==1){//只跟第一个文件的开始时间计算差值
+                                recoredstarttime_sys2fd=starttime-startrecordtime;
+                            }else{//其他的录像开始时间只需要校准就可以了第一个的系统开始时间
+                                startrecordtime=starttime-recoredstarttime_sys2fd;
+                            }
 
                             String path=file.getPath();
                             String filename=file.getName();
@@ -263,7 +286,7 @@ public class SSAddDataThread extends  Thread{
                             ufparam.setUser(getFlushbonadingBySsidVO.getUser());
                             ufparam.setPort(getFlushbonadingBySsidVO.getPort());
                             ufparam.setPasswd(getFlushbonadingBySsidVO.getPasswd());
-                            RResult<UploadFileByPathVO > ufresult=new RResult<>();
+                            RResult<UploadFileByPathVO> ufresult=new RResult<UploadFileByPathVO>();
                             ufresult=fdDeal.uploadFileByPath(ufparam,ufresult);
                             if(null==ufresult||!ufresult.getActioncode().equals(Code.SUCCESS.toString())){
                                 //请求文件上传失败，直接退出去
@@ -277,23 +300,42 @@ public class SSAddDataThread extends  Thread{
                             long datasize=Long.valueOf(file.getFsize());
                             ss_database.setDatasize(datasize);
                             ss_database.setState(0);
-                            ss_database.setStarttime(Long.valueOf(file.getStime()));
-                            ss_database.setEndtime(Long.valueOf(file.getEtime()));
+
+                            ss_database.setStarttime(starttime);
+                            ss_database.setEndtime(endtime);
+
                             ss_database.setSsid(OpenUtil.getUUID_32());
                             ss_database.setSoursedatapath(path);
                             ss_database.setFilename(filename);
+                            ss_database.setFilenum(filenum);
+                            ss_database.setRecordstarttime(startrecordtime);
+
+                            //判断是否是自动分包还是多次开启关闭录像
+                            if(thepreviousendtime>0){
+                                //上一个结束时间+最小录像时间 如果大于 下一个文件的开始时间，就说明是分包文件
+                                if((thepreviousendtime + FDCache.minRecordinterval) > starttime){
+                                    Integer time=getFlushbonadingBySsidVO.getRepeattime();
+                                    ss_database.setRepeattime(time==null?0:time);//间隔时间
+                                }
+                            }
+                            thepreviousendtime=endtime;
+
                             int databaseinsert=ss_databaseMapper.insert(ss_database);
                             if(databaseinsert > -1){
                                 boolinsert++;
+
                             }else{
                                 LogUtil.intoLog(this.getClass(),iid+":iid  ss_datasaveMapper.insert is error datasaveinsert:"+datasaveinsert);
                             }
+                            filenum++;
                         }
 
                         if(fileList.size()==boolinsert){//说明新增成功，可以跳出
                             bool=false;
                             LogUtil.intoLog(this.getClass(),iid+":iid  数据库新增成功，可以跳出循环");
                             break;
+                        }else{
+                            LogUtil.intoLog(4,this.getClass(),iid+":iid  新增数据库的数量好像跟实际文件数不对，boolinsert："+boolinsert+"----fileList.size():"+fileList.size());
                         }
                     }else{
                         LogUtil.intoLog(this.getClass(),iid+":iid  ss_datasaveMapper.insert is error datasaveinsert:"+datasaveinsert);

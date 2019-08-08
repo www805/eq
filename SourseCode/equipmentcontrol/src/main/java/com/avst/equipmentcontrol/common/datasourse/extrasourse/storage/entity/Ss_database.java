@@ -69,11 +69,29 @@ public class Ss_database extends Model<Ss_database> {
      */
     private long datasize;
 
+    /**
+     * 录制设备给出的开始时间
+     */
     private long starttime;
 
+    /**
+     * 录制设备给出的结束时间
+     */
     private long endtime;
 
     private String filename;
+
+    private Integer filenum=1;
+
+    /**
+     * 如果存储的是视频，并且几个视频是相关联的，就需要确认2个视频的重叠时间，S（秒数）
+     */
+    private Integer repeattime=0;
+
+    /**
+     * 这个视频文件录制的服务器开始时间
+     */
+    private long recordstarttime;
 
     private String soursedatapath;
 
@@ -88,6 +106,30 @@ public class Ss_database extends Model<Ss_database> {
     private String ssid;
 
     private Date createtime;
+
+    public long getRecordstarttime() {
+        return recordstarttime;
+    }
+
+    public void setRecordstarttime(long recordstarttime) {
+        this.recordstarttime = recordstarttime;
+    }
+
+    public Integer getRepeattime() {
+        return repeattime;
+    }
+
+    public void setRepeattime(Integer repeattime) {
+        this.repeattime = repeattime;
+    }
+
+    public Integer getFilenum() {
+        return filenum;
+    }
+
+    public void setFilenum(Integer filenum) {
+        this.filenum = filenum;
+    }
 
     public Date getCreatetime() {
         return createtime;

@@ -17,6 +17,10 @@ public class AsrTxtParam_toout {
 
     private String asrstartime;//asr开始识别开始时间
 
+    public void setAsrnum(int asrnum) {
+        this.asrnum = asrnum;
+    }
+
     public String getAsrstartime() {
         return asrstartime;
     }

@@ -6,6 +6,7 @@ import com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache.param.AsrTxt
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.AsrCache_toout;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.param.AsrTxtParam_toout;
 import com.avst.equipmentcontrol.common.conf.ASRType;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
 
@@ -37,6 +38,47 @@ public class AsrCache {
             List<AsrTxtParam> list=asrTxtMap.get(asrEquipmentssid);
             if(null!=list&&list.size() > 0){
                 return list;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取这个语言服务器的asrid对应的任务
+     * @param asrssid
+     * @return
+     */
+    public synchronized static AsrTxtParam getAsrByEquipmentssid(String asrssid,String asrid){
+
+        List<AsrTxtParam> asrList=getAsrListByEquipmentssid(asrssid);
+        if(null!=asrList&&asrList.size() > 0){
+            for(AsrTxtParam asr:asrList){
+                if(asr.getAsrid().equals(asrid)){
+                    return asr;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取这个语言服务器的asrid对应的任务
+     * @param asrid
+     * @return
+     */
+    public synchronized static AsrTxtParam getAsrByasrid(String asrid){
+
+        String asrssid=getAsrServerssidByAsrid(asrid);
+        if(StringUtils.isEmpty(asrssid)){
+            LogUtil.intoLog(4,AsrCache.class,asrid+"：asrid，通过asrid未找到asrssid");
+            return null;
+        }
+        List<AsrTxtParam> asrList=getAsrListByEquipmentssid(asrssid);
+        if(null!=asrList&&asrList.size() > 0){
+            for(AsrTxtParam asr:asrList){
+                if(asr.getAsrid().equals(asrid)){
+                    return asr;
+                }
             }
         }
         return null;
@@ -168,6 +210,7 @@ public class AsrCache {
                     asrTxtParam.setAsrtype(ASRType.AVST);//这里需要插入语音服务器类型
                     asrTxtParam.setAsrEquipmentssid(asrEquipmentssid);
                     asrTxtParam.setAsrid(asrid);
+                    asrTxtParam.setWorkbool(true);
                 }else{
                     if(list.size() > 0){
                         for(AsrTxtParam a:list){

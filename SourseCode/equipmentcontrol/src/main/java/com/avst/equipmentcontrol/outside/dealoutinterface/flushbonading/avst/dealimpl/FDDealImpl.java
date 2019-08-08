@@ -241,6 +241,9 @@ public class FDDealImpl implements FDInterface{
     }
 
     @Override
+    /**
+     * 要测试是否已经排了序的，排序是否正常，程序中冒泡是否正常
+     */
     public RResult<GetETRecordByIidVO> getETRecordByIid(GetETRecordByIidParam param, RResult<GetETRecordByIidVO> result) {
 
         String ip=param.getIp();
@@ -266,13 +269,40 @@ public class FDDealImpl implements FDInterface{
         if(null!=xml&&null!=xml.getGet_rec_files()){
             GetETRecordByIidVO getETRecordPathByIidVO=new GetETRecordByIidVO();
             try {//可能报错，返回的对象中的参数首尾都没有去空格
-                getETRecordPathByIidVO.setFileList(xml.getGet_rec_files().getFiles().getFileList());
-                result.changeToTrue(getETRecordPathByIidVO);
+                List<File> fileList=xml.getGet_rec_files().getFiles().getFileList();
+                if(null!=fileList&&fileList.size() > 0){
+
+                    for(int i=0;i<fileList.size()-1;i++) {//冒泡排序
+                        for(int j=0;j<fileList.size()-i-1;j++) {
+                            try {
+                                File file1 = fileList.get(j);
+                                File file2 = fileList.get(j + 1);
+                                long stime1 = Long.parseLong(file1.getStime());
+                                long stime2 = Long.parseLong(file2.getStime());
+                                if (stime1 > stime2) {
+                                    File temp = file1;
+                                    file1 = file2;
+                                    file2 = temp;
+                                    fileList.set(j,file1);
+                                    fileList.set((j+1),file2);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    getETRecordPathByIidVO.setFileList(fileList);
+                    result.changeToTrue(getETRecordPathByIidVO);
+                }else{
+                    result.setMessage("根据iid获取视频文件没有找到任何一个文件");
+                    LogUtil.intoLog(this.getClass(),param.getRec_id()+"：iid----------根据iid获取视频文件没有找到任何一个文件");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }else{
-            result.setMessage("设置ftp失败 --");
+            result.setMessage("根据iid获取视频文件失败 --");
         }
 
         return result;
@@ -312,7 +342,7 @@ public class FDDealImpl implements FDInterface{
                 e.printStackTrace();
             }
         }else{
-            result.setMessage("设置ftp失败 --");
+            result.setMessage("上传文件到设备失败 --");
         }
         return result;
     }

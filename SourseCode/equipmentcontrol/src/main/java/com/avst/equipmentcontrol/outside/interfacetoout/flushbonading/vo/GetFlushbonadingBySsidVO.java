@@ -55,6 +55,19 @@ public class GetFlushbonadingBySsidVO {
      */
     private String uploadbasepath;
 
+    /**
+     * 设备录像，视频文件超出录制时长，重新录制一个新文件，2个文件之间的重复的视频的时间s(秒)
+     */
+    private Integer repeattime;
+
+    public Integer getRepeattime() {
+        return repeattime;
+    }
+
+    public void setRepeattime(Integer repeattime) {
+        this.repeattime = repeattime;
+    }
+
     public String getUploadbasepath() {
         return uploadbasepath;
     }

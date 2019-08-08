@@ -6,6 +6,7 @@ import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.feignclient.mc.MeetingControl;
 import com.avst.equipmentcontrol.feignclient.mc.req.SetMCAsrTxtBackParam_out;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache.AsrCache;
+import com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache.param.AsrTxtParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.cache.param.AsrTxtParam_avst;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.AsrCache_toout;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.param.AsrTxtParam_toout;
@@ -38,6 +39,7 @@ public class AvstAsrAction {
     public boolean txtBack(@RequestBody byte[] data){
 
         try {
+
             if(null==data||data.length==0){
                 return false;
             }
@@ -68,6 +70,13 @@ public class AvstAsrAction {
 
             if(null==Equipmentssid){//如果为null就需要从数据库中获取,这种一般情况下不会
                 Equipmentssid="errorEquipmentssid";//万一
+            }
+
+            //判断是否正常工作
+            AsrTxtParam asrTxtParam=AsrCache.getAsrByEquipmentssid(Equipmentssid,asrid);
+            if(null!=asrTxtParam&&!asrTxtParam.isWorkbool()){//不能判断==空
+                LogUtil.intoLog(this.getClass(),asrTxtParam+"--"+asrTxtParam+":asrid对应的缓存为空或者 workbool状态为暂停工作："+asrTxtParam==null?"null":asrTxtParam.isWorkbool());
+                return true;
             }
 
 
