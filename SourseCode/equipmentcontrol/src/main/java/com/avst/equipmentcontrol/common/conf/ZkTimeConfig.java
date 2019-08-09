@@ -78,24 +78,27 @@ public class ZkTimeConfig implements ApplicationRunner {
                                 // 格式 HH:mm:ss  22:35:00
                                 cmd = xs.format(date);
                                 cmd = "  cmd /c time " + cmd;
-                                Runtime.getRuntime().exec(cmd);
-
+//                                Runtime.getRuntime().exec(cmd);
+                                NetTool.executeCMD(cmd);
                                 // 格式：yyyy-MM-dd  2009-03-26
                                 cmd = rq.format(date);
                                 cmd = " cmd /c date " + cmd;
-                                Runtime.getRuntime().exec(cmd);
+//                                Runtime.getRuntime().exec(cmd);
+                                NetTool.executeCMD(cmd);
                             } else {// Linux 系统
                                 // 格式：yyyyMMdd  20090326
                                 rq = new SimpleDateFormat("yyyyMMdd");
                                 cmd = rq.format(date);
                                 cmd = "  date -s " + cmd;
-                                Runtime.getRuntime().exec(cmd);
+//                                Runtime.getRuntime().exec(cmd);
+                                NetTool.executeCMD(cmd);
                                 // 格式 HH:mm:ss  22:35:00
                                 cmd = xs.format(date);
                                 cmd = "  date -s " + cmd;
-                                Runtime.getRuntime().exec(cmd);
+//                                Runtime.getRuntime().exec(cmd);
+                                NetTool.executeCMD(cmd);
                             }
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 

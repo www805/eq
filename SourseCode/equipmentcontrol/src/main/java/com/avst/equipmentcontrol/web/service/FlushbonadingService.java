@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.web.service;
 
+import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.web.req.flushbonading.UpdateBurnboolFoDiskrecboolParam;
 import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
@@ -42,12 +43,6 @@ public class FlushbonadingService extends BaseService {
 
     @Autowired
     private Flushbonading_ettdMapper flushbonading_ettdMapper;
-
-    @Value("${urlModel.livingurl}")
-    private String urlModeLlivingurl;
-
-    @Value("${urlModel.previewurl}")
-    private String urlModePreviewurl;
 
     //查询
     public void getFlushbonadingList(RResult result, ReqParam<FlushbonadinginfoParam> param) {
@@ -187,6 +182,9 @@ public class FlushbonadingService extends BaseService {
 
 
         //拼接直播地址，直播预览地址
+        String urlModeLlivingurl = PropertiesListenerConfig.getProperty("urlModel.livingurl");//value
+        String urlModePreviewurl = PropertiesListenerConfig.getProperty("urlModel.previewurl");
+
         String livingurl = urlModeLlivingurl.replace("@url", paramParam.getEtip());
         String previewurl = urlModePreviewurl.replace("@url", paramParam.getEtip());
 
@@ -339,6 +337,9 @@ public class FlushbonadingService extends BaseService {
         ew.eq("ssid", paramParam.getSsid());
 
         //拼接直播地址，直播预览地址
+        String urlModeLlivingurl = PropertiesListenerConfig.getProperty("urlModel.livingurl");//value
+        String urlModePreviewurl = PropertiesListenerConfig.getProperty("urlModel.previewurl");
+
         String livingurl = urlModeLlivingurl.replace("@url", paramParam.getEtip());
         String previewurl = urlModePreviewurl.replace("@url", paramParam.getEtip());
 
