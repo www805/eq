@@ -312,10 +312,9 @@ public class SSAddDataThread extends  Thread{
 
                             //判断是否是自动分包还是多次开启关闭录像
                             if(thepreviousendtime>0){
-                                //上一个结束时间+最小录像时间 如果大于 下一个文件的开始时间，就说明是分包文件
-                                if((thepreviousendtime + FDCache.minRecordinterval) > starttime){
-                                    Integer time=getFlushbonadingBySsidVO.getRepeattime();
-                                    ss_database.setRepeattime(time==null?0:time);//间隔时间
+                                //上一个结束时间 如果大于 下一个文件的开始时间，就说明是分包文件
+                                if(thepreviousendtime  > starttime){
+                                    ss_database.setRepeattime((int)(thepreviousendtime-starttime));//间隔时间
                                 }
                             }
                             thepreviousendtime=endtime;
