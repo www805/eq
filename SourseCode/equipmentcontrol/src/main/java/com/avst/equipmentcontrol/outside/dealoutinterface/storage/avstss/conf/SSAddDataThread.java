@@ -264,9 +264,9 @@ public class SSAddDataThread extends  Thread{
                             long starttime=Long.valueOf(file.getStime());
                             long endtime=Long.valueOf(file.getEtime());
                             if(filenum==1){//只跟第一个文件的开始时间计算差值
-                                recoredstarttime_sys2fd=starttime-startrecordtime;
+                                recoredstarttime_sys2fd=starttime*1000-startrecordtime;
                             }else{//其他的录像开始时间只需要校准就可以了第一个的系统开始时间
-                                startrecordtime=starttime-recoredstarttime_sys2fd;
+                                startrecordtime=starttime*1000-recoredstarttime_sys2fd;
                             }
 
                             String path=file.getPath();
