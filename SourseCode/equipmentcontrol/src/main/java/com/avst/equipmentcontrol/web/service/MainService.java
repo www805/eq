@@ -8,6 +8,8 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.map
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.mapper.Polygraph_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_saveinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.mapper.Tts_etinfoMapper;
+import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_equipmentinfo;
+import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_ettype;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_equipmentinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_ettypeMapper;
 import com.avst.equipmentcontrol.common.util.LogUtil;
@@ -24,6 +26,9 @@ import org.yaml.snakeyaml.Yaml;
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -45,6 +50,9 @@ public class MainService {
     private Base_ettypeMapper base_ettypeMapper;
 
     @Autowired
+    private Base_equipmentinfoMapper base_equipmentinfoMapper;
+
+    @Autowired
     private Tts_etinfoMapper tts_etinfoMapper;
 
     public RResult logining(RResult result, HttpServletRequest request, LoginParam loginParam){
@@ -60,17 +68,17 @@ public class MainService {
         return result;
     }
 
-    //首页统计
+    /**首页统计**/
     public EcCountVO homeCount(){
 
         EntityWrapper ew = new EntityWrapper();
 
-        //设备总数
+        /**设备总数**/
         Integer flushbonadingCount = flushbonading_etinfoMapper.selectCount(ew);
         Integer asrCount = asr_etinfoMapper.selectCount(ew);
         Integer polygraphCount = polygraph_etinfoMapper.selectCount(ew);
         Integer ssCount = ss_saveinfoMapper.selectCount(ew);
-        //设备类型总数
+        /**设备类型总数**/
         Integer ettypeCount = base_ettypeMapper.selectCount(ew);
         Integer ttsCount = tts_etinfoMapper.selectCount(ew);
 
@@ -99,8 +107,22 @@ public class MainService {
 
                 Yaml yaml = new Yaml();
                 Map<String,Object> map = yaml.load(fis);
-
                 Map<String,Object> avstYml = (Map<String, Object>) map.get(application_name);
+
+                /**从数据库读取全部类型ip**/
+                EntityWrapper<Base_ettype> ew = new EntityWrapper();
+                List<Base_ettype> base_ettypes = base_ettypeMapper.selectList(ew);
+
+                ArrayList<Map<String,String>> navList = (ArrayList<Map<String, String>>) avstYml.get("nav");
+                for (Map<String, String> item : navList) {
+                    for (Base_ettype base_ettype : base_ettypes) {
+                        if (item.get("name").equals(base_ettype.getExplain())) {
+                            String url = item.get("url") + "?etypessid=" + base_ettype.getSsid();
+                            item.put("url", url);
+                        }
+                    }
+                }
+
                 avstYml.put("bottom", map.get("bottom"));
                 if (null != map && map.size() > 0) {
                     cacheParam.setTitle((String) avstYml.get("title"));

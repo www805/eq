@@ -32,7 +32,7 @@ public class ZkTimeConfig implements ApplicationRunner {
 
     //获取服务器时间进行比对
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
 
         try {
             //从总控获取时间
