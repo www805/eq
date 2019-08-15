@@ -123,6 +123,9 @@ public class ToOutServiceImpl_ss_avst implements ToOutService_ss {
                     recordPlayParam.setFilenum(data.getFilenum());
                     recordPlayParam.setRepeattime(data.getRepeattime());
                     recordPlayParam.setRecordstarttime(data.getRecordstarttime());
+                    //计算结束的时间戳
+                    long recordendtime=(data.getEndtime()-data.getStarttime())*1000+data.getRecordstarttime();
+                    recordPlayParam.setRecordendtime(recordendtime);
                     String dxy = data.getDefaulturl();//默认协议
                     recordPlayParam.setXyType(dxy);
                     if (null != dxy && dxy.equals("http")) {//根据协议的不同播放地址也不一样
