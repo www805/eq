@@ -2,27 +2,35 @@ package com.avst.equipmentcontrol.outside.interfacetoout.base.v1.service;
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_et_ettype;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper.Asr_etinfoMapper;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_ettdMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.param.PolygraphInfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.mapper.Polygraph_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_saveinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.mapper.Tts_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_equipmentinfo;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_equipmentinfoMapper;
+import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
+import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.outside.interfacetoout.base.req.GetServerIpALLParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.base.req.GetServerIpParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.base.req.ServerIpssidParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.base.vo.GethomeVO;
+import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttd;
 import com.avst.equipmentcontrol.web.vo.baseEttype.EquipmentBasicsVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class ToOutMainService extends BaseService {
@@ -44,6 +52,9 @@ public class ToOutMainService extends BaseService {
 
     @Autowired
     private Base_equipmentinfoMapper base_equipmentinfoMapper;
+
+    @Autowired
+    private Flushbonading_ettdMapper flushbonading_ettdMapper;
 
     public  void gethome(ReqParam param, RResult result){
         EntityWrapper ew = new EntityWrapper();
@@ -146,6 +157,71 @@ public class ToOutMainService extends BaseService {
         Base_equipmentinfo base_equipmentinfo5 = new Base_equipmentinfo();
         base_equipmentinfo5.setEtip(ttsetinfoip.getEtip());
         Integer update4 = base_equipmentinfoMapper.update(base_equipmentinfo5, ewttsetinfoip);
+
+        if (1 == update1) {
+            EntityWrapper ew3 = new EntityWrapper();
+            ew3.eq("f.equipmentssid", flushbonadingip.getSsid());
+            List<FlushbonadingEttd> flushbonadingEttdList = flushbonading_ettdMapper.getFlushbonadingEttdList(ew3);
+
+            if (null != flushbonadingEttdList && flushbonadingEttdList.size() > 0) {
+
+                for (FlushbonadingEttd flushbonadingEttd : flushbonadingEttdList) {
+
+                    //获取通道url地址
+                    String pullflowurl = flushbonadingEttd.getPullflowurl();
+
+                    //取出ip字符串
+                    Set<String> strContainData = OpenUtil.getStrContainData(pullflowurl, "http://", "/", false);
+                    if (strContainData.size() <= 0) {
+                        strContainData = OpenUtil.getStrContainData(pullflowurl, "https://", "/", false);
+                        if (strContainData.size() <= 0) {
+                            break;//如果没有就跳出不修改了
+                        }
+                    }
+
+                    String etinfoip = (String) strContainData.toArray()[0];
+
+                    /**修改通道里面的地址*/
+                    String newEtip = pullflowurl.replace(etinfoip, flushbonadingip.getEtip());
+
+                    Flushbonading_ettd flushbonading_ettd = new Flushbonading_ettd();
+                    flushbonading_ettd.setPullflowurl(newEtip);
+
+                    EntityWrapper wrapper = new EntityWrapper();
+                    wrapper.eq("ssid", flushbonadingEttd.getSsid());
+
+                    flushbonading_ettdMapper.update(flushbonading_ettd, wrapper);
+                }
+            }
+
+            Flushbonading_etinfo etinfo = new Flushbonading_etinfo();
+            etinfo.setEquipmentssid(flushbonadingip.getSsid());
+            Flushbonading_etinfo flu_etinfo = flushbonading_etinfoMapper.selectOne(etinfo);
+
+            if (null != flu_etinfo) {
+                EntityWrapper ew = new EntityWrapper();
+                ew.eq("ssid", flu_etinfo.getSsid());
+
+                //拼接直播地址，直播预览地址
+                String urlModeLlivingurl = PropertiesListenerConfig.getProperty("urlModel.livingurl");//value
+                String urlModePreviewurl = PropertiesListenerConfig.getProperty("urlModel.previewurl");
+
+                String livingurl = urlModeLlivingurl.replace("@url", flushbonadingip.getEtip());
+                String previewurl = urlModePreviewurl.replace("@url", flushbonadingip.getEtip());
+
+                Flushbonading_etinfo flushbonading_etinfo = new Flushbonading_etinfo();
+                flushbonading_etinfo.setLivingurl(livingurl);
+                flushbonading_etinfo.setPreviewurl(previewurl);
+
+                Integer update5 = flushbonading_etinfoMapper.update(flushbonading_etinfo, ew);
+                System.out.println("update_boot：" + update5);
+                if (update == 1) {
+                    result.setData(flushbonading_etinfo.getSsid());
+                } else {
+                    result.setData(update);
+                }
+            }
+        }
 
         result.changeToTrue();
 

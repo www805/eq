@@ -89,7 +89,7 @@ function AddOrUpdateFlushbonadingEttd(version) {
             flushbonadingssid:MasterSsid,
             tdnum: tdnum,
             pullflowurl: pullflowurl,
-            tdtype: tdtype,
+            tdtype: tdtype
         }
     };
 
