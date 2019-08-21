@@ -26,6 +26,16 @@ public class FDCacheParam {
 
     private boolean workbool=true;//是否工作中，true工作中，false暂停中
 
+    private int burnbool;//是否需要光盘同刻,1需要/0不需要
+
+    public int getBurnbool() {
+        return burnbool;
+    }
+
+    public void setBurnbool(int burnbool) {
+        this.burnbool = burnbool;
+    }
+
     public boolean isWorkbool() {
         return workbool;
     }

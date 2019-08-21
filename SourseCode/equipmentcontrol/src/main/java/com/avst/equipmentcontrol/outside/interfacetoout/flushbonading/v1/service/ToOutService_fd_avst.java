@@ -12,6 +12,7 @@ import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.Code;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
+import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDDealImpl;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.*;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.vo.*;
@@ -119,6 +120,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                 fdCacheParam.setUser(flushbonadinginfo.getUser());
                 fdCacheParam.setRecordFileiid(iid);
                 fdCacheParam.setWorkbool(true);
+                fdCacheParam.setBurnbool(flushbonadinginfo.getBurnbool());
                 fdCacheParam.setRecordStartTime(startrecordtime);
                 FDCache.setFD(fdid,fdCacheParam);
 
@@ -129,6 +131,37 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                 workStartVO.setStartrecordtime(startrecordtime);
                 result.changeToTrue(workStartVO);
             }
+        }
+
+        //检测是否需要开启光盘刻录
+        Integer burnbool=flushbonadinginfo.getBurnbool();
+        if(null!=burnbool&&burnbool==1){//需要进行光盘刻录
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        StartRec_RomParam  gparam=new StartRec_RomParam();
+                        String iid=fdid+"_"+fdssid;
+                        gparam.setIid(iid);//把会议的ssid+设备的唯一标识当做唯一标识传给设备
+                        gparam.setIp(flushbonadinginfo.getEtip());
+                        gparam.setPort(flushbonadinginfo.getPort());
+                        gparam.setPasswd(flushbonadinginfo.getPasswd());
+                        gparam.setUser(flushbonadinginfo.getUser());
+                        Integer burntime=flushbonadinginfo.getBurntime();
+                        if(null==burntime||burntime<1){
+                            burntime=6;
+                        }
+                        gparam.setBtime(burntime);
+                        gparam.setDx(0);
+
+                        RResult<StartRec_RomVO> startrec=fdDeal.startRec_Rom(gparam,new RResult<StartRec_RomVO>());
+                        LogUtil.intoLog(1,this.getClass(),"请求光盘开始刻录结果："+JacksonUtil.objebtToString(startrec));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
         }
 
         return result;
@@ -183,6 +216,31 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                 FDCache.setLeastRecordTime(fdssid,(new Date()).getTime());//最后一次关闭录像时间
             }
         }
+
+        //查看是否需要把光盘刻录结束掉
+        Integer burnbool=fdCacheParam.getBurnbool();
+        if(null!=burnbool&&burnbool==1){//需要进行光盘刻录
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        StopRec_RomParam  gparam=new StopRec_RomParam();
+                        gparam.setIp(fdCacheParam.getIp());
+                        gparam.setPort(fdCacheParam.getPort());
+                        gparam.setPasswd(fdCacheParam.getPasswd());
+                        gparam.setUser(fdCacheParam.getUser());
+                        gparam.setDx(0);
+
+                        RResult<StopRec_RomVO> stoprec=fdDeal.stopRec_Rom(gparam,new RResult<StopRec_RomVO>());
+                        LogUtil.intoLog(1,this.getClass(),"请求光盘刻录结束的结果："+JacksonUtil.objebtToString(stoprec));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+
+
         return result;
     }
 

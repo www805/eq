@@ -129,7 +129,7 @@ public interface ToOutService_qrs {
 
 
     /**
-     * 刻录模式选择
+     * 获取光盘序号
      * @param param
      * @param result
      * @return
