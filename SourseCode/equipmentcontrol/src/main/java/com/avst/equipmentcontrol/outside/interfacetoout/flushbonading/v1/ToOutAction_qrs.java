@@ -403,7 +403,16 @@ public class ToOutAction_qrs extends BaseAction {
             gparam.setDx(0);
             param.setParam(gparam);
             System.out.println(JacksonUtil.objebtToString(stopRec_Rom(param)));
+        }else if(type==8){
+
+            ReqParam<GetCDNumberParam_out> param=new ReqParam<GetCDNumberParam_out>();
+            GetCDNumberParam_out  gparam=new GetCDNumberParam_out();
+            gparam.setFdType(FDType.FD_AVST);
+            gparam.setFlushbonadingetinfossid("sxsba2");
+            param.setParam(gparam);
+            System.out.println(JacksonUtil.objebtToString(getCDNumber(param)));
         }
+
         return rResult;
     }
 

@@ -739,10 +739,10 @@ public class FDDealImpl implements FDInterface{
         if(null!=cdnum){
             GetCDNumberVO getCDNumberVO=new GetCDNumberVO();
             List<Disc_iid> cdNumList=new ArrayList<Disc_iid>();
-            if(null!=cdnum.getDisc_iid0()&&cdnum.getDisc_iid0().getRs().trim()=="1"){
+            if(null!=cdnum.getDisc_iid0()&&cdnum.getDisc_iid0().getRs().trim().equals("1")){
                 cdNumList.add(cdnum.getDisc_iid0());
             }
-            if(null!=cdnum.getDisc_iid1()&&cdnum.getDisc_iid1().getRs().trim()=="1"){
+            if(null!=cdnum.getDisc_iid1()&&cdnum.getDisc_iid1().getRs().trim().equals("1")){
                 cdNumList.add(cdnum.getDisc_iid1());
             }
             getCDNumberVO.setCdNumList(cdNumList);
@@ -750,7 +750,6 @@ public class FDDealImpl implements FDInterface{
         }else{
             result.setMessage("请求获取光盘序列号失败");
         }
-
-        return null;
+        return result;
     }
 }
