@@ -95,6 +95,31 @@ public class FlushbonadingAction extends BaseAction {
         return result;
     }
 
+    /**
+     * 获取刻录选时
+     * @return
+     */
+    @RequestMapping("/getBurnTime")
+    public RResult getBurnTime(Flushbonadinginfo param){
+        RResult result=this.createNewResultOfFail();
+        flushbonadingService.getBurnTime(param, result);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    /**
+     * 修改刻录选时
+     * @param param
+     * @return
+     */
+    @RequestMapping("/updateBurnTime")
+    public RResult updateBurnTime(Flushbonadinginfo param){
+        RResult result=this.createNewResultOfFail();
+        flushbonadingService.updateBurnTime(param, result);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
     //显示列表页面
     @RequestMapping(value = "/getFlushbonadingIndex")
     public ModelAndView getFlushbonadingIndex(Model model) {

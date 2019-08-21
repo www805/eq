@@ -503,4 +503,28 @@ public class FlushbonadingService extends BaseService {
         changeResultToSuccess(result);
 
     }
+
+    public void getBurnTime(Flushbonadinginfo param, RResult result) {
+
+        Flushbonading_etinfo flushbonading_etinfo = flushbonading_etinfoMapper.selectOne(param);
+        if(null != flushbonading_etinfo){
+            result.setData(flushbonading_etinfo);
+            result.changeToTrue();
+        }
+    }
+
+    public void updateBurnTime(Flushbonadinginfo param, RResult result) {
+
+        EntityWrapper<Flushbonading_etinfo> ew = new EntityWrapper();
+        ew.eq("ssid", param.getSsid());
+
+        Flushbonadinginfo flushbonadinginfo = new Flushbonadinginfo();
+        flushbonadinginfo.setSsid(param.getSsid());
+        flushbonadinginfo.setBurntime(param.getBurntime());
+
+        Integer update = flushbonading_etinfoMapper.update(flushbonadinginfo, ew);
+        result.setData(update);
+        result.changeToTrue();
+    }
+
 }

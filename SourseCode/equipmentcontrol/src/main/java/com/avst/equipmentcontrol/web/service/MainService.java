@@ -19,6 +19,7 @@ import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig
 import com.avst.equipmentcontrol.web.req.LoginParam;
 import com.avst.equipmentcontrol.web.vo.EcCountVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
@@ -57,14 +58,39 @@ public class MainService {
 
     public RResult logining(RResult result, HttpServletRequest request, LoginParam loginParam){
 
-        if(loginParam.getLoginaccount().equals("admin")&&loginParam.getPassword().equals("admin123")){
-            result.changeToTrue();
-
-            request.getSession().setAttribute(Constant.MANAGE_WEB,loginParam);
-
-        }else{
-            result.setMessage("登录失败");
+        AppCacheParam cacheParam = AppCache.getAppCacheParam();
+        if (StringUtils.isBlank(cacheParam.getTitle()) || null == cacheParam.getData()) {
+            RResult rr = new RResult();
+            this.getNavList(rr);
         }
+
+        /**取出账号密码**/
+        Map<String, Object> loginData = cacheParam.getData();
+
+        String loginaccount = (String) loginData.get("loginaccount");
+        String password = (String) loginData.get("password");
+
+        if(!loginParam.getLoginaccount().equals(loginaccount)){
+            result.setMessage("用户不存在");
+            return result;
+        }
+
+        if(!loginParam.getPassword().equals(password)){
+            result.setMessage("用户名或密码错误");
+            return result;
+        }
+
+        result.changeToTrue();
+        request.getSession().setAttribute(Constant.MANAGE_WEB, loginParam);
+
+//        if(loginParam.getLoginaccount().equals("admin")&&loginParam.getPassword().equals("admin123")){
+//            result.changeToTrue();
+//
+//            request.getSession().setAttribute(Constant.MANAGE_WEB,loginParam);
+//
+//        }else{
+//            result.setMessage("登录失败");
+//        }
         return result;
     }
 
