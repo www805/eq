@@ -119,7 +119,22 @@ public interface ToOutService_qrs {
      */
     public RResult yuntaiControl(YuntaiControlParam_out param,RResult result);
 
+    /**
+     * 刻录模式选择
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult changeBurnMode(ChangeBurnModeParam_out param,RResult result);
 
+
+    /**
+     * 刻录模式选择
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult getCDNumber(GetCDNumberParam_out param,RResult result);
 
 
 }

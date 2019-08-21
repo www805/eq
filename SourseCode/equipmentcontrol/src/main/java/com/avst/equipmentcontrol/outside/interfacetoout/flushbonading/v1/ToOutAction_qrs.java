@@ -307,6 +307,35 @@ public class ToOutAction_qrs extends BaseAction {
         return result;
     }
 
+    @RequestMapping("/changeBurnMode")
+    @ResponseBody
+    public RResult changeBurnMode(@RequestBody ReqParam<ChangeBurnModeParam_out> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            ChangeBurnModeParam_out pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).changeBurnMode(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    @RequestMapping("/getCDNumber")
+    @ResponseBody
+    public RResult getCDNumber(@RequestBody ReqParam<GetCDNumberParam_out> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetCDNumberParam_out pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).getCDNumber(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+
 
     @RequestMapping(value = "/ceshi" )
     @ResponseBody
@@ -354,6 +383,26 @@ public class ToOutAction_qrs extends BaseAction {
             gparam.setPauseOrContinue(state);
             param.setParam(gparam);
             System.out.println(JacksonUtil.objebtToString(pauseOrContinueRec_Rom(param)));
+        }else if(type==6){
+
+            ReqParam<StartRec_RomParam_out> param=new ReqParam<StartRec_RomParam_out>();
+            StartRec_RomParam_out  gparam=new StartRec_RomParam_out();
+            gparam.setFdType(FDType.FD_AVST);
+            gparam.setFlushbonadingetinfossid("sxsba2");
+            gparam.setBurntime(1);
+            gparam.setIid("cf25d0b26aee44629adb72368ab88db7_sxsba2");
+            gparam.setDx(0);
+            param.setParam(gparam);
+            System.out.println(JacksonUtil.objebtToString(startRec_Rom(param)));
+        }else if(type==7){
+
+            ReqParam<StopRec_RomParam_out> param=new ReqParam<StopRec_RomParam_out>();
+            StopRec_RomParam_out  gparam=new StopRec_RomParam_out();
+            gparam.setFdType(FDType.FD_AVST);
+            gparam.setFlushbonadingetinfossid("sxsba2");
+            gparam.setDx(0);
+            param.setParam(gparam);
+            System.out.println(JacksonUtil.objebtToString(stopRec_Rom(param)));
         }
         return rResult;
     }

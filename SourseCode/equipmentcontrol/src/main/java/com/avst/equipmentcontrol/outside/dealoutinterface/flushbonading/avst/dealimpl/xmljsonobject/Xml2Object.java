@@ -291,6 +291,67 @@ public class Xml2Object {
         return -1;
     }
 
+    /**
+     * 解析刻录模式切换
+     * @param xml
+     * @return
+     */
+    public static int changeBurnModeXml( String xml) {
+        try {
+
+            String startstr="<burnmode t=\"rom\">";
+            String endstr="</burnmode>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * 解析获取光盘序列号
+     * @param xml
+     * @return
+     */
+    public static GetCDNumberXml getCDNumberXml( String xml) {
+        try {
+
+            String startstr="<disc_iid t=\"rom\">";
+            String endstr="</disc_iid>";
+            String disc_iid=jxXml(xml,startstr,endstr,0);
+
+            GetCDNumberXml getCDNumberXml= null;
+            try {
+                startstr="<disc_iid0>";
+                endstr="</disc_iid0>";
+                String cd0=jxXml(disc_iid,startstr,endstr,0);
+                Disc_iid disc_iid0=new Disc_iid();
+                disc_iid0=(Disc_iid)setJavaBeanParam(disc_iid0,cd0);
+                getCDNumberXml = new GetCDNumberXml();
+                disc_iid0.setCdnum(0);
+                getCDNumberXml.setDisc_iid0(disc_iid0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                startstr="<disc_iid1>";
+                endstr="</disc_iid1>";
+                String cd1=jxXml(disc_iid,startstr,endstr,0);
+                Disc_iid disc_iid1=new Disc_iid();
+                disc_iid1=(Disc_iid)setJavaBeanParam(disc_iid1,cd1);
+                disc_iid1.setCdnum(1);
+                getCDNumberXml.setDisc_iid1(disc_iid1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return getCDNumberXml;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 
@@ -308,6 +369,21 @@ private static int jxXml(String xml,String startstr,String endstr){
     }
     return -1;
 }
+
+    private static String jxXml(String xml,String startstr,String endstr,int jx){
+        String rr= null;
+        try {
+            if(StringUtils.isEmpty(xml)||xml.indexOf(startstr)<0||xml.indexOf(endstr)<0){
+                return null;
+            }
+            rr = xml.substring(xml.indexOf(startstr)+(startstr.length()));
+            rr=rr.substring(0,rr.indexOf(endstr));
+            return rr;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * 给一个对象的所有属性进行自定义赋值
@@ -363,22 +439,36 @@ private static int jxXml(String xml,String startstr,String endstr){
     public static void main(String[] args) {
         String xml="<root>\n" +
                 "<version>AICBH:1.0</version>\n" +
-                "<ptdjconst>\n" +
-                "<line0>案件编号</line0>\n" +
-                "<line1>案件名称</line1>\n" +
-                "<line2>案件类型</line2>\n" +
-                "<line3>案 由</line3>\n" +
-                "<line4>审讯类型</line4>\n" +
-                "<line5>办案部门</line5>\n" +
-                "<line6>被询(讯)问人</line6>\n" +
-                "<line7>询(讯)问人</line7>\n" +
-                "<line8>录制(记录)员</line8>\n" +
-                "<line9>询(讯)问地址</line9>\n" +
-                "</ptdjconst>\n" +
+                "<disc_iid t=\"rom\">\n" +
+                "<disc_iid0>\n" +
+                "<rs>1</rs>\n" +
+                "<md5>\n" +
+                "<![CDATA[ A6B6FC03CD7B05B836ECEF9ED199FD0A ]]>\n" +
+                "</md5>\n" +
+                "<iid>\n" +
+                "<![CDATA[ dd5cf4dc18 ]]>\n" +
+                "</iid>\n" +
+                "<crc32>\n" +
+                "<![CDATA[ FFF5457A ]]>\n" +
+                "</crc32>\n" +
+                "</disc_iid0>\n" +
+                "<disc_iid1>\n" +
+                "<rs>1</rs>\n" +
+                "<md5>\n" +
+                "<![CDATA[ 0D248DCD5E8F27F88B2995D24FC21159 ]]>\n" +
+                "</md5>\n" +
+                "<iid>\n" +
+                "<![CDATA[ c453c74454 ]]>\n" +
+                "</iid>\n" +
+                "<crc32>\n" +
+                "<![CDATA[ 1169CDA9 ]]>\n" +
+                "</crc32>\n" +
+                "</disc_iid1>\n" +
+                "</disc_iid>\n" +
                 "</root>";
 
-        PtdjconstXml state=getptdjconstXml(xml);
-        System.out.println(state.toList().size());
+        GetCDNumberXml cdnum=getCDNumberXml(xml);
+        System.out.println(cdnum.getDisc_iid0().getCrc32());
     }
 
 }

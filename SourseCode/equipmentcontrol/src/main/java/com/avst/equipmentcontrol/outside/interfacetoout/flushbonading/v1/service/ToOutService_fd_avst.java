@@ -783,4 +783,86 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
 
         return result;
     }
+
+
+    @Override
+    public RResult changeBurnMode(ChangeBurnModeParam_out param, RResult result) {
+
+        int dx=param.getDx();
+
+        String fdssid=param.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        if (dx < 0){
+            LogUtil.intoLog(this.getClass(),"is error ,param.getDx():"+dx);
+            result.setMessage("请求切换刻录模式参数异常");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        ChangeBurnModeParam changeBurnModeParam=new ChangeBurnModeParam();
+        changeBurnModeParam.setPort(flushbonadinginfo.getPort());
+        changeBurnModeParam.setIp(flushbonadinginfo.getEtip());
+        changeBurnModeParam.setPasswd(flushbonadinginfo.getPasswd());
+        changeBurnModeParam.setUser(flushbonadinginfo.getUser());
+        changeBurnModeParam.setDx(dx);
+        RResult<ChangeBurnModelVO> result2=new RResult<ChangeBurnModelVO>();
+        result2=fdDeal.changeBurnMode(changeBurnModeParam,result2);
+        if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+
+            result.changeToTrue(true);
+        }else{
+            result.setMessage("请求切换刻录模式失败,如果是刻录中就不能切换模式");
+        }
+        return result;
+    }
+
+
+    @Override
+    public RResult getCDNumber(GetCDNumberParam_out param, RResult result) {
+
+        String fdssid=param.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        GetCDNumberParam getCDNumberParam=new GetCDNumberParam();
+        getCDNumberParam.setPort(flushbonadinginfo.getPort());
+        getCDNumberParam.setIp(flushbonadinginfo.getEtip());
+        getCDNumberParam.setPasswd(flushbonadinginfo.getPasswd());
+        getCDNumberParam.setUser(flushbonadinginfo.getUser());
+        RResult<GetCDNumberVO> result2=new RResult<GetCDNumberVO>();
+        result2=fdDeal.getCDNumber(getCDNumberParam,result2);
+        if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+            GetCDNumberVO getCDNumberVO=result2.getData();
+            result.changeToTrue(getCDNumberVO);
+        }else{
+            result.setMessage("请求获取光盘序号失败");
+        }
+        return result;
+
+    }
 }

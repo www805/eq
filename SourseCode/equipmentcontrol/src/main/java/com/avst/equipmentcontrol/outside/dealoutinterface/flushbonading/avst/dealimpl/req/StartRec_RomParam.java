@@ -8,9 +8,9 @@ public class StartRec_RomParam extends BaseParam {
 
     private int dx=0;//0：全部光驱 1：光驱一 2：光驱二
 
-    private int aldisk=1;//0:不始终开始硬盘录像，在光驱开启因某些原因失败的情况下，硬盘不联动录像开启，跟随光驱 1:不管光驱是否开启正常，硬盘始终请求录像
+    private int aldisk=0;//0:不始终开始硬盘录像，在光驱开启因某些原因失败的情况下，硬盘不联动录像开启，跟随光驱 1:不管光驱是否开启正常，硬盘始终请求录像
 
-    private int disconly=0;//仅当 aldisk!=1 时生效，1标记为仅刻录光驱请求，不联动请求硬盘录像,
+    private int disconly=1;//仅当 aldisk!=1 时生效，1标记为仅刻录光驱请求，不联动请求硬盘录像,
 
     private int btime;//刻录选时，小时，1-24
 

@@ -7,6 +7,7 @@ import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.*;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.vo.*;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.*;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.param.Disc_iid;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.param.File;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.param.Files;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.param.Get_rec_files;
@@ -680,5 +681,76 @@ public class FDDealImpl implements FDInterface{
         }
 
         return result;
+    }
+
+
+    @Override
+    public RResult<ChangeBurnModelVO> changeBurnMode(ChangeBurnModeParam param, RResult<ChangeBurnModelVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+        int dx=param.getDx();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------changeBurnMode");
+            return result;
+        }
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=do&type=rom&cmd=burnmode"+
+                "&dx="+dx+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+"--changeBurnMode");
+        int i=Xml2Object.changeBurnModeXml(rr);
+        if(i==1){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求刻录模式切换失败");
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult<GetCDNumberVO> getCDNumber(GetCDNumberParam param, RResult<GetCDNumberVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        int dx=param.getDx();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------getCDNumber");
+            return result;
+        }
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=do&type=rom&cmd=disc_iid"+
+                "&dx="+dx+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+"--getCDNumber");
+        GetCDNumberXml cdnum=Xml2Object.getCDNumberXml(rr);
+        if(null!=cdnum){
+            GetCDNumberVO getCDNumberVO=new GetCDNumberVO();
+            List<Disc_iid> cdNumList=new ArrayList<Disc_iid>();
+            if(null!=cdnum.getDisc_iid0()&&cdnum.getDisc_iid0().getRs().trim()=="1"){
+                cdNumList.add(cdnum.getDisc_iid0());
+            }
+            if(null!=cdnum.getDisc_iid1()&&cdnum.getDisc_iid1().getRs().trim()=="1"){
+                cdNumList.add(cdnum.getDisc_iid1());
+            }
+            getCDNumberVO.setCdNumList(cdNumList);
+            result.changeToTrue(getCDNumberVO);
+        }else{
+            result.setMessage("请求获取光盘序列号失败");
+        }
+
+        return null;
     }
 }

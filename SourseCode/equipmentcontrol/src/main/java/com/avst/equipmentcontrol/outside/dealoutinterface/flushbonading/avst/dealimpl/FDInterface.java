@@ -174,5 +174,20 @@ public interface FDInterface {
     public RResult<YuntaiControlVO> yuntaiControl(YuntaiControlParam param, RResult<YuntaiControlVO> result);
 
 
+    /**
+     * 刻录模式切换 接力刻录、同步刻录
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<ChangeBurnModelVO> changeBurnMode(ChangeBurnModeParam param, RResult<ChangeBurnModelVO> result);
 
+
+    /**
+     * 获取光盘序号
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<GetCDNumberVO> getCDNumber(GetCDNumberParam param, RResult<GetCDNumberVO> result);
 }
