@@ -411,6 +411,15 @@ public class ToOutAction_qrs extends BaseAction {
             gparam.setFlushbonadingetinfossid("sxsba2");
             param.setParam(gparam);
             System.out.println(JacksonUtil.objebtToString(getCDNumber(param)));
+        }else if(type==9){
+
+            ReqParam<ChangeBurnModeParam_out> param=new ReqParam<ChangeBurnModeParam_out>();
+            ChangeBurnModeParam_out  gparam=new ChangeBurnModeParam_out();
+            gparam.setFdType(FDType.FD_AVST);
+            gparam.setFlushbonadingetinfossid("sxsba2");
+            gparam.setDx(state);
+            param.setParam(gparam);
+            System.out.println(JacksonUtil.objebtToString(changeBurnMode(param)));
         }
 
         return rResult;

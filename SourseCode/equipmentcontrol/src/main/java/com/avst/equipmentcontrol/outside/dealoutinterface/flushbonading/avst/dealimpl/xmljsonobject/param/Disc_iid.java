@@ -2,15 +2,15 @@ package com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.de
 
 public class Disc_iid {
 
-    private String rs;
+    private String rs;//==1数据才有效
 
-    private String crc32;
+    private String crc32;//内容CRC校验码
 
-    private String md5;
+    private String md5;//哈希值
 
-    private String iid;
+    private String iid;//光盘编号
 
-    private int cdnum;
+    private int cdnum;//0第一个光驱，1第二个光驱
 
     public int getCdnum() {
         return cdnum;
