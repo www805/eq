@@ -736,7 +736,7 @@ public class FDDealImpl implements FDInterface{
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--getCDNumber");
         GetCDNumberXml cdnum=Xml2Object.getCDNumberXml(rr);
-        if(null!=cdnum){
+        if(null!=cdnum&&(null!=cdnum.getDisc_iid0()||null!=cdnum.getDisc_iid1())){
             GetCDNumberVO getCDNumberVO=new GetCDNumberVO();
             List<Disc_iid> cdNumList=new ArrayList<Disc_iid>();
             if(null!=cdnum.getDisc_iid0()&&cdnum.getDisc_iid0().getRs().trim().equals("1")){
