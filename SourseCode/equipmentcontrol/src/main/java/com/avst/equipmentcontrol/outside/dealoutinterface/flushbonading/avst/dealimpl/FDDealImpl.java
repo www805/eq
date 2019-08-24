@@ -133,7 +133,7 @@ public class FDDealImpl implements FDInterface{
                 "&authvusr="+user+"&authpwd="+passwd;
         LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
-
+        LogUtil.intoLog(this.getClass(),rr+":rr 结束录像");
         StopRecXml xml=new StopRecXml();
         xml=(StopRecXml)XMLUtil.xmlToStr(xml,rr);
 
