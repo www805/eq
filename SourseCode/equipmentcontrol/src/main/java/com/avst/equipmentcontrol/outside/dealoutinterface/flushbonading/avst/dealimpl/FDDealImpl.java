@@ -527,6 +527,7 @@ public class FDDealImpl implements FDInterface{
         String user=param.getUser();
         int port=param.getPort();
         int dx=param.getDx();
+        int disconly=param.getDisconly();
 
         if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
             result.setMessage("有部分参数为空");
@@ -536,7 +537,7 @@ public class FDDealImpl implements FDInterface{
 
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=rom&cmd=stoprec"+
-                "&dx="+dx+
+                "&dx="+dx+"&disconly="+disconly+
                 "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--stopRec_Rom");
