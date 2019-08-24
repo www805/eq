@@ -109,6 +109,40 @@ public class OpenUtil {
 		return newString;
 	}
 
+	/**
+	 * 删除特殊字符前的所有字符
+	 * @param str
+	 * @param specialChars
+	 * @return
+	 */
+	public static String  delSpecialBeforeChar(String str,String specialChars) {
+
+		if(null==specialChars||specialChars.equals("")){
+
+			specialChars="[\n`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。， 、？]";
+		}
+
+		if(null==str|| str.equals("")){
+			return str;
+		}
+
+		String rr=str;
+		String[] strarr=specialChars.split("");
+		for(String specialChar:strarr){
+
+			try {
+				if(rr.indexOf(specialChar) > -1){
+					String [] arr=rr.split(specialChar);
+					rr = arr[arr.length-1] ;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return rr;
+	}
+
 
 	/**
 	 * 新增文件夹路径使用自带的参数（）
@@ -642,6 +676,31 @@ public static String numtoStr(int digit,Integer num){
 		return null;
 
 	}
+
+
+	/**
+	 * 获取文件的文件名
+	 * @param filepath
+	 * @return
+	 */
+	public static String getfilename2(String filepath){
+
+		try {
+			if(StringUtils.isNotEmpty(filepath)){
+
+				if(filepath.contains("/")&&!filepath.contains("\\")){
+					return filepath.substring(filepath.lastIndexOf("/")+1);
+				}else if (filepath.contains("\\")){
+					return filepath.substring(filepath.lastIndexOf("\\")+1);
+				}
+			}
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
 	
 	/**
 	 * 按要求字符切割字符串
@@ -822,13 +881,13 @@ public static String numtoStr(int digit,Integer num){
 	}
 
 	/**
-	      * 描述：批量获取字符串中被两个字符（串）包含的所有数据
-	      * @param str 处理字符串
-	      * @param start 起始字符（串）
-	      * @param end 结束字符（串）
-	      * @param isSpecial 起始和结束字符是否是特殊字符
-	      * @return Set<String>
-	    */
+     * 描述：批量获取字符串中被两个字符（串）包含的所有数据
+     * @param str 处理字符串
+     * @param start 起始字符（串）
+     * @param end 结束字符（串）
+     * @param isSpecial 起始和结束字符是否是特殊字符
+     * @return Set<String>
+   */
 	public static Set<String> getStrContainData(String str, String start, String end, boolean isSpecial){
 		Set<String> result = new HashSet<>();
 		if(isSpecial){
@@ -1194,15 +1253,13 @@ public static String numtoStr(int digit,Integer num){
 
 	}
 
-	
-	
 	public static void main(String[] args) {
 
 //		String str="D:\\lswj\\NameSpace.java";
 //
 //		LogUtil.intoLog(OpenUtil.class,setFileHide(str));
 
-		LogUtil.intoLog(FileRenameTo("C:\\Users\\Administrator\\Desktop\\common\\nginx-1.8.1\\conf\\nginx-old.conf","nginx2-old"));
+		LogUtil.intoLog(getfile_folder("C:\\Users\\Administrator\\Desktop\\common\\nginx-1.8.1\\conf\\nginx-old.conf"));
 
 
 
