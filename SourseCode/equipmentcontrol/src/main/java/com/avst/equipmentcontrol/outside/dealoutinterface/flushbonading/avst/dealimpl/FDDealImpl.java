@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl;
 
+import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.XMLUtil;
@@ -27,6 +28,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -131,9 +133,9 @@ public class FDDealImpl implements FDInterface{
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=disk&cmd=stoprec"+
                 "&authvusr="+user+"&authpwd="+passwd;
-        LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
+        LogUtil.intoLog(this.getClass(),url+":url --time:"+ (new Date().getTime()) +" regparam:"+regparam);
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
-        LogUtil.intoLog(this.getClass(),rr+":rr 结束录像");
+        LogUtil.intoLog(this.getClass(),rr+":rr 结束录像--time:"+ (new Date().getTime()) );
         StopRecXml xml=new StopRecXml();
         xml=(StopRecXml)XMLUtil.xmlToStr(xml,rr);
 
@@ -539,8 +541,9 @@ public class FDDealImpl implements FDInterface{
         String regparam="action=do&type=rom&cmd=stoprec"+
                 "&dx="+dx+"&disconly="+disconly+
                 "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        LogUtil.intoLog(this.getClass(),url+"：url---time:"+ (new Date().getTime()) +" -regparam："+regparam);
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
-        LogUtil.intoLog(this.getClass(),rr+"--stopRec_Rom");
+        LogUtil.intoLog(this.getClass(),rr+"--stopRec_Rom --time:"+ (new Date().getTime()) );
         int i=Xml2Object.stopRec_RomXml(rr);
         if(i>0){
             result.changeToTrue();
