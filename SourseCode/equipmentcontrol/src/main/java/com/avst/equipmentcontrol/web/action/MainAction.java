@@ -74,7 +74,6 @@ public class MainAction extends BaseAction {
     public RResult checklogin(Model model, HttpServletRequest request, LoginParam loginParam) {
         RResult result=createNewResultOfFail();
         mainService.logining(result,request,loginParam);
-        AppCache.delAppCacheParam();
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }

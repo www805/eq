@@ -1,5 +1,6 @@
 var etypessid;
 var ssid;
+var fdtype = "FD_AVST";
 
 function getFlushbonadingList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -86,7 +87,7 @@ function getptdjconst() {
     var data={
         token:INIT_CLIENTKEY,
         param: {
-            fdType: "FD_AVST",
+            fdType: fdtype,
             mustUpdateBool: mustUpdateBool,
             flushbonadingetinfossid: ssid
         }

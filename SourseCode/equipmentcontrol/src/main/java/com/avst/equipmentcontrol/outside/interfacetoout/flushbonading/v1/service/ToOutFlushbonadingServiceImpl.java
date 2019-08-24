@@ -1,9 +1,12 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service;
 
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.AddOrUpdateToOutFlushbonadingParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.BaseParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetBurnTimeParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetToOutFlushbonadingListParam;
 import com.avst.equipmentcontrol.web.req.flushbonading.FlushbonadinginfoParam;
 import com.avst.equipmentcontrol.web.service.FlushbonadingService;
@@ -100,6 +103,31 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
         reqParam.setParam(flushbonadinginfo);
 
         flushbonadingService.updateFlushbonading(result, reqParam);
+
+        return result;
+    }
+
+    @Override
+    public RResult getBurnTime(GetBurnTimeParam pParam, RResult result) {
+
+        Flushbonadinginfo flushbonadinginfo = new Flushbonadinginfo();
+        flushbonadinginfo.setSsid(pParam.getFlushbonadingetinfossid());
+
+        /**查询选时**/
+        flushbonadingService.getBurnTime(flushbonadinginfo,result);
+
+        return result;
+    }
+
+    @Override
+    public RResult updateBurnTime(GetBurnTimeParam pParam, RResult result) {
+
+        Flushbonadinginfo flushbonadinginfo = new Flushbonadinginfo();
+        flushbonadinginfo.setSsid(pParam.getFlushbonadingetinfossid());
+        flushbonadinginfo.setBurntime(pParam.getBurntime());
+
+        /**修改刻录选时**/
+        flushbonadingService.updateBurnTime(flushbonadinginfo, result);
 
         return result;
     }

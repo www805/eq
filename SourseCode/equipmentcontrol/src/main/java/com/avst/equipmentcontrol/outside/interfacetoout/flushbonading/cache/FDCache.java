@@ -78,7 +78,7 @@ public class FDCache {
     /**
      * 结束录像再开始录像的最小间隔时间ms 10秒
      */
-    public static int minRecordinterval=10000;
+    public static int minRecordinterval=1;
 
     /**
      * 最后一次录像的时间
