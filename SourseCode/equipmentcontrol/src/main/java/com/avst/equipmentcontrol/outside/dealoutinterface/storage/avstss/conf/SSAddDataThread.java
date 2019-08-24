@@ -270,14 +270,13 @@ public class SSAddDataThread extends  Thread{
                             }
 
                             String path=file.getPath();
-                            String filename=file.getName();
-                            if(null==path||path.trim().equals("")||
-                                    null==filename||filename.trim().equals("")){
-                                LogUtil.intoLog(this.getClass(),"文件路径或者文件名为空，直接退出，下次再查--file.getName()："+file.getName());
+                            String filename="";
+                            if(null==path||path.trim().equals("")){
+                                LogUtil.intoLog(this.getClass(),"文件路径或者文件名为空，直接退出，下次再查--file.getPath()："+path);
                                 break;
                             }else{
                                 path=path.trim();
-                                filename=filename.trim();
+                                filename=OpenUtil.getfilename2(path);
                             }
                             //主动请求设备把文件送过来
                             UploadFileByPathParam ufparam=new UploadFileByPathParam();
