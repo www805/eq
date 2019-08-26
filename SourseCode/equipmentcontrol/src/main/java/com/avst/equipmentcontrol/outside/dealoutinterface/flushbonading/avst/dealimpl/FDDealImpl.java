@@ -704,7 +704,7 @@ public class FDDealImpl implements FDInterface{
         }
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=rom&cmd=burnmode"+
-                "&dx="+dx+
+                "&bmode="+dx+
                 "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
         LogUtil.intoLog(this.getClass(),rr+"--changeBurnMode");
