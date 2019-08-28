@@ -68,6 +68,24 @@ public class ToOutAction_SS extends BaseAction {
         return rResult;
     };
 
+    /**
+     * 获取iid对应的本地存储路径
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getSaveFilePath_local")
+    @ResponseBody
+    public RResult getSaveFilePath_local(@RequestBody GetSaveFilePath_localParam param){
+        RResult rResult=this.createNewResultOfFail();
+
+        if(null!=param&&null!=param.getSsType()){
+            rResult=getToOutServiceImpl(param.getSsType()).getSaveFilePath_local(param,rResult);
+        }
+
+        return rResult;
+    };
+
+
     @RequestMapping("/getURLToPlay")
     @ResponseBody
     public RResult<GetURLToPlayVO> getURLToPlay(@RequestBody GetURLToPlayParam param){
@@ -108,4 +126,21 @@ public class ToOutAction_SS extends BaseAction {
 
         return rResult;
     }
+
+    /**
+     * 通过iid获取这个iid对应文件夹下的所有有用文件
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getSaveFilesPathByiid")
+    @ResponseBody
+    public RResult getSaveFilesPathByiid(@RequestBody GetSaveFilesPathByiidParam param){
+        RResult rResult=this.createNewResultOfFail();
+
+        if(null!=param&&null!=param.getSsType()){
+            rResult=getToOutServiceImpl(param.getSsType()).getSaveFilesPathByiid(param,rResult);
+        }
+
+        return rResult;
+    };
 }

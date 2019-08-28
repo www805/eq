@@ -94,9 +94,10 @@ public class SSCreateDataUrlThread extends  Thread{
                 }
 
                 try {
-                    //去掉名字的特殊字符
+                    //去掉名字的特殊字符以前的所有字符
                     String savename=OpenUtil.getfilename(savepath);
-                    String newsavename=OpenUtil.replaceSpecialChar(savename,null);
+                    String specialchars=PropertiesListenerConfig.getProperty("specialchars");
+                    String newsavename=OpenUtil.delSpecialBeforeChar(savename,specialchars);
                     savepath= OpenUtil.FileRenameTo(savepath,newsavename);
                 } catch (Exception e) {
                     e.printStackTrace();

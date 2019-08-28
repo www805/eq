@@ -2,6 +2,7 @@ package com.avst.equipmentcontrol.common.util;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileUtil {
@@ -47,4 +48,111 @@ public class FileUtil {
         }
         return filelist;
     }
+
+    /**
+     * 通过源路径找到这个路径的所有文件的路径
+     * @param basepath
+     * @param isfilespath 是否显示里面的文件夹的路径2/1 2是需要1是不需要
+     * @return
+     */
+    public static List<String> getAllFiles(String basepath, int isfilespath){
+        try {
+            if(null==basepath||basepath.trim().equals("")){
+                return null;
+            }
+            File dir=new File(basepath);
+
+            List<String> filelist=new ArrayList<String>();
+            return getAllFiles(dir,filelist,isfilespath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 删除单个文件
+     * @param   sPath    被删除文件的文件名
+     * @return 单个文件删除成功返回true，否则返回false
+     */
+    public static boolean deleteFile(String sPath) {
+        boolean flag = false;
+        File file = new File(sPath);
+        // 路径为文件且不为空则进行删除
+        if (file.isFile() && file.exists()) {
+            file.delete();
+            flag = true;
+        }
+        return flag;
+    }
+
+    //删除指定文件夹下的所有文件
+    public static boolean delAllFile(String path) {
+        boolean flag = false;
+        File file = new File(path);
+        if (!file.exists()) {
+            return flag;
+        }
+        if (!file.isDirectory()) {
+            return flag;
+        }
+        String[] tempList = file.list();
+        File temp = null;
+        for (int i = 0; i < tempList.length; i++) {
+            if (path.endsWith(File.separator)) {
+                temp = new File(path + tempList[i]);
+            } else {
+                temp = new File(path + File.separator + tempList[i]);
+            }
+            if (temp.isFile()) {
+                temp.delete();
+            }
+            if (temp.isDirectory()) {
+                delAllFile(path + "/" + tempList[i]);//先删除文件夹里面的文件
+                delFolder(path + "/" + tempList[i]);//再删除空文件夹
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+    //删除文件夹
+    public static void delFolder(String folderPath) {
+        try {
+            delAllFile(folderPath); //删除完里面所有内容
+            String filePath = folderPath;
+            filePath = filePath.toString();
+            java.io.File myFilePath = new java.io.File(filePath);
+            myFilePath.delete(); //删除空文件夹
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 删除文件路径下的指定类型的文件
+     */
+    public static void delFileByType(String basepath,String type){
+
+        try {
+            List<String> pathlist=getAllFiles(basepath,1);
+            if(null!=pathlist&&pathlist.size() > 0){
+                for(String path:pathlist){
+                    if(path.endsWith(type)){
+                        try {
+                            deleteFile(path);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }else{
+                System.out.println(basepath+":basepath,getAllFiles is null");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

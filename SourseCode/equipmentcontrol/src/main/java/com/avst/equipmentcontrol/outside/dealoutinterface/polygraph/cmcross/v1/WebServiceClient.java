@@ -52,7 +52,7 @@ public class WebServiceClient {
         try {
             call = (Call)service.createCall();
             //endpoint 值为上面提到的调用地址
-            String endpoint = "http://192.168.17.144:10000/cmcross/api";
+            String endpoint = "http://192.168.17.155:10000/cmcross/api";
             call.setTargetEndpointAddress(endpoint);
             //设置命名空间和需要调用的方法名;第一个参数为命名空间,第二个参数为方法名,调用时候只需要根据需求修改方法名
             QName opAddEntry = new QName("http://api.cmcross.com/","XBOX_GetImage");
@@ -70,7 +70,7 @@ public class WebServiceClient {
         LogUtil.intoLog(WebServiceClient.class,new Date().getTime()+"------"+starttime);
         LogUtil.intoLog(WebServiceClient.class,result);
         XBOX_GetImageVO vo=(XBOX_GetImageVO)JacksonUtil.stringToObjebt_1(result,XBOX_GetImageVO.class);
-        String imgpath = "I:\\wubin\\笔录管理系统\\系统设计\\测谎仪服务\\img.png";
+        String imgpath = "E:\\I盘拓展盘\\身心监护\\img.png";
         Base64ToPhotoUtil.generateImage(vo.getImage(),imgpath);
         LogUtil.intoLog(WebServiceClient.class,new Date().getTime()-starttime+": do over");
 

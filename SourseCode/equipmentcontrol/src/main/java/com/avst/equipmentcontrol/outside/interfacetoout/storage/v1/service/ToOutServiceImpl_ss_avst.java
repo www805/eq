@@ -5,8 +5,11 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Ss
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.param.Ss_dataMessageParam;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_saveinfoMapper;
+import com.avst.equipmentcontrol.common.util.FileUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
+import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
+import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.req.SaveFileByIidParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.req.SaveFileByIid_localParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.v1.DealImpl;
@@ -18,9 +21,11 @@ import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.param.RecordF
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.param.RecordPlayParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.param.RecordSavepathParam;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +106,102 @@ public class ToOutServiceImpl_ss_avst implements ToOutService_ss {
         } catch (Exception e) {
             e.printStackTrace();
             LogUtil.intoLog(this.getClass(),"saveFile is error");
+        }
+
+        return result;
+    }
+
+
+    public RResult getSaveFilesPathByiid(GetSaveFilesPathByiidParam param, RResult result){
+
+        try {
+            String iid = param.getIid();
+            int videobool = param.getVideobool();
+
+            List<Ss_dataMessageParam> datalist = deal.getSs_databaseList(iid);
+            if (null != datalist && datalist.size() > 0) {
+                String file_folder=null;
+                for(Ss_dataMessageParam data:datalist){
+                    String datasavepath=data.getDatasavepath();
+                    if(StringUtils.isNotEmpty(datasavepath)){//把iid存储视频的地址给发过去，ph以后也直接存在这里面
+                        //以后iid对应的所有的数据都放在一起
+                        file_folder=OpenUtil.getfile_folder(datasavepath);
+                        if(file_folder.indexOf("/") > 0){
+                            file_folder+="/";
+                        }else{
+                            file_folder+="\\";
+                        }
+                        break;
+                    }
+                }
+
+                if(null==file_folder){
+                    result.setMessage("没有找到任何一个可用的地址，怀疑数据出错了，iid="+iid);
+                    return result;
+                }
+
+                List<String> pathlist=FileUtil.getAllFiles(file_folder,1);
+                if(null!=pathlist&&pathlist.size() > 0){
+                    String needpathlist="";
+                    String changetype=PropertiesListenerConfig.getProperty("changetype");
+                    if(StringUtils.isEmpty(changetype)){
+                        changetype="mp4";
+                    }
+                    String stfiletype=PropertiesListenerConfig.getProperty("stfiletype");
+                    if(StringUtils.isEmpty(stfiletype)){
+                        stfiletype="st";
+                    }
+                    for(String path:pathlist){
+                        //判断视频需不需要
+                        if(path.endsWith(changetype)||path.endsWith(stfiletype)){
+                            if(videobool==1){
+                                needpathlist+=path+",";
+                            }
+                        }else{
+                            needpathlist+=path+",";
+                        }
+                    }
+                    if(StringUtils.isNotEmpty(needpathlist)){
+                        result.changeToTrue(needpathlist);
+                    }else{
+                        result.setMessage("没有找到一个需要打包的文件，iid="+iid);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtil.intoLog(this.getClass(),"saveFile is error");
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult getSaveFilePath_local(GetSaveFilePath_localParam param, RResult result) {
+
+        try {
+            String iid = param.getIid();
+            List<Ss_dataMessageParam> datalist = deal.getSs_databaseList(iid);
+            if (null != datalist && datalist.size() > 0) {
+                Ss_dataMessageParam ss_dataMessageParam=datalist.get(0);
+                String datasavepath=ss_dataMessageParam.getDatasavepath();
+
+                if(StringUtils.isNotEmpty(datasavepath)){//把iid存储视频的地址给发过去，ph以后也直接存在这里面
+                    String file_folder=OpenUtil.getfile_folder(datasavepath);
+                    if(file_folder.indexOf("/") > 0){
+                        file_folder+="/";
+                    }else{
+                        file_folder+="\\";
+                    }
+                    result.changeToTrue(file_folder);
+                    return result;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtil.intoLog(this.getClass(),"getSaveFilePath_local is error");
         }
 
         return result;

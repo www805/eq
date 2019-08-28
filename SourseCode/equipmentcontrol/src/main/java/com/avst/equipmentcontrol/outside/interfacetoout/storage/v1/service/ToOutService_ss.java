@@ -19,4 +19,21 @@ public interface ToOutService_ss {
 
     public RResult checkRecordFileState(CheckRecordFileStateParam param, RResult result);
 
+    /**
+     * 获取对应iid的真实的本地路径
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult getSaveFilePath_local(GetSaveFilePath_localParam param, RResult result);
+
+    /**
+     * 通过iid获取这个iid对应文件夹下的所有有用文件
+     * @param param
+     * @return
+     */
+    public RResult getSaveFilesPathByiid(GetSaveFilesPathByiidParam param, RResult result);
+
+
+
 }

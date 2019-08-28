@@ -49,7 +49,7 @@ public class DealAvstTtsImpl {
         String ttsbasepath= PropertiesListenerConfig.getProperty("ttsbasepath");
         String httpbasestaticpath = PropertiesListenerConfig.getProperty("httpbasestaticpath");
         String wavfilepath=OpenUtil.createpath_fileByBasepath(ttsbasepath,wavfilename);
-        //转WAV
+        //
         boolean bool=TTSUtil.tts(text,url,appkey,lang_speaker_domain,capkey,devkey,wavfilepath);
         if(bool){//成功之后返回播放地址
             Str2ttsVO vo=new Str2ttsVO();

@@ -20,7 +20,7 @@ import java.util.List;
  * 注意：这种定时器一定要用try包一下，以免内存泄露或者线程异常不能释放
  */
 @Component
-public class Scheduler {
+public class Scheduler2 {
 
     @Autowired
     private Ss_databaseMapper ss_databaseMapper;
