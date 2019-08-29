@@ -90,6 +90,9 @@
     });
     $(function(){
         getNavList();
+        if (self != top || window.frames.length != parent.frames.length || self.frameElement && self.frameElement.tagName == "IFRAME") {
+            $(".layui-footer").remove();
+        }
     });
 </script>
 </body>

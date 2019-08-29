@@ -51,24 +51,20 @@
        $('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
         $(window).resize(function(){
             $('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
-        })
+        });
         getNavList();
 
         //如果在iframe中打开，就自动点击登录按钮
-        if (window.frames.length != parent.frames.length) {
-
-            var loginaccount = GetQueryString("loginusername");
+        if (self != top || window.frames.length != parent.frames.length || self.frameElement && self.frameElement.tagName == "IFRAME") {
+            $("#bottom_mian").remove();
+            var loginaccount = GetQueryString("loginaccount");
             var adminpassword = GetQueryString("loginpassword");
 
-            if(!isNotEmpty(loginaccount)){
-                loginaccount = "admin";
+            if(isNotEmpty(loginaccount) && isNotEmpty(adminpassword)){
+                $("input[name='loginaccount']").val(loginaccount);
+                $("input[name='password']").val(adminpassword);
+                $("#loginbtn").click();
             }
-            if(!isNotEmpty(adminpassword)){
-                adminpassword = "admin123";
-            }
-            $("input[name='loginaccount']").val(loginaccount);
-            $("input[name='password']").val(adminpassword);
-            $("#loginbtn").click();
         }
     });
 

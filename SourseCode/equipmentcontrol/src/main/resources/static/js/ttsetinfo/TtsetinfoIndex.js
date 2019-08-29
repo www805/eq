@@ -6,14 +6,14 @@ function getTtsetinfoList_init(currPage,pageSize) {
     var url = getUrl_manageZk().getTtsetinfoList;
     var language=$("input[name='language']").val();
     var port=$("input[name='port']").val();
-    var ttstype=$("input[name='ttstype']").val();
+    var ttskeys=$("input[name='ttskeys']").val();
     var etnum=$("input[name='etnum']").val();
     var data={
         token:INIT_CLIENTKEY,
         param:{
             language: language,
             port: port,
-            ttstype: ttstype,
+            ttskeys: ttskeys,
             etnum: etnum,
             currPage:currPage,
             pageSize:pageSize
@@ -23,7 +23,7 @@ function getTtsetinfoList_init(currPage,pageSize) {
     ajaxSubmitByJson(url,data,callTtsetinfoList);
 }
 
-function TtsetinfoIndex(language, port, ttstype, etnum, currPage, pageSize) {
+function TtsetinfoIndex(language, port, ttskeys, etnum, currPage, pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
     var url = getUrl_manageZk().getTtsetinfoList;
     var data = {
@@ -31,7 +31,7 @@ function TtsetinfoIndex(language, port, ttstype, etnum, currPage, pageSize) {
         param: {
             language: language,
             port: port,
-            ttstype: ttstype,
+            ttskeys: ttskeys,
             etnum: etnum,
             currPage: currPage,
             pageSize: pageSize
@@ -209,13 +209,13 @@ function showpagetohtml(){
 
         var language=$("input[name='language']").val();
         var port=$("input[name='port']").val();
-        var ttstype=$("input[name='ttstype']").val();
+        var ttskeys=$("input[name='ttskeys']").val();
         var etnum=$("input[name='etnum']").val();
 
         var arrparam=new Array();
         arrparam[0]=language;
         arrparam[1]=port;
-        arrparam[2]=ttstype;
+        arrparam[2]=ttskeys;
         arrparam[3]=etnum;
         showpage("paging",arrparam,'getTtsetinfoListParam',currPage,pageCount,pageSize);
     }

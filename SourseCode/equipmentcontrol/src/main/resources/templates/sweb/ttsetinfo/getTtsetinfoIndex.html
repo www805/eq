@@ -56,8 +56,6 @@
             <col>
             <col>
             <col>
-            <col>
-            <col>
             <col width="200">
         </colgroup>
         <thead>
@@ -70,7 +68,6 @@
             <th>TTS密匙集</th>
             <th>设备编号</th>
             <th>设备IP</th>
-            <th>服务中文说明</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -85,7 +82,6 @@
             <td>{{value.ttskeys==null?"":value.ttskeys}}</td>
             <td>{{value.etnum==null?"":value.etnum}}</td>
             <td>{{value.etip==null?"":value.etip}}</td>
-            <td>{{value.explain==null?"":value.explain}}</td>
             <td>
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/ttsetinfo/addOrUpdateTtsetinfo/?ssid={{value.ssid}}&etypessid='+etypessid;">修改</a>
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="delTtsetinfo('{{value.ssid}}');">删除</a>
