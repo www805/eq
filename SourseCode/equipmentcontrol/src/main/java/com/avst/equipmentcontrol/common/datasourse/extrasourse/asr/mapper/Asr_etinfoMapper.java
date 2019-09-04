@@ -46,7 +46,14 @@ public interface Asr_etinfoMapper extends BaseMapper<Asr_etinfo> {
     public List<Asr_et_ettype> getAsrInfoPage(Page page, @Param("ew") EntityWrapper ew);
 
 
-
+    //语音服务器是否重复
+    @Select("SELECT " +
+            " count(a.id) " +
+            " FROM " +
+            " asr_etinfo a " +
+            " INNER JOIN base_equipmentinfo b ON a.equipmentssid = b.ssid" +
+            " where 1=1 ${ew.sqlSegment}")
+    int getRepetition(@Param("ew")EntityWrapper entityWrapper);
 
 
 }

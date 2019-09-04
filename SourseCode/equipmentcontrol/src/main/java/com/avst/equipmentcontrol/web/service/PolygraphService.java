@@ -137,6 +137,25 @@ public class PolygraphService extends BaseService {
             return;
         }
 
+        boolean isip = OpenUtil.isIp(paramParam.getEtip());
+        if(isip == false){
+            result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+        EntityWrapper<Polygraph_etinfo> wrapper = new EntityWrapper<>();
+        wrapper.eq("p.polygraphtype", paramParam.getPolygraphtype());
+        wrapper.eq("p.polygraphkey", paramParam.getPolygraphkey());
+        wrapper.eq("p.port", paramParam.getPort());
+        wrapper.eq("b.etnum", paramParam.getEtnum());
+        wrapper.eq("b.etip", paramParam.getEtip());
+        wrapper.eq("b.etypessid", paramParam.getEtypessid());
+
+        int repetitionCount = polygraph_etinfoMapper.getRepetition(wrapper);
+        if (repetitionCount > 0) {
+            result.setMessage("测谎仪已经存在");
+            return;
+        }
 
         Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
         base_equipmentinfo.setEtnum(paramParam.getEtnum());
@@ -203,6 +222,28 @@ public class PolygraphService extends BaseService {
             result.setMessage("设备IP不能为空");
             return;
         }
+
+        boolean isip = OpenUtil.isIp(paramParam.getEtip());
+        if(isip == false){
+            result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+        EntityWrapper<Polygraph_etinfo> wrapper = new EntityWrapper<>();
+        wrapper.eq("p.polygraphtype", paramParam.getPolygraphtype());
+        wrapper.eq("p.polygraphkey", paramParam.getPolygraphkey());
+        wrapper.eq("p.port", paramParam.getPort());
+        wrapper.eq("b.etnum", paramParam.getEtnum());
+        wrapper.eq("b.etip", paramParam.getEtip());
+        wrapper.eq("b.etypessid", paramParam.getEtypessid());
+        wrapper.ne("p.ssid", paramParam.getSsid());
+
+        int repetitionCount = polygraph_etinfoMapper.getRepetition(wrapper);
+        if (repetitionCount > 0) {
+            result.setMessage("测谎仪已经存在");
+            return;
+        }
+
 
         //查询审讯主机从里面拿到他的设备ssid
         PolygraphInfo flushbonadinginfo = new PolygraphInfo();

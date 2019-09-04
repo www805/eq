@@ -56,11 +56,11 @@ public class TtsEtinfoService extends BaseService {
         if (StringUtils.isNotBlank(paramParam.getLanguage())){
             ew.like("aet.language",paramParam.getLanguage());
         }
-        if (null != paramParam.getPort()){
+        if (StringUtils.isNotBlank(paramParam.getPort())){
             ew.like("aet.port", paramParam.getPort() + "");
         }
-        if (StringUtils.isNotBlank(paramParam.getTtstype())){
-            ew.like("aet.ttstype",paramParam.getTtstype());
+        if (StringUtils.isNotBlank(paramParam.getTtskeys())){
+            ew.like("aet.ttskeys",paramParam.getTtskeys());
         }
         if (StringUtils.isNotBlank(paramParam.getEtnum())){
             ew.like("et.etnum",paramParam.getEtnum());
@@ -151,6 +151,28 @@ public class TtsEtinfoService extends BaseService {
             return;
         }
 
+        boolean isip = OpenUtil.isIp(paramParam.getEtip());
+        if(isip == false){
+            result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+
+        EntityWrapper<Polygraph_etinfo> wrapper = new EntityWrapper<>();
+        wrapper.eq("t.language", paramParam.getLanguage());
+        wrapper.eq("t.maxnum", paramParam.getMaxnum());
+        wrapper.eq("t.port", paramParam.getPort());
+        wrapper.eq("t.ttstype", paramParam.getTtstype());
+        wrapper.eq("t.ttskeys", paramParam.getTtskeys());
+        wrapper.eq("b.etnum", paramParam.getEtnum());
+        wrapper.eq("b.etip", paramParam.getEtip());
+
+        int repetitionCount = tts_etinfoMapper.getRepetition(wrapper);
+        if (repetitionCount > 0) {
+            result.setMessage("该文件转语音识别服务已经存在");
+            return;
+        }
+
         Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
         base_equipmentinfo.setEtnum(paramParam.getEtnum());
         base_equipmentinfo.setEtip(paramParam.getEtip());
@@ -223,6 +245,28 @@ public class TtsEtinfoService extends BaseService {
         }
         if (StringUtils.isBlank(paramParam.getEtip())){
             result.setMessage("设备IP不能为空");
+            return;
+        }
+
+        boolean isip = OpenUtil.isIp(paramParam.getEtip());
+        if(isip == false){
+            result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+        EntityWrapper<Polygraph_etinfo> wrapper = new EntityWrapper<>();
+        wrapper.eq("t.language", paramParam.getLanguage());
+        wrapper.eq("t.maxnum", paramParam.getMaxnum());
+        wrapper.eq("t.port", paramParam.getPort());
+        wrapper.eq("t.ttstype", paramParam.getTtstype());
+        wrapper.eq("t.ttskeys", paramParam.getTtskeys());
+        wrapper.eq("b.etnum", paramParam.getEtnum());
+        wrapper.eq("b.etip", paramParam.getEtip());
+        wrapper.ne("t.ssid", paramParam.getSsid());
+
+        int repetitionCount = tts_etinfoMapper.getRepetition(wrapper);
+        if (repetitionCount > 0) {
+            result.setMessage("该文件转语音识别服务已经存在");
             return;
         }
 

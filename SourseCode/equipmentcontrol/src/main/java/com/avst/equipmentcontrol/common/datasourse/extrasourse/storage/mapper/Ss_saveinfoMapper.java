@@ -45,5 +45,12 @@ public interface Ss_saveinfoMapper extends BaseMapper<Ss_saveinfo> {
             " where 1=1 ${ew.sqlSegment}")
     public List<Storage_ettype> getStorageInfoPage(Page page, @Param("ew") EntityWrapper ew);
 
-
+    //存储服务是否重复
+    @Select("SELECT " +
+            " count(s.id) " +
+            " FROM " +
+            " ss_saveinfo s " +
+            " INNER JOIN base_equipmentinfo b ON s.mtssid = b.ssid" +
+            " where 1=1 ${ew.sqlSegment}")
+    int getRepetition(@Param("ew")EntityWrapper entityWrapper);
 }

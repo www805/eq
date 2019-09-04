@@ -43,4 +43,13 @@ public interface Polygraph_etinfoMapper extends BaseMapper<Polygraph_etinfo> {
             " where 1=1 ${ew.sqlSegment}")
     List<PolygraphInfo> getPolygraphInfoPage(Page page, @Param("ew")EntityWrapper entityWrapper);
 
+    //测谎仪是否重复
+    @Select("SELECT " +
+            " count(p.id) " +
+            " FROM " +
+            " polygraph_etinfo p " +
+            " INNER JOIN base_equipmentinfo b ON p.equipmentssid = b.ssid" +
+            " where 1=1 ${ew.sqlSegment}")
+    int getRepetition(@Param("ew")EntityWrapper entityWrapper);
+
 }

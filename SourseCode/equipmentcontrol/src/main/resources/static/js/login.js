@@ -5,11 +5,16 @@ function login_login(){
 
     var loginaccount =$('input[name="loginaccount"]').val();
     var password =$('input[name="password"]').val();
-    var data={
-        loginaccount:loginaccount,
-        password:password
-    };
-    ajaxSubmit(url,data,callbackgetAdminInfoPage);
+
+    var bool = checkjs(loginaccount, password);//自定义校验
+
+    if(bool){
+        var data={
+            loginaccount:loginaccount,
+            password:password
+        };
+        ajaxSubmit(url,data,callbackgetAdminInfoPage);
+    }
 
 }
 
@@ -91,6 +96,17 @@ function callgetNavList(data) {
     }else{
         layer.msg(data.message);
     }
+}
+
+function checkjs(loginaccount, password) {
+
+    if (!isNotEmpty(loginaccount)) {
+        layer.msg("用户名不能为空", {icon: 2});return false;
+    }else if(!isNotEmpty(password)){
+        layer.msg("密码不能为空", {icon: 2});return false;
+    }
+
+    return true;
 }
 
 function getQueryVariable(variable) {

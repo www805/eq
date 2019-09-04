@@ -164,6 +164,30 @@ public class FlushbonadingService extends BaseService {
             return;
         }
 
+        boolean isip = OpenUtil.isIp(paramParam.getEtip());
+        if(isip == false){
+            result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+        EntityWrapper<Flushbonading_etinfo> wrapper = new EntityWrapper<>();
+        wrapper.eq("f.port", paramParam.getPort());
+        wrapper.eq("f.user", paramParam.getUser());
+        wrapper.eq("f.passwd", paramParam.getPasswd());
+        wrapper.eq("f.uploadbasepath", paramParam.getUploadbasepath());
+        wrapper.eq("f.diskrecbool", paramParam.getDiskrecbool());
+        wrapper.eq("f.burnbool", paramParam.getBurnbool());
+        wrapper.eq("f.burntime", paramParam.getBurntime());
+        wrapper.eq("f.ptshowtime", paramParam.getPtshowtime());
+        wrapper.eq("b.etnum", paramParam.getEtnum());
+        wrapper.eq("b.etip", paramParam.getEtip());
+
+        int repetitionCount = flushbonading_etinfoMapper.getRepetition(wrapper);
+        if (repetitionCount > 0) {
+            result.setMessage("该审讯设备已经存在");
+            return;
+        }
+
         Flushbonading_etinfo etinfo = new Flushbonading_etinfo();
         etinfo.setUser(paramParam.getUser());
         Flushbonading_etinfo etinfoOne = flushbonading_etinfoMapper.selectOne(etinfo);
@@ -273,6 +297,31 @@ public class FlushbonadingService extends BaseService {
         }
         if (null == paramParam.getDiskrecbool()) {
             result.setMessage("是否需要硬盘录像不能为空");
+            return;
+        }
+
+        boolean isip = OpenUtil.isIp(paramParam.getEtip());
+        if(isip == false){
+            result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+        EntityWrapper<Flushbonading_etinfo> wrapper2 = new EntityWrapper<>();
+        wrapper2.eq("f.port", paramParam.getPort());
+        wrapper2.eq("f.user", paramParam.getUser());
+        wrapper2.eq("f.passwd", paramParam.getPasswd());
+        wrapper2.eq("f.uploadbasepath", paramParam.getUploadbasepath());
+        wrapper2.eq("f.diskrecbool", paramParam.getDiskrecbool());
+        wrapper2.eq("f.burnbool", paramParam.getBurnbool());
+        wrapper2.eq("f.burntime", paramParam.getBurntime());
+        wrapper2.eq("f.ptshowtime", paramParam.getPtshowtime());
+        wrapper2.eq("b.etnum", paramParam.getEtnum());
+        wrapper2.eq("b.etip", paramParam.getEtip());
+        wrapper2.ne("f.ssid", paramParam.getSsid());
+
+        int repetitionCount = flushbonading_etinfoMapper.getRepetition(wrapper2);
+        if (repetitionCount > 0) {
+            result.setMessage("该审讯设备已经存在");
             return;
         }
 

@@ -147,6 +147,27 @@ public class AsrService extends BaseService {
             return;
         }
 
+        boolean isip = OpenUtil.isIp(paramParam.getEtip());
+        if(isip == false){
+            result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+        EntityWrapper<Asr_et_ettype> wrapper = new EntityWrapper<>();
+        wrapper.eq("a.language", paramParam.getLanguage());
+        wrapper.eq("a.maxnum", paramParam.getMaxnum());
+        wrapper.eq("a.port", paramParam.getPort());
+        wrapper.eq("a.asrtype", paramParam.getAsrtype());
+        wrapper.eq("a.asrkey", paramParam.getAsrkey());
+        wrapper.eq("b.etnum", paramParam.getEtnum());
+        wrapper.eq("b.etip", paramParam.getEtip());
+
+        int repetitionCount = asr_etinfoMapper.getRepetition(wrapper);
+        if (repetitionCount > 0) {
+            result.setMessage("该语音服务器已经存在");
+            return;
+        }
+
         Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
         base_equipmentinfo.setEtnum(paramParam.getEtnum());
         base_equipmentinfo.setEtip(paramParam.getEtip());
@@ -220,6 +241,28 @@ public class AsrService extends BaseService {
         }
         if (StringUtils.isBlank(paramParam.getEtip())){
             result.setMessage("设备IP不能为空");
+            return;
+        }
+
+        boolean isip = OpenUtil.isIp(paramParam.getEtip());
+        if(isip == false){
+            result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+        EntityWrapper<Asr_et_ettype> wrapper = new EntityWrapper<>();
+        wrapper.eq("a.language", paramParam.getLanguage());
+        wrapper.eq("a.maxnum", paramParam.getMaxnum());
+        wrapper.eq("a.port", paramParam.getPort());
+        wrapper.eq("a.asrtype", paramParam.getAsrtype());
+        wrapper.eq("a.asrkey", paramParam.getAsrkey());
+        wrapper.eq("b.etnum", paramParam.getEtnum());
+        wrapper.eq("b.etip", paramParam.getEtip());
+        wrapper.ne("a.ssid", paramParam.getSsid());
+
+        int repetitionCount = asr_etinfoMapper.getRepetition(wrapper);
+        if (repetitionCount > 0) {
+            result.setMessage("该语音服务器已经存在");
             return;
         }
 

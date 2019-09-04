@@ -45,5 +45,12 @@ public interface Flushbonading_etinfoMapper extends BaseMapper<Flushbonading_eti
     public int getFlushbonadingCount(@Param("ew") EntityWrapper ew);
 
 
-
+    //审讯设备是否重复
+    @Select("SELECT " +
+            " count(f.id) " +
+            " FROM " +
+            " flushbonading_etinfo f " +
+            " INNER JOIN base_equipmentinfo b ON f.equipmentssid = b.ssid" +
+            " where 1=1 ${ew.sqlSegment}")
+    int getRepetition(@Param("ew")EntityWrapper entityWrapper);
 }

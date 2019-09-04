@@ -101,6 +101,20 @@ public class BaseEttypeService extends BaseService {
             return;
         }
 
+        boolean isEnNum = OpenUtil.isEnNum(paramParam.getEttypenum());
+        if(isEnNum == false){
+            result.setMessage("设备类型标号必须是英文或数字");
+            return;
+        }
+
+        Base_ettype ettype = new Base_ettype();
+        ettype.setEttypenum(paramParam.getEttypenum());
+        Base_ettype selectOne = base_ettypeMapper.selectOne(ettype);
+        if(null != selectOne){
+            result.setMessage("该设备类型已经存在");
+            return;
+        }
+
         Base_ettype base_ettype = new Base_ettype();
         base_ettype.setEttypenum(paramParam.getEttypenum());
         base_ettype.setSsid(OpenUtil.getUUID_32());
@@ -140,6 +154,21 @@ public class BaseEttypeService extends BaseService {
 
         if(StringUtils.isBlank(paramParam.getExplain())){
             result.setMessage("设备类型中文解释不能为空");
+            return;
+        }
+
+        boolean isEnNum = OpenUtil.isEnNum(paramParam.getEttypenum());
+        if(isEnNum == false){
+            result.setMessage("设备类型标号必须是英文或数字");
+            return;
+        }
+
+        EntityWrapper<Base_ettype> wrapper = new EntityWrapper<>();
+        wrapper.eq("ettypenum", paramParam.getEttypenum());
+        wrapper.ne("ssid", paramParam.getSsid());
+        List<Base_ettype> base_ettypes = base_ettypeMapper.selectList(wrapper);
+        if (null != base_ettypes && base_ettypes.size() > 0) {
+            result.setMessage("该设备类型已经存在");
             return;
         }
 

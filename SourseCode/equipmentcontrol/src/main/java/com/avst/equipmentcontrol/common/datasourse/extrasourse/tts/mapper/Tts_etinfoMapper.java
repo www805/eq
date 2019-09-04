@@ -52,4 +52,12 @@ public interface Tts_etinfoMapper extends BaseMapper<Tts_etinfo> {
     public int getttsinfoCount(@Param("ew") EntityWrapper ew);
 
 
+    //文字转语音服务是否重复
+    @Select("SELECT " +
+            " count(t.id) " +
+            " FROM " +
+            " tts_etinfo t " +
+            " INNER JOIN base_equipmentinfo b ON t.equipmentssid = b.ssid" +
+            " where 1=1 ${ew.sqlSegment}")
+    int getRepetition(@Param("ew")EntityWrapper entityWrapper);
 }

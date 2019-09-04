@@ -138,6 +138,26 @@ public class StorageService extends BaseService {
             return;
         }
 
+        boolean isip = OpenUtil.isIp(paramParam.getEtip());
+        if(isip == false){
+            result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+        EntityWrapper<Ss_saveinfo> wrapper = new EntityWrapper<>();
+        wrapper.eq("s.totalcapacity", paramParam.getTotalcapacity());
+        wrapper.eq("s.port", paramParam.getPort());
+        wrapper.eq("s.sstype", paramParam.getSstype());
+        wrapper.eq("s.datasavebasepath", paramParam.getDatasavebasepath());
+        wrapper.eq("b.etnum", paramParam.getEtnum());
+        wrapper.eq("b.etip", paramParam.getEtip());
+
+        int repetitionCount = ss_saveinfoMapper.getRepetition(wrapper);
+        if (repetitionCount > 0) {
+            result.setMessage("该存储服务已经存在");
+            return;
+        }
+
         Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
         base_equipmentinfo.setEtnum(paramParam.getEtnum());
         base_equipmentinfo.setEtip(paramParam.getEtip());
@@ -207,6 +227,27 @@ public class StorageService extends BaseService {
         }
         if (StringUtils.isBlank(paramParam.getEtip())){
             result.setMessage("设备IP不能为空");
+            return;
+        }
+
+        boolean isip = OpenUtil.isIp(paramParam.getEtip());
+        if(isip == false){
+            result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+        EntityWrapper<Ss_saveinfo> wrapper = new EntityWrapper<>();
+        wrapper.eq("s.totalcapacity", paramParam.getTotalcapacity());
+        wrapper.eq("s.port", paramParam.getPort());
+        wrapper.eq("s.sstype", paramParam.getSstype());
+        wrapper.eq("s.datasavebasepath", paramParam.getDatasavebasepath());
+        wrapper.eq("b.etnum", paramParam.getEtnum());
+        wrapper.eq("b.etip", paramParam.getEtip());
+        wrapper.ne("s.ssid", paramParam.getSsid());
+
+        int repetitionCount = ss_saveinfoMapper.getRepetition(wrapper);
+        if (repetitionCount > 0) {
+            result.setMessage("该存储服务已经存在");
             return;
         }
 
