@@ -3,6 +3,7 @@ package com.avst.equipmentcontrol.web.service;
 import com.avst.equipmentcontrol.common.cache.AppCache;
 import com.avst.equipmentcontrol.common.cache.param.AppCacheParam;
 import com.avst.equipmentcontrol.common.conf.Constant;
+import com.avst.equipmentcontrol.common.conf.NetTool;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper.Asr_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.mapper.Polygraph_etinfoMapper;
@@ -148,6 +149,12 @@ public class MainService {
                         }
                     }
                 }
+
+                Map<String,Object> zkYml = (Map<String, Object>) map.get("zk");
+                Map<String,Object> guidepage = (Map<String, Object>) zkYml.get("guidepage");
+                String guidepageUrl = (String) guidepage.get("url");
+                String myIP = NetTool.getMyIP();
+                avstYml.put("guidepageUrl" , "http://" + myIP + guidepageUrl);
 
                 avstYml.put("bottom", map.get("bottom"));
                 if (null != map && map.size() > 0) {

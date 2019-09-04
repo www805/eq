@@ -176,13 +176,13 @@ function opneModal_1(ettype) {
 
     var html = '  <form class="layui-form site-inline" style="margin-top: 20px">\
                <div class="layui-form-item">\
-                   <label class="layui-form-label" style="width: 120px;padding-left:0px;">设备类型标号</label>\
+                   <label class="layui-form-label" style="width: 120px;padding-left:0px;"><span style="color: red;">*</span>设备类型标号</label>\
                     <div class="layui-input-block" style="margin-left: 140px;">\
                     <input type="text" name="ettypenum" lay-verify="title" autocomplete="off" placeholder="请输入设备类型标号" value="' + ettypenum + '" class="layui-input">\
                     </div>\
                 </div>\
                 <div class="layui-form-item">\
-                    <label class="layui-form-label" style="width: 120px;padding-left:0px;">设备类型中文解释</label>\
+                    <label class="layui-form-label" style="width: 120px;padding-left:0px;"><span style="color: red;">*</span>设备类型中文解释</label>\
                     <div class="layui-input-block" style="margin-left: 140px;">\
                     <textarea name="explain" id="explain" placeholder="请输入设备类型中文解释" class="layui-textarea">'+explain+'</textarea>\
                     </div>\
