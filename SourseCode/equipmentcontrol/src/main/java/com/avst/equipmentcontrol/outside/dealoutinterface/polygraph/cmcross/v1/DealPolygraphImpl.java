@@ -9,6 +9,7 @@ import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.v
 import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.vo.XBOX_GetImageVO;
 import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.vo.XBOX_GetResultVO;
 import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.vo.XBOX_ShutdownVO;
+import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,7 +28,8 @@ public class DealPolygraphImpl extends BaseAction implements BaseInterface {
         String rr=WebServiceClient.webClient(ip,port,action);
         if(null!=rr){
             try {
-                XBOX_CheckStatusVO vo= (XBOX_CheckStatusVO)JacksonUtil.stringToObjebt_1(rr,XBOX_CheckStatusVO.class);
+                Gson gson=new Gson();
+                XBOX_CheckStatusVO vo=gson.fromJson(rr,XBOX_CheckStatusVO.class);
                 return vo;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -45,7 +47,8 @@ public class DealPolygraphImpl extends BaseAction implements BaseInterface {
         String rr=WebServiceClient.webClient(ip,port,action);
         if(null!=rr){
             try {
-                XBOX_GetResultVO vo= (XBOX_GetResultVO)JacksonUtil.stringToObjebt_1(rr,XBOX_GetResultVO.class);
+                Gson gson=new Gson();
+                XBOX_GetResultVO vo=gson.fromJson(rr,XBOX_GetResultVO.class);
                 return vo;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -63,7 +66,8 @@ public class DealPolygraphImpl extends BaseAction implements BaseInterface {
         String rr=WebServiceClient.webClient(ip,port,action);
         if(null!=rr){
             try {
-                XBOX_ShutdownVO vo= (XBOX_ShutdownVO)JacksonUtil.stringToObjebt_1(rr,XBOX_ShutdownVO.class);
+                Gson gson=new Gson();
+                XBOX_ShutdownVO vo=gson.fromJson(rr,XBOX_ShutdownVO.class);
                 return vo;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -83,7 +87,8 @@ public class DealPolygraphImpl extends BaseAction implements BaseInterface {
             String rr=WebServiceClient.webClient(ip,port,action);
             if(null!=rr){
                 try {
-                    XBOX_GetImageVO vo= (XBOX_GetImageVO)JacksonUtil.stringToObjebt_1(rr,XBOX_GetImageVO.class);
+                    Gson gson=new Gson();
+                    XBOX_GetImageVO vo=gson.fromJson(rr,XBOX_GetImageVO.class);
                     return vo;
                 } catch (Exception e) {
                     e.printStackTrace();

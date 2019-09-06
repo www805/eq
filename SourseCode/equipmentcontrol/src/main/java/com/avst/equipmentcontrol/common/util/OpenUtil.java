@@ -6,6 +6,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.security.MessageDigest;
 import java.text.NumberFormat;
 import java.util.*;
@@ -1271,6 +1272,16 @@ public static String numtoStr(int digit,Integer num){
 	public static boolean isEnNum(String str) {
 		boolean b1 = str.matches("[0-9a-zA-Z]*");
 		return b1;
+	}
+
+	//取得LOCALHOST的IP地址
+	public static String getMyIP() {
+		InetAddress myIPaddress=null;
+		try {
+			myIPaddress=InetAddress.getLocalHost();
+		}
+		catch (Exception e) {}
+		return (myIPaddress.getHostAddress());
 	}
 
 	public static void main(String[] args) {

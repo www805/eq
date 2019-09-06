@@ -16,6 +16,7 @@ import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDDealImpl;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.*;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.vo.*;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.CheckFDStateXml;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.FDCache;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.param.FDCacheParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.*;
@@ -26,6 +27,7 @@ import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOut
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutService_ss;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -153,6 +155,33 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                         }
                         gparam.setBtime(burntime);
                         gparam.setDx(0);
+
+                        //需要查询设备状态获取刻录模式
+                        CheckFDStateParam cparam=new CheckFDStateParam();
+                        cparam.setIp(flushbonadinginfo.getEtip());
+                        cparam.setPort(flushbonadinginfo.getPort());
+                        cparam.setPasswd(flushbonadinginfo.getPasswd());
+                        cparam.setUser(flushbonadinginfo.getUser());
+                        RResult<CheckFDStateVO> ckvo=new RResult<CheckFDStateVO>();
+                        try {
+                            ckvo= fdDeal.CheckFDState(cparam,ckvo);
+                            if(null!=ckvo&&ckvo.getActioncode().equals(Code.SUCCESS.toString())&&null!=ckvo.getData()){
+                                CheckFDStateVO vo=ckvo.getData();
+                                Gson gson=new Gson();
+                                CheckFDStateXml checkFDStateXml=gson.fromJson(gson.toJson(vo.getData()),CheckFDStateXml.class);
+                                String burnmode=checkFDStateXml.getBurn_mode();
+                                if(StringUtils.isNotEmpty(burnmode)&&burnmode.equals("2")){
+                                    gparam.setBmode("exchange");
+                                    LogUtil.intoLog(1,this.getClass(),"光盘刻录模式为exchange");
+                                }else{
+                                    LogUtil.intoLog(1,this.getClass(),"光盘刻录模式为bmode");
+                                }
+                            }else{
+                                LogUtil.intoLog(4,this.getClass(),"请求设备状态失败，主要是为了找光盘刻录模式");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
                         RResult<StartRec_RomVO> startrec=fdDeal.startRec_Rom(gparam,new RResult<StartRec_RomVO>());
                         LogUtil.intoLog(1,this.getClass(),"请求光盘开始刻录结果："+JacksonUtil.objebtToString(startrec));
@@ -295,6 +324,28 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                     LogUtil.intoLog(this.getClass(),"暂停设备录像失败 result："+JacksonUtil.objebtToString(result));
                 }
             }
+
+            //暂停光盘刻录
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+
+                        PauseRec_RomParam  gparam=new PauseRec_RomParam();
+                        gparam.setIp(fdCacheParam.getIp());
+                        gparam.setPort(fdCacheParam.getPort());
+                        gparam.setPasswd(fdCacheParam.getPasswd());
+                        gparam.setUser(fdCacheParam.getUser());
+
+                        RResult<PauseRec_RomVO> vo=fdDeal.pauseRec_Rom(gparam,new RResult<PauseRec_RomVO>());
+                        LogUtil.intoLog(1,this.getClass(),"请求光盘暂停刻录的结果："+JacksonUtil.objebtToString(vo));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
+
         }else if(pauseOrContinue==2){
 
             //查询是否有一台机子多次被用
@@ -341,6 +392,26 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                     LogUtil.intoLog(this.getClass(),"继续设备录像失败 result："+JacksonUtil.objebtToString(result));
                 }
             }
+
+            //继续光盘刻录
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+
+                        GoonRec_RomParam  gparam=new GoonRec_RomParam();
+                        gparam.setIp(fdCacheParam.getIp());
+                        gparam.setPort(fdCacheParam.getPort());
+                        gparam.setPasswd(fdCacheParam.getPasswd());
+                        gparam.setUser(fdCacheParam.getUser());
+
+                        RResult<GgoonRec_RomVO> vo=fdDeal.goonRec_Rom(gparam,new RResult<GgoonRec_RomVO>());
+                        LogUtil.intoLog(1,this.getClass(),"请求光盘继续刻录的结果："+JacksonUtil.objebtToString(vo));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
 
         }else{
             LogUtil.intoLog(3,this.getClass(),"请求动作不是暂停或者继续设备工作,pauseOrContinue："+pauseOrContinue);

@@ -1,60 +1,37 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+public class GetMiddleware_FTPXml {
 
-
-public class SetMiddleware_FTPXml {
-
-    
     private String version;
 
-    
     private String status;
 
-    
     private String enable;
 
-    
-    private String pasvmode;
+    private String passvmode;
 
-    
     private String servicename;
 
-    
     private String serviceport;
 
-    
     private String serverip;
 
-    
     private String hreadbeatip;
 
-    
     private String usehreadbeatip;
 
-    
     private String deviceid;
 
-    
     private String user;
 
-    
     private String pass;
 
-    
     private String limit_speed;
 
-    
     private String filter_enable;
 
-    
     private String search_filter;
 
-    
-    private String reboot;
-
-    
     private String msg;
 
     public String getVersion() {
@@ -81,12 +58,12 @@ public class SetMiddleware_FTPXml {
         this.enable = enable;
     }
 
-    public String getPasvmode() {
-        return pasvmode;
+    public String getPassvmode() {
+        return passvmode;
     }
 
-    public void setPasvmode(String pasvmode) {
-        this.pasvmode = pasvmode;
+    public void setPassvmode(String passvmode) {
+        this.passvmode = passvmode;
     }
 
     public String getServicename() {
@@ -175,14 +152,6 @@ public class SetMiddleware_FTPXml {
 
     public void setSearch_filter(String search_filter) {
         this.search_filter = search_filter;
-    }
-
-    public String getReboot() {
-        return reboot;
-    }
-
-    public void setReboot(String reboot) {
-        this.reboot = reboot;
     }
 
     public String getMsg() {

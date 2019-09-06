@@ -310,6 +310,43 @@ public class Xml2Object {
     }
 
     /**
+     * 解析获得集中管理配置
+     * @param xml
+     * @return
+     */
+    public static GetMiddleware_FTPXml getMiddleware_FTPXml( String xml) {
+        try {
+
+            GetMiddleware_FTPXml obj=new GetMiddleware_FTPXml();
+            obj=(GetMiddleware_FTPXml)setJavaBeanParam(obj,xml);
+
+            return obj;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 解析设置集中管理配置（ftp）
+     * @param xml
+     * @return
+     */
+    public static SetMiddleware_FTPXml setMiddleware_FTPXml( String xml) {
+        try {
+
+            SetMiddleware_FTPXml obj=new SetMiddleware_FTPXml();
+            obj=(SetMiddleware_FTPXml)setJavaBeanParam(obj,xml);
+
+            return obj;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
      * 解析获取光盘序列号
      * @param xml
      * @return

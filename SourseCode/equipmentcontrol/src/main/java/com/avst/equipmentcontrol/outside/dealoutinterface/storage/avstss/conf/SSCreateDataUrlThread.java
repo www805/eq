@@ -99,6 +99,7 @@ public class SSCreateDataUrlThread extends  Thread{
                     String specialchars=PropertiesListenerConfig.getProperty("specialchars");
                     String newsavename=OpenUtil.delSpecialBeforeChar(savename,specialchars);
                     savepath= OpenUtil.FileRenameTo(savepath,newsavename);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -112,6 +113,7 @@ public class SSCreateDataUrlThread extends  Thread{
                 Gson gson=new Gson();
                 Ss_database ss_database=(Ss_database)gson.fromJson(gson.toJson(ss_dataMessageParam),Ss_database.class);
                 ss_database.setHttpurl(uploadparh);
+                ss_database.setDatasavepath(savepath);
                 ss_database.setDefaulturl("http");//暂时只提供http请求的网络地址
                 ss_database.setState(2);//文件网络请求路径完成
                 int ss_databaseupdateById=ss_databaseMapper.updateById(ss_database);

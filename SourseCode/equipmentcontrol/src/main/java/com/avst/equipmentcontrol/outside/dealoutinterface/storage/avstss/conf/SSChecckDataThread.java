@@ -5,8 +5,12 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.pa
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
 import com.avst.equipmentcontrol.common.util.FileUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
+import com.avst.equipmentcontrol.common.util.baseaction.Code;
+import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.ff.VideoChangeThread;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.UploadFileByPathParam;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.vo.UploadFileByPathVO;
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.cache.SSThreadCache;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
@@ -33,6 +37,9 @@ public class SSChecckDataThread extends  Thread{
     }
 
     public boolean bool=true;
+
+    int notchangenum=0;//上传的文件已经多少次没有增长了，当10次的时候就重新上传
+    long videosize=0;//当前检测到的上传文件的大小
 
     @Override
     public void run() {
@@ -97,6 +104,26 @@ public class SSChecckDataThread extends  Thread{
                                 int ss_databaseupdateById=ss_databaseMapper.updateById(ss_database);
                                 LogUtil.intoLog(this.getClass(),ss_databaseupdateById+":ss_databaseupdateById----SSChecckDataThread ss_dataMessageParam.getId()："+ss_dataMessageParam.getId());
                                 bool=false;//判断完了就出去了
+
+
+                            }else{
+
+                                if(notchangenum>=10&&filerealsize==videosize){//如果上传10次没有动的话就重新上传
+                                    //需要重新上传这个文件
+                                    LogUtil.intoLog(4,this.getClass(),path+"：path---文件需要重新上传----SSChecckDataThread ss_dataMessageParam.getId()："+ss_dataMessageParam.getId());
+                                    LogUtil.intoLog(4,this.getClass(),path+"：path,有问题，需要重新处理，这里没有重新上传的接口");
+
+                                }else{
+                                    //计算上传文件的大小和变动次数
+                                    if(filerealsize==videosize){
+                                        notchangenum++;
+
+                                    }else{
+                                        //还在上传中
+                                        LogUtil.intoLog(1,this.getClass(),path+"：path---文件还在上传中，请等待----SSChecckDataThread ss_dataMessageParam.getId()："+ss_dataMessageParam.getId());
+                                    }
+                                }
+                                videosize=filerealsize;
                             }
                             break;//找到了文件就不需要再找了
                         }

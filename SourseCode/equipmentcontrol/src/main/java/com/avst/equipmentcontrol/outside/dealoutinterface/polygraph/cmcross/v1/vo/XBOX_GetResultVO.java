@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.vo;
 
 import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.vo.param.Face_rectParam;
+import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.vo.param.Head_pose;
 
 public class XBOX_GetResultVO {
 
@@ -20,6 +21,8 @@ public class XBOX_GetResultVO {
 
     private boolean have_face;
 
+    private Head_pose head_pose;
+
     private float hr;
 
     private float hr_snr;
@@ -35,6 +38,14 @@ public class XBOX_GetResultVO {
     private float stress;
 
     private float stress_snr;
+
+    public Head_pose getHead_pose() {
+        return head_pose;
+    }
+
+    public void setHead_pose(Head_pose head_pose) {
+        this.head_pose = head_pose;
+    }
 
     public Face_rectParam getFace_rect() {
         return face_rect;

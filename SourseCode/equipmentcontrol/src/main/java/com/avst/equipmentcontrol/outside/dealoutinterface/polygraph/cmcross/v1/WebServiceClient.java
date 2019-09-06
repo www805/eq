@@ -3,7 +3,10 @@ package com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1;
 import com.avst.equipmentcontrol.common.util.Base64ToPhotoUtil;
 import com.avst.equipmentcontrol.common.util.JacksonUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
+import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.vo.XBOX_CheckStatusVO;
 import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.vo.XBOX_GetImageVO;
+import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.vo.XBOX_GetResultVO;
+import com.google.gson.Gson;
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import javax.xml.namespace.QName;
@@ -52,10 +55,10 @@ public class WebServiceClient {
         try {
             call = (Call)service.createCall();
             //endpoint 值为上面提到的调用地址
-            String endpoint = "http://192.168.17.155:10000/cmcross/api";
+            String endpoint = "http://192.168.1.115:10000/cmcross/api";
             call.setTargetEndpointAddress(endpoint);
             //设置命名空间和需要调用的方法名;第一个参数为命名空间,第二个参数为方法名,调用时候只需要根据需求修改方法名
-            QName opAddEntry = new QName("http://api.cmcross.com/","XBOX_GetImage");
+            QName opAddEntry = new QName("http://api.cmcross.com/","XBOX_CheckStatus");
             call.setOperationName(opAddEntry);
             //设置返回类型
             call.setReturnType(org.apache.axis.encoding.XMLType.XSD_STRING);
@@ -69,10 +72,9 @@ public class WebServiceClient {
         LogUtil.intoLog(WebServiceClient.class,new Date().getTime()-starttime+":not do");
         LogUtil.intoLog(WebServiceClient.class,new Date().getTime()+"------"+starttime);
         LogUtil.intoLog(WebServiceClient.class,result);
-        XBOX_GetImageVO vo=(XBOX_GetImageVO)JacksonUtil.stringToObjebt_1(result,XBOX_GetImageVO.class);
-        String imgpath = "E:\\I盘拓展盘\\身心监护\\img.png";
-        Base64ToPhotoUtil.generateImage(vo.getImage(),imgpath);
-        LogUtil.intoLog(WebServiceClient.class,new Date().getTime()-starttime+": do over");
+        Gson gson=new Gson();
+        XBOX_CheckStatusVO vo=gson.fromJson(result,XBOX_CheckStatusVO.class);
+        System.out.println(vo.getStatus());
 
     }
 }

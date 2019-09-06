@@ -40,7 +40,7 @@ public class DealAvstAsrImpl {
             String regparam=       "method=reg&audiourl="+ Base64.encodeBase64String(audiourl.getBytes("utf8")) +
                     "&txtcallbackurl="+Base64.encodeBase64String(txtcallbackurl.getBytes("utf8"));
             String rr= HttpRequest.readContentFromGet_noencode(url,regparam);
-
+            LogUtil.intoLog(1,DealAvstAsrImpl.class,url+":url----regparam:"+regparam);
             AvstSDKInterfaceBackParam_Dealreg avstRegSDKInterfaceBackParam=new AvstSDKInterfaceBackParam_Dealreg();
             avstRegSDKInterfaceBackParam=(AvstSDKInterfaceBackParam_Dealreg) XMLUtil.xmlToStr(avstRegSDKInterfaceBackParam,rr);
 

@@ -2,29 +2,29 @@ package com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.de
 
 public class SetMiddleware_FTPParam extends BaseParam{
 
-    private String enable;
+    private String enable="1";//0|1,1允许使用
 
-    private String limit_speed;//限制速度 单位 KB
+    private String limit_speed="4096";//限制速度 单位 KB
 
     private String search_filter;//过滤该日期之前的文件不上传，日期格式，2014-01-01
 
-    private String filter_enable;//是否启用过滤日期 0|1
+    private String filter_enable="0";//是否启用过滤日期 0|1,1是过滤
 
     private String serverip ;//服务器 ip
 
-    private String serverport;//服务器端口
+    private String serverport="21";//服务器端口
 
     private String hreadbeatip;//心跳服务器 ip
 
     private String servicename;//中间件服务名称
 
-    private String deviceid;//设备 id 标识
+    private String deviceid="sb3";//设备id 标识
 
-    private String svrusr ;//服务器用户名
+    private String svrusr="admin" ;//服务器用户名
 
-    private String svrpwd ;//服务器密码
+    private String svrpwd="admin123" ;//服务器密码
 
-    private String pasvmode ;//是否为被动模式 0|1
+    private String pasvmode="0" ;//是否为被动模式 0|1,1设置被动模式
 
     private String restart ;//是否自动重启该服务 0|1
 

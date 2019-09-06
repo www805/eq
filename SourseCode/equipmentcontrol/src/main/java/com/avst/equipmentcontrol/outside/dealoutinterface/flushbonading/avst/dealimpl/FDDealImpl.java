@@ -4,6 +4,7 @@ import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.XMLUtil;
+import com.avst.equipmentcontrol.common.util.baseaction.Code;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.*;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.vo.*;
@@ -14,6 +15,7 @@ import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dea
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.param.Get_rec_files;
 import com.avst.requestUtil.HttpRequest;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -206,6 +208,44 @@ public class FDDealImpl implements FDInterface{
     }
 
     @Override
+    public RResult<GetMiddleware_FTPVO> getMiddleware_FTP(GetMiddleware_FTPParam param, RResult<GetMiddleware_FTPVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------getMiddleware_FTP");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=get&type=middleware"+
+                "&authvusr="+user+"&authpwd="+passwd+"&usr="+user+"&pwd="+passwd;
+        LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
+        LogUtil.intoLog(this.getClass(),url+":url  rr:"+rr);
+        GetMiddleware_FTPXml xml=Xml2Object.getMiddleware_FTPXml(rr);
+
+        if(null!=xml){
+            try {
+                Gson gson=new Gson();
+                GetMiddleware_FTPVO getMiddleware_ftpvo=gson.fromJson(gson.toJson(xml),GetMiddleware_FTPVO.class);
+                result.changeToTrue(getMiddleware_ftpvo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }else{
+            result.setMessage("请求集中管理ftp配置失败 --");
+        }
+
+        return null;
+    }
+
+    @Override
     public RResult<SetMiddleware_FTPVO> setMiddleware_FTP(SetMiddleware_FTPParam param,RResult<SetMiddleware_FTPVO> result) {
 
         String ip=param.getIp();
@@ -225,19 +265,25 @@ public class FDDealImpl implements FDInterface{
                 "&serverip="+param.getServerip()+"&hreadbeatip="+param.getHreadbeatip()+"&servicename="+param.getServicename()+"&deviceid="+param.getDeviceid()+
                 "&svrusr="+param.getSvrusr()+"&svrpwd="+param.getSvrpwd()+
                 "&restart="+param.getRestart()+"&serverport="+param.getServerport()+"&pasvmode="+param.getPasvmode()+
-                "&authvusr="+user+"&authpwd="+passwd;
+                "&authvusr="+user+"&authpwd="+passwd+"&usr="+user+"&pwd="+passwd;
         LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
+        LogUtil.intoLog(this.getClass(),url+":url  rr:"+rr);
+        SetMiddleware_FTPXml xml=Xml2Object.setMiddleware_FTPXml(rr);
 
-        SetMiddleware_FTPXml xml=new SetMiddleware_FTPXml();
-        xml=(SetMiddleware_FTPXml)XMLUtil.xmlToStr(xml,rr);
+        if(null!=xml){
+            try {
 
-        if(null!=xml&&null!=xml.getMsg()&&xml.getMsg().equals("200")){
-            //设置ftp成功
-            result.changeToTrue();
+                if(xml.getMsg().equals("200")){//判断msg==200就说明设置成功
+                    result.changeToTrue();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }else{
-            result.setMessage("设置ftp失败 --");
+            result.setMessage("请求集中管理ftp配置失败 --");
         }
 
         return result;
@@ -336,7 +382,8 @@ public class FDDealImpl implements FDInterface{
         LogUtil.intoLog(this.getClass(),rr+"--uploadFileByPath");
         UploadFileByPathXml xml=Xml2Object.uploadFileByPathXml(rr);
 
-        if(null!=xml&&null!=xml.getFtp_pasv_upload_file()&&xml.getFtp_pasv_upload_file().getRs().trim().equals("1")){
+        //到底是rs=0还是rs=1
+        if(null!=xml&&null!=xml.getFtp_pasv_upload_file()&&(xml.getFtp_pasv_upload_file().getRs().trim().equals("1")||xml.getFtp_pasv_upload_file().getRs().trim().equals("0"))){
 
             try {
                 UploadFileByPathVO uploadFileByPathVO=new UploadFileByPathVO();
@@ -446,7 +493,6 @@ public class FDDealImpl implements FDInterface{
             LogUtil.intoLog(this.getClass(),param.toString()+"----------startRec_Rom");
             return result;
         }
-
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=do&type=rom&cmd=startrec"+
                 "&dx="+dx+"&aldisk="+aldisk+"&bmode="+bmode+"&btime="+btime+"&disconly="+disconly+"&iid="+iid+

@@ -333,7 +333,7 @@ public class SSAddDataThread extends  Thread{
                             LogUtil.intoLog(this.getClass(),iid+":iid  数据库新增成功，可以跳出循环");
                             break;
                         }else{
-                            LogUtil.intoLog(4,this.getClass(),iid+":iid  新增数据库的数量好像跟实际文件数不对，boolinsert："+boolinsert+"----fileList.size():"+fileList.size());
+                            LogUtil.intoLog(4,this.getClass(),iid+":iid  新增数据库的长度好像跟实际文件数不对，boolinsert："+boolinsert+"----fileList.size():"+fileList.size());
                         }
                     }else{
                         LogUtil.intoLog(this.getClass(),iid+":iid  ss_datasaveMapper.insert is error datasaveinsert:"+datasaveinsert);

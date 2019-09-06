@@ -74,6 +74,13 @@ public interface FDInterface {
     public RResult<SetMiddleware_FTPVO> setMiddleware_FTP(SetMiddleware_FTPParam param,RResult<SetMiddleware_FTPVO> result);
 
     /**
+     * 获取集中存储配置,ftp的上传服务器配置
+     * @param param
+     * @return
+     */
+    public RResult<GetMiddleware_FTPVO> getMiddleware_FTP(GetMiddleware_FTPParam param,RResult<GetMiddleware_FTPVO> result);
+
+    /**
      * 获取设备录像文件地址，通过该录像关联的唯一码来获取
      * @param param
      * @return

@@ -12,7 +12,6 @@ import org.apache.commons.jexl3.JexlBuilder;
 import org.apache.commons.jexl3.JexlEngine;
 import org.apache.commons.jexl3.JexlExpression;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ftpserver.FtpServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -147,7 +146,6 @@ public class SysStartTimer implements ApplicationRunner {
 
         //ts
         try {
-            String ftpbasepath=PropertiesListenerConfig.getProperty("ttsbasepath");//wav文件生成的地方
             EntityWrapper entityWrapper=new EntityWrapper();
             List<Ss_saveinfo> sslist=ss_saveinfoMapper.selectList(entityWrapper);
 
@@ -188,5 +186,8 @@ public class SysStartTimer implements ApplicationRunner {
         }
 
     }
+
+
+
 
 }

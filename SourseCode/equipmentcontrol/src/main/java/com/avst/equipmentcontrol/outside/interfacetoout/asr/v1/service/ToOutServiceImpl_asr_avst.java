@@ -1,10 +1,12 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service;
 
+import com.avst.equipmentcontrol.common.conf.NetTool;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_et_ettype;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper.Asr_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_ettdMapper;
 import com.avst.equipmentcontrol.common.util.LogUtil;
+import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RRParam;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.v1.action.AvstAsrImpl;
@@ -73,7 +75,11 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
 
         AVSTAsrParam_reg reg=new AVSTAsrParam_reg(asr_et_ettype.getEtip(),asr_et_ettype.getPort()+"",audiourl,asrserverssid);
         //参数txtcallbackurl如果接口不传就去缓存中拿
-        reg.setTxtcallbackurl(AsrCache_toout.avstbacktxtinterface);
+        String avstbacktxtinterface=AsrCache_toout.avstbacktxtinterface;
+        if(avstbacktxtinterface.indexOf("localhost") > -1){
+            avstbacktxtinterface=avstbacktxtinterface.replace("localhost", OpenUtil.getMyIP());
+        }
+        reg.setTxtcallbackurl(avstbacktxtinterface);
         RRParam<String> rrParam= AvstAsrImpl.reg(reg);
         String reqendtime= new Date().getTime()+"";//当前时间long ms值，作为asr识别开始时间
         //2给一个线程用于定时刷新心跳
