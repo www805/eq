@@ -83,7 +83,7 @@
             <td>{{value.etip==null?"":value.etip}}</td>
             <td><input type="checkbox" {{value.diskrecbool==1?"checked":""}} name="diskrecbool" id="diskrecbool" lay-skin="switch" lay-filter="diskrecbool" lay-text="需要|不需要" value="{{value.ssid}}"></td>
             <td><input type="checkbox" {{value.burnbool==1?"checked":""}} name="burnbool" id="burnbool" lay-skin="switch" lay-filter="burnbool" lay-text="需要|不需要" value="{{value.ssid}}"></td>
-            <td>
+            <td style="white-space:nowrap;">
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/FlushbonadingEttd/getFlushbonadingEttdIndex?ssid={{value.ssid}}&etypessid='+etypessid;">设备通道</a>
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/Flushbonading/addOrUpdateFlushbonading?ssid={{value.ssid}}&etypessid='+etypessid;">修改</a>
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="delFlushbonading('{{value.ssid}}');">删除</a>

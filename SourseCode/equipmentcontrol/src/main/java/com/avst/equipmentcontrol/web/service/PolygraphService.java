@@ -143,6 +143,11 @@ public class PolygraphService extends BaseService {
             return;
         }
 
+        if (!StringUtils.isNumeric(paramParam.getPort() + "")) {
+            result.setMessage("端口号只能由数字组成");
+            return;
+        }
+
         EntityWrapper<Polygraph_etinfo> wrapper = new EntityWrapper<>();
         wrapper.eq("p.polygraphtype", paramParam.getPolygraphtype());
         wrapper.eq("p.polygraphkey", paramParam.getPolygraphkey());
@@ -226,6 +231,11 @@ public class PolygraphService extends BaseService {
         boolean isip = OpenUtil.isIp(paramParam.getEtip());
         if(isip == false){
             result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+        if (!StringUtils.isNumeric(paramParam.getPort() + "")) {
+            result.setMessage("端口号只能由数字组成");
             return;
         }
 

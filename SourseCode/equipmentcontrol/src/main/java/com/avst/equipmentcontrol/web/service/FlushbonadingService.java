@@ -170,6 +170,11 @@ public class FlushbonadingService extends BaseService {
             return;
         }
 
+        if (!StringUtils.isNumeric(paramParam.getPort() + "")) {
+            result.setMessage("端口号只能由数字组成");
+            return;
+        }
+
         EntityWrapper<Flushbonading_etinfo> wrapper = new EntityWrapper<>();
         wrapper.eq("f.port", paramParam.getPort());
         wrapper.eq("f.user", paramParam.getUser());
@@ -303,6 +308,11 @@ public class FlushbonadingService extends BaseService {
         boolean isip = OpenUtil.isIp(paramParam.getEtip());
         if(isip == false){
             result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+        if (!StringUtils.isNumeric(paramParam.getPort() + "")) {
+            result.setMessage("端口号只能由数字组成");
             return;
         }
 

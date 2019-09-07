@@ -84,7 +84,7 @@
             <td>{{value.etnum==null?"":value.etnum}}</td>
             <td>{{value.etip==null?"":value.etip}}</td>
             <td>{{value.explain==null?"":value.explain}}</td>
-            <td>
+            <td style="white-space:nowrap;">
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/Asr/addOrUpdateAsr/?ssid={{value.ssid}}&etypessid='+etypessid;">修改</a>
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="delAsr('{{value.ssid}}');">删除</a>
             </td>

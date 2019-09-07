@@ -143,6 +143,11 @@ function AddOrUpdateFlushbonading(version) {
         url=getUrl_manageZk().addFlushbonading;
     }
 
+    if (!isNumber(port)) {
+        layer.msg("端口号必须由数字组成",{icon: 2});
+        return;
+    }
+
     var data = {
         token: INIT_CLIENTKEY,
         param: {

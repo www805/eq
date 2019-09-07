@@ -57,9 +57,11 @@ function callgetNavList(data) {
                 $("#bottom_mian").html(bottom_html);
             }
         }
-        layui.use('element', function(){
+        layui.use(['element','form'], function(){
             var element =  layui.element;
+            var form =  layui.form;
             element.render();
+            form.render();
         });
     }else{
         layer.msg(data.message);

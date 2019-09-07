@@ -157,6 +157,10 @@ public class TtsEtinfoService extends BaseService {
             return;
         }
 
+        if (!StringUtils.isNumeric(paramParam.getPort() + "")) {
+            result.setMessage("端口号只能由数字组成");
+            return;
+        }
 
         EntityWrapper<Polygraph_etinfo> wrapper = new EntityWrapper<>();
         wrapper.eq("t.language", paramParam.getLanguage());
@@ -251,6 +255,11 @@ public class TtsEtinfoService extends BaseService {
         boolean isip = OpenUtil.isIp(paramParam.getEtip());
         if(isip == false){
             result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+        if (!StringUtils.isNumeric(paramParam.getPort() + "")) {
+            result.setMessage("端口号只能由数字组成");
             return;
         }
 

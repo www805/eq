@@ -97,6 +97,15 @@ function AddOrUpdateAsr(version) {
         url=getUrl_manageZk().addAsr;
     }
 
+    if (!isNumber(port)) {
+        layer.msg("端口号必须由数字组成",{icon: 2});
+        return;
+    }
+    if (!isNumber(maxnum)) {
+        layer.msg("并发数必须由数字组成",{icon: 2});
+        return;
+    }
+
     var data = {
         token: INIT_CLIENTKEY,
         param: {

@@ -153,6 +153,11 @@ public class AsrService extends BaseService {
             return;
         }
 
+        if (!StringUtils.isNumeric(paramParam.getPort() + "")) {
+            result.setMessage("端口号只能由数字组成");
+            return;
+        }
+
         EntityWrapper<Asr_et_ettype> wrapper = new EntityWrapper<>();
         wrapper.eq("a.language", paramParam.getLanguage());
         wrapper.eq("a.maxnum", paramParam.getMaxnum());
@@ -247,6 +252,11 @@ public class AsrService extends BaseService {
         boolean isip = OpenUtil.isIp(paramParam.getEtip());
         if(isip == false){
             result.setMessage("设备IP不是一个正确的IP");
+            return;
+        }
+
+        if (!StringUtils.isNumeric(paramParam.getPort() + "")) {
+            result.setMessage("端口号只能由数字组成");
             return;
         }
 
