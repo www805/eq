@@ -24,7 +24,7 @@
     <div class="layui-elem-quote">
         <h3 th:text="${addOrUpdateTtsetinfoModel.title}"></h3>
     </div>
-    <form class="layui-form  layui-main site-inline" action="" style="margin-top: 30px;">
+    <form class="layui-form  layui-main site-inline" style="margin-top: 30px;">
         <input type="hidden" name="ssid" id="ssid" value=""/>
 
         <div class="layui-form-item">
@@ -58,21 +58,21 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>TTS密匙集</label>
             <div class="layui-input-block">
-                <input type="text" name="ttskeys" id="ttskeys" required  placeholder="请输入TTS密匙集" autocomplete="off" class="layui-input">
+                <input type="text" name="ttskeys" id="ttskeys" required lay-verify="required" placeholder="请输入TTS密匙集" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>设备编号</label>
             <div class="layui-input-block">
-                <input type="text" name="etnum" id="etnum" required  placeholder="请输入设备编号" autocomplete="off" class="layui-input">
+                <input type="text" name="etnum" id="etnum" required lay-verify="required" placeholder="请输入设备编号" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>设备IP</label>
             <div class="layui-input-block">
-                <input type="text" name="etip" id="etip" required  placeholder="请输入设备IP" autocomplete="off" class="layui-input">
+                <input type="text" name="etip" id="etip" required lay-verify="setip" placeholder="请输入设备IP" autocomplete="off" class="layui-input">
             </div>
         </div>
 
@@ -85,7 +85,7 @@
 
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <input type="button"  class="layui-btn layui-btn-normal" onclick="AddOrUpdateTtsetinfo();" value="保存" />
+                <input type="button" id="savebtn" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="addOrUpdateTtsetinfo_btn" value="保存" />
                 <button class="layui-btn layui-btn-normal" onclick="javascript:window.history.go(-1);return false;">返回</button>
             </div>
         </div>
@@ -119,7 +119,9 @@
         document.onkeydown = function (event) {
             var e = event || window.event;
             if (e && e.keyCode == 13) { //回车键的键值为13
-                AddOrUpdateTtsetinfo();
+                console.log(131313131313);
+                $("#savebtn").click();
+                return false;
             }
         };
     });

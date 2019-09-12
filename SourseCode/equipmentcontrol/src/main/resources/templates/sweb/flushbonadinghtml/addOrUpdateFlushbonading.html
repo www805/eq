@@ -29,20 +29,20 @@
         <div class="layui-form-item" id="livingurlItem">
             <label class="layui-form-label"><span style="color: red;">*</span>直播地址</label>
             <div class="layui-input-block">
-                <input type="text" disabled name="livingurl" id="livingurl" required lay-verify="required" placeholder="直播地址（只读不能手动修改）" autocomplete="off" class="layui-input">
+                <input type="text" disabled name="livingurl" id="livingurl" required placeholder="直播地址（只读不能手动修改）" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item" id="previewurlItem">
             <label class="layui-form-label"><span style="color: red;">*</span>直播预览地址</label>
             <div class="layui-input-block">
-                <input type="text" disabled name="previewurl" id="previewurl" required lay-verify="required" placeholder="直播预览地址（只读不能手动修改）" autocomplete="off" class="layui-input">
+                <input type="text" disabled name="previewurl" id="previewurl" required placeholder="直播预览地址（只读不能手动修改）" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>开放接口的端口</label>
             <div class="layui-input-block">
-                <input type="number" name="port" id="port" required  lay-verify="required" placeholder="请输入开放接口的端口" autocomplete="off" class="layui-input">
+                <input type="number" name="port" id="port" required  lay-verify="required|number" placeholder="请输入开放接口的端口" autocomplete="off" class="layui-input">
             </div>
         </div>
 
@@ -56,28 +56,28 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>登录密码</label>
             <div class="layui-input-block">
-                <input type="text" name="passwd" id="passwd" required  placeholder="请输入登录密码" autocomplete="off" class="layui-input">
+                <input type="text" name="passwd" id="passwd" required  lay-verify="password" placeholder="请输入登录密码" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>ftp上传存储路径</label>
             <div class="layui-input-block">
-                <input type="text" name="uploadbasepath" id="uploadbasepath" required  placeholder="请输入ftp上传存储路径" autocomplete="off" class="layui-input">
+                <input type="text" name="uploadbasepath" id="uploadbasepath" required lay-verify="required" placeholder="请输入ftp上传存储路径" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>设备编号</label>
             <div class="layui-input-block">
-                <input type="text" name="etnum" id="etnum" required  placeholder="请输入设备编号" autocomplete="off" class="layui-input">
+                <input type="text" name="etnum" id="etnum" required lay-verify="required" placeholder="请输入设备编号" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>设备IP</label>
             <div class="layui-input-block">
-                <input type="text" name="etip" id="etip" required  lay-verify="required" placeholder="请输入设备IP" autocomplete="off" class="layui-input">
+                <input type="text" name="etip" id="etip" required  lay-verify="setip" placeholder="请输入设备IP" autocomplete="off" class="layui-input">
             </div>
         </div>
 
@@ -144,7 +144,7 @@
 
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <input type="button"  class="layui-btn layui-btn-normal" onclick="AddOrUpdateFlushbonading();" value="保存" />
+                <input type="button" id="savebtn" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="addOrUpdateFlushbonading_btn" value="保存" />
                 <button class="layui-btn layui-btn-normal" onclick="javascript:window.history.go(-1);return false;">返回</button>
             </div>
         </div>
@@ -187,6 +187,14 @@
         $('#ptjson').bind('input propertychange',function(){
             ptft();
         });
+
+        document.onkeydown = function (event) {
+            var e = event || window.event;
+            if (e && e.keyCode == 13) { //回车键的键值为13
+                event.preventDefault();
+                $("#savebtn").click();
+            }
+        }
 
     });
 

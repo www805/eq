@@ -92,41 +92,5 @@ public class ToOutFlushbonadingAction extends BaseAction {
         return result;
     }
 
-    /**
-     * 获取刻录选时
-     * @param param
-     * @return
-     */
-    @RequestMapping("/getBurnTime")
-    @ResponseBody
-    public RResult getBurnTime(@RequestBody ReqParam<GetBurnTimeParam> param){
-        RResult result=this.createNewResultOfFail();
-        if(null!=param.getParam()){
-            GetBurnTimeParam pParam=param.getParam();
-            if(null != pParam.getFdType()){
-                result=getToOutService(pParam.getFdType()).getBurnTime(pParam,result);
-            }
-        }
-        result.setEndtime(DateUtil.getDateAndMinute());
-        return result;
-    }
 
-    /**
-     * 修改刻录选时
-     * @param param
-     * @return
-     */
-    @RequestMapping("/updateBurnTime")
-    @ResponseBody
-    public RResult updateBurnTime(@RequestBody ReqParam<GetBurnTimeParam> param){
-        RResult result=this.createNewResultOfFail();
-        if(null!=param.getParam()){
-            GetBurnTimeParam pParam=param.getParam();
-            if(null != pParam.getFdType()){
-                result=getToOutService(pParam.getFdType()).updateBurnTime(pParam,result);
-            }
-        }
-        result.setEndtime(DateUtil.getDateAndMinute());
-        return result;
-    }
 }

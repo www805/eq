@@ -44,14 +44,14 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>通道类型</label>
             <div class="layui-input-block">
-                <input type="number" name="tdtype" id="tdtype" required  placeholder="请输入通道类型" autocomplete="off" class="layui-input">
+                <input type="number" name="tdtype" id="tdtype" required  lay-verify="required" placeholder="请输入通道类型" autocomplete="off" class="layui-input">
             </div>
         </div>
 
 
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <input type="button"  class="layui-btn layui-btn-normal" onclick="AddOrUpdateFlushbonadingEttd();" value="保存" />
+                <input type="button" id="savebtn" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="addOrUpdateFlushbonadingEttd_btn" value="保存" />
                 <button class="layui-btn layui-btn-normal" onclick="javascript:window.history.go(-1);return false;">返回</button>
             </div>
         </div>
@@ -81,6 +81,13 @@
         console.log(MasterSsid);
         if(ssid){
             getFlushbonadingEttdById(ssid);
+        }
+        document.onkeydown = function (event) {
+            var e = event || window.event;
+            if (e && e.keyCode == 13) { //回车键的键值为13
+                event.preventDefault();
+                $("#savebtn").click();
+            }
         }
     });
 

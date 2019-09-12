@@ -25,6 +25,7 @@ import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.WorkSta
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.SaveFileParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutServiceImpl_ss_avst;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutService_ss;
+import com.avst.equipmentcontrol.web.service.FlushbonadingService;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -47,6 +48,9 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
 
     @Autowired
     private Flushbonading_etinfoMapper flushbonading_etinfoMapper;
+
+    @Autowired
+    private FlushbonadingService flushbonadingService;
 
     @Autowired
     private ToOutServiceImpl_ss_avst toOutServiceImpl_ss_avst;
@@ -993,5 +997,30 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         }
         return result;
 
+    }
+
+    @Override
+    public RResult getBurnTime(GetBurnTimeParam pParam, RResult result) {
+
+        Flushbonadinginfo flushbonadinginfo = new Flushbonadinginfo();
+        flushbonadinginfo.setSsid(pParam.getFlushbonadingetinfossid());
+
+        /**查询选时**/
+        flushbonadingService.getBurnTime(flushbonadinginfo,result);
+
+        return result;
+    }
+
+    @Override
+    public RResult updateBurnTime(GetBurnTimeParam pParam, RResult result) {
+
+        Flushbonadinginfo flushbonadinginfo = new Flushbonadinginfo();
+        flushbonadinginfo.setSsid(pParam.getFlushbonadingetinfossid());
+        flushbonadinginfo.setBurntime(pParam.getBurntime());
+
+        /**修改刻录选时**/
+        flushbonadingService.updateBurnTime(flushbonadinginfo, result);
+
+        return result;
     }
 }

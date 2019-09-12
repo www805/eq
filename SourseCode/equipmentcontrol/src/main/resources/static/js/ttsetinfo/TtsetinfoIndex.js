@@ -240,6 +240,23 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
     var table = layui.table;
 
     form.render();
+
+    form.verify({
+        setip: function(value, item){ //value：表单的值、item：表单的DOM对象
+            if(''==value){
+                return "设备IP不能为空";
+            }
+            if(!(/([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}/.test(value))){
+                return '请输入一个正确的IP地址';
+            }
+        }
+    });
+
+    form.on('submit(addOrUpdateTtsetinfo_btn)', function (data) {
+        AddOrUpdateTtsetinfo();
+        return false;
+    });
+
 });
 
 function getQueryString(name) {

@@ -136,5 +136,19 @@ public interface ToOutService_qrs {
      */
     public RResult getCDNumber(GetCDNumberParam_out param,RResult result);
 
+    /**
+     * 获取刻录选时
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult getBurnTime(GetBurnTimeParam pParam, RResult result);
 
+    /**
+     * 修改刻录选时
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult updateBurnTime(GetBurnTimeParam pParam, RResult result);
 }

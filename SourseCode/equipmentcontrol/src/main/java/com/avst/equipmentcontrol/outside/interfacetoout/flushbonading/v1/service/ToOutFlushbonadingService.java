@@ -20,9 +20,5 @@ public interface ToOutFlushbonadingService {
     //修改
     public RResult updateToOutFlushbonading(AddOrUpdateToOutFlushbonadingParam param, RResult result);
 
-    //获取刻录选时
-    RResult getBurnTime(GetBurnTimeParam pParam, RResult result);
 
-    //修改刻录选时
-    RResult updateBurnTime(GetBurnTimeParam pParam, RResult result);
 }

@@ -98,11 +98,11 @@ function AddOrUpdateAsr(version) {
     }
 
     if (!isNumber(port)) {
-        layer.msg("端口号必须由数字组成",{icon: 2});
+        layer.msg("端口号必须由数字组成",{icon: 5});
         return;
     }
     if (!isNumber(maxnum)) {
-        layer.msg("并发数必须由数字组成",{icon: 2});
+        layer.msg("并发数必须由数字组成",{icon: 5});
         return;
     }
 
@@ -129,14 +129,14 @@ function callAddOrUpdate(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
             if (data.data != 0) {
-                layer.msg("操作成功",{icon: 1});
+                layer.msg("操作成功",{icon: 6});
             }else{
-                layer.msg("操作失败",{icon: 2});
+                layer.msg("操作失败",{icon: 5});
             }
             setTimeout("window.location.href = \"/Asr/getAsrIndex?etypessid=\"+etypessid;",1500);
         }
     }else{
-        layer.msg(data.message,{icon: 2});
+        layer.msg(data.message,{icon: 5});
     }
 }
 
@@ -154,7 +154,7 @@ function callAsrList(data){
             }
         }
     }else{
-        layer.msg(data.message,{icon: 2});
+        layer.msg(data.message,{icon: 5});
     }
 }
 
@@ -174,7 +174,7 @@ function callAsrById(data){
 
         }
     }else{
-        layer.msg(data.message,{icon: 2});
+        layer.msg(data.message,{icon: 5});
     }
 }
 
@@ -182,14 +182,14 @@ function calldelAsr(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
             if (data.data != 0) {
-                layer.msg("删除成功",{icon: 1});
+                layer.msg("删除成功",{icon: 6});
             }else{
-                layer.msg("删除失败",{icon: 2});
+                layer.msg("删除失败",{icon: 5});
             }
             setTimeout("window.location.reload()",1500);
         }
     }else{
-        layer.msg(data.message,{icon: 2});
+        layer.msg(data.message,{icon: 5});
     }
 }
 
@@ -241,6 +241,24 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
     var table = layui.table;
 
     form.render();
+
+    form.verify({
+        setip: function(value, item){ //value：表单的值、item：表单的DOM对象
+            if(''==value){
+                return "设备IP不能为空";
+            }
+            if(!(/([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}/.test(value))){
+                return '请输入一个正确的IP地址';
+            }
+        }
+    });
+
+    form.on('submit(addOrUpdateAsr_btn)', function (data) {
+        AddOrUpdateAsr();
+        return false;
+    });
+
+
 });
 
 function getQueryString(name) {

@@ -93,14 +93,14 @@ function callAddOrUpdate(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
             if (data.data != 0) {
-                layer.msg("操作成功",{icon: 1});
+                layer.msg("操作成功",{icon: 6});
             }else{
-                layer.msg("操作失败",{icon: 2});
+                layer.msg("操作失败",{icon: 5});
             }
-            setTimeout("window.location.reload()",1500);
+            // setTimeout("window.location.reload()",1500);
         }
     }else{
-        layer.msg(data.message,{icon: 2});
+        layer.msg(data.message,{icon: 5});
     }
 }
 
@@ -118,7 +118,7 @@ function callBaseEttypeList(data){
             }
         }
     }else{
-        layer.msg(data.message,{icon: 2});
+        layer.msg(data.message,{icon: 5});
     }
 }
 
@@ -128,7 +128,7 @@ function callBaseEttypeById(data){
             opneModal_1(data.data);
         }
     }else{
-        layer.msg(data.message,{icon: 2});
+        layer.msg(data.message,{icon: 5});
     }
 }
 
@@ -174,38 +174,63 @@ function opneModal_1(ettype) {
         explain = ettype.explain==null?"":ettype.explain;
     }
 
-    var html = '  <form class="layui-form site-inline" style="margin-top: 20px">\
+    var html = '  <form class="layui-form site-inline" style="margin-top: 20px;padding:0 20px;">\
                <div class="layui-form-item">\
                    <label class="layui-form-label" style="width: 120px;padding-left:0px;"><span style="color: red;">*</span>设备类型标号</label>\
                     <div class="layui-input-block" style="margin-left: 140px;">\
-                    <input type="text" name="ettypenum" lay-verify="title" autocomplete="off" placeholder="请输入设备类型标号" value="' + ettypenum + '" class="layui-input">\
+                    <input type="text" name="ettypenum" lay-verify="ettypenum" autocomplete="off" placeholder="请输入设备类型标号" value="' + ettypenum + '" class="layui-input">\
                     </div>\
                 </div>\
                 <div class="layui-form-item">\
                     <label class="layui-form-label" style="width: 120px;padding-left:0px;"><span style="color: red;">*</span>设备类型中文解释</label>\
                     <div class="layui-input-block" style="margin-left: 140px;">\
-                    <textarea name="explain" id="explain" placeholder="请输入设备类型中文解释" class="layui-textarea">'+explain+'</textarea>\
+                    <textarea name="explain" id="explain" lay-verify="explain" placeholder="请输入设备类型中文解释" class="layui-textarea">'+explain+'</textarea>\
                     </div>\
                 </div>\
             </form>';
 
-    var index = layer.open({
-        title: '设备类型编辑',
-        content: html,
-        area: ['550px', '320px'],
-        btn: ['确定', '取消'],
-        yes: function (index, layero) {
-            layer.close(index);
+    layui.use('form', function(){
+        var form = layui.form;
+        var index = layer.open({
+            type: 1,
+            title: '设备类型编辑',
+            content: html,
+            area: ['550px', '320px'],
+            btn: ['确定', '取消'],
+            success: function (layero, index) {
+                layero.addClass('layui-form');//添加form标识
+                layero.find('.layui-layer-btn0').attr('lay-filter', 'fromContent').attr('lay-submit', '');//将按钮弄成能提交的
+                form.render();
+            },
+            yes: function (index, layero) {
 
-            if (isNotEmpty(ettype) ) {
-                AddOrUpdateBaseEttype();//修改
-            } else {
-                AddOrUpdateBaseEttype(1);//新增
+                //自定义验证规则
+                form.verify({
+                    ettypenum:[/\S/,'请输入设备类型标号'], explain: [/\S/,'请输入设备类型中文解释']
+                });
+                //监听提交
+                form.on('submit(fromContent)', function(data){
+
+                    console.log(ettype);
+
+
+                    if(isNotEmpty(data.field.ettypenum) && isNotEmpty(data.field.explain)){
+
+
+
+                        if (isNotEmpty(ettype) ) {
+                            AddOrUpdateBaseEttype();//修改
+                        } else {
+                            AddOrUpdateBaseEttype(1);//新增
+                        }
+                    }
+                    return false;
+                });
+
+            },
+            btn2: function (index, layero) {
+                layer.close(index);
             }
-
-        },
-        btn2: function (index, layero) {
-            layer.close(index);
-        }
+        });
     });
 }

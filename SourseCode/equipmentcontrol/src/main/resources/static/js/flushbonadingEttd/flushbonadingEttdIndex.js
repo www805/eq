@@ -100,14 +100,14 @@ function callAddOrUpdate(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
             if (data.data != 0) {
-                layer.msg("操作成功",{icon: 1});
+                layer.msg("操作成功",{icon: 6});
             }else{
-                layer.msg("操作失败",{icon: 2});
+                layer.msg("操作失败",{icon: 5});
             }
             setTimeout("window.location.href = \"/FlushbonadingEttd/getFlushbonadingEttdIndex?ssid=\"+MasterSsid+'&etypessid='+etypessid;",1500);
         }
     }else{
-        layer.msg(data.message,{icon: 2});
+        layer.msg(data.message,{icon: 5});
     }
 }
 
@@ -125,7 +125,7 @@ function callFlushbonadingEttdList(data){
             }
         }
     }else{
-        layer.msg(data.message,{icon: 2});
+        layer.msg(data.message,{icon: 5});
     }
 }
 
@@ -140,7 +140,7 @@ function callFlushbonadingEttdById(data){
 
         }
     }else{
-        layer.msg(data.message,{icon: 2});
+        layer.msg(data.message,{icon: 5});
     }
 }
 
@@ -148,14 +148,14 @@ function calldelFlushbonadingEttd(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
             if (data.data != 0) {
-                layer.msg("删除成功",{icon: 1});
+                layer.msg("删除成功",{icon: 6});
             }else{
-                layer.msg("删除失败",{icon: 2});
+                layer.msg("删除失败",{icon: 5});
             }
             setTimeout("window.location.reload()",1500);
         }
     }else{
-        layer.msg(data.message,{icon: 2});
+        layer.msg(data.message,{icon: 5});
     }
 }
 
@@ -201,6 +201,14 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
     var table = layui.table;
 
     form.render();
+
+    form.on('submit(addOrUpdateFlushbonadingEttd_btn)', function (data) {
+        AddOrUpdateFlushbonadingEttd();
+        return false;
+    });
+
+
+
 });
 
 function getQueryString(name) {

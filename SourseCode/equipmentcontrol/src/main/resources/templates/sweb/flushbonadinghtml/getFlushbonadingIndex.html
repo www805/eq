@@ -30,7 +30,7 @@
                 <input type="text" name="etnum" id="etnum" lay-verify="required" placeholder="请输入设备编号" autocomplete="off" class="layui-input">
             </div>
 
-            <input type="button" class="layui-btn layui-btn-normal" value="查询" onclick="getFlushbonadingList_init(1,10);" >
+            <input type="button" id="search" class="layui-btn layui-btn-normal" value="查询" onclick="getFlushbonadingList_init(1,10);" >
             <input type="button" class="layui-btn layui-btn-normal" value="添加" onclick="window.location.href='addOrUpdateFlushbonading?ssid=&etypessid='+etypessid;" >
         </div>
     </form>
@@ -108,6 +108,16 @@
     etypessid = getQueryString("etypessid");
     $(function(){
         getFlushbonadingListParam();
+        document.onkeydown = function (event) {
+            var e = event || window.event;
+            if (e && e.keyCode == 13) { //回车键的键值为13
+                event.preventDefault();
+                $("#search").click();
+            }
+        }
+        $('#livingurl,#user,#etnum').on('input propertychange', function() {
+            $("#search").click();
+        });
     });
 </script>
 </body>

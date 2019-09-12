@@ -107,28 +107,5 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
         return result;
     }
 
-    @Override
-    public RResult getBurnTime(GetBurnTimeParam pParam, RResult result) {
 
-        Flushbonadinginfo flushbonadinginfo = new Flushbonadinginfo();
-        flushbonadinginfo.setSsid(pParam.getFlushbonadingetinfossid());
-
-        /**查询选时**/
-        flushbonadingService.getBurnTime(flushbonadinginfo,result);
-
-        return result;
-    }
-
-    @Override
-    public RResult updateBurnTime(GetBurnTimeParam pParam, RResult result) {
-
-        Flushbonadinginfo flushbonadinginfo = new Flushbonadinginfo();
-        flushbonadinginfo.setSsid(pParam.getFlushbonadingetinfossid());
-        flushbonadinginfo.setBurntime(pParam.getBurntime());
-
-        /**修改刻录选时**/
-        flushbonadingService.updateBurnTime(flushbonadinginfo, result);
-
-        return result;
-    }
 }
