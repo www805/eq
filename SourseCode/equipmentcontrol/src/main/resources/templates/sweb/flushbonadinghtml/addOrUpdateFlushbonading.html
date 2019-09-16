@@ -15,11 +15,16 @@
         .layui-input-block {
             margin-left: 150px;
         }
+        .layui-form-onswitch {
+            border-color: #1E9FFF;
+            background-color: #1E9FFF;
+        }
     </style>
 </head>
 <body>
 
 <div style="margin: 15px;">
+
     <div th:replace="header :: header">...</div>
     <div class="layui-elem-quote">
         <h3 th:text="${addOrUpdateFlushbonadingModel.title}"></h3>
@@ -133,6 +138,7 @@
                 <input type="text" name="ptjson" id="ptjson" required lay-verify="required" placeholder="请输入片头列表" autocomplete="off" class="layui-input">
             </div>
             <input type="button" style="float: left;" class="layui-btn layui-btn-normal" id="getptdjconstBtn" onclick="getptdjconst(ssid)" value="获取片头列表" />
+            <input type="button" style="float: left;" class="layui-btn layui-btn-normal" id="getftpBtn" onclick="getMiddFtp()" value="集中存储管理中心" />
         </div>
 
         <div class="layui-form-item layui-form-text">
@@ -206,15 +212,5 @@
         }
     }
 
-    // layui.use(['form', 'layedit', 'laydate','laypage', 'layer'], function(){
-    //     var form = layui.form
-    //         ,layer = layui.layer
-    //         ,layedit = layui.layedit
-    //         ,laydate = layui.laydate;
-    //
-    //     var laypage = layui.laypage
-    //         ,layer = layui.layer;
-    //
-    // });
 </script>
 </html>

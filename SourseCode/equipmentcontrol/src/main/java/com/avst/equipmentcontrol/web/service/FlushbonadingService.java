@@ -1,7 +1,10 @@
 package com.avst.equipmentcontrol.web.service;
 
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDInterface;
 import com.avst.equipmentcontrol.web.req.flushbonading.UpdateBurnboolFoDiskrecboolParam;
+import com.avst.equipmentcontrol.web.req.flushbonading.getMiddleware_FTPParam;
+import com.avst.equipmentcontrol.web.req.flushbonading.setMiddleware_FTPParam;
 import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
@@ -43,6 +46,9 @@ public class FlushbonadingService extends BaseService {
 
     @Autowired
     private Flushbonading_ettdMapper flushbonading_ettdMapper;
+
+    @Autowired
+    private FDInterface fdInterface;
 
     //查询
     public void getFlushbonadingList(RResult result, ReqParam<FlushbonadinginfoParam> param) {
@@ -586,4 +592,34 @@ public class FlushbonadingService extends BaseService {
         result.changeToTrue();
     }
 
+
+    public void getMiddleware_FTP(getMiddleware_FTPParam param, RResult result) {
+
+        RResult middlewareFtp = fdInterface.getMiddleware_FTP(param, result);
+
+        if(null != middlewareFtp){
+            result.setVersion(middlewareFtp.getVersion());
+            result.setActioncode(middlewareFtp.getActioncode());
+            result.setData(middlewareFtp.getData());
+            result.setMessage(middlewareFtp.getMessage());
+            result.setEndtime(middlewareFtp.getEndtime());
+        }else{
+            result.setMessage("返回的数据是空的");
+        }
+    }
+
+    public void setMiddleware_FTP(setMiddleware_FTPParam param, RResult result) {
+
+        RResult middlewareFtp = fdInterface.setMiddleware_FTP(param, result);
+
+        if(null != middlewareFtp){
+            result.setVersion(middlewareFtp.getVersion());
+            result.setActioncode(middlewareFtp.getActioncode());
+            result.setData(middlewareFtp.getData());
+            result.setMessage(middlewareFtp.getMessage());
+            result.setEndtime(middlewareFtp.getEndtime());
+        }else{
+            result.setMessage("返回的数据是空的");
+        }
+    }
 }

@@ -242,7 +242,7 @@ public class FDDealImpl implements FDInterface{
             result.setMessage("请求集中管理ftp配置失败 --");
         }
 
-        return null;
+        return result;
     }
 
     @Override

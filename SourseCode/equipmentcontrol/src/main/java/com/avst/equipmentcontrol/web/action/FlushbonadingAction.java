@@ -7,6 +7,8 @@ import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.web.req.flushbonading.FlushbonadinginfoParam;
 import com.avst.equipmentcontrol.web.req.flushbonading.UpdateBurnboolFoDiskrecboolParam;
+import com.avst.equipmentcontrol.web.req.flushbonading.getMiddleware_FTPParam;
+import com.avst.equipmentcontrol.web.req.flushbonading.setMiddleware_FTPParam;
 import com.avst.equipmentcontrol.web.service.FlushbonadingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -116,6 +118,34 @@ public class FlushbonadingAction extends BaseAction {
     public RResult updateBurnTime(Flushbonadinginfo param){
         RResult result=this.createNewResultOfFail();
         flushbonadingService.updateBurnTime(param, result);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+
+    /**
+     * 获取集中存储配置,ftp的上传服务器配置
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getMiddleware_FTP")
+    public RResult getMiddleware_FTP(@RequestBody getMiddleware_FTPParam param){
+        RResult result=this.createNewResultOfFail();
+        flushbonadingService.getMiddleware_FTP(param, result);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+
+    /**
+     * 集中存储配置,配置设备ftp上传
+     * @param param
+     * @return
+     */
+    @RequestMapping("/setMiddleware_FTP")
+    public RResult setMiddleware_FTP(@RequestBody setMiddleware_FTPParam param){
+        RResult result=this.createNewResultOfFail();
+        flushbonadingService.setMiddleware_FTP(param, result);
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }

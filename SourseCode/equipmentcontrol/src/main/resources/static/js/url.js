@@ -29,7 +29,8 @@ function getUrl_manage() {
 		main:getPath()+basepath+"main/gotomain",
 		logout:getPath()+basepath+"main/logout",
 		getNavList: getPath() + "/ec/main/getNavList",
-		getptdjconst:getPath()+"/flushbonading/v1/getptdjconst"
+		getptdjconst:getPath()+"/flushbonading/v1/getptdjconst",
+
 
 	};
 }
@@ -46,6 +47,8 @@ function getUrl_manageZk() {
 		getFlushbonadingBaseEttype:getPath()+"/Flushbonading/getBaseEttype",
 		UpdateDiskrecbool:getPath()+"/Flushbonading/updateDiskrecbool",
 		UpdateBurnbool:getPath()+"/Flushbonading/updateBurnbool",
+		getMiddFtp:getPath()+"/Flushbonading/getMiddleware_FTP",
+		setMiddleware_FTP:getPath()+"/Flushbonading/setMiddleware_FTP",
 
 		getPolygraphList:getPath()+"/Polygraph/getPolygraphList",
 		getPolygraphById:getPath()+"/Polygraph/getPolygraphById",

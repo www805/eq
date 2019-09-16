@@ -1,6 +1,11 @@
 var etypessid;
 var ssid;
+var goaction;
 var fdtype = "FD_AVST";
+var ipServer = "192.168.17.183";
+var portServer = 80;
+var userServer = "admin";
+var passwordServer = "admin123";
 
 function getFlushbonadingList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -95,6 +100,167 @@ function getptdjconst() {
     ajaxSubmitByJson(url,data,callptdjconst);
 }
 
+
+//集中存储管理中心，获取FTP上传配置
+function getMiddFtp() {
+
+    //使用模块
+    var html='<form class="layui-form" style="margin-top: 20px;">\n' +
+        '            <div class="layui-form-item">\n' +
+        '                <div class="layui-inline">\n' +
+        '                    <label class="layui-form-label"><span style="color: red;">*</span>服务名</label>\n' +
+        '                    <div class="layui-input-inline">\n' +
+        '                        <input type="text" name="servicename" required  lay-verify="required" placeholder="请输入服务名" autocomplete="off" class="layui-input">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '                <div class="layui-inline">\n' +
+        '                    <label class="layui-form-label"><span style="color: red;">*</span>是否启用</label>\n' +
+        '                    <div class="layui-input-inline">\n' +
+        '                        <input type="checkbox" name="enable" id="enable" lay-skin="switch" lay-filter="switchTest">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="layui-form-item">\n' +
+        '                <div class="layui-inline">\n' +
+        '                    <label class="layui-form-label"><span style="color: red;">*</span>本机设备ID</label>\n' +
+        '                    <div class="layui-input-inline">\n' +
+        '                        <input type="text" name="deviceid" required  lay-verify="required" placeholder="请输入本机设备ID" autocomplete="off" class="layui-input">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '                <div class="layui-inline">\n' +
+        '                    <label class="layui-form-label"><span style="color: red;">*</span>被动模式</label>\n' +
+        '                    <div class="layui-input-inline">\n' +
+        '                        <input type="checkbox" name="pasvmode" id="pasvmode" lay-skin="switch" lay-filter="switchTest">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="layui-form-item">\n' +
+        '                <div class="layui-inline">\n' +
+        '                    <label class="layui-form-label"><span style="color: red;">*</span>服务器地址</label>\n' +
+        '                    <div class="layui-input-inline">\n' +
+        '                        <input type="text" name="serverip" required  lay-verify="required|setip" placeholder="请输入服务器地址" autocomplete="off" class="layui-input">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '                <div class="layui-inline">\n' +
+        '                    <label class="layui-form-label"><span style="color: red;">*</span>服务器端口</label>\n' +
+        '                    <div class="layui-input-inline">\n' +
+        '                        <input type="number" name="serverport" required  lay-verify="required|number" placeholder="请输入服务器端口" autocomplete="off" class="layui-input">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="layui-form-item">\n' +
+        '                <div class="layui-inline">\n' +
+        '                    <label class="layui-form-label"><span style="color: red;">*</span>用户名</label>\n' +
+        '                    <div class="layui-input-block">\n' +
+        '                        <input type="text" name="svrusr" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="layui-form-item">\n' +
+        '                <div class="layui-inline">\n' +
+        '                    <label class="layui-form-label"><span style="color: red;">*</span>密码</label>\n' +
+        '                    <div class="layui-input-block">\n' +
+        '                        <input type="password" name="svrpwd" required  lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '                <div class="layui-inline">\n' +
+        '                    <label class="layui-form-label">是否自动重启</label>\n' +
+        '                    <div class="layui-input-inline">\n' +
+        '                        <input type="checkbox" name="restart" lay-skin="switch" lay-filter="switchTest">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="layui-form-item">\n' +
+        '                <div class="layui-inline">\n' +
+        '                    <label class="layui-form-label"><span style="color: red;">*</span>心跳服务器地址</label>\n' +
+        '                    <div class="layui-input-block">\n' +
+        '                        <input type="text" name="hreadbeatip" required  lay-verify="required|setip" placeholder="请输入心跳服务器地址" autocomplete="off" class="layui-input">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '                <div class="layui-inline">\n' +
+        '                    <label class="layui-form-label"><span style="color: red;">*</span>流控限速(kb)</label>\n' +
+        '                    <div class="layui-input-block">\n' +
+        '                        <input type="text" name="limit_speed" required  lay-verify="required" placeholder="请输入流控限速" autocomplete="off" class="layui-input">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="layui-form-item">\n' +
+        '                <div class="layui-inline">\n' +
+        '                    <label class="layui-form-label">过滤条件</label>\n' +
+        '                    <div class="layui-input-inline">\n' +
+        '                        <input type="text" name="search_filter" id="datetj" lay-verify="" placeholder="过滤该日期之前不文件上传" autocomplete="off" class="layui-input">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '                <div class="layui-inline">\n' +
+        '                    <label class="layui-form-label">是否过滤</label>\n' +
+        '                    <div class="layui-input-inline">\n' +
+        '                        <input type="checkbox" name="filter_enable" id="filter_enable" lay-skin="switch" lay-filter="switchTest">\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '        </form>';
+
+
+    layui.use(['form','laydate'], function() {
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var index = layer.open({
+            type: 1,
+            title: '集中存储管理中心',
+            skin: 'layui-layer-rim', //加上边框
+            area: ['800px', '580px'],
+            btn: ['保存', '取消'],
+            content: html,
+            success: function (layero, index) {
+                layero.addClass('layui-form');//添加form标识
+                layero.find('.layui-layer-btn0').attr('lay-filter', 'fromFTP').attr('lay-submit', '');//将按钮弄成能提交的
+                laydate.render({
+                    elem: '#datetj' //指定元素
+                });
+                form.render();
+            },
+            yes:function(index, layero){
+                //自定义验证规则
+                form.verify({
+                    setip: function(value, item){ //value：表单的值、item：表单的DOM对象
+                        if(''==value){
+                            goaction = true;
+                            return "IP地址不能为空";
+                        }
+                        if(!(/([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}/.test(value))){
+                            goaction = true;
+                            return '请输入一个正确的IP地址';
+                        }
+                    }
+                });
+                //监听提交
+                form.on('submit(fromFTP)', function(data){
+                    if(!isNotEmpty(goaction)){
+                        goaction = true;
+                        setMiddFtp();
+
+                    }
+                });
+            },
+            btn2:function(index, layero){
+                layer.close(index);
+            }
+        });
+
+
+    });
+
+    var url = getUrl_manageZk().getMiddFtp;
+
+    var data={
+        ip:ipServer,
+        port:portServer,
+        user:userServer,
+        password:passwordServer
+    };
+    ajaxSubmitByJson(url,data,callgetMiddFtp);
+}
+
 //删除
 function delFlushbonading(ssidd) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypeById);
@@ -115,6 +281,45 @@ function delFlushbonading(ssidd) {
         layer.closeAll();
     });
 
+}
+
+function setMiddFtp() {
+    var url = getUrl_manageZk().setMiddleware_FTP;
+    var servicename=$("input[name='servicename']").val();
+    var enable=$("#enable").prop("checked")==true?1:0;
+    var deviceid=$("input[name='deviceid']").val();
+    var pasvmode=$("#pasvmode").prop("checked")==true?1:0;
+    var serverip=$("input[name='serverip']").val();
+    var serverport=$("input[name='serverport']").val();
+    var svrusr=$("input[name='svrusr']").val();
+    var svrpwd=$("input[name='svrpwd']").val();
+    var restart=$("#restart").prop("checked")==true?1:0;
+    var hreadbeatip=$("input[name='hreadbeatip']").val();
+    var limit_speed=$("input[name='limit_speed']").val();
+    var search_filter=$("input[name='search_filter']").val();
+    var filter_enable=$("#filter_enable").prop("checked")==true?1:0;
+
+    var data = {
+        servicename: servicename,
+        enable: enable.toString(),
+        deviceid: deviceid,
+        pasvmode: pasvmode.toString(),
+        serverip: serverip,
+        serverport: serverport,
+        svrusr: svrusr,
+        svrpwd: svrpwd,
+        restart: restart.toString(),
+        hreadbeatip: hreadbeatip,
+        limit_speed: limit_speed,
+        search_filter: search_filter,
+        filter_enable: filter_enable.toString(),
+        ip:ipServer,
+        port:portServer,
+        user:userServer,
+        password:passwordServer
+    };
+
+    ajaxSubmitByJson(url, data, callSetMiddFtp);
 }
 
 function AddOrUpdateFlushbonading(version) {
@@ -188,6 +393,50 @@ function callAddOrUpdate(data){
     }
 }
 
+
+function callSetMiddFtp(data){
+    goaction = false;
+    if(null!=data&&data.actioncode=='SUCCESS'){
+        layer.msg("操作成功",{icon: 6});
+        setTimeout("layer.closeAll();",1500);
+    }else{
+        layer.msg(data.message,{icon: 5});
+    }
+}
+
+function callgetMiddFtp(data){
+    if(null!=data&&data.actioncode=='SUCCESS'){
+        if (isNotEmpty(data)){
+            if (data.data != null) {
+
+                var middFTP = data.data;
+
+                $("input[name='servicename']").val(middFTP.servicename);
+                $("#enable").prop("checked", middFTP.enable == 1);
+                $("input[name='deviceid']").val(middFTP.deviceid);
+                $("#pasvmode").prop("checked", middFTP.passvmode == 1);
+                $("input[name='serverip']").val(middFTP.serverip);
+                $("input[name='serverport']").val(middFTP.serviceport);
+                $("input[name='svrusr']").val(middFTP.user);
+                $("input[name='svrpwd']").val(middFTP.pass);
+                $("input[name='hreadbeatip']").val(middFTP.hreadbeatip);
+                $("input[name='limit_speed']").val(middFTP.limit_speed);
+                $("input[name='search_filter']").attr("value", middFTP.search_filter);
+                $("#filter_enable").prop("checked", middFTP.filter_enable == 1);
+
+                layui.use('form', function () {
+                    var form = layui.form;
+                    form.render();
+                });
+
+            }else{
+                layer.msg("获取列表失败",{icon: 5});
+            }
+        }
+    }else{
+        layer.msg(data.message,{icon: 5});
+    }
+}
 
 function callptdjconst(data){
     if(null!=data&&data.actioncode=='SUCCESS'){

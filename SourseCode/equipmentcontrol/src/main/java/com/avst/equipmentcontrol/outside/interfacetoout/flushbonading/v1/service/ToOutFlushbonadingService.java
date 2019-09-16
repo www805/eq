@@ -20,5 +20,4 @@ public interface ToOutFlushbonadingService {
     //修改
     public RResult updateToOutFlushbonading(AddOrUpdateToOutFlushbonadingParam param, RResult result);
 
-
 }
