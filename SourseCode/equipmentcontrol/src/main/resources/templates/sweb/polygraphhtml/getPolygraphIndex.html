@@ -16,7 +16,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label" style="text-align: right;padding: 9px;">端口号：</label>
             <div class="layui-input-inline">
-                <input type="text" name="port" id="port" lay-verify="required" placeholder="请输入端口号" autocomplete="off" class="layui-input">
+                <input type="number" name="port" id="port" lay-verify="required" placeholder="请输入端口号" autocomplete="off" class="layui-input" onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))">
             </div>
 
             <label class="layui-form-label" style="padding-left: 0;">验证密匙</label>

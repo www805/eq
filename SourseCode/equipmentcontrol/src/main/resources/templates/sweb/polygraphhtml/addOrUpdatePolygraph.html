@@ -30,7 +30,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>开放接口的端口</label>
             <div class="layui-input-block">
-                <input type="number" name="port" id="port" required  lay-verify="required|number" placeholder="请输入开放接口的端口" autocomplete="off" class="layui-input">
+                <input type="number" name="port" id="port" required  lay-verify="required|number" placeholder="请输入开放接口的端口" autocomplete="off" class="layui-input" onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))">
             </div>
         </div>
 
@@ -58,7 +58,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>设备IP</label>
             <div class="layui-input-block">
-                <input type="text" name="etip" id="etip" required  lay-verify="setip" placeholder="请输入设备IP" autocomplete="off" class="layui-input">
+                <input type="text" name="etip" id="etip" required  lay-verify="setip" placeholder="请输入设备IP" autocomplete="off" class="layui-input" onkeyup="this.value=value.replace(/[^\d|.]/g,'');if(this.value=='')(this.value='');">
             </div>
         </div>
 

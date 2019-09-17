@@ -47,7 +47,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>开放接口的端口</label>
             <div class="layui-input-block">
-                <input type="number" name="port" id="port" required  lay-verify="required|number" placeholder="请输入开放接口的端口" autocomplete="off" class="layui-input">
+                <input type="number" name="port" id="port" required  lay-verify="required|number" placeholder="请输入开放接口的端口" autocomplete="off" class="layui-input" onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))">
             </div>
         </div>
 
@@ -61,7 +61,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>登录密码</label>
             <div class="layui-input-block">
-                <input type="text" name="passwd" id="passwd" required  lay-verify="password" placeholder="请输入登录密码" autocomplete="off" class="layui-input">
+                <input type="text" name="passwd" id="passwd" required  lay-verify="required|password" placeholder="请输入登录密码" autocomplete="off" class="layui-input">
             </div>
         </div>
 
@@ -82,7 +82,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>设备IP</label>
             <div class="layui-input-block">
-                <input type="text" name="etip" id="etip" required  lay-verify="setip" placeholder="请输入设备IP" autocomplete="off" class="layui-input">
+                <input type="text" name="etip" id="etip" required  lay-verify="setip" placeholder="请输入设备IP" autocomplete="off" class="layui-input" onkeyup="this.value=value.replace(/[^\d|.]/g,'');if(this.value=='')(this.value='');">
             </div>
         </div>
 
@@ -135,7 +135,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">片头列表</label>
             <div class="layui-input-inline" style="float: left;width: 360px;">
-                <input type="text" name="ptjson" id="ptjson" required lay-verify="required" placeholder="请输入片头列表" autocomplete="off" class="layui-input">
+                <input type="text" name="ptjson" id="ptjson" placeholder="请输入片头列表" autocomplete="off" class="layui-input">
             </div>
             <input type="button" style="float: left;" class="layui-btn layui-btn-normal" id="getptdjconstBtn" onclick="getptdjconst(ssid)" value="获取片头列表" />
             <input type="button" style="float: left;" class="layui-btn layui-btn-normal" id="getftpBtn" onclick="getMiddFtp()" value="集中存储管理中心" />
