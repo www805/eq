@@ -226,6 +226,7 @@ public class FlushbonadingService extends BaseService {
         Flushbonading_etinfo flushbonading_etinfo = new Flushbonading_etinfo();
         flushbonading_etinfo.setLivingurl(livingurl);
         flushbonading_etinfo.setPreviewurl(previewurl);
+        flushbonading_etinfo.setDefaulturlbool(paramParam.getDefaulturlbool());
         flushbonading_etinfo.setPort(paramParam.getPort());
         flushbonading_etinfo.setUser(paramParam.getUser());
         flushbonading_etinfo.setPasswd(paramParam.getPasswd());
@@ -238,6 +239,13 @@ public class FlushbonadingService extends BaseService {
         flushbonading_etinfo.setExplain(paramParam.getExplain());
         flushbonading_etinfo.setEquipmentssid(base_equipmentinfo.getSsid());
         flushbonading_etinfo.setSsid(OpenUtil.getUUID_32());
+
+        if (1 == paramParam.getDefaulturlbool()) {
+            //全部设置为0
+            Flushbonading_etinfo flushbonading = new Flushbonading_etinfo();
+            flushbonading.setDefaulturlbool(0);
+            flushbonading_etinfoMapper.update(flushbonading, null);
+        }
 
         Integer insert = flushbonading_etinfoMapper.insert(flushbonading_etinfo);
         System.out.println("add_boot：" + insert);
@@ -411,6 +419,7 @@ public class FlushbonadingService extends BaseService {
         Flushbonading_etinfo flushbonading_etinfo = new Flushbonading_etinfo();
         flushbonading_etinfo.setLivingurl(livingurl);
         flushbonading_etinfo.setPreviewurl(previewurl);
+        flushbonading_etinfo.setDefaulturlbool(paramParam.getDefaulturlbool());
         flushbonading_etinfo.setPort(paramParam.getPort());
         flushbonading_etinfo.setUser(paramParam.getUser());
         flushbonading_etinfo.setPasswd(paramParam.getPasswd());
@@ -422,6 +431,13 @@ public class FlushbonadingService extends BaseService {
         flushbonading_etinfo.setDiskrecbool(paramParam.getDiskrecbool());
         flushbonading_etinfo.setExplain(paramParam.getExplain());
         flushbonading_etinfo.setSsid(paramParam.getSsid());
+
+        if (1 == paramParam.getDefaulturlbool()) {
+            //全部设置为0
+            Flushbonading_etinfo flushbonading = new Flushbonading_etinfo();
+            flushbonading.setDefaulturlbool(0);
+            flushbonading_etinfoMapper.update(flushbonading, null);
+        }
 
         Integer update = flushbonading_etinfoMapper.update(flushbonading_etinfo, ew);
         System.out.println("update_boot：" + update);
@@ -495,6 +511,45 @@ public class FlushbonadingService extends BaseService {
         baseEquipmentinfoOrEttypeVO.setEttypeList(ettypeList);
 
         result.setData(baseEquipmentinfoOrEttypeVO);
+        changeResultToSuccess(result);
+    }
+
+    /**
+     * 设为默认设备
+     * @param result
+     * @param param
+     */
+    public void updateDefaulturlbool(RResult result, ReqParam<UpdateBurnboolFoDiskrecboolParam> param) {
+
+        UpdateBurnboolFoDiskrecboolParam paramParam = param.getParam();
+
+        if (StringUtils.isBlank(paramParam.getSsid())) {
+            result.setMessage("修改的ssid不能为空");
+            return;
+        }
+        if (null == paramParam.getState()) {
+            result.setMessage("设为默认设备状态不能为空");
+            return;
+        }
+
+        //全部设置为0
+        Flushbonading_etinfo flushbonading = new Flushbonading_etinfo();
+        flushbonading.setDefaulturlbool(0);
+        flushbonading_etinfoMapper.update(flushbonading, null);
+
+        EntityWrapper ew = new EntityWrapper();
+        ew.eq("ssid", paramParam.getSsid());
+
+        Flushbonading_etinfo flushbonading_etinfo = new Flushbonading_etinfo();
+        flushbonading_etinfo.setDefaulturlbool(paramParam.getState());
+
+        Integer update = flushbonading_etinfoMapper.update(flushbonading_etinfo, ew);
+        System.out.println("update_boot：" + update);
+        if (update == 1) {
+            result.setData(flushbonading_etinfo.getSsid());
+        } else {
+            result.setData(update);
+        }
         changeResultToSuccess(result);
     }
 

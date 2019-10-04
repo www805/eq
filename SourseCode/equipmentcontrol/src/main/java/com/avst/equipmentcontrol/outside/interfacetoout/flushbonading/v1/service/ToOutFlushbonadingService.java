@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service;
 
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
+import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.AddOrUpdateToOutFlushbonadingParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.BaseParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetBurnTimeParam;
@@ -20,4 +21,6 @@ public interface ToOutFlushbonadingService {
     //修改
     public RResult updateToOutFlushbonading(AddOrUpdateToOutFlushbonadingParam param, RResult result);
 
+    //获取默认的视频直播地址
+    public RResult getToOutDefaulturl(GetToOutFlushbonadingListParam param, RResult result);
 }

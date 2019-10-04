@@ -70,6 +70,15 @@ public class FlushbonadingAction extends BaseAction {
         return result;
     }
 
+    //设为默认设备
+    @RequestMapping(value = "/updateDefaulturlbool")
+    public RResult updateDefaulturlbool(@RequestBody ReqParam<UpdateBurnboolFoDiskrecboolParam> param){
+        RResult result=this.createNewResultOfFail();
+        flushbonadingService.updateDefaulturlbool(result,param);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
     //修改硬盘录像状态
     @RequestMapping(value = "/updateDiskrecbool")
     public RResult updateDiskrecbool(@RequestBody ReqParam<UpdateBurnboolFoDiskrecboolParam> param){

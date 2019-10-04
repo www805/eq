@@ -2,6 +2,7 @@ package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.servic
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.AddOrUpdateToOutFlushbonadingParam;
@@ -11,6 +12,7 @@ import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetToO
 import com.avst.equipmentcontrol.web.req.flushbonading.FlushbonadinginfoParam;
 import com.avst.equipmentcontrol.web.service.FlushbonadingService;
 import com.avst.equipmentcontrol.web.vo.flushbonading.FlushbonadinginfoVO;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,9 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
 
     @Autowired
     private FlushbonadingService flushbonadingService;
+
+    @Autowired
+    private Flushbonading_etinfoMapper flushbonading_etinfoMapper;
 
     //查询列表
     @Override
@@ -103,6 +108,22 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
         reqParam.setParam(flushbonadinginfo);
 
         flushbonadingService.updateFlushbonading(result, reqParam);
+
+        return result;
+    }
+
+    @Override
+    public RResult getToOutDefaulturl(GetToOutFlushbonadingListParam param, RResult result) {
+
+        EntityWrapper<Flushbonadinginfo> ew = new EntityWrapper<>();
+        ew.eq("defaulturlbool", 1);
+
+        Flushbonadinginfo flushbonadinginfo = flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if (null != flushbonadinginfo) {
+            result.changeToTrue(flushbonadinginfo.getLivingurl());
+        }else{
+            result.setMessage("没找到默认的审讯主机...");
+        }
 
         return result;
     }

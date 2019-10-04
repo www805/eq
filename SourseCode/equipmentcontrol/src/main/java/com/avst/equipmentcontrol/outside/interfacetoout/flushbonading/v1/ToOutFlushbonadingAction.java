@@ -92,5 +92,18 @@ public class ToOutFlushbonadingAction extends BaseAction {
         return result;
     }
 
-
+    //获取默认的视频直播地址
+    @RequestMapping("/getToOutDefaulturl")
+    @ResponseBody
+    public RResult getToOutDefaulturl(@RequestBody ReqParam<GetToOutFlushbonadingListParam> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetToOutFlushbonadingListParam pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result = getToOutService(pParam.getFdType()).getToOutDefaulturl(pParam, result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    };
 }

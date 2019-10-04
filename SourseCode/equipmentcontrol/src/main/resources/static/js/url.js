@@ -45,6 +45,7 @@ function getUrl_manageZk() {
 		updateFlushbonading:getPath()+"/Flushbonading/updateFlushbonading",
 		delFlushbonading:getPath()+"/Flushbonading/delFlushbonading",
 		getFlushbonadingBaseEttype:getPath()+"/Flushbonading/getBaseEttype",
+		updateDefaulturlbool:getPath()+"/Flushbonading/updateDefaulturlbool",
 		UpdateDiskrecbool:getPath()+"/Flushbonading/updateDiskrecbool",
 		UpdateBurnbool:getPath()+"/Flushbonading/updateBurnbool",
 		getMiddFtp:getPath()+"/Flushbonading/getMiddleware_FTP",

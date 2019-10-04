@@ -59,6 +59,7 @@
             <col width="100">
             <col width="100">
             <col width="100">
+            <col width="100">
             <col width="250">
         </colgroup>
         <thead>
@@ -73,6 +74,7 @@
             <th>设备IP</th>
             <th>是否需要硬盘录像</th>
             <th>是否需要光盘同刻</th>
+            <th>设为默认设备</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -89,6 +91,7 @@
             <td>{{value.etip==null?"":value.etip}}</td>
             <td><input type="checkbox" {{value.diskrecbool==1?"checked":""}} name="diskrecbool" id="diskrecbool" lay-skin="switch" lay-filter="diskrecbool" lay-text="需要|不需要" value="{{value.ssid}}"></td>
             <td><input type="checkbox" {{value.burnbool==1?"checked":""}} name="burnbool" id="burnbool" lay-skin="switch" lay-filter="burnbool" lay-text="需要|不需要" value="{{value.ssid}}"></td>
+            <td><input type="checkbox" {{value.defaulturlbool==1?"checked":""}} name="defaulturlbool" id="defaulturlbool" lay-skin="switch" lay-filter="defaulturlbool" lay-text="默认|不默认" value="{{value.ssid}}"></td>
             <td style="white-space:nowrap;">
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/FlushbonadingEttd/getFlushbonadingEttdIndex?ssid={{value.ssid}}&etypessid='+etypessid;">设备通道</a>
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/Flushbonading/addOrUpdateFlushbonading?ssid={{value.ssid}}&etypessid='+etypessid;">修改</a>

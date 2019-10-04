@@ -40,6 +40,11 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
 
 
     /**
+     * 默认直播地址
+     */
+    private Integer defaulturlbool;
+
+    /**
      * 开放接口的端口
      */
     private Integer port;
@@ -99,6 +104,14 @@ public class Flushbonading_etinfo extends Model<Flushbonading_etinfo> {
     private Integer integer2;
 
     private String ssid;
+
+    public Integer getDefaulturlbool() {
+        return defaulturlbool;
+    }
+
+    public void setDefaulturlbool(Integer defaulturlbool) {
+        this.defaulturlbool = defaulturlbool;
+    }
 
     public Integer getRepeattime() {
         return repeattime;

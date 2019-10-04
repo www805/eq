@@ -6,6 +6,7 @@ var ipServer = "192.168.17.183";
 var portServer = 80;
 var userServer = "admin";
 var passwordServer = "admin123";
+var fieldFrom;
 
 function getFlushbonadingList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -50,6 +51,27 @@ function getFlushbonadingIndex(livingurl, previewurl, user, etnum, currPage, pag
 function UpdateBurnboolFoDiskrecbool(ssidd, sta, b) {
     if (b == 1) {
         var url = getUrl_manageZk().UpdateDiskrecbool;
+    } else {
+        var url = getUrl_manageZk().UpdateBurnbool;
+    }
+    ssid = ssidd;
+
+    var data = {
+        token: INIT_CLIENTKEY,
+        param: {
+            ssid: ssid,
+            state: sta
+        }
+    };
+    ajaxSubmitByJson(url, data, callUpdateBurnboolFoDiskrecbool);
+}
+
+
+function UpdateDefaulturlboolFoDiskrecbool(ssidd, sta, b) {
+    if (b == 1) {
+        var url = getUrl_manageZk().UpdateDiskrecbool;
+    } else if (b == 2) {
+        var url = getUrl_manageZk().updateDefaulturlbool;
     } else {
         var url = getUrl_manageZk().UpdateBurnbool;
     }
@@ -349,6 +371,7 @@ function AddOrUpdateFlushbonading(version) {
 
     var diskrecbool=$("#diskrecbool").prop("checked")==true?1:0;
     var burnbool=$("#burnbool").prop("checked")==true?1:0;
+    var defaulturlbool=$("#defaulturlbool").prop("checked")==true?1:0;
     var burntime = $("#burntime").val();
     var ptshowtime = $("#ptshowtime").val();
     var ptjson=$("input[name='ptjson']").val();
@@ -380,12 +403,15 @@ function AddOrUpdateFlushbonading(version) {
             etip: etip,
             diskrecbool: diskrecbool,
             burnbool: burnbool,
+            defaulturlbool: defaulturlbool,
             burntime: burntime,
             ptshowtime: ptshowtime,
             ptjson: ptjson,
             explain: explain
         }
     };
+
+    console.log(data);
 
     ajaxSubmitByJson(url, data, callAddOrUpdate);
 }
@@ -500,6 +526,7 @@ function callFlushbonadingById(data){
             $("input[name='etip']").val(flushbonading.etip);
             $("#diskrecbool").prop("checked", flushbonading.diskrecbool == 1);
             $("#burnbool").prop("checked", flushbonading.burnbool == 1);
+            $("#defaulturlbool").prop("checked", flushbonading.defaulturlbool == 1);
             $("#burntime").find("option[value='" + flushbonading.burntime + "']").attr("selected", true);
             $("#ptshowtime").find("option[value='" + flushbonading.ptshowtime + "']").attr("selected", true);
             $("input[name='ptjson']").val(flushbonading.ptjson);
@@ -608,6 +635,14 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
         }
         UpdateBurnboolFoDiskrecbool(data.value, shieldbool, 0);
     });
+    //设为默认设备
+    form.on('switch(defaulturlbool)', function(data){
+        var shieldbool = 0;
+        if(this.checked){
+            shieldbool = 1;
+        }
+        UpdateDefaulturlboolFoDiskrecbool(data.value, shieldbool, 2);
+    });
     form.verify({
         setip: function(value, item){ //value：表单的值、item：表单的DOM对象
             if(''==value){
@@ -620,7 +655,15 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
     });
 
     form.on('submit(addOrUpdateFlushbonading_btn)', function (data) {
-        AddOrUpdateFlushbonading();
+        // console.log(data);
+
+        var fieldFromStr = JSON.stringify(data.field);
+
+        //判断如果提交的数据不是一样，就提交
+        if (fieldFrom != fieldFromStr) {
+            fieldFrom = fieldFromStr;
+            AddOrUpdateFlushbonading();
+        }
         return false;
     });
 
