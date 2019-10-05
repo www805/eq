@@ -1,14 +1,15 @@
 package com.avst.equipmentcontrol.common.util.ff;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import com.avst.equipmentcontrol.common.util.LogUtil;
+
+import java.io.*;
 import java.util.List;
 
 /** 
  * CmdExecuter 
  * <p>Title: 命令执行器</p> 
- * <p>Description: 封装对操作系统命令行发送指令相关操作</p> 
+ * <p>Description: 封装对操作系统命令行发送指令相关操作</p>
+ * 同时最后只有1个cmd。要不然就不要返回的输出数据
  */  
 public class CmdExecuter {  
       
@@ -19,60 +20,131 @@ public class CmdExecuter {
      */  
     public static void exec( List<String> cmd, IStringGetter getter,String inputurl ){  
     	 ProcessBuilder builder=null;
-    	 BufferedReader stdout=null;
     	 Process proc=null;
-    	 InputStreamReader in=null;
-        try {  
+        try {
             builder = new ProcessBuilder();    
             builder.command(cmd);  
-            builder.redirectErrorStream(true);  
-            proc = builder.start();  
-            in= new InputStreamReader(proc.getInputStream());
-            stdout = new BufferedReader( in );  
-            String line;  
-            while ((line = stdout.readLine()) != null) {  
-                if( getter != null )
-					try {
-						getter.dealString(line,inputurl);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}  
-            }  
-            proc.waitFor(); 
-            System.out.println("线程关闭："+inputurl);
-            stdout.close(); 
-           
+            proc = builder.start();
+			wait(proc);
+            proc.waitFor();
+			proc.destroy();
+			builder.directory();
+            LogUtil.intoLog("线程关闭："+inputurl);
+			LogUtil.intoLog("执行返回结果："+result);
+
         } catch (Exception e) {  
             e.printStackTrace();  
         }finally{
-        	try {
-				if(null!=stdout){
-					stdout.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-        	try {
-				if(null!=in){
-					in.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-        	try {
-				if(null!=proc){
-					 proc.destroy();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-        	try {
-				if(null!=builder){
-					builder.directory();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+
+
         }  
-    }  
+    }
+
+    private static String result=null;//上一个结果的返回
+
+    private static void wait(Process p){
+
+    	result="";//初始化输出
+
+		InputStream in1= p.getInputStream();
+		InputStream in2= p.getErrorStream();
+		OutputStream out= p.getOutputStream();
+
+		try {
+			//正确输出
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					Reader reader = new InputStreamReader(in1);
+					BufferedReader bf = new BufferedReader(reader);
+					String line = null;
+					String str="";
+					try {
+						while((line=bf.readLine())!=null) {
+							str+=line;
+							System.out.println(line);
+						}
+						result=str;
+					} catch (IOException e) {
+						e.printStackTrace();
+					}finally {
+						try {
+							if(null!=bf){
+								bf.close();
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						try {
+							if(null!=reader){
+								reader.close();
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						try {
+							if(null!=in1){
+								in1.close();
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+					}
+				}
+			}).start();
+
+			//错误输出
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					Reader reader = new InputStreamReader(in2);
+					BufferedReader bf = new BufferedReader(reader);
+					String line = null;
+					try {
+						while((line=bf.readLine())!=null) {
+							System.out.println(line);
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}finally {
+						try {
+							if(null!=bf){
+								bf.close();
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						try {
+							if(null!=reader){
+								reader.close();
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						try {
+							if(null!=in2){
+								in2.close();
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}).start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+
+			try {
+				if(null!=out){
+					out.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+
+	}
 } 

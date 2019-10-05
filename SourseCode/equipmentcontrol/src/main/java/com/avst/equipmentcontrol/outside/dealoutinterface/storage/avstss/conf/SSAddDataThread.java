@@ -261,6 +261,19 @@ public class SSAddDataThread extends  Thread{
 
                         int filenum=1;//文件排序
                         for(File file:fileList){
+
+                            try {
+                                long fsize=Long.valueOf(file.getFsize());
+                                if(fsize <= 0){
+                                    LogUtil.intoLog(4,this.getClass(),fsize+":fsize---ftp上传的文件的大小异常，<=0,直接不要，"+file.getName());
+                                    continue;
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                LogUtil.intoLog(4,this.getClass(),file.getFsize()+":fsize---ftp上传的文件的大小异常，<=0,直接不要，"+file.getName());
+                                continue;
+                            }
+
                             long starttime=Long.valueOf(file.getStime());
                             long endtime=Long.valueOf(file.getEtime());
                             if(filenum==1){//只跟第一个文件的开始时间计算差值

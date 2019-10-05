@@ -151,4 +151,31 @@ public interface ToOutService_qrs {
      * @return
      */
     RResult updateBurnTime(GetBurnTimeParam pParam, RResult result);
+
+
+    /**
+     * 日志查询信息
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult getFDLog(GetFDLogParam_out pParam, RResult result);
+
+
+    /**
+     * 获得 设备现场的音频振幅
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult getFDAudPowerMap(GetFDAudPowerMapParam_out pParam, RResult result);
+
+
+    /**
+     * 配置设备网口 IP、子网掩码、网关
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult setFDnetwork(SetFDnetworkParam_out pParam, RResult result);
 }

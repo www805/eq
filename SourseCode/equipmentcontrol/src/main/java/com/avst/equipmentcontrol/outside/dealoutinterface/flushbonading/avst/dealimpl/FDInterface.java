@@ -191,6 +191,33 @@ public interface FDInterface {
 
 
     /**
+     * 获得 audmap 音量信息，即实时音量采集混音的电平值跳动信息
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<GetAudPowerMapVO> getAudPowerMap(GetAudPowerMapParam param, RResult<GetAudPowerMapVO> result);
+
+
+    /**
+     * 日志查询信息
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<GetFDLogVO> getFDLog(GetFDLogParam param, RResult<GetFDLogVO> result);
+
+
+    /**
+     * 配置设备网口 IP、子网掩码、网关
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<Set_networkVO> set_network(Set_networkParam param, RResult<Set_networkVO> result);
+
+
+    /**
      * 获取光盘序号
      * @param param
      * @param result

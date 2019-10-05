@@ -5,6 +5,7 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.pa
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
 import com.avst.equipmentcontrol.common.util.FileUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
+import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.Code;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.ff.VideoChangeThread;
@@ -79,6 +80,17 @@ public class SSChecckDataThread extends  Thread{
                             long filerealsize=savefile.length();
                             LogUtil.intoLog(this.getClass(),filerealsize+":filerealsize--filename:"+filename+"--filesize_db："+filesize_db);
                             if(filerealsize==filesize_db){//判断文件是否全部上传完毕
+
+                                try {
+                                    //去掉名字的特殊字符以前的所有字符
+                                    String savename= OpenUtil.getfilename(path);
+                                    String specialchars=PropertiesListenerConfig.getProperty("specialchars");
+                                    String newsavename=OpenUtil.delSpecialBeforeChar(savename,specialchars);
+                                    path= OpenUtil.FileRenameTo(path,newsavename);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 
                                 String changetype= PropertiesListenerConfig.getProperty("changetype");
                                 if(null==changetype || changetype.trim().equals("")){

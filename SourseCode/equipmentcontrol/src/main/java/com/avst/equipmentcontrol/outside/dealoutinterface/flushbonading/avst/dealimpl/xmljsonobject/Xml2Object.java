@@ -309,6 +309,116 @@ public class Xml2Object {
         return -1;
     }
 
+
+    /**
+     * 解析 配置设备网络
+     * @param xml
+     * @return
+     */
+    public static int set_networkXml( String xml) {
+        try {
+
+            String startstr="<set_network t=\"set\">";
+            String endstr="</set_network>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
+    /**
+     * 解析 日志查询信息
+     * @param xml
+     * @return
+     */
+    public static GetFDLogXml getFDLogXml( String xml) {
+        try {
+
+
+            //判断格式 必须有log item totalpage，
+            //  no active aud active，3条item 代表没有找到对应的任何一条日志
+
+            if(xml.indexOf("log") > -1&&xml.indexOf("item") > -1&&xml.indexOf("totalpage") > -1){//说明请求成功
+
+                GetFDLogXml getFDLogXml=new GetFDLogXml();
+
+                //解析log
+                String logstr=xml.substring(xml.indexOf("log"));
+                logstr=logstr.substring(0,logstr.indexOf(">"));
+                String t=logstr.substring(logstr.indexOf("t=")+3);
+                t=t.substring(0,t.indexOf("\""));//截取t
+                getFDLogXml.setT(t);
+                String totalpage=logstr.substring(logstr.indexOf("totalpage=")+11);
+                totalpage=totalpage.substring(0,totalpage.indexOf("\""));//截取totalpage
+                getFDLogXml.setTotalpage(totalpage);
+                String currpage=logstr.substring(logstr.indexOf("currpage=")+10);
+                currpage=currpage.substring(0,currpage.indexOf("\""));//截取currpage
+                getFDLogXml.setCurrpage(currpage);
+                System.out.println(t+":t--"+totalpage+":totalpage--"+currpage+":currpage--");
+                //解析item
+                String itemstr=xml.substring(xml.indexOf(logstr)+logstr.length());
+                itemstr=itemstr.substring(0,itemstr.indexOf("</log>"));//截取item集合
+
+                List<FDLogItem> fdLogItemlist=new ArrayList<FDLogItem>();
+                do{
+                    FDLogItem fdLogItem=new FDLogItem();
+                    String itemone=itemstr.substring(itemstr.indexOf("<item"));
+                    itemone=itemone.substring(0,itemone.indexOf("</item>"));
+                    //处理一个日志
+                    String date=itemone.substring(itemone.indexOf("date=")+6);
+                    date=date.substring(0,date.indexOf("\""));//date
+                    try {
+                        date=date.substring(0,4)+"-"+date.substring(4,6)+"-"+date.substring(6,8)+" "+date.substring(8,10)+":"+date.substring(10,12)+":"+date.substring(12);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    String tp=itemone.substring(itemone.indexOf("tp=")+4);
+                    tp=tp.substring(0,tp.indexOf("\""));//tp
+                    String message=itemone.substring(itemone.indexOf(">")+1);
+                    System.out.println(date.trim()+":date----tp:"+tp.trim()+"----message:"+message.trim());
+                    fdLogItem.setDate(date);
+                    fdLogItem.setTp(tp);
+                    fdLogItem.setMessage(message);
+                    fdLogItemlist.add(fdLogItem);
+
+                    itemstr=itemstr.substring(itemstr.indexOf("</item>")+8);
+                }while(itemstr.indexOf("<item") > -1);
+
+                if(null!=fdLogItemlist&&fdLogItemlist.size() > 0){
+                    getFDLogXml.setFdLogItemlist(fdLogItemlist);
+                    return getFDLogXml;
+                }
+
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+    /**
+     * 解析 获得 audmap 音量信息
+     * @param xml
+     * @return
+     */
+    public static String getAudPowerMapXml( String xml) {
+        try {
+
+            String startstr="<audpow>";
+            String endstr="</audpow>";
+
+            return jxXml(xml,startstr,endstr,0);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * 解析获得集中管理配置
      * @param xml
@@ -415,7 +525,7 @@ private static int jxXml(String xml,String startstr,String endstr){
             }
             rr = xml.substring(xml.indexOf(startstr)+(startstr.length()));
             rr=rr.substring(0,rr.indexOf(endstr));
-            return rr;
+            return rr.trim();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -476,36 +586,36 @@ private static int jxXml(String xml,String startstr,String endstr){
     public static void main(String[] args) {
         String xml="<root>\n" +
                 "<version>AICBH:1.0</version>\n" +
-                "<disc_iid t=\"rom\">\n" +
-                "<disc_iid0>\n" +
-                "<rs>1</rs>\n" +
-                "<md5>\n" +
-                "<![CDATA[ A6B6FC03CD7B05B836ECEF9ED199FD0A ]]>\n" +
-                "</md5>\n" +
-                "<iid>\n" +
-                "<![CDATA[ dd5cf4dc18 ]]>\n" +
-                "</iid>\n" +
-                "<crc32>\n" +
-                "<![CDATA[ FFF5457A ]]>\n" +
-                "</crc32>\n" +
-                "</disc_iid0>\n" +
-                "<disc_iid1>\n" +
-                "<rs>1</rs>\n" +
-                "<md5>\n" +
-                "<![CDATA[ 0D248DCD5E8F27F88B2995D24FC21159 ]]>\n" +
-                "</md5>\n" +
-                "<iid>\n" +
-                "<![CDATA[ c453c74454 ]]>\n" +
-                "</iid>\n" +
-                "<crc32>\n" +
-                "<![CDATA[ 1169CDA9 ]]>\n" +
-                "</crc32>\n" +
-                "</disc_iid1>\n" +
-                "</disc_iid>\n" +
+                "<log t=\"disk\" totalpage=\"16\" currpage=\"2\">\n" +
+                "<item date=\"20190919113348\" tp=\"sys_oper\">硬盘录像分包成功 录像文件: 2019-09-19-11-09-35_02.ts</item>\n" +
+                "<item date=\"20190919113404\" tp=\"sys_oper\">\n" +
+                "检测上传文件名 [/tmp/hd0/2019-09-19/IwDI6o89j4vq/2019-09-19-11-09-35_info.st]\n" +
+                "</item>\n" +
+                "<item date=\"20190919113404\" tp=\"sys_oper\">检测上传文件名 类型:0:4 []</item>\n" +
+                "<item date=\"20190919113405\" tp=\"sys_oper\">\n" +
+                "检测上传文件名 [/tmp/hd0/2019-09-19/IwDI6o89j4vq/2019-09-19-11-09-35_info.st]\n" +
+                "</item>\n" +
+                "<item date=\"20190919113405\" tp=\"sys_oper\">检测上传文件名 类型:0:4 []</item>\n" +
+                "<item date=\"20190919113433\" tp=\"sys_oper\">\n" +
+                "检测上传文件名 [/tmp/hd0/2019-09-19/IwDI6o89j4vq/2019-09-19-11-09-35_01_info.st]\n" +
+                "</item>\n" +
+                "<item date=\"20190919113433\" tp=\"sys_oper\">检测上传文件名 类型:0:4 []</item>\n" +
+                "<item date=\"20190919113433\" tp=\"sys_oper\">\n" +
+                "检测上传文件名 [/tmp/hd0/2019-09-19/IwDI6o89j4vq/2019-09-19-11-09-35_01_info.st]\n" +
+                "</item>\n" +
+                "<item date=\"20190919113433\" tp=\"sys_oper\">检测上传文件名 类型:0:4 []</item>\n" +
+                "<item date=\"20190919114558\" tp=\"sys_oper\">硬盘录像分包成功 录像文件: 2019-09-19-11-09-35_03.ts</item>\n" +
+                "<item date=\"20190919115804\" tp=\"sys_oper\">硬盘录像分包成功 录像文件: 2019-09-19-11-09-35_04.ts</item>\n" +
+                "<item date=\"20190919120022\" tp=\"ftp_oper\">停止硬盘录像(手动)</item>\n" +
+                "<item date=\"20190919120103\" tp=\"ftp_oper\">开始硬盘录像成功(手动) 录像文件: 2019-09-19-12-01-03.ts</item>\n" +
+                "<item date=\"20190919120103\" tp=\"sys_oper\">自动执行硬盘码率设定</item>\n" +
+                "<item date=\"20190919120112\" tp=\"sys_oper\">\n" +
+                "检测上传文件名 [/tmp/hd0/2019-09-19/g253WiD729dw/2019-09-19-12-01-03_info.st]\n" +
+                "</item>\n" +
+                "</log>\n" +
                 "</root>";
 
-        GetCDNumberXml cdnum=getCDNumberXml(xml);
-        System.out.println(cdnum.getDisc_iid0().getCrc32());
+        getFDLogXml(xml);
     }
 
 }

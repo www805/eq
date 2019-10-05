@@ -373,6 +373,66 @@ public class ToOutAction_qrs extends BaseAction {
         return result;
     }
 
+    /**
+     * 日志查询信息
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getFDLog")
+    @ResponseBody
+    public RResult getFDLog(@RequestBody ReqParam<GetFDLogParam_out> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetFDLogParam_out pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).getFDLog(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+
+    /**
+     * 获得 设备现场的音频振幅
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getFDAudPowerMap")
+    @ResponseBody
+    public RResult getFDAudPowerMap(@RequestBody ReqParam<GetFDAudPowerMapParam_out> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetFDAudPowerMapParam_out pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).getFDAudPowerMap(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+
+    /**
+     * 配置设备网口 IP、子网掩码、网关
+     * @param param
+     * @return
+     */
+    @RequestMapping("/setFDnetwork")
+    @ResponseBody
+    public RResult setFDnetwork(@RequestBody ReqParam<SetFDnetworkParam_out> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            SetFDnetworkParam_out pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).setFDnetwork(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+
     @RequestMapping(value = "/ceshi" )
     @ResponseBody
     public RResult ceshi(int type,Integer state,String pm){
@@ -456,6 +516,40 @@ public class ToOutAction_qrs extends BaseAction {
             gparam.setDx(state);
             param.setParam(gparam);
             System.out.println(JacksonUtil.objebtToString(changeBurnMode(param)));
+        }else if(type==10){
+
+            ReqParam<SetFDnetworkParam_out> param=new ReqParam<SetFDnetworkParam_out>();
+            SetFDnetworkParam_out  gparam=new SetFDnetworkParam_out();
+            gparam.setFdType(FDType.FD_AVST);
+            gparam.setFlushbonadingetinfossid("sxsba2");
+            gparam.setAjust(1);
+            gparam.setDev("eth1");
+            gparam.setGateway("192.1.1.1");
+            gparam.setIp_new("1.1.1.1");
+            gparam.setNetmask("255.255.0.0");
+            param.setParam(gparam);
+            System.out.println("setFDnetwork--"+JacksonUtil.objebtToString(setFDnetwork(param)));
+        }else if(type==11){
+
+            ReqParam<GetFDLogParam_out> param=new ReqParam<GetFDLogParam_out>();
+            GetFDLogParam_out  gparam=new GetFDLogParam_out();
+            gparam.setFdType(FDType.FD_AVST);
+            gparam.setFlushbonadingetinfossid("sxsba2");
+            gparam.setFd(19);
+            gparam.setFm(9);
+            gparam.setFy(2019);
+            gparam.setLogtype(0);
+            gparam.setPage(2);
+            param.setParam(gparam);
+            System.out.println("getFDLog--"+JacksonUtil.objebtToString(getFDLog(param)));
+        }else if(type==12){
+
+            ReqParam<GetFDAudPowerMapParam_out> param=new ReqParam<GetFDAudPowerMapParam_out>();
+            GetFDAudPowerMapParam_out  gparam=new GetFDAudPowerMapParam_out();
+            gparam.setFdType(FDType.FD_AVST);
+            gparam.setFlushbonadingetinfossid("sxsba2");
+            param.setParam(gparam);
+            System.out.println("getFDAudPowerMap--"+JacksonUtil.objebtToString(getFDAudPowerMap(param)));
         }
 
         return rResult;

@@ -42,7 +42,7 @@ public class WebServiceClient {
         }catch (Exception e){
             e.printStackTrace();
         }
-        LogUtil.intoLog(WebServiceClient.class,result);
+//        LogUtil.intoLog(WebServiceClient.class,result);
         return result;
     }
 

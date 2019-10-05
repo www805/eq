@@ -56,7 +56,6 @@ public class FDDealImpl implements FDInterface{
 
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=get&type=devstatus&authvusr="+user+"&authpwd="+passwd;
-        LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
 
         CheckFDStateXml xml=Xml2Object.getCheckFDStateXml(rr);
@@ -224,9 +223,8 @@ public class FDDealImpl implements FDInterface{
         String url="http://"+ip+":"+port+"/stcmd" ;
         String regparam="action=get&type=middleware"+
                 "&authvusr="+user+"&authpwd="+passwd+"&usr="+user+"&pwd="+passwd;
-        LogUtil.intoLog(this.getClass(),url+":url  regparam:"+regparam);
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
-        LogUtil.intoLog(this.getClass(),url+":url  rr:"+rr);
+        LogUtil.intoLog(this.getClass(),"regparam:"+regparam+"---"+url+":url  rr:"+rr);
         GetMiddleware_FTPXml xml=Xml2Object.getMiddleware_FTPXml(rr);
 
         if(null!=xml){
@@ -801,5 +799,145 @@ public class FDDealImpl implements FDInterface{
             result.setMessage("请求获取光盘序列号失败");
         }
         return result;
+    }
+
+
+    @Override
+    public RResult<GetAudPowerMapVO> getAudPowerMap(GetAudPowerMapParam param, RResult<GetAudPowerMapVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------getAudPowerMap");
+            return result;
+        }
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=get&type=audpowermap"+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+"--getAudPowerMap");
+        String audpowermap=Xml2Object.getAudPowerMapXml(rr);
+        if(StringUtils.isNotEmpty(audpowermap)){
+            String[] arr=audpowermap.split(",");//现在的切割字符是，
+            if(null!=arr&&arr.length > 0){
+
+                GetAudPowerMapVO vo=new GetAudPowerMapVO();
+                List<String> audlist=new ArrayList<String>();
+                for(String str:arr){
+                    str = str.trim().equals("") ? "0":str.trim();
+                    audlist.add(str.trim());
+                }
+                vo.setAudpowList(audlist);
+                result.changeToTrue(vo);
+            }else{
+                LogUtil.intoLog(4,this.getClass(),rr+"audpowermap.split(\",\").length is null");
+            }
+        }else{
+            result.setMessage("请求实时音量采集混音的电平值跳动信息失败");
+        }
+        return result;
+
+    }
+
+    @Override
+    public RResult<GetFDLogVO> getFDLog(GetFDLogParam param, RResult<GetFDLogVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        int fd=param.getFd();
+        int fm=param.getFm();
+        int fy=param.getFy();
+        int logtype=param.getLogtype();
+        int page=param.getPage();
+
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------getFDLog");
+            return result;
+        }
+
+        if(fd < 1||fm < 1||fy < 1990||logtype < 0||page < 1){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------getFDLog--条件查询的参数异常");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=do&type=disk&cmd=log"+
+                "&fd="+fd+"&fm="+fm+"&fy="+fy+"&logtype="+logtype+"&page="+page+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+":rr--getFDLog----regparam:"+regparam);
+        GetFDLogXml getFDLogXml=Xml2Object.getFDLogXml(rr);
+        if(null!=getFDLogXml){
+            GetFDLogVO getFDLogVO=new GetFDLogVO();
+            getFDLogVO.setCurrpage(getFDLogXml.getCurrpage());
+            getFDLogVO.setFdLogItemlist(getFDLogXml.getFdLogItemlist());
+            getFDLogVO.setTotalpage(getFDLogXml.getTotalpage());
+            result.changeToTrue(getFDLogVO);
+        }else{
+            result.setMessage("请求日志查询信息失败");
+        }
+        return result;
+
+    }
+
+    @Override
+    public RResult<Set_networkVO> set_network(Set_networkParam param, RResult<Set_networkVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        int ajust=param.getAjust();//1|0 是否立即生效
+        String dev=param.getDev();//eth0 | eth1 网口序号
+        String ip_new=param.getIp_new();//设备 IP
+        String netmask=param.getNetmask();//设备子网掩码
+         String gateway=param.getGateway();//设备网关
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------set_network");
+            return result;
+        }
+
+        if(StringUtils.isEmpty(gateway)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------set_network--新的网络参数");
+            return result;
+        }
+
+        if(StringUtils.isEmpty(ip_new)){
+            ip_new=ip;
+        }
+
+        if(StringUtils.isEmpty(dev)){
+            dev="eth0";//默认修改eth0的IP
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=api&type=set_network"+
+                "&ajust="+ajust+"&dev="+dev+"&ip="+ip_new+"&netmask="+netmask+"&gateway="+gateway+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+"--set_network");
+        int networkbool=Xml2Object.set_networkXml(rr);
+        if(networkbool ==1){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求配置设备网口 IP、子网掩码、网关失败");
+            LogUtil.intoLog(4,this.getClass(),rr+"--请求配置设备网口 IP、子网掩码、网关失败");
+        }
+        return result;
+
     }
 }

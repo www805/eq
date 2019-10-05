@@ -12,7 +12,34 @@ import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1.v
 
 public class Test2 {
 
-    public static String rr="{\"age\":0,\"bp\":0,\"br\":0.0002894740900956094,\"emotion\":6,\"face_rect\":{\"height\":121,\"width\":121,\"x\":159,\"y\":94},\"fps\":29.97003173828125,\"gender\":0,\"have_face\":true,\"hr\":0,\"hr_snr\":0,\"hrv\":0,\"relax\":0,\"spo2\":0,\"status\":0,\"stress\":0,\"stress_snr\":0}";
+    public static String rr="<root>\n" +
+            "<version>AICBH:1.0</version>\n" +
+            "<log t=\"disk\" totalpage=\"16\" currpage=\"1\">\n" +
+            "<item date=\"20190919085053\" tp=\"sys_oper\">系统关闭语音激励</item>\n" +
+            "<item date=\"20190919110644\" tp=\"ftp_oper\">admin[192.168.17.175]=>请求预览视频通道0</item>\n" +
+            "<item date=\"20190919110825\" tp=\"ftp_oper\">重启设备 界面[操作] 来自 操作</item>\n" +
+            "<item date=\"20190919110918\" tp=\"sys_oper\">系统关闭语音激励</item>\n" +
+            "<item date=\"20190919110936\" tp=\"ftp_oper\">开始硬盘录像成功(手动) 录像文件: 2019-09-19-11-09-35.ts</item>\n" +
+            "<item date=\"20190919110936\" tp=\"sys_oper\">自动执行硬盘码率设定</item>\n" +
+            "<item date=\"20190919110948\" tp=\"sys_oper\">\n" +
+            "检测上传文件名 [/tmp/hd0/2019-09-19/IwDI6o89j4vq/2019-09-19-11-09-35_info.st]\n" +
+            "</item>\n" +
+            "<item date=\"20190919110948\" tp=\"sys_oper\">检测上传文件名 类型:0:4 []</item>\n" +
+            "<item date=\"20190919110948\" tp=\"sys_oper\">\n" +
+            "检测上传文件名 [/tmp/hd0/2019-09-19/IwDI6o89j4vq/2019-09-19-11-09-35_info.st]\n" +
+            "</item>\n" +
+            "<item date=\"20190919110948\" tp=\"sys_oper\">检测上传文件名 类型:0:4 []</item>\n" +
+            "<item date=\"20190919112140\" tp=\"sys_oper\">硬盘录像分包成功 录像文件: 2019-09-19-11-09-35_01.ts</item>\n" +
+            "<item date=\"20190919112159\" tp=\"sys_oper\">\n" +
+            "检测上传文件名 [/tmp/hd0/2019-09-19/IwDI6o89j4vq/2019-09-19-11-09-35_01_info.st]\n" +
+            "</item>\n" +
+            "<item date=\"20190919112159\" tp=\"sys_oper\">检测上传文件名 类型:0:4 []</item>\n" +
+            "<item date=\"20190919112159\" tp=\"sys_oper\">\n" +
+            "检测上传文件名 [/tmp/hd0/2019-09-19/IwDI6o89j4vq/2019-09-19-11-09-35_01_info.st]\n" +
+            "</item>\n" +
+            "<item date=\"20190919112200\" tp=\"sys_oper\">检测上传文件名 类型:0:4 []</item>\n" +
+            "</log>\n" +
+            "</root>";
 
     public static void main(String[] args) {
 

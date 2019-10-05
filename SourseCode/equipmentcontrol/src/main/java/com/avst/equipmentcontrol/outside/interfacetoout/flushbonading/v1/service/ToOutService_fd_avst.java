@@ -1023,4 +1023,127 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
 
         return result;
     }
+
+    @Override
+    public RResult getFDLog(GetFDLogParam_out param, RResult result) {
+
+        String fdssid=param.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        GetFDLogParam getFDLogParam=new GetFDLogParam();
+        getFDLogParam.setPort(flushbonadinginfo.getPort());
+        getFDLogParam.setIp(flushbonadinginfo.getEtip());
+        getFDLogParam.setPasswd(flushbonadinginfo.getPasswd());
+        getFDLogParam.setUser(flushbonadinginfo.getUser());
+
+        getFDLogParam.setFd(param.getFd() > 0 ? param.getFd():DateUtil.getDay());
+        getFDLogParam.setFm(param.getFm()> 0 ? param.getFm():DateUtil.getMonth());
+        getFDLogParam.setFy(param.getFy()> 1990 ? param.getFy():DateUtil.getYear());
+//        getFDLogParam.setLogtype(param.getLogtype());//暂时只查0,
+        getFDLogParam.setPage(param.getPage()> 0 ? param.getFy():1);
+        RResult<GetFDLogVO> result2=new RResult<GetFDLogVO>();
+        result2=fdDeal.getFDLog(getFDLogParam,result2);
+        if(null!=result2){
+            result=result2;
+        }else{
+            result.setMessage("请求获取日志失败");
+        }
+        return result;
+    }
+
+    @Override
+    public RResult getFDAudPowerMap(GetFDAudPowerMapParam_out param, RResult result) {
+
+        String fdssid=param.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        GetAudPowerMapParam getAudPowerMapParam=new GetAudPowerMapParam();
+        getAudPowerMapParam.setPort(flushbonadinginfo.getPort());
+        getAudPowerMapParam.setIp(flushbonadinginfo.getEtip());
+        getAudPowerMapParam.setPasswd(flushbonadinginfo.getPasswd());
+        getAudPowerMapParam.setUser(flushbonadinginfo.getUser());
+        RResult<GetAudPowerMapVO> result2=new RResult<GetAudPowerMapVO>();
+        result2=fdDeal.getAudPowerMap(getAudPowerMapParam,result2);
+        if(null!=result2){
+            result=result2;
+        }else{
+            result.setMessage("请求获取实时声音振幅失败");
+        }
+        return result;
+    }
+
+    @Override
+    public RResult setFDnetwork(SetFDnetworkParam_out param, RResult result) {
+
+        String fdssid=param.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        Set_networkParam set_networkParam=new Set_networkParam();
+        set_networkParam.setPort(flushbonadinginfo.getPort());
+        set_networkParam.setIp(flushbonadinginfo.getEtip());
+        set_networkParam.setPasswd(flushbonadinginfo.getPasswd());
+        set_networkParam.setUser(flushbonadinginfo.getUser());
+
+        set_networkParam.setAjust(param.getAjust());
+        set_networkParam.setDev(param.getDev());
+        if(StringUtils.isNotEmpty(param.getGateway())){
+            set_networkParam.setGateway(param.getGateway());
+        }else{
+            set_networkParam.setGateway("255.255.255.0");
+        }
+        set_networkParam.setIp_new(param.getIp_new());
+        set_networkParam.setNetmask(param.getNetmask());
+
+        RResult<Set_networkVO> result2=new RResult<Set_networkVO>();
+        result2=fdDeal.set_network(set_networkParam,result2);
+        if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+            result.changeToTrue();
+        }else{
+            if(null!=result){
+                result.setMessage(result.getMessage());
+            }else{
+                result.setMessage("设置设备网络失败");
+            }
+        }
+        return result;
+    }
 }

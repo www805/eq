@@ -29,7 +29,7 @@ public class XMLUtil{
         //定义序列化对象
         Serializer serializer = new Persister();
         try {
-            LogUtil.intoLog(XMLUtil.class,"--xmlToStr rr:"+rr);
+//            LogUtil.intoLog(XMLUtil.class,"--xmlToStr rr:"+rr);
             o=serializer.read(o, rr);
             return o;
         } catch (Exception e) {
