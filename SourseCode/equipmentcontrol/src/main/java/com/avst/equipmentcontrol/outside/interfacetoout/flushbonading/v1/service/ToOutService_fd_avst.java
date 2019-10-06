@@ -1028,16 +1028,22 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
     public RResult getFDLog(GetFDLogParam_out param, RResult result) {
 
         String fdssid=param.getFlushbonadingetinfossid();
-        if (StringUtils.isBlank(fdssid)){
-            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
-            result.setMessage("参数为空");
-            return result;
-        }
-
         //查询数据库找到设备
         EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
-        ew.eq("fet.ssid",fdssid);
-        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        Flushbonadinginfo flushbonadinginfo=null;
+        if (StringUtils.isBlank(fdssid)){
+            //查找默认的设备，其实应该把单机版的授权发过来验证一下的
+            ew.eq("fet.defaulturlbool",1);
+        }else{
+            ew.eq("fet.ssid",fdssid);
+        }
+
+        try {
+            flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        } catch (Exception e) {
+            LogUtil.intoLog(4,this.getClass(),"查找默认的设备，抛错了，可能找到了2个默认的设备，不允许");
+            flushbonadinginfo=null;
+        }
         if(null==flushbonadinginfo){
             result.setMessage("设备未找到，请查询数据");
             return result;
@@ -1053,7 +1059,7 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         getFDLogParam.setFm(param.getFm()> 0 ? param.getFm():DateUtil.getMonth());
         getFDLogParam.setFy(param.getFy()> 1990 ? param.getFy():DateUtil.getYear());
 //        getFDLogParam.setLogtype(param.getLogtype());//暂时只查0,
-        getFDLogParam.setPage(param.getPage()> 0 ? param.getFy():1);
+        getFDLogParam.setPage(param.getPage()> 0 ? param.getPage():1);
         RResult<GetFDLogVO> result2=new RResult<GetFDLogVO>();
         result2=fdDeal.getFDLog(getFDLogParam,result2);
         if(null!=result2){

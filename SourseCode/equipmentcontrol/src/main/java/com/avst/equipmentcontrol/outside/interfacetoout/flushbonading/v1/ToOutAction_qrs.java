@@ -380,12 +380,11 @@ public class ToOutAction_qrs extends BaseAction {
      */
     @RequestMapping("/getFDLog")
     @ResponseBody
-    public RResult getFDLog(@RequestBody ReqParam<GetFDLogParam_out> param){
+    public RResult getFDLog(@RequestBody GetFDLogParam_out param){
         RResult result=this.createNewResultOfFail();
-        if(null!=param.getParam()){
-            GetFDLogParam_out pParam=param.getParam();
-            if(null != pParam.getFdType()){
-                result=getToOutServiceImpl(pParam.getFdType()).getFDLog(pParam,result);
+        if(null!=param){
+            if(null != param.getFdType()){
+                result=getToOutServiceImpl(param.getFdType()).getFDLog(param,result);
             }
         }
         result.setEndtime(DateUtil.getDateAndMinute());
@@ -400,12 +399,11 @@ public class ToOutAction_qrs extends BaseAction {
      */
     @RequestMapping("/getFDAudPowerMap")
     @ResponseBody
-    public RResult getFDAudPowerMap(@RequestBody ReqParam<GetFDAudPowerMapParam_out> param){
+    public RResult getFDAudPowerMap(@RequestBody GetFDAudPowerMapParam_out param){
         RResult result=this.createNewResultOfFail();
-        if(null!=param.getParam()){
-            GetFDAudPowerMapParam_out pParam=param.getParam();
-            if(null != pParam.getFdType()){
-                result=getToOutServiceImpl(pParam.getFdType()).getFDAudPowerMap(pParam,result);
+        if(null!=param){
+            if(null != param.getFdType()){
+                result=getToOutServiceImpl(param.getFdType()).getFDAudPowerMap(param,result);
             }
         }
         result.setEndtime(DateUtil.getDateAndMinute());
@@ -420,10 +418,10 @@ public class ToOutAction_qrs extends BaseAction {
      */
     @RequestMapping("/setFDnetwork")
     @ResponseBody
-    public RResult setFDnetwork(@RequestBody ReqParam<SetFDnetworkParam_out> param){
+    public RResult setFDnetwork(@RequestBody SetFDnetworkParam_out param){
         RResult result=this.createNewResultOfFail();
-        if(null!=param.getParam()){
-            SetFDnetworkParam_out pParam=param.getParam();
+        if(null!=param){
+            SetFDnetworkParam_out pParam=param;
             if(null != pParam.getFdType()){
                 result=getToOutServiceImpl(pParam.getFdType()).setFDnetwork(pParam,result);
             }
@@ -518,7 +516,6 @@ public class ToOutAction_qrs extends BaseAction {
             System.out.println(JacksonUtil.objebtToString(changeBurnMode(param)));
         }else if(type==10){
 
-            ReqParam<SetFDnetworkParam_out> param=new ReqParam<SetFDnetworkParam_out>();
             SetFDnetworkParam_out  gparam=new SetFDnetworkParam_out();
             gparam.setFdType(FDType.FD_AVST);
             gparam.setFlushbonadingetinfossid("sxsba2");
@@ -527,11 +524,9 @@ public class ToOutAction_qrs extends BaseAction {
             gparam.setGateway("192.1.1.1");
             gparam.setIp_new("1.1.1.1");
             gparam.setNetmask("255.255.0.0");
-            param.setParam(gparam);
-            System.out.println("setFDnetwork--"+JacksonUtil.objebtToString(setFDnetwork(param)));
+            System.out.println("setFDnetwork--"+JacksonUtil.objebtToString(setFDnetwork(gparam)));
         }else if(type==11){
 
-            ReqParam<GetFDLogParam_out> param=new ReqParam<GetFDLogParam_out>();
             GetFDLogParam_out  gparam=new GetFDLogParam_out();
             gparam.setFdType(FDType.FD_AVST);
             gparam.setFlushbonadingetinfossid("sxsba2");
@@ -540,16 +535,13 @@ public class ToOutAction_qrs extends BaseAction {
             gparam.setFy(2019);
             gparam.setLogtype(0);
             gparam.setPage(2);
-            param.setParam(gparam);
-            System.out.println("getFDLog--"+JacksonUtil.objebtToString(getFDLog(param)));
+            System.out.println("getFDLog--"+JacksonUtil.objebtToString(getFDLog(gparam)));
         }else if(type==12){
 
-            ReqParam<GetFDAudPowerMapParam_out> param=new ReqParam<GetFDAudPowerMapParam_out>();
             GetFDAudPowerMapParam_out  gparam=new GetFDAudPowerMapParam_out();
             gparam.setFdType(FDType.FD_AVST);
             gparam.setFlushbonadingetinfossid("sxsba2");
-            param.setParam(gparam);
-            System.out.println("getFDAudPowerMap--"+JacksonUtil.objebtToString(getFDAudPowerMap(param)));
+            System.out.println("getFDAudPowerMap--"+JacksonUtil.objebtToString(getFDAudPowerMap(gparam)));
         }
 
         return rResult;
