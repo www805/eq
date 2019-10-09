@@ -178,4 +178,21 @@ public interface ToOutService_qrs {
      * @return
      */
     RResult setFDnetwork(SetFDnetworkParam_out pParam, RResult result);
+
+    /**
+     * 设置设备某一个通道的通道音量
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult setFDAudioVolume(SetFDAudioVolumeParam_out pParam, RResult result);
+
+    /**
+     * 获得设备音频配置
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult getFDAudioConf(GetFDAudioConfParam_out pParam, RResult result);
+
 }

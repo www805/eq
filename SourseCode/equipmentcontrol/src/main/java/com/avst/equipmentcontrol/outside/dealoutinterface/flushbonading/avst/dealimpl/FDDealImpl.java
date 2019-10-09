@@ -940,4 +940,110 @@ public class FDDealImpl implements FDInterface{
         return result;
 
     }
+
+    /**
+     * 获得设备能力信息
+     * @param param
+     * @param result
+     * @return
+     */
+    @Override
+    public RResult<GetCapabilitySetVO> getCapabilitySet(GetCapabilitySetParam param, RResult<GetCapabilitySetVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------getCapabilitySet");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=get&type=devcaps"+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+":rr--getCapabilitySet----regparam:"+regparam);
+        GetCapabilitySetXml getCapabilitySetXml=Xml2Object.getCapabilitySetXml(rr);
+        if(null!=getCapabilitySetXml){
+            Gson gson=new Gson();
+            GetCapabilitySetVO vo=gson.fromJson(gson.toJson(getCapabilitySetXml),GetCapabilitySetVO.class);
+            result.changeToTrue(vo);
+        }else{
+            result.setMessage("请求设备能力信息失败");
+        }
+
+        return result;
+    }
+
+    /**
+     * 获得当前音频配置
+     * @param param
+     * @param result
+     * @return
+     */
+    @Override
+    public RResult<GetAudioConfVO> getAudioConf(GetAudioConfParam param, RResult<GetAudioConfVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------getAudioConf");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=api&type=audio_info"+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+":rr--getAudioConf----regparam:"+regparam);
+        GetAudioConfXml getAudioConfXml=Xml2Object.getAudioConfXml(rr);
+        if(null!=getAudioConfXml){
+            Gson gson=new Gson();
+            GetAudioConfVO vo=gson.fromJson(gson.toJson(getAudioConfXml),GetAudioConfVO.class);
+            result.changeToTrue(vo);
+        }else{
+            result.setMessage("请求当前音频配置失败");
+        }
+        return result;
+    }
+
+    @Override
+    public RResult<SetAudioVolumeVO> setAudioVolume(SetAudioVolumeParam param, RResult<SetAudioVolumeVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        String ch=param.getCh();
+        String save=param.getSave();
+        String volume=param.getVolume();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------setAudioVolume");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=api&type=set_audio_cfg"+
+                "&ch="+ch+"&save="+save+"&volume="+volume+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+":rr--setAudioVolume----regparam:"+regparam);
+        int bool=Xml2Object.setAudioVolumeXml(rr);
+        if(bool==1){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求设置当前通道音量失败");
+        }
+        return result;
+    }
 }

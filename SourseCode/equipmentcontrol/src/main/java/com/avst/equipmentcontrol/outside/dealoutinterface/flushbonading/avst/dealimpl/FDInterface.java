@@ -224,4 +224,30 @@ public interface FDInterface {
      * @return
      */
     public RResult<GetCDNumberVO> getCDNumber(GetCDNumberParam param, RResult<GetCDNumberVO> result);
+
+    /**
+     * 获得设备能力信息,a_in 音频有效通道数,v_in 视频有效通道数,vdec_in 扩展视频有效通道数,规则:v_in + vdec_in必然小于等于8
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<GetCapabilitySetVO> getCapabilitySet(GetCapabilitySetParam param, RResult<GetCapabilitySetVO> result);
+
+    /**
+     * 获得当前音频配置
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<GetAudioConfVO> getAudioConf(GetAudioConfParam param, RResult<GetAudioConfVO> result);
+
+
+    /**
+     * 设置当前通道音量 , save是否保存，如果在拖动的时候不要调用save，在最后定格确认要保存了才以save=1发送，触发保存配置
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<SetAudioVolumeVO> setAudioVolume(SetAudioVolumeParam param, RResult<SetAudioVolumeVO> result);
+
 }

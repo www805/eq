@@ -3,7 +3,6 @@ package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.servic
 import com.avst.equipmentcontrol.common.conf.FDType;
 import com.avst.equipmentcontrol.common.conf.SSType;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
-import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
 import com.avst.equipmentcontrol.common.util.DateUtil;
@@ -12,15 +11,17 @@ import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.Code;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
-import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDDealImpl;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.*;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.vo.*;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.CheckFDStateXml;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.param.Aud;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.FDCache;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.param.FDCacheParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.*;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.GetFDAudioConfVO;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.GetFDStateVO;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.Param.GetAudioConfVO_param;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.WorkStartVO;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.SaveFileParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutServiceImpl_ss_avst;
@@ -28,7 +29,6 @@ import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOut
 import com.avst.equipmentcontrol.web.service.FlushbonadingService;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -1150,6 +1150,147 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                 result.setMessage("设置设备网络失败");
             }
         }
+        return result;
+    }
+
+
+    @Override
+    public RResult setFDAudioVolume(SetFDAudioVolumeParam_out param, RResult result) {
+        String fdssid=param.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        SetAudioVolumeParam setAudioVolumeParam=new SetAudioVolumeParam();
+        setAudioVolumeParam.setPort(flushbonadinginfo.getPort());
+        setAudioVolumeParam.setIp(flushbonadinginfo.getEtip());
+        setAudioVolumeParam.setPasswd(flushbonadinginfo.getPasswd());
+        setAudioVolumeParam.setUser(flushbonadinginfo.getUser());
+
+        int ch=param.getCh();
+        int save=param.getSave();
+        int volume=param.getVolume();
+
+        setAudioVolumeParam.setCh(ch+"");
+        setAudioVolumeParam.setSave(save+"");
+        setAudioVolumeParam.setVolume(volume+"");
+
+        RResult<SetAudioVolumeVO> result2=new RResult<SetAudioVolumeVO>();
+        result2=fdDeal.setAudioVolume(setAudioVolumeParam,result2);
+        if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+            result.changeToTrue();
+        }else{
+            if(null!=result){
+                result.setMessage(result.getMessage());
+            }else{
+                result.setMessage("设置设备通道音量失败");
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public RResult getFDAudioConf(GetFDAudioConfParam_out param, RResult result) {
+        String fdssid=param.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        GetFDAudioConfVO vo=new GetFDAudioConfVO();
+        int a_in=0;//音频有效通道
+
+        //先获取有多少个有效音频通道
+        RResult<GetCapabilitySetVO> result2=new RResult<GetCapabilitySetVO>();
+        GetCapabilitySetParam getCapabilitySetParam=new GetCapabilitySetParam();
+        getCapabilitySetParam.setPort(flushbonadinginfo.getPort());
+        getCapabilitySetParam.setIp(flushbonadinginfo.getEtip());
+        getCapabilitySetParam.setPasswd(flushbonadinginfo.getPasswd());
+        getCapabilitySetParam.setUser(flushbonadinginfo.getUser());
+        result2=fdDeal.getCapabilitySet(getCapabilitySetParam,result2);
+        if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+
+            GetCapabilitySetVO getCapabilitySetVO=result2.getData();
+            if(null!=getCapabilitySetVO){
+                try {
+                    a_in=(Integer.parseInt(getCapabilitySetVO.getA_in()));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                result.setMessage("没有找到设备的任何能力集，请联系管理员");
+            }
+        }else{
+            if(null!=result){
+                result.setMessage(result.getMessage());
+            }else{
+                result.setMessage("获取音频配置失败");
+            }
+            return result;
+        }
+
+        if(a_in > 0){
+
+            GetAudioConfParam getAudioConfParam=new GetAudioConfParam();
+            getAudioConfParam.setPort(flushbonadinginfo.getPort());
+            getAudioConfParam.setIp(flushbonadinginfo.getEtip());
+            getAudioConfParam.setPasswd(flushbonadinginfo.getPasswd());
+            getAudioConfParam.setUser(flushbonadinginfo.getUser());
+
+            RResult<GetAudioConfVO> result3=new RResult<GetAudioConfVO>();
+            result3=fdDeal.getAudioConf(getAudioConfParam,result3);
+            if(null!=result3&&result3.getActioncode().equals(Code.SUCCESS.toString())){
+
+                GetAudioConfVO getAudioConfVO=result3.getData();
+                if(null!=getAudioConfVO&&null!=getAudioConfVO.getAudList()&&getAudioConfVO.getAudList().size() > 0){
+                    List<Aud> audlist=getAudioConfVO.getAudList();
+                    vo.setAudioPassagewayNum(a_in);
+                    List<GetAudioConfVO_param> audiolist=new ArrayList<GetAudioConfVO_param>();
+                    for(int i=0;i<a_in;i++){//从所有的音频通道中读取有效音频通道数，前多少个就是有效通道数
+                        GetAudioConfVO_param getAudioConfVO_param=new GetAudioConfVO_param();
+                        getAudioConfVO_param.setCh(Integer.parseInt(audlist.get(i).getCh()));
+                        getAudioConfVO_param.setVolume(Integer.parseInt(audlist.get(i).getVolume()));
+                        audiolist.add(getAudioConfVO_param);
+                    }
+                    vo.setAudiolist(audiolist);
+                    result.changeToTrue(vo);
+
+                }else{
+                    result.setMessage("设备没有找到任何音频通道");
+                }
+
+            }else{
+                if(null!=result){
+                    result.setMessage(result.getMessage());
+                }else{
+                    result.setMessage("获取音频配置失败");
+                }
+            }
+        }else{
+            result.setMessage("设备没有有效的音频通道");
+        }
+
         return result;
     }
 }

@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject;
 
+import com.avst.equipmentcontrol.common.util.JacksonUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.param.*;
 import com.thoughtworks.xstream.XStream;
@@ -328,6 +329,23 @@ public class Xml2Object {
         return -1;
     }
 
+    /**
+     * 解析 设置当前通道音量
+     * @param xml
+     * @return
+     */
+    public static int setAudioVolumeXml( String xml) {
+        try {
+
+            String startstr="<set_audio_cfg t=\"set\">";
+            String endstr="</set_audio_cfg>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 
     /**
      * 解析 日志查询信息
@@ -393,6 +411,64 @@ public class Xml2Object {
                 }
 
             }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
+     * 解析 获得设备能力信息
+     * @param xml
+     * @return
+     */
+    public static GetCapabilitySetXml getCapabilitySetXml( String xml) {
+        try {
+
+            GetCapabilitySetXml getCapabilitySetXml=new GetCapabilitySetXml();
+
+            return (GetCapabilitySetXml)setJavaBeanParam(getCapabilitySetXml,xml);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 解析 获得设备能力信息
+     * @param xml
+     * @return
+     */
+    public static GetAudioConfXml getAudioConfXml( String xml) {
+        try {
+
+            GetAudioConfXml getAudioConfXml=new GetAudioConfXml();
+
+            if(StringUtils.isNotEmpty(xml)){
+                if(xml.indexOf("audio_info" )> -1 && xml.indexOf("ch_audiomix" )> -1){//说明有数据，并且是可以用的
+
+                    getAudioConfXml=(GetAudioConfXml)setJavaBeanParam(getAudioConfXml,xml);
+                    String ch_audiomixSTR=jxXml(xml,"<ch_audiomix>","</ch_audiomix>",1);
+
+                    //切割音频列表
+                    if(StringUtils.isNotEmpty(ch_audiomixSTR)){
+                        String[] audarr=ch_audiomixSTR.split("<aud");
+                        if(null!=audarr&&audarr.length > 0){
+                            List<Aud> audlist=new ArrayList<Aud>();
+                            for(String str:audarr){
+
+                                //解析audarr每一个参数
+                                Aud aud=new Aud();
+                                aud=(Aud)setJavaBeanParam2(aud,xml);
+                                audlist.add(aud);
+                            }
+                            getAudioConfXml.setAudList(audlist);
+                        }
+                    }
+                }
+            }
+            return getAudioConfXml;
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -534,6 +610,7 @@ private static int jxXml(String xml,String startstr,String endstr){
 
     /**
      * 给一个对象的所有属性进行自定义赋值
+     * <audio_info ><mutech>32</mutech><exch0>15</exch0></audio_info> 解析多个类似的这个value里面的值
      * @param o
      * @return
      */
@@ -583,39 +660,65 @@ private static int jxXml(String xml,String startstr,String endstr){
         return null;
     }
 
+    /**
+     * 给一个对象的所有属性进行自定义赋值
+     * <aud cap="0" bind_viewmode="0"input_type="0"/>  解析类似的这个attribute上的数据
+     * @param o
+     * @return
+     */
+    public static Object setJavaBeanParam2(Object o,String xml) {
+        try {
+
+            if(null==o){
+                return null;
+            }
+            Class<?> clz = Class.forName(o.getClass().getName());
+            Object javabean = clz.newInstance(); // 构建对象
+            Method[] methods = clz.getMethods(); // 获取所有方法
+            for (Method method : methods) {
+                try {
+                    String field = method.getName(); // 截取属性名
+                    if (field.startsWith("set")) {
+                        field = field.substring(field.indexOf("set") + 3);//shuxingming
+                        field = field.toLowerCase().charAt(0) + field.substring(1);//小写化
+
+                        String startstr=field+"=\"";
+                        String endstr="\"";
+                        if(xml.indexOf(startstr) > -1){
+                            String rr=xml.substring(xml.indexOf(startstr)+(startstr.length()));
+                            rr=rr.substring(0,rr.indexOf(endstr));
+                            if(!rr.trim().equals("")&&rr.indexOf("<![CDATA[") > -1&&rr.indexOf("]]>") > 0){
+
+                                rr=rr.replace("]]>","");
+                                rr=rr.replace("<![CDATA[","");
+                            }
+                            rr=rr.trim();
+
+                            method.invoke(javabean, rr);
+                        }
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+            return javabean;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
         String xml="<root>\n" +
                 "<version>AICBH:1.0</version>\n" +
-                "<log t=\"disk\" totalpage=\"16\" currpage=\"2\">\n" +
-                "<item date=\"20190919113348\" tp=\"sys_oper\">硬盘录像分包成功 录像文件: 2019-09-19-11-09-35_02.ts</item>\n" +
-                "<item date=\"20190919113404\" tp=\"sys_oper\">\n" +
-                "检测上传文件名 [/tmp/hd0/2019-09-19/IwDI6o89j4vq/2019-09-19-11-09-35_info.st]\n" +
-                "</item>\n" +
-                "<item date=\"20190919113404\" tp=\"sys_oper\">检测上传文件名 类型:0:4 []</item>\n" +
-                "<item date=\"20190919113405\" tp=\"sys_oper\">\n" +
-                "检测上传文件名 [/tmp/hd0/2019-09-19/IwDI6o89j4vq/2019-09-19-11-09-35_info.st]\n" +
-                "</item>\n" +
-                "<item date=\"20190919113405\" tp=\"sys_oper\">检测上传文件名 类型:0:4 []</item>\n" +
-                "<item date=\"20190919113433\" tp=\"sys_oper\">\n" +
-                "检测上传文件名 [/tmp/hd0/2019-09-19/IwDI6o89j4vq/2019-09-19-11-09-35_01_info.st]\n" +
-                "</item>\n" +
-                "<item date=\"20190919113433\" tp=\"sys_oper\">检测上传文件名 类型:0:4 []</item>\n" +
-                "<item date=\"20190919113433\" tp=\"sys_oper\">\n" +
-                "检测上传文件名 [/tmp/hd0/2019-09-19/IwDI6o89j4vq/2019-09-19-11-09-35_01_info.st]\n" +
-                "</item>\n" +
-                "<item date=\"20190919113433\" tp=\"sys_oper\">检测上传文件名 类型:0:4 []</item>\n" +
-                "<item date=\"20190919114558\" tp=\"sys_oper\">硬盘录像分包成功 录像文件: 2019-09-19-11-09-35_03.ts</item>\n" +
-                "<item date=\"20190919115804\" tp=\"sys_oper\">硬盘录像分包成功 录像文件: 2019-09-19-11-09-35_04.ts</item>\n" +
-                "<item date=\"20190919120022\" tp=\"ftp_oper\">停止硬盘录像(手动)</item>\n" +
-                "<item date=\"20190919120103\" tp=\"ftp_oper\">开始硬盘录像成功(手动) 录像文件: 2019-09-19-12-01-03.ts</item>\n" +
-                "<item date=\"20190919120103\" tp=\"sys_oper\">自动执行硬盘码率设定</item>\n" +
-                "<item date=\"20190919120112\" tp=\"sys_oper\">\n" +
-                "检测上传文件名 [/tmp/hd0/2019-09-19/g253WiD729dw/2019-09-19-12-01-03_info.st]\n" +
-                "</item>\n" +
-                "</log>\n" +
+                "<set_audio_cfg t=\"set\">1</set_audio_cfg>\n" +
                 "</root>";
 
-        getFDLogXml(xml);
+        System.out.println(JacksonUtil.objebtToString(setAudioVolumeXml(xml)));
     }
 
 }

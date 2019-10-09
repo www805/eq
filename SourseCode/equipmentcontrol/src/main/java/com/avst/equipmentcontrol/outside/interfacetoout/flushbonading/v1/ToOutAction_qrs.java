@@ -4,7 +4,6 @@ import com.avst.equipmentcontrol.common.conf.FDType;
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.JacksonUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
-import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
@@ -17,9 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 到底需不需要加密验证的环节，
@@ -429,6 +425,47 @@ public class ToOutAction_qrs extends BaseAction {
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }
+
+    /**
+     * 设置设备某一个通道的通道音量
+     * @param param
+     * @return
+     */
+    @RequestMapping("/setFDAudioVolume")
+    @ResponseBody
+    public RResult setFDAudioVolume(@RequestBody SetFDAudioVolumeParam_out param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param){
+            SetFDAudioVolumeParam_out pParam=param;
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).setFDAudioVolume(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    /**
+     * 获得设备音频配置
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getFDAudioConf")
+    @ResponseBody
+    public RResult getFDAudioConf(@RequestBody GetFDAudioConfParam_out param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param){
+            GetFDAudioConfParam_out pParam=param;
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).getFDAudioConf(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+
+
 
 
     @RequestMapping(value = "/ceshi" )
