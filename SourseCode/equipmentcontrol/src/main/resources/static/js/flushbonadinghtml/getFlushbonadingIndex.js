@@ -286,6 +286,11 @@ function getMiddFtp() {
 
     var url = getUrl_manageZk().getMiddFtp;
 
+    ipServer = $("input[name='etip']").val();
+    portServer = $("input[name='port']").val();
+    userServer = $("input[name='user']").val();
+    passwordServer = $("input[name='passwd']").val();
+
     var data={
         ip:ipServer,
         port:portServer,
@@ -332,6 +337,11 @@ function setMiddFtp() {
     var limit_speed=$("input[name='limit_speed']").val();
     var search_filter=$("input[name='search_filter']").val();
     var filter_enable=$("#filter_enable").prop("checked")==true?1:0;
+
+    ipServer = $("input[name='etip']").val();
+    portServer = $("input[name='port']").val();
+    userServer = $("input[name='user']").val();
+    passwordServer = $("input[name='passwd']").val();
 
     var data = {
         servicename: servicename,

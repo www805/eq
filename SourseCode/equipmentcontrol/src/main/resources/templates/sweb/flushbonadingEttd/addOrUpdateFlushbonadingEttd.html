@@ -44,7 +44,10 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>通道类型</label>
             <div class="layui-input-block">
-                <input type="number" name="tdtype" id="tdtype" required  lay-verify="required" placeholder="请输入通道类型" autocomplete="off" class="layui-input" onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))">
+                <select name="tdtype" id="tdtype" lay-filter="aihao">
+                    <option value="1">音频</option>
+                    <option value="2">视频</option>
+                </select>
             </div>
         </div>
 

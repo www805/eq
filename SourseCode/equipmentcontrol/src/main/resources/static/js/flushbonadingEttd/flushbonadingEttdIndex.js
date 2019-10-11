@@ -1,6 +1,7 @@
 var MasterSsid;
 var etypessid;
 var ssid;
+var tdStr;
 
 function getFlushbonadingEttdList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -75,7 +76,8 @@ function AddOrUpdateFlushbonadingEttd(version) {
 
     var tdnum=$("input[name='tdnum']").val();
     var pullflowurl=$("input[name='pullflowurl']").val();
-    var tdtype=$("input[name='tdtype']").val();
+    var tdtype=$("#tdtype").val();
+
     if (!isNotEmpty(ssid)) {
         //添加
         // url=getActionURL(getactionid_manage().templateTypeList_addTemplateType);
@@ -136,7 +138,13 @@ function callFlushbonadingEttdById(data){
 
             $("input[name='tdnum']").val(flushbonadingEttd.tdnum);
             $("input[name='pullflowurl']").val(flushbonadingEttd.pullflowurl);
-            $("input[name='tdtype']").val(flushbonadingEttd.tdtype);
+
+
+            if (flushbonadingEttd.tdtype == 1) {
+                $("#tdtype option[value='1']").attr("selected", true);
+            }else{
+                $("#tdtype option[value='2']").attr("selected", true);
+            }
 
         }
     }else{
@@ -203,7 +211,12 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
     form.render();
 
     form.on('submit(addOrUpdateFlushbonadingEttd_btn)', function (data) {
-        AddOrUpdateFlushbonadingEttd();
+
+        var tdJsonStr = JSON.stringify(data.field);
+        if(tdStr != tdJsonStr){
+            tdStr = tdJsonStr;
+            AddOrUpdateFlushbonadingEttd();
+        }
         return false;
     });
 
