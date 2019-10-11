@@ -199,13 +199,13 @@ public class FlushbonadingService extends BaseService {
             return;
         }
 
-        Flushbonading_etinfo etinfo = new Flushbonading_etinfo();
-        etinfo.setUser(paramParam.getUser());
-        Flushbonading_etinfo etinfoOne = flushbonading_etinfoMapper.selectOne(etinfo);
-        if (null != etinfoOne) {
-            result.setMessage("用户名已经存在！");
-            return;
-        }
+//        Base_equipmentinfo etinfo = new Base_equipmentinfo();
+//        etinfo.setEtip(paramParam.getEtip());
+//        Base_equipmentinfo etinfoOne = base_equipmentinfoMapper.selectOne(etinfo);
+//        if (null != etinfoOne) {
+//            result.setMessage("该设备IP已经存在！");
+//            return;
+//        }
 
         Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
         base_equipmentinfo.setEtnum(paramParam.getEtnum());
