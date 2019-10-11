@@ -7,6 +7,7 @@ var portServer = 80;
 var userServer = "admin";
 var passwordServer = "admin123";
 var fieldFrom;
+var fromFTPStr;
 
 function getFlushbonadingList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -259,7 +260,10 @@ function getMiddFtp() {
                 //监听提交
                 form.on('submit(fromFTP)', function(data){
                     // console.log(data);
-                    if(!isNotEmpty(goaction)){
+
+                    var fromFTP = JSON.stringify(data.field);
+                    if(!isNotEmpty(goaction) && fromFTPStr != fromFTP) {
+                        fromFTPStr = fromFTP;
                         goaction = true;
 
                         if(!(/([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}/.test(data.field.serverip))){

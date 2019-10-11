@@ -1,4 +1,5 @@
 var ssid;
+var fromContentData;
 
 function getBaseEttypeList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().problemIndex_getProblemTypes);
@@ -213,10 +214,10 @@ function opneModal_1(ettype) {
 
                     console.log(ettype);
 
+                    var fromContent = JSON.stringify(data.field);
 
-                    if(isNotEmpty(data.field.ettypenum) && isNotEmpty(data.field.explain)){
-
-
+                    if (fromContentData != fromContent) {
+                        fromContentData = fromContent
 
                         if (isNotEmpty(ettype) ) {
                             AddOrUpdateBaseEttype();//修改

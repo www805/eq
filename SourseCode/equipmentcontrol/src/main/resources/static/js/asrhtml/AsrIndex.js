@@ -1,5 +1,6 @@
 var etypessid;
 var ssid;
+var Asr_btnData;
 
 function getAsrList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -254,7 +255,12 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
     });
 
     form.on('submit(addOrUpdateAsr_btn)', function (data) {
-        AddOrUpdateAsr();
+        var Asr_btn = JSON.stringify(data.field);
+
+        if (Asr_btnData != Asr_btn) {
+            Asr_btnData = Asr_btn
+            AddOrUpdateAsr();
+        }
         return false;
     });
 

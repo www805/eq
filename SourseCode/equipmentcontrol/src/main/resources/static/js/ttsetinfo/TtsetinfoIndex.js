@@ -1,5 +1,6 @@
 var etypessid;
 var ssid;
+var TtsetinfoData;
 
 function getTtsetinfoList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -253,7 +254,13 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
     });
 
     form.on('submit(addOrUpdateTtsetinfo_btn)', function (data) {
-        AddOrUpdateTtsetinfo();
+
+        var Ttsetinfo = JSON.stringify(data.field);
+
+        if (TtsetinfoData != Ttsetinfo) {
+            TtsetinfoData = Ttsetinfo
+            AddOrUpdateTtsetinfo();
+        }
         return false;
     });
 

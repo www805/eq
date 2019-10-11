@@ -1,5 +1,6 @@
 var etypessid;
 var ssid;
+var Storage_btnData;
 
 function getStorageList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
@@ -247,7 +248,13 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
     });
 
     form.on('submit(addOrUpdateStorage_btn)', function (data) {
-        AddOrUpdateStorage();
+
+        var Storage_btn = JSON.stringify(data.field);
+
+        if (Storage_btnData != Storage_btn) {
+            Storage_btnData = Storage_btn
+            AddOrUpdateStorage();
+        }
         return false;
     });
 });
