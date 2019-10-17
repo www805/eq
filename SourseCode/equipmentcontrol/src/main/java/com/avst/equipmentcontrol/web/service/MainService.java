@@ -152,7 +152,8 @@ public class MainService {
 
                 Map<String,Object> zkYml = (Map<String, Object>) map.get("zk");
                 Map<String,Object> guidepage = (Map<String, Object>) zkYml.get("guidepage");
-                String guidepageUrl = (String) guidepage.get("url");
+                Map<String,Object> client_button = (Map<String, Object>) guidepage.get("client_button");
+                String guidepageUrl = (String) client_button.get("url");
                 String myIP = NetTool.getMyIP();
                 avstYml.put("guidepageUrl" , "http://" + myIP + guidepageUrl);
 

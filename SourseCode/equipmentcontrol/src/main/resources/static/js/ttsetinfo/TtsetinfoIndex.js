@@ -258,7 +258,7 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
         var Ttsetinfo = JSON.stringify(data.field);
 
         if (TtsetinfoData != Ttsetinfo) {
-            TtsetinfoData = Ttsetinfo
+            TtsetinfoData = Ttsetinfo;
             AddOrUpdateTtsetinfo();
         }
         return false;

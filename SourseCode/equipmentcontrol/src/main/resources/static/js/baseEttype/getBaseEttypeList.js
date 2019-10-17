@@ -217,7 +217,7 @@ function opneModal_1(ettype) {
                     var fromContent = JSON.stringify(data.field);
 
                     if (fromContentData != fromContent) {
-                        fromContentData = fromContent
+                        fromContentData = fromContent;
 
                         if (isNotEmpty(ettype) ) {
                             AddOrUpdateBaseEttype();//修改

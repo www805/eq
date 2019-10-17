@@ -252,7 +252,7 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
         var Storage_btn = JSON.stringify(data.field);
 
         if (Storage_btnData != Storage_btn) {
-            Storage_btnData = Storage_btn
+            Storage_btnData = Storage_btn;
             AddOrUpdateStorage();
         }
         return false;

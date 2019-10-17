@@ -258,7 +258,7 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
         var Asr_btn = JSON.stringify(data.field);
 
         if (Asr_btnData != Asr_btn) {
-            Asr_btnData = Asr_btn
+            Asr_btnData = Asr_btn;
             AddOrUpdateAsr();
         }
         return false;

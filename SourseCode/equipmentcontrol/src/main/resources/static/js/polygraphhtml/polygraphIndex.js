@@ -244,7 +244,7 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
         var Polygraph_btn = JSON.stringify(data.field);
 
         if (Polygraph_btnData != Polygraph_btn) {
-            Polygraph_btnData = Polygraph_btn
+            Polygraph_btnData = Polygraph_btn;
             AddOrUpdatePolygraph();
         }
         return false;
