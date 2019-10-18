@@ -58,4 +58,14 @@ public class AsrTxtParam_avst {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "AsrTxtParam_avst{" +
+                "msg='" + msg + '\'' +
+                ", time='" + time + '\'' +
+                ", id='" + id + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

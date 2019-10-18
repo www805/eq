@@ -55,7 +55,7 @@ public class SSChecckDataThread extends  Thread{
         }
         long filesize_db=ss_dataMessageParam.getDatasize();//数据库中记录的文件大小
         String filename=sorsefilepath.substring(sorsefilepath.lastIndexOf("/")+1);
-        LogUtil.intoLog(this.getClass(),savebasepath+"--savebasepath filename："+filename);
+       /* LogUtil.intoLog(this.getClass(),savebasepath+"--savebasepath filename："+filename);*/
 
         while(bool){
             if(!bool){
@@ -73,7 +73,7 @@ public class SSChecckDataThread extends  Thread{
                     int size=savefilepathlist.size();
                     for(int i=size-1;i>=0;i--){//从最后面查起
                         String path=savefilepathlist.get(i);
-                        LogUtil.intoLog(this.getClass(),path+":path 路径对比 filename:"+filename);
+                       /* LogUtil.intoLog(this.getClass(),path+":path 路径对比 filename:"+filename);*/
                         if(path.endsWith(filename)){//当找到指定文件后进行大小比较
 
                             File savefile=new File(path);

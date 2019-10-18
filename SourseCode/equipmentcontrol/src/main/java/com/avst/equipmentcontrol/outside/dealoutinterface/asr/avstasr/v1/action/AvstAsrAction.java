@@ -50,6 +50,7 @@ public class AvstAsrAction {
 
             AsrTxtParam_avst asrTxtParam_avst=new AsrTxtParam_avst();
             asrTxtParam_avst=(AsrTxtParam_avst)XMLUtil.xmlToStr(asrTxtParam_avst,rr);
+            System.out.println("注意了============="+asrTxtParam_avst.toString());
             LogUtil.intoLog(this.getClass(),asrTxtParam_avst.getId()+"-------------asrTxtParam_avst.getId()");
 
             if("1".equals(asrTxtParam_avst.getTime())){//过滤掉本句结束

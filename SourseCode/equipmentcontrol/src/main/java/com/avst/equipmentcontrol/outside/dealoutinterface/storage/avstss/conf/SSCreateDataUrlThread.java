@@ -36,7 +36,7 @@ public class SSCreateDataUrlThread extends  Thread{
     @Override
     public void run() {
 
-        LogUtil.intoLog(this.getClass(),"SSCreateDataUrlThread is coming "+ss_dataMessageParam.getIid());
+       /* LogUtil.intoLog(this.getClass(),"SSCreateDataUrlThread is coming "+ss_dataMessageParam.getIid());*/
 
         String filename=ss_dataMessageParam.getFilename();
         String savepath=ss_dataMessageParam.getDatasavepath();

@@ -113,14 +113,14 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
     }
 
     @Override
-    public RResult getToOutDefaulturl(GetToOutFlushbonadingListParam param, RResult result) {
+    public RResult getToOutDefault(GetToOutFlushbonadingListParam param, RResult result) {
 
         EntityWrapper<Flushbonadinginfo> ew = new EntityWrapper<>();
         ew.eq("defaulturlbool", 1);
 
         Flushbonadinginfo flushbonadinginfo = flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
         if (null != flushbonadinginfo) {
-            result.changeToTrue(flushbonadinginfo.getLivingurl());
+            result.changeToTrue(flushbonadinginfo);
         }else{
             result.setMessage("没找到默认的审讯主机...");
         }

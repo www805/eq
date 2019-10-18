@@ -22,5 +22,5 @@ public interface ToOutFlushbonadingService {
     public RResult updateToOutFlushbonading(AddOrUpdateToOutFlushbonadingParam param, RResult result);
 
     //获取默认的视频直播地址
-    public RResult getToOutDefaulturl(GetToOutFlushbonadingListParam param, RResult result);
+    public RResult getToOutDefault(GetToOutFlushbonadingListParam param, RResult result);
 }

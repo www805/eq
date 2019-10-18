@@ -42,7 +42,7 @@ public class ToOutAction_asr extends BaseAction {
         if(asrType.equals(ASRType.AVST)){//不同的语音服务有自己的处理
             return toOutServiceImpl_avst;
         }
-        return null;
+        return toOutServiceImpl_avst;
     }
 
 

@@ -53,4 +53,7 @@ public interface Flushbonading_etinfoMapper extends BaseMapper<Flushbonading_eti
             " INNER JOIN base_equipmentinfo b ON f.equipmentssid = b.ssid" +
             " where 1=1 ${ew.sqlSegment}")
     int getRepetition(@Param("ew")EntityWrapper entityWrapper);
+
+
+
 }
