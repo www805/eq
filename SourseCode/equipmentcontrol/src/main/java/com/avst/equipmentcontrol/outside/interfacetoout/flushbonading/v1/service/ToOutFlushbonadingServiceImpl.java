@@ -57,7 +57,7 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
         ReqParam<FlushbonadinginfoParam> reqParam = new ReqParam<FlushbonadinginfoParam>();
 
         FlushbonadinginfoParam flushbonadinginfoParam = new FlushbonadinginfoParam();
-        flushbonadinginfoParam.setSsid(param.getSsid());
+        flushbonadinginfoParam.setSsid(param.getFlushbonadingetinfossid());
         reqParam.setParam(flushbonadinginfoParam);
 
         flushbonadingService.getFlushbonadingById(result, reqParam);
