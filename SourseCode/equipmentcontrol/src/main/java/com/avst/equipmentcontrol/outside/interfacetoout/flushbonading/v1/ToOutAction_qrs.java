@@ -603,13 +603,13 @@ public class ToOutAction_qrs extends BaseAction {
             GetFDAudioConfParam_out  gparam=new GetFDAudioConfParam_out();
             gparam.setFdType(FDType.FD_AVST);
             gparam.setFlushbonadingetinfossid("sxsba2");
-            System.out.println("getFDAudPowerMap--"+JacksonUtil.objebtToString(getFDAudioConf(gparam)));
+            System.out.println("getFDAudioConf--"+JacksonUtil.objebtToString(getFDAudioConf(gparam)));
         }else if(type==14){
 
             GetFDNetWorkParam_out  gparam=new GetFDNetWorkParam_out();
             gparam.setFdType(FDType.FD_AVST);
             gparam.setFlushbonadingetinfossid("sxsba2");
-            System.out.println("getFDAudPowerMap--"+JacksonUtil.objebtToString(getFDNetWork(gparam)));
+            System.out.println("getFDNetWork--"+JacksonUtil.objebtToString(getFDNetWork(gparam)));
         }
 
         return rResult;

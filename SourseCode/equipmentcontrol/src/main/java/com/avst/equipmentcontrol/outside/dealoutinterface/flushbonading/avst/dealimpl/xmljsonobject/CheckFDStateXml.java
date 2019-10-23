@@ -10,11 +10,19 @@ public class CheckFDStateXml {
 
     private String version;
 
-    
-    private String dev_version;
 
+    /**
+     * 版本相关信息
+     */
+    private String dev_version;
+    private String hw;
+    private String sw;
     
     private String devmid_id;
+
+    //设备序列号
+    private String serialnumber;
+
 
     /**
      * 是否正在本地硬盘录像
@@ -58,6 +66,8 @@ public class CheckFDStateXml {
      * ==1就说明有效
      */
     private String dh_set;
+
+
 
     /**
      * 温度值
@@ -504,5 +514,29 @@ public class CheckFDStateXml {
 
     public void setDisk_totalspace(String disk_totalspace) {
         this.disk_totalspace = disk_totalspace;
+    }
+
+    public String getSerialnumber() {
+        return serialnumber;
+    }
+
+    public void setSerialnumber(String serialnumber) {
+        this.serialnumber = serialnumber;
+    }
+
+    public String getHw() {
+        return hw;
+    }
+
+    public void setHw(String hw) {
+        this.hw = hw;
+    }
+
+    public String getSw() {
+        return sw;
+    }
+
+    public void setSw(String sw) {
+        this.sw = sw;
     }
 }

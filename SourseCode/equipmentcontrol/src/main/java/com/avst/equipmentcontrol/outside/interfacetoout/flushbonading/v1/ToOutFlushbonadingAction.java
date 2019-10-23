@@ -92,7 +92,7 @@ public class ToOutFlushbonadingAction extends BaseAction {
         return result;
     }
 
-    //获取默认的视频直播地址
+    //获取默认的设备信息
     @RequestMapping("/getToOutDefault")
     @ResponseBody
     public RResult getToOutDefault(@RequestBody ReqParam<GetToOutFlushbonadingListParam> param){
