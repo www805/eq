@@ -1293,4 +1293,39 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
 
         return result;
     }
+
+    @Override
+    public RResult getFDNetWork(GetFDNetWorkParam_out pParam, RResult result) {
+
+        String fdssid=pParam.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        Get_networkParam get_networkParam=new Get_networkParam();
+        get_networkParam.setPort(flushbonadinginfo.getPort());
+        get_networkParam.setIp(flushbonadinginfo.getEtip());
+        get_networkParam.setPasswd(flushbonadinginfo.getPasswd());
+        get_networkParam.setUser(flushbonadinginfo.getUser());
+        RResult<Get_networkVO> result2=new RResult<Get_networkVO>();
+        result2=fdDeal.get_network(get_networkParam,result2);
+        if(null!=result2){
+            result=result2;
+        }else{
+            result.setMessage("请求获取设备网络配置失败");
+        }
+
+        return result;
+    }
 }

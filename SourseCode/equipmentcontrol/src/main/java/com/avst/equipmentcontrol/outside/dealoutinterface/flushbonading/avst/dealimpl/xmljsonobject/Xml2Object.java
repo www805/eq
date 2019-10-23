@@ -478,6 +478,48 @@ public class Xml2Object {
         return null;
     }
 
+    /**
+     * 解析 获得设备网络信息
+     * @param xml
+     * @return
+     */
+    public static Get_networkVOXml get_networkVOXml( String xml) {
+        try {
+
+            Get_networkVOXml get_networkVOXml=new Get_networkVOXml();
+
+            if(StringUtils.isNotEmpty(xml)){
+                if(xml.indexOf("network_info" )> -1 && xml.indexOf("network" )> -1 && xml.indexOf("lan" )> -1){//说明有数据，并且是可以用的
+
+                    String linnetworkSTR=jxXml(xml,"<network ","</network>",1);
+
+                    //切割音频列表
+                    if(StringUtils.isNotEmpty(linnetworkSTR)){
+                        String[] arr=linnetworkSTR.split("<lan");
+                        if(null!=arr&&arr.length > 0){
+                            List<Lan_net> linlist=new ArrayList<Lan_net>();
+                            for(String str:arr){
+
+                                //解析arr每一个参数
+                                Lan_net lan_net=new Lan_net();
+                                lan_net=(Lan_net)setJavaBeanParam(lan_net,str);
+                                if(null==lan_net||null==lan_net.getDevice()||null==lan_net.getIp()){
+                                    continue;
+                                }
+                                linlist.add(lan_net);
+                            }
+                            get_networkVOXml.setLanList(linlist);
+                        }
+                    }
+                }
+            }
+            return get_networkVOXml;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 
     /**
@@ -718,10 +760,27 @@ private static int jxXml(String xml,String startstr,String endstr){
     public static void main(String[] args) {
         String xml="<root>\n" +
                 "<version>AICBH:1.0</version>\n" +
-                "<set_audio_cfg t=\"set\">1</set_audio_cfg>\n" +
+                "<network_info t=\"get\">\n" +
+                "<network extern=\"0\">\n" +
+                "<lan>\n" +
+                "<device>eth0</device>\n" +
+                "<type>3</type>\n" +
+                "<ip>192.168.17.186</ip>\n" +
+                "<netmask>255.255.255.0</netmask>\n" +
+                "<gateway>192.168.17.254</gateway>\n" +
+                "</lan>\n" +
+                "<lan>\n" +
+                "<device>eth1</device>\n" +
+                "<type>3</type>\n" +
+                "<ip>1.1.1.1</ip>\n" +
+                "<netmask>255.255.0.0</netmask>\n" +
+                "<gateway>192.1.1.1</gateway>\n" +
+                "</lan>\n" +
+                "</network>\n" +
+                "</network_info>\n" +
                 "</root>";
 
-        System.out.println(JacksonUtil.objebtToString(setAudioVolumeXml(xml)));
+        System.out.println(JacksonUtil.objebtToString(get_networkVOXml(xml)));
     }
 
 }

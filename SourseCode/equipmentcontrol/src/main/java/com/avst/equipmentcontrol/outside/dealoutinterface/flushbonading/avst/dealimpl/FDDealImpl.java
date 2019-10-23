@@ -1015,6 +1015,39 @@ public class FDDealImpl implements FDInterface{
     }
 
     @Override
+    public RResult<Get_networkVO> get_network(Get_networkParam param, RResult<Get_networkVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------get_network");
+            return result;
+        }
+
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=api&type=network_info"+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+":rr--get_network----regparam:"+regparam);
+        Get_networkVOXml getnetworkVOXml=Xml2Object.get_networkVOXml(rr);
+        if(null!=getnetworkVOXml){
+            Gson gson=new Gson();
+            Get_networkVO vo=gson.fromJson(gson.toJson(getnetworkVOXml),Get_networkVO.class);
+            result.changeToTrue(vo);
+        }else{
+            result.setMessage("请求设备网络配置失败");
+        }
+
+
+        return result;
+    }
+
+    @Override
     public RResult<SetAudioVolumeVO> setAudioVolume(SetAudioVolumeParam param, RResult<SetAudioVolumeVO> result) {
 
         String ip=param.getIp();

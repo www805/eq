@@ -464,6 +464,25 @@ public class ToOutAction_qrs extends BaseAction {
         return result;
     }
 
+    /**
+     * 获得设备网络配置
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getFDNetWork")
+    @ResponseBody
+    public RResult getFDNetWork(@RequestBody GetFDNetWorkParam_out param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param){
+            GetFDNetWorkParam_out pParam=param;
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).getFDNetWork(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
 
 
 
@@ -585,6 +604,12 @@ public class ToOutAction_qrs extends BaseAction {
             gparam.setFdType(FDType.FD_AVST);
             gparam.setFlushbonadingetinfossid("sxsba2");
             System.out.println("getFDAudPowerMap--"+JacksonUtil.objebtToString(getFDAudioConf(gparam)));
+        }else if(type==14){
+
+            GetFDNetWorkParam_out  gparam=new GetFDNetWorkParam_out();
+            gparam.setFdType(FDType.FD_AVST);
+            gparam.setFlushbonadingetinfossid("sxsba2");
+            System.out.println("getFDAudPowerMap--"+JacksonUtil.objebtToString(getFDNetWork(gparam)));
         }
 
         return rResult;

@@ -180,6 +180,15 @@ public interface ToOutService_qrs {
     RResult setFDnetwork(SetFDnetworkParam_out pParam, RResult result);
 
     /**
+     * 获取设备网口 IP、子网掩码、网关
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult getFDNetWork(GetFDNetWorkParam_out pParam, RResult result);
+
+
+    /**
      * 设置设备某一个通道的通道音量
      * @param pParam
      * @param result

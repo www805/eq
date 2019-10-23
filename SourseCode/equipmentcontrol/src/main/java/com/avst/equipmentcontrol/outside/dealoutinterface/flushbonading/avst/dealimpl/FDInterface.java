@@ -216,6 +216,14 @@ public interface FDInterface {
      */
     public RResult<Set_networkVO> set_network(Set_networkParam param, RResult<Set_networkVO> result);
 
+    /**
+     * 获取设备网口 IP、子网掩码、网关
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<Get_networkVO> get_network(Get_networkParam param, RResult<Get_networkVO> result);
+
 
     /**
      * 获取光盘序号
