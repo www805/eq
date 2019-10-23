@@ -460,7 +460,10 @@ public class Xml2Object {
 
                                 //解析audarr每一个参数
                                 Aud aud=new Aud();
-                                aud=(Aud)setJavaBeanParam2(aud,xml);
+                                aud=(Aud)setJavaBeanParam2(aud,str);
+                                if(null==aud||null==aud.getCh()||null==aud.getVolume()){
+                                    continue;
+                                }
                                 audlist.add(aud);
                             }
                             getAudioConfXml.setAudList(audlist);

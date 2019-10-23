@@ -12,6 +12,8 @@
     <artifactId>equipmentcontrol</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>equipmentcontrol</name>
+    <!--<packaging>war</packaging>-->
+    <packaging>jar</packaging>
     <description>equipmentcontrol project for Spring Boot</description>
 
     <properties>
@@ -43,11 +45,6 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>2.2.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
@@ -237,13 +234,39 @@
                     <artifactId>mina-core</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
+        </dependency>-->
+        <!--<dependency>
             <groupId>org.apache.ftpserver</groupId>
             <artifactId>ftpserver-core</artifactId>
             <version>1.0.6</version>
         </dependency>-->
 
+        <!--jar 打包使用开始-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--jar 打包使用结束-->
+
+        <!--war 打包使用开始-->
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            &lt;!&ndash; 排除内置容器，排除内置容器导出成war包可以让外部容器运行spring-boot项目&ndash;&gt;
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>-->
+        <!--war 打包使用结束-->
 
     </dependencies>
 
@@ -260,6 +283,8 @@
     </dependencyManagement>
 
     <build>
+
+        <!--jar打包开始-->
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -305,6 +330,41 @@
                 </configuration>
             </plugin>
         </plugins>
+        <!--jar打包结束-->
+
+
+        <!--war启动开始-->
+
+        <!--<plugins>
+            &lt;!&ndash; 添加spring的插件， 就可以直接通过 mvn spring-boot:run 运行了 &ndash;&gt;
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.2</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+        </plugins>-->
+
+        <!--war启动结束-->
+
+
     </build>
 
 </project>

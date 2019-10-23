@@ -281,7 +281,7 @@ public class FDDealImpl implements FDInterface{
             }
 
         }else{
-            result.setMessage("请求集中管理ftp配置失败 --");
+            result.setMessage("设置集中管理ftp配置失败 --");
         }
 
         return result;

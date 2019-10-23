@@ -579,6 +579,12 @@ public class ToOutAction_qrs extends BaseAction {
             gparam.setFdType(FDType.FD_AVST);
             gparam.setFlushbonadingetinfossid("sxsba2");
             System.out.println("getFDAudPowerMap--"+JacksonUtil.objebtToString(getFDAudPowerMap(gparam)));
+        }else if(type==13){
+
+            GetFDAudioConfParam_out  gparam=new GetFDAudioConfParam_out();
+            gparam.setFdType(FDType.FD_AVST);
+            gparam.setFlushbonadingetinfossid("sxsba2");
+            System.out.println("getFDAudPowerMap--"+JacksonUtil.objebtToString(getFDAudioConf(gparam)));
         }
 
         return rResult;

@@ -37,15 +37,15 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
         String phssid=param.getPolygraphssid();
         if(StringUtils.isEmpty(phssid)){
             LogUtil.intoLog(this.getClass()," phssid is null---"+phssid);
-            result.setMessage("测谎仪标识为空");
+            result.setMessage("身心监护标识为空");
             return result;
         }
         EntityWrapper<PolygraphInfo> entityWrapper=new EntityWrapper<PolygraphInfo>();
         entityWrapper.eq("pet.ssid",phssid);
         PolygraphInfo polygraphInfo=polygraph_etinfoMapper.getPolygraphInfo(entityWrapper);
         if(null==polygraphInfo){
-            LogUtil.intoLog(this.getClass(),"测谎仪没有找到，请查看 phssid："+phssid);
-            result.setMessage("测谎仪没有找到");
+            LogUtil.intoLog(this.getClass(),"身心监护没有找到，请查看 phssid："+phssid);
+            result.setMessage("身心监护没有找到");
             return result;
         }
         BaseParam xBoxParam=new BaseParam();
@@ -69,7 +69,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
     @Override
     public RResult startPolygraph(StartPolygraphParam param, RResult result) {
         Gson gson=new Gson();
-        //因为mc公司的测谎仪不需要临时开启，所以只需要检测是否在正常工作就可以了
+        //因为mc公司的身心监护不需要临时开启，所以只需要检测是否在正常工作就可以了
         CheckPolygraphStateParam pparam=gson.fromJson(gson.toJson(param),CheckPolygraphStateParam.class);
         checkPolygraphState(pparam,result);
         return result;
@@ -81,15 +81,15 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
         String phssid=param.getPolygraphssid();
         if(StringUtils.isEmpty(phssid)){
             LogUtil.intoLog(this.getClass()," phssid is null---"+phssid);
-            result.setMessage("测谎仪标识为空");
+            result.setMessage("身心监护标识为空");
             return result;
         }
         EntityWrapper<PolygraphInfo> entityWrapper=new EntityWrapper<PolygraphInfo>();
         entityWrapper.eq("pet.ssid",phssid);
         PolygraphInfo polygraphInfo=polygraph_etinfoMapper.getPolygraphInfo(entityWrapper);
         if(null==polygraphInfo){
-            LogUtil.intoLog(this.getClass(),"测谎仪没有找到，请查看 phssid："+phssid);
-            result.setMessage("测谎仪没有找到");
+            LogUtil.intoLog(this.getClass(),"身心监护没有找到，请查看 phssid："+phssid);
+            result.setMessage("身心监护没有找到");
             return result;
         }
         BaseParam xBoxParam=new BaseParam();
@@ -115,15 +115,15 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
         String phssid=param.getPolygraphssid();
         if(StringUtils.isEmpty(phssid)){
             LogUtil.intoLog(this.getClass()," phssid is null---"+phssid);
-            result.setMessage("测谎仪标识为空");
+            result.setMessage("身心监护标识为空");
             return result;
         }
         EntityWrapper<PolygraphInfo> entityWrapper=new EntityWrapper<PolygraphInfo>();
         entityWrapper.eq("pet.ssid",phssid);
         PolygraphInfo polygraphInfo=polygraph_etinfoMapper.getPolygraphInfo(entityWrapper);
         if(null==polygraphInfo){
-            LogUtil.intoLog(this.getClass(),"测谎仪没有找到，请查看 phssid："+phssid);
-            result.setMessage("测谎仪没有找到");
+            LogUtil.intoLog(this.getClass(),"身心监护没有找到，请查看 phssid："+phssid);
+            result.setMessage("身心监护没有找到");
             return result;
         }
         BaseParam xBoxParam=new BaseParam();
@@ -144,15 +144,15 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
         String phssid=param.getPolygraphssid();
         if(StringUtils.isEmpty(phssid)){
             LogUtil.intoLog(this.getClass()," phssid is null---"+phssid);
-            result.setMessage("测谎仪标识为空");
+            result.setMessage("身心监护标识为空");
             return result;
         }
         EntityWrapper<PolygraphInfo> entityWrapper=new EntityWrapper<PolygraphInfo>();
         entityWrapper.eq("pet.ssid",phssid);
         PolygraphInfo polygraphInfo=polygraph_etinfoMapper.getPolygraphInfo(entityWrapper);
         if(null==polygraphInfo){
-            LogUtil.intoLog(this.getClass(),"测谎仪没有找到，请查看 phssid："+phssid);
-            result.setMessage("测谎仪没有找到");
+            LogUtil.intoLog(this.getClass(),"身心监护没有找到，请查看 phssid："+phssid);
+            result.setMessage("身心监护没有找到");
             return result;
         }
         BaseParam xBoxParam=new BaseParam();
