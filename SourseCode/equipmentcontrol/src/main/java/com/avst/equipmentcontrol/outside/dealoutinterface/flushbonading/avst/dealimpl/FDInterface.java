@@ -258,4 +258,54 @@ public interface FDInterface {
      */
     public RResult<SetAudioVolumeVO> setAudioVolume(SetAudioVolumeParam param, RResult<SetAudioVolumeVO> result);
 
+    /**
+     * 设置设备当前时间
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<SetTimeVO> setTime(SetTimeParam param, RResult<SetTimeVO> result);
+
+    /**
+     * 设置设备NTP同步
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<SetNTPVO> setNTP(SetNTPParam param, RResult<SetNTPVO> result);
+
+    /**
+     * 获取设备NTP同步设置
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<GetNTPVO> getNTP(GetNTPParam param, RResult<GetNTPVO> result);
+
+    /**
+     * 补刻
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<SupplementBurnVO> supplementBurn(SupplementBurnParam param, RResult<SupplementBurnVO> result);
+
+    //查看上传的文件
+
+    /**
+     * 设置设备部分信息叠加位置
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<SetOSDVO> setOSD(SetOSDParam param, RResult<SetOSDVO> result);
+
+    /**
+     * 获取设备部分信息叠加位置
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<GetOSDVO> getOSD(GetOSDParam param, RResult<GetOSDVO> result);
+
 }

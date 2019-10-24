@@ -595,7 +595,6 @@ public class DateUtil {
     public static String getYear(Date date) {
 		String currentTime = DateUtil.getDefaultDateFormat(date.getTime());
 		String year = currentTime.substring(0, 4);
-		// String month = currentTime.substring(5, 7);
 		return year;
 
 	}
@@ -610,6 +609,27 @@ public class DateUtil {
 	public static String getDay(Date date) {
 		String currentTime = DateUtil.getDefaultDateFormat(date.getTime());
 		String day = currentTime.substring(8, 10);
+		return day;
+
+	}
+
+	public static String getHour(Date date) {
+		String currentTime = DateUtil.getDefaultDateFormat(date.getTime());
+		String day = currentTime.substring(11, 13);
+		return day;
+
+	}
+
+	public static String getMM(Date date) {
+		String currentTime = DateUtil.getDefaultDateFormat(date.getTime());
+		String day = currentTime.substring(14, 16);
+		return day;
+
+	}
+
+	public static String getSS(Date date) {
+		String currentTime = DateUtil.getDefaultDateFormat(date.getTime());
+		String day = currentTime.substring(17, 19);
 		return day;
 
 	}
@@ -833,8 +853,12 @@ public class DateUtil {
     	      return format.format(calendar.getTime());
     	}
     public static void main(String[] args) {
-		
-			LogUtil.intoLog(DateUtil.class,fromToday(new Date()));
+
+		LogUtil.intoLog(new Date());
+		LogUtil.intoLog(DateUtil.class,getHour(new Date()));
+		LogUtil.intoLog(DateUtil.class,getMM(new Date()));
+		LogUtil.intoLog(DateUtil.class,getSS(new Date()));
+
 			
 	}
  

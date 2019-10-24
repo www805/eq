@@ -483,6 +483,120 @@ public class ToOutAction_qrs extends BaseAction {
         return result;
     }
 
+    /**
+     * 设置设备当前时间
+     * @param param
+     * @return
+     */
+    @RequestMapping("/setFDTime")
+    @ResponseBody
+    public RResult setFDTime(@RequestBody SetFDTimeParam_out param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param){
+            SetFDTimeParam_out pParam=param;
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).setFDTime(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    /**
+     * 设置设备NTP同步
+     * @param param
+     * @return
+     */
+    @RequestMapping("/setFDNTP")
+    @ResponseBody
+    public RResult setFDNTP(@RequestBody GetFDNetWorkParam_out param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param){
+            GetFDNetWorkParam_out pParam=param;
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).getFDNetWork(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    /**
+     * 获取设备NTP同步设置
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getFDNTP")
+    @ResponseBody
+    public RResult getFDNTP(@RequestBody GetFDNetWorkParam_out param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param){
+            GetFDNetWorkParam_out pParam=param;
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).getFDNetWork(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    /**
+     * 光盘补刻
+     * @param param
+     * @return
+     */
+    @RequestMapping("/supplementBurn")
+    @ResponseBody
+    public RResult supplementBurn(@RequestBody GetFDNetWorkParam_out param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param){
+            GetFDNetWorkParam_out pParam=param;
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).getFDNetWork(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    /**
+     * 设置设备部分信息叠加位置
+     * @param param
+     * @return
+     */
+    @RequestMapping("/setFDOSD")
+    @ResponseBody
+    public RResult setFDOSD(@RequestBody GetFDNetWorkParam_out param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param){
+            GetFDNetWorkParam_out pParam=param;
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).getFDNetWork(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    /**
+     * 获取设备部分信息叠加位置
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getFDOSD")
+    @ResponseBody
+    public RResult getFDOSD(@RequestBody GetFDNetWorkParam_out param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param){
+            GetFDNetWorkParam_out pParam=param;
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).getFDNetWork(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
 
 
 

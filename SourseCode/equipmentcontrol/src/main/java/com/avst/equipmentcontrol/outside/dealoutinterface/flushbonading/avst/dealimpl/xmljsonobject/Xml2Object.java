@@ -2,6 +2,8 @@ package com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.de
 
 import com.avst.equipmentcontrol.common.util.JacksonUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.vo.GetNTPVO;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.vo.GetOSDVO;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.xmljsonobject.param.*;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.lang.StringUtils;
@@ -348,6 +350,83 @@ public class Xml2Object {
     }
 
     /**
+     * 解析 设置系统时间
+     * @param xml
+     * @return
+     */
+    public static int setTimeXml( String xml) {
+        try {
+
+            String startstr="<set_time t=\"set\">";
+            String endstr="</set_time>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * 解析 设置NTP同步配置
+     * @param xml
+     * @return
+     */
+    public static int setNTPXml( String xml) {
+        try {
+
+            String startstr="<set_ntp t=\"set\">";
+            String endstr="</set_ntp>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * 解析 设置OSD信息叠加
+     * @param xml
+     * @return
+     */
+    public static int setOSDXml( String xml) {
+        try {
+
+            String startstr="<set_osd_location t=\"set\">";
+            String endstr="</set_osd_location>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
+
+    /**
+     * 解析 光盘补充刻录
+     * @param xml
+     * @return
+     */
+    public static int supplementBurnXml( String xml) {
+        try {
+
+            String startstr="<set_sburn t=\"set\">";
+            String endstr="</set_sburn>";
+
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
+
+
+    /**
      * 解析 日志查询信息
      * @param xml
      * @return
@@ -402,7 +481,7 @@ public class Xml2Object {
                     fdLogItem.setMessage(message);
                     fdLogItemlist.add(fdLogItem);
 
-                    itemstr=itemstr.substring(itemstr.indexOf("</item>")+8);
+                    itemstr=itemstr.substring(itemstr.indexOf("</item>")+7);
                 }while(itemstr.indexOf("<item") > -1);
 
                 if(null!=fdLogItemlist&&fdLogItemlist.size() > 0){
@@ -477,6 +556,59 @@ public class Xml2Object {
         }
         return null;
     }
+
+    /**
+     * 解析 获得NTP同步配置
+     * @param xml
+     * @return
+     */
+    public static GetNTPVO getNTPXml(String xml) {
+        try {
+
+            GetNTPVO getNTPVO=new GetNTPVO();
+
+            if(StringUtils.isNotEmpty(xml)){
+                if(xml.indexOf("get_ntp" )> -1){//说明有数据，并且是可以用的
+
+                    String ntpstr=jxXml(xml,"<get_ntp t=\"get\">","</get_ntp>",1);
+                    getNTPVO=(GetNTPVO)setJavaBeanParam(getNTPVO,ntpstr);
+                    if(null!=getNTPVO){
+                        return getNTPVO;
+                    }
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 解析 获得NTP同步配置
+     * @param xml
+     * @return
+     */
+    public static GetOSDVO getOSDXml(String xml) {
+        try {
+
+            GetOSDVO getOSDVO=new GetOSDVO();
+
+            if(StringUtils.isNotEmpty(xml)){
+                if(xml.indexOf("get_osd_location" )> -1){//说明有数据，并且是可以用的
+
+                    String ntpstr=jxXml(xml,"<get_osd_location t=\"get\">","</get_osd_location>",1);
+                    getOSDVO=(GetOSDVO)setJavaBeanParam(getOSDVO,ntpstr);
+                    if(null!=getOSDVO){
+                        return getOSDVO;
+                    }
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     /**
      * 解析 获得设备网络信息
@@ -760,27 +892,19 @@ private static int jxXml(String xml,String startstr,String endstr){
     public static void main(String[] args) {
         String xml="<root>\n" +
                 "<version>AICBH:1.0</version>\n" +
-                "<network_info t=\"get\">\n" +
-                "<network extern=\"0\">\n" +
-                "<lan>\n" +
-                "<device>eth0</device>\n" +
-                "<type>3</type>\n" +
-                "<ip>192.168.17.186</ip>\n" +
-                "<netmask>255.255.255.0</netmask>\n" +
-                "<gateway>192.168.17.254</gateway>\n" +
-                "</lan>\n" +
-                "<lan>\n" +
-                "<device>eth1</device>\n" +
-                "<type>3</type>\n" +
-                "<ip>1.1.1.1</ip>\n" +
-                "<netmask>255.255.0.0</netmask>\n" +
-                "<gateway>192.1.1.1</gateway>\n" +
-                "</lan>\n" +
-                "</network>\n" +
-                "</network_info>\n" +
+                "<get_osd_location t=\"get\">\n" +
+                "<osdpart_time_x>50</osdpart_time_x>\n" +
+                "<osdpart_time_y>20</osdpart_time_y>\n" +
+                "<osdpart_pttext_x>20</osdpart_pttext_x>\n" +
+                "<osdpart_pttext_y>130</osdpart_pttext_y>\n" +
+                "<osdpart_title_x>50</osdpart_title_x>\n" +
+                "<osdpart_title_y>60</osdpart_title_y>\n" +
+                "<osdpart_temperature_x>610</osdpart_temperature_x>\n" +
+                "<osdpart_temperature_y>20</osdpart_temperature_y>\n" +
+                "</get_osd_location>\n" +
                 "</root>";
 
-        System.out.println(JacksonUtil.objebtToString(get_networkVOXml(xml)));
+        System.out.println(JacksonUtil.objebtToString(getOSDXml(xml)));
     }
 
 }

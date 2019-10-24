@@ -204,4 +204,52 @@ public interface ToOutService_qrs {
      */
     RResult getFDAudioConf(GetFDAudioConfParam_out pParam, RResult result);
 
+    /**
+     * 设置设备当前时间
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult setFDTime(SetFDTimeParam_out pParam, RResult result);
+
+    /**
+     * 设置设备NTP同步
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult setFDNTP(SetFDNTPParam_out pParam, RResult result);
+
+    /**
+     * 光盘补刻
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult supplementBurn(SupplementBurnParam_out pParam, RResult result);
+
+    /**
+     * 获取设备NTP同步设置
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult getFDNTP(GetFDNTPParam_out pParam, RResult result);
+
+    /**
+     * 设置设备部分信息叠加位置
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult setFDOSD(SetFDOSDParam_out pParam, RResult result);
+
+    /**
+     * 获取设备部分信息叠加位置
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult getFDOSD(GetFDOSDParam_out pParam, RResult result);
+
 }

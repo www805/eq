@@ -20,7 +20,9 @@ import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.FDCa
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.cache.param.FDCacheParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.*;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.GetFDAudioConfVO;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.GetFDOSDVO;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.GetFDStateVO;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.Param.CoordinateParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.Param.GetAudioConfVO_param;
 import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.vo.WorkStartVO;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.SaveFileParam;
@@ -33,9 +35,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
+import java.util.*;
 
 /**
  * avst设备的对外接口处理
@@ -1322,6 +1322,249 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         result2=fdDeal.get_network(get_networkParam,result2);
         if(null!=result2){
             result=result2;
+        }else{
+            result.setMessage("请求获取设备网络配置失败");
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult setFDTime(SetFDTimeParam_out pParam, RResult result) {
+
+        try {
+            String fdssid=pParam.getFlushbonadingetinfossid();
+            if (StringUtils.isBlank(fdssid)){
+                LogUtil.intoLog(4,this.getClass(),"setFDTime param.getFdssid():"+fdssid);
+                result.setMessage("参数为空");
+                return result;
+            }
+
+            //查询数据库找到设备
+            EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+            ew.eq("fet.ssid",fdssid);
+            Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+            if(null==flushbonadinginfo){
+                result.setMessage("设备未找到，请查询数据");
+                return result;
+            }
+
+            String dateTime=pParam.getDateTime();
+            if (StringUtils.isEmpty(dateTime)){
+                LogUtil.intoLog(4,this.getClass(),"setFDTime pParam.getDateTime():"+dateTime);
+                result.setMessage("参数为空");
+                return result;
+            }
+            Date date=DateUtil.strToDate(dateTime);
+            if(null==date){//说明传过来的是一个格式不正确的日期
+                result.setMessage("日期格式不正确");
+                return result;
+            }
+
+            SetTimeParam setAudioVolumeParam=new SetTimeParam();
+            setAudioVolumeParam.setPort(flushbonadinginfo.getPort());
+            setAudioVolumeParam.setIp(flushbonadinginfo.getEtip());
+            setAudioVolumeParam.setPasswd(flushbonadinginfo.getPasswd());
+            setAudioVolumeParam.setUser(flushbonadinginfo.getUser());
+            setAudioVolumeParam.setDay(Integer.parseInt(DateUtil.getDay(date)));
+            setAudioVolumeParam.setMonth(Integer.parseInt(DateUtil.getMonth(date)));
+            setAudioVolumeParam.setYear(Integer.parseInt(DateUtil.getYear(date)));
+            setAudioVolumeParam.setHour(Integer.parseInt(DateUtil.getHour(date)));
+            setAudioVolumeParam.setMm(Integer.parseInt(DateUtil.getMM(date)));
+            setAudioVolumeParam.setSs(Integer.parseInt(DateUtil.getSS(date)));
+
+            String tz=pParam.getTimeZone();
+            if(StringUtils.isNotEmpty(tz)){
+                setAudioVolumeParam.setTimeZone(tz);
+            }
+
+            RResult<SetTimeVO> result2=new RResult<SetTimeVO>();
+            result2=fdDeal.setTime(setAudioVolumeParam,result2);
+            if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+                result.changeToTrue();
+            }else{
+                if(null!=result){
+                    result.setMessage(result.getMessage());
+                }else{
+                    result.setMessage("设置设备当前时间失败");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult setFDNTP(SetFDNTPParam_out pParam, RResult result) {
+
+        try {
+            String fdssid=pParam.getFlushbonadingetinfossid();
+            if (StringUtils.isBlank(fdssid)){
+                LogUtil.intoLog(4,this.getClass(),"setFDNTP param.getFdssid():"+fdssid);
+                result.setMessage("参数为空");
+                return result;
+            }
+
+            //查询数据库找到设备
+            EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+            ew.eq("fet.ssid",fdssid);
+            Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+            if(null==flushbonadinginfo){
+                result.setMessage("设备未找到，请查询数据");
+                return result;
+            }
+
+            String ntpintervaltime=pParam.getNtp_intervaltime();
+            String ntphost=pParam.getNtp_host();
+            String ntpport=pParam.getNtp_port();
+            if (StringUtils.isEmpty(ntpintervaltime)||StringUtils.isEmpty(ntphost)||StringUtils.isEmpty(ntpport)){
+                LogUtil.intoLog(4,this.getClass(),"NTP参数异常，pParam：:"+JacksonUtil.objebtToString(pParam));
+                result.setMessage("参数为空");
+                return result;
+            }
+
+            SetNTPParam pparam=new SetNTPParam();
+            pparam.setPort(flushbonadinginfo.getPort());
+            pparam.setIp(flushbonadinginfo.getEtip());
+            pparam.setPasswd(flushbonadinginfo.getPasswd());
+            pparam.setUser(flushbonadinginfo.getUser());
+            pparam.setNtp_enable(pParam.getNtp_enable());
+            pparam.setNtp_host(ntphost);
+            pparam.setNtp_intervaltime(ntpintervaltime);
+            pparam.setNtp_port(ntpport);
+
+            RResult<SetNTPVO> result2=new RResult<SetNTPVO>();
+            result2=fdDeal.setNTP(pparam,result2);
+            if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+                result.changeToTrue();
+            }else{
+                if(null!=result){
+                    result.setMessage(result.getMessage());
+                }else{
+                    result.setMessage("设置NTP配置失败");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return result;
+    }
+
+    @Override
+    public RResult supplementBurn(SupplementBurnParam_out pParam, RResult result) {
+        return result;
+    }
+
+    @Override
+    public RResult getFDNTP(GetFDNTPParam_out pParam, RResult result) {
+
+        String fdssid=pParam.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        GetNTPParam pparam=new GetNTPParam();
+        pparam.setPort(flushbonadinginfo.getPort());
+        pparam.setIp(flushbonadinginfo.getEtip());
+        pparam.setPasswd(flushbonadinginfo.getPasswd());
+        pparam.setUser(flushbonadinginfo.getUser());
+        RResult<GetNTPVO> result2=new RResult<GetNTPVO>();
+        result2=fdDeal.getNTP(pparam,result2);
+        if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())&&null!=result2.getData()){
+
+        }else{
+            result.setMessage("请求获取设备网络配置失败");
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult setFDOSD(SetFDOSDParam_out pParam, RResult result) {
+        return result;
+    }
+
+    @Override
+    public RResult getFDOSD(GetFDOSDParam_out pParam, RResult result) {
+
+        String fdssid=pParam.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        boolean ptbool=pParam.isPtbool();
+        boolean temperaturebool=pParam.isTemperaturebool();
+        boolean timebool=pParam.isTimebool();
+        boolean titlebool=pParam.isTitlebool();
+        if (!ptbool&&!temperaturebool&&!timebool&&!titlebool){
+            LogUtil.intoLog(this.getClass(),"用户不想要任何一个osd的坐标，直接返回，"+JacksonUtil.objebtToString(pParam));
+            result.setMessage("参数异常");
+            return result;
+        }
+
+        GetOSDParam pparam=new GetOSDParam();
+        pparam.setPort(flushbonadinginfo.getPort());
+        pparam.setIp(flushbonadinginfo.getEtip());
+        pparam.setPasswd(flushbonadinginfo.getPasswd());
+        pparam.setUser(flushbonadinginfo.getUser());
+        RResult<GetOSDVO> result2=new RResult<GetOSDVO>();
+        result2=fdDeal.getOSD(pparam,result2);
+        if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())&&null!=result2.getData()){
+            GetOSDVO getOSDVO=result2.getData();
+            if(null!=getOSDVO){
+                GetFDOSDVO getFDOSDVO=new GetFDOSDVO();
+                Map<String, CoordinateParam> osdMap=new HashMap<String, CoordinateParam>();
+                if(ptbool){
+                    osdMap.put("pt",new CoordinateParam(getOSDVO.getOsdpart_pttext_x(),getOSDVO.getOsdpart_pttext_y()));
+                }
+                if(temperaturebool){
+                    osdMap.put("temperature",new CoordinateParam(getOSDVO.getOsdpart_temperature_x(),getOSDVO.getOsdpart_temperature_y()));
+                }
+                if(timebool){
+                    osdMap.put("time",new CoordinateParam(getOSDVO.getOsdpart_time_x(),getOSDVO.getOsdpart_time_y()));
+                }
+                if(titlebool){
+                    osdMap.put("title",new CoordinateParam(getOSDVO.getOsdpart_title_x(),getOSDVO.getOsdpart_title_y()));
+                }
+                getFDOSDVO.setOsdMap(osdMap);
+
+                result.changeToTrue(getFDOSDVO);
+
+            }else{
+                result.setMessage("请求获取的OSD信息叠加为空，请联系管理员");
+            }
         }else{
             result.setMessage("请求获取设备网络配置失败");
         }

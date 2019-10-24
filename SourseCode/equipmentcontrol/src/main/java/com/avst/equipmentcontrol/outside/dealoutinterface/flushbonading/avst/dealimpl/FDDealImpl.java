@@ -1079,4 +1079,282 @@ public class FDDealImpl implements FDInterface{
         }
         return result;
     }
+
+    @Override
+    public RResult<SetTimeVO> setTime(SetTimeParam param, RResult<SetTimeVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        String timeZone=param.getTimeZone();//时区
+        int year=param.getYear();
+        int month=param.getMonth();
+        int day=param.getDay();
+        int hour=param.getHour();
+        int mm=param.getMm();
+        int ss=param.getSs();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------setTime");
+            return result;
+        }
+
+        if(year <= 0||month <= 0||day <= 0){
+            result.setMessage("年月日参数异常");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------setTime");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=api&type=set_time"+
+                "&year="+year+"&month="+month+"&day="+day+"&hour="+hour+"&mm="+mm+"&ss="+ss+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        if(StringUtils.isNotEmpty(timeZone)){
+            regparam+="&timezone="+timeZone;
+        }
+        /*String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+":rr--setTime----regparam:"+regparam);
+        int bool=Xml2Object.setTimeXml(rr);*/
+
+        int bool=1;//暂时测试返回永远是对的
+        LogUtil.intoLog(this.getClass(),"测试--setTime----regparam:"+regparam);
+
+        if(bool==1){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求设置设备时间失败");
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult<SetNTPVO> setNTP(SetNTPParam param, RResult<SetNTPVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        String ntp_host=param.getNtp_host();
+        int ntp_enable=param.getNtp_enable();
+        String ntp_intervaltime=param.getNtp_intervaltime();
+        String ntp_port=param.getNtp_port();
+
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------setNTP");
+            return result;
+        }
+
+        if(StringUtils.isEmpty(ntp_host)||StringUtils.isEmpty(ntp_intervaltime)||StringUtils.isEmpty(ntp_port)){
+            result.setMessage("NTP参数异常");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------setNTP");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=api&type=set_ntp"+
+                "&ntp_port="+ntp_port+"&ntp_intervaltime="+ntp_intervaltime+"&ntp_enable="+ntp_enable+"&ntp_host="+ntp_host+
+                "&encode_type=URI&ntp_sync_ajust=1&ntp_saved=1"+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+":rr--setNTP----regparam:"+regparam);
+        int bool=Xml2Object.setNTPXml(rr);
+        if(bool==1){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求设置NTP同步参数失败");
+        }
+        return result;
+    }
+
+    @Override
+    public RResult<GetNTPVO> getNTP(GetNTPParam param, RResult<GetNTPVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("获取ntp配置部分参数为空");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------getNTP");
+            return result;
+        }
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=api&type=get_ntp"+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+":rr--getNTP----regparam:"+regparam);
+        GetNTPVO getNTPVO=Xml2Object.getNTPXml(rr);
+        if(null!=getNTPVO){
+            result.changeToTrue(getNTPVO);
+        }else{
+            result.setMessage("请求NTP同步参数失败");
+        }
+
+
+        return result;
+    }
+
+    @Override
+    public RResult<SupplementBurnVO> supplementBurn(SupplementBurnParam param, RResult<SupplementBurnVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        int burn_bl=param.getBurn_bl();//笔录信息
+        int burn_player=param.getBurn_payer();//离线播放器
+        int burn_v=param.getBurn_v();//视频文件
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------supplementBurn");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=api&type=set_sburn"+
+                "&burn_bl="+burn_bl+"&burn_player="+burn_player+"&burn_v="+burn_v+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+
+        /*String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+":rr--supplementBurn----regparam:"+regparam);
+        int bool=Xml2Object.supplementBurnXml(rr);*/
+
+        int bool=1;//暂时测试返回永远是对的
+        LogUtil.intoLog(this.getClass(),"测试--supplementBurn----regparam:"+regparam);
+
+        if(bool==1){
+            result.changeToTrue();
+        }else{
+            result.setMessage("请求光盘补充刻录失败");
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult<SetOSDVO> setOSD(SetOSDParam param, RResult<SetOSDVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        int osd_sync_ajust=param.getOsd_sync_ajust();//是否立即生效
+        int osd_savedt=param.getOsd_saved();//是否保存到设备
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("有部分参数为空");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------setOSD");
+            return result;
+        }
+
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=api&type=set_osd_location"+
+                "&osd_savedt="+osd_savedt+"&osd_sync_ajust="+osd_sync_ajust+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+
+        String osdpart_time_x=param.getOsdpart_time_x();//时间日期
+        String osdpart_time_y=param.getOsdpart_time_y();//时间日期
+        if(StringUtils.isEmpty(osdpart_time_x)&&StringUtils.isEmpty(osdpart_time_y)){
+            try {
+                int osdpart_time_x_int=Integer.parseInt(osdpart_time_x);
+                int osdpart_time_y_int=Integer.parseInt(osdpart_time_y);
+                if(osdpart_time_x_int > -2&&osdpart_time_y_int > -2){
+                    regparam+="&osdpart_time_x="+osdpart_time_x+"&osdpart_time_y="+osdpart_time_y;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        String osdpart_pttext_x=param.getOsdpart_pttext_x();//片头位置
+        String osdpart_pttext_y=param.getOsdpart_pttext_y();//片头位置
+        if(StringUtils.isEmpty(osdpart_pttext_x)&&StringUtils.isEmpty(osdpart_pttext_y)){
+            try {
+                int osdpart_pttext_x_int=Integer.parseInt(osdpart_pttext_x);
+                int osdpart_pttext_y_int=Integer.parseInt(osdpart_pttext_y);
+                if(osdpart_pttext_x_int > -2&&osdpart_pttext_y_int > -2){
+                    regparam+="&osdpart_pttext_x="+osdpart_pttext_x+"&osdpart_pttext_y="+osdpart_pttext_y;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        String osdpart_title_x=param.getOsdpart_title_x();//房间名
+        String osdpart_title_y=param.getOsdpart_title_y();//房间名
+        if(StringUtils.isEmpty(osdpart_title_x)&&StringUtils.isEmpty(osdpart_title_y)){
+            try {
+                int osdpart_title_x_int=Integer.parseInt(osdpart_title_x);
+                int osdpart_title_y_int=Integer.parseInt(osdpart_title_y);
+                if(osdpart_title_x_int > -2&&osdpart_title_y_int > -2){
+                    regparam+="&osdpart_title_x="+osdpart_title_x+"&osdpart_title_y="+osdpart_title_y;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        String osdpart_temperature_x=param.getOsdpart_temperature_x();//温湿度
+        String osdpart_temperature_y=param.getOsdpart_temperature_y();//温湿度
+        if(StringUtils.isEmpty(osdpart_time_x)&&StringUtils.isEmpty(osdpart_time_y)){
+            try {
+                int osdpart_temperature_x_int=Integer.parseInt(osdpart_temperature_x);
+                int osdpart_temperature_y_int=Integer.parseInt(osdpart_temperature_y);
+                if(osdpart_temperature_x_int > -2&&osdpart_temperature_y_int > -2){
+                    regparam+="&osdpart_temperature_x="+osdpart_temperature_x+"&osdpart_temperature_y="+osdpart_temperature_y;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+":rr--setOSD----regparam:"+regparam);
+        int bool=Xml2Object.setOSDXml(rr);
+        if(bool==1){
+            result.changeToTrue();
+        }else{
+            result.setMessage("设置OSD信息叠加失败");
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult<GetOSDVO> getOSD(GetOSDParam param, RResult<GetOSDVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("获取OSD信息叠加部分参数为空");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------getOSD");
+            return result;
+        }
+        String url="http://"+ip+":"+port+"/stcmd" ;
+        String regparam="action=api&type=get_osd_location"+
+                "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
+        String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
+        LogUtil.intoLog(this.getClass(),rr+":rr--getOSD----regparam:"+regparam);
+        GetOSDVO getOSDVO=Xml2Object.getOSDXml(rr);
+        if(null!=getOSDVO){
+            result.changeToTrue(getOSDVO);
+        }else{
+            result.setMessage("请求OSD信息叠加数据失败");
+        }
+        return result;
+    }
 }
