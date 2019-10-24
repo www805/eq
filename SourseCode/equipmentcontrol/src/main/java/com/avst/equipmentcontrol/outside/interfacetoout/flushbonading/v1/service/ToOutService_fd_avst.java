@@ -1486,9 +1486,9 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         RResult<GetNTPVO> result2=new RResult<GetNTPVO>();
         result2=fdDeal.getNTP(pparam,result2);
         if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())&&null!=result2.getData()){
-
+            result=result2;
         }else{
-            result.setMessage("请求获取设备网络配置失败");
+            result.setMessage("请求获取NTP配置失败");
         }
 
         return result;
@@ -1496,6 +1496,9 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
 
     @Override
     public RResult setFDOSD(SetFDOSDParam_out pParam, RResult result) {
+
+
+
         return result;
     }
 
