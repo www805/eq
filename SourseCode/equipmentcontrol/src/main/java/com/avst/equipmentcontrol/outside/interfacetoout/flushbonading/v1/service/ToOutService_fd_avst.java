@@ -1450,12 +1450,53 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
             e.printStackTrace();
         }
 
-
         return result;
     }
 
     @Override
     public RResult supplementBurn(SupplementBurnParam_out pParam, RResult result) {
+
+        try {
+            String fdssid=pParam.getFlushbonadingetinfossid();
+            if (StringUtils.isBlank(fdssid)){
+                LogUtil.intoLog(4,this.getClass(),"supplementBurn param.getFdssid():"+fdssid);
+                result.setMessage("参数为空");
+                return result;
+            }
+
+            //查询数据库找到设备
+            EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+            ew.eq("fet.ssid",fdssid);
+            Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+            if(null==flushbonadinginfo){
+                result.setMessage("设备未找到，请查询数据");
+                return result;
+            }
+
+            SupplementBurnParam pparam=new SupplementBurnParam();
+            pparam.setPort(flushbonadinginfo.getPort());
+            pparam.setIp(flushbonadinginfo.getEtip());
+            pparam.setPasswd(flushbonadinginfo.getPasswd());
+            pparam.setUser(flushbonadinginfo.getUser());
+            pparam.setBurn_bl(pParam.getBurn_bl());
+            pparam.setBurn_payer(pParam.getBurn_payer());
+            pparam.setBurn_v(pParam.getBurn_v());
+
+            RResult<SupplementBurnVO> result2=new RResult<SupplementBurnVO>();
+            result2=fdDeal.supplementBurn(pparam,result2);
+            if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+                result.changeToTrue();
+            }else{
+                if(null!=result){
+                    result.setMessage(result.getMessage());
+                }else{
+                    result.setMessage("请求补充刻录失败");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return result;
     }
 
@@ -1497,7 +1538,55 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
     @Override
     public RResult setFDOSD(SetFDOSDParam_out pParam, RResult result) {
 
+        try {
+            String fdssid=pParam.getFlushbonadingetinfossid();
+            if (StringUtils.isBlank(fdssid)){
+                LogUtil.intoLog(4,this.getClass(),"setFDOSD param.getFdssid():"+fdssid);
+                result.setMessage("参数为空");
+                return result;
+            }else{
+                LogUtil.intoLog(this.getClass(),"setFDOSD 片头叠加的参数集合 param:"+JacksonUtil.objebtToString(pParam));
+            }
 
+            //查询数据库找到设备
+            EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+            ew.eq("fet.ssid",fdssid);
+            Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+            if(null==flushbonadinginfo){
+                result.setMessage("设备未找到，请查询数据");
+                return result;
+            }
+
+            SetOSDParam pparam=new SetOSDParam();
+            pparam.setPort(flushbonadinginfo.getPort());
+            pparam.setIp(flushbonadinginfo.getEtip());
+            pparam.setPasswd(flushbonadinginfo.getPasswd());
+            pparam.setUser(flushbonadinginfo.getUser());
+            pparam.setOsd_saved(pParam.getOsd_saved());
+            pparam.setOsd_sync_ajust(pParam.getOsd_saved());
+            pparam.setOsdpart_title_y(pParam.getOsdpart_title_y()+"");
+            pparam.setOsdpart_title_x(pParam.getOsdpart_title_y()+"");
+            pparam.setOsdpart_time_y(pParam.getOsdpart_time_y()+"");
+            pparam.setOsdpart_time_x(pParam.getOsdpart_time_x()+"");
+            pparam.setOsdpart_temperature_y(pParam.getOsdpart_temperature_y()+"");
+            pparam.setOsdpart_temperature_x(pParam.getOsdpart_temperature_x()+"");
+            pparam.setOsdpart_pttext_y(pParam.getOsdpart_pttext_y()+"");
+            pparam.setOsdpart_pttext_x(pParam.getOsdpart_pttext_x()+"");
+
+            RResult<SetOSDVO> result2=new RResult<SetOSDVO>();
+            result2=fdDeal.setOSD(pparam,result2);
+            if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+                result.changeToTrue();
+            }else{
+                if(null!=result){
+                    result.setMessage(result.getMessage());
+                }else{
+                    result.setMessage("请求OSD信息叠加失败");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return result;
     }
