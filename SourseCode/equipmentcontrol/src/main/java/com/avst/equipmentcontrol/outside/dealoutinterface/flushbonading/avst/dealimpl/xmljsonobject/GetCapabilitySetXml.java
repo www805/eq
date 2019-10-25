@@ -6,6 +6,7 @@ public class GetCapabilitySetXml {
 
     private String devmid_id;
 
+    //a_in 音频有效通道数,v_in 视频有效通道数,vdec_in 扩展视频有效通道数,规则:v_in + vdec_in必然小于等于8
     private String v_in;
 
     private String vdec_in;
