@@ -597,6 +597,25 @@ public class ToOutAction_qrs extends BaseAction {
         return result;
     }
 
+    /**
+     * 获取设备硬盘中iid对应的所有文件（包括视频、文本、Word等）
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getFDAllFileListByIid")
+    @ResponseBody
+    public RResult getFDAllFileListByIid(@RequestBody GetFDAllFileListByIidParam_out param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param){
+            GetFDAllFileListByIidParam_out pParam=param;
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).getFDAllFileListByIid(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
 
 
 

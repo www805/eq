@@ -1357,4 +1357,41 @@ public class FDDealImpl implements FDInterface{
         }
         return result;
     }
+
+    @Override
+    public RResult<GetAllFileListByIidVO> getAllFileListByIid(GetAllFileListByIidParam param, RResult<GetAllFileListByIidVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        String iid=param.getIid();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)||StringUtils.isEmpty(iid)){
+            result.setMessage("获取设备文件信息参数为空");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------getAllFileListByIid");
+            return result;
+        }
+        try {
+            String url="http://"+ip+":"+port+"/stcmd" ;
+            String regparam="action=api&type=get_all_files"+
+                    "&rec_id="+iid+"&dev_type="+param.getDev_type()+"&&partition_index="+param.getPartition_index()+
+                    "&authvusr="+user+"&authpwd="+passwd;
+            String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
+            LogUtil.intoLog(this.getClass(),rr+":rr--getOSD----regparam:"+regparam);
+            GetAllFileListByIidXml getAllFileListByIidXml= Xml2Object.getAllFileListByIidXml(rr);
+            if(null!=getAllFileListByIidXml){
+                Gson gson=new Gson();
+                GetAllFileListByIidVO getAllFileListByIidVO=new GetAllFileListByIidVO();
+                getAllFileListByIidVO=gson.fromJson(gson.toJson(getAllFileListByIidXml),GetAllFileListByIidVO.class);
+                result.changeToTrue(getAllFileListByIidVO);
+            }else{
+                result.setMessage("请求设备文件数据失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

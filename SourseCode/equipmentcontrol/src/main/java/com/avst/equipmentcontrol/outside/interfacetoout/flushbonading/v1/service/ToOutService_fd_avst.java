@@ -1610,12 +1610,6 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
             return result;
         }
 
-        if (StringUtils.isBlank(fdssid)){
-            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
-            result.setMessage("参数为空");
-            return result;
-        }
-
         boolean ptbool=pParam.isPtbool();
         boolean temperaturebool=pParam.isTemperaturebool();
         boolean timebool=pParam.isTimebool();
@@ -1659,6 +1653,51 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
             }
         }else{
             result.setMessage("请求获取设备网络配置失败");
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult getFDAllFileListByIid(GetFDAllFileListByIidParam_out pParam, RResult result) {
+
+        String fdssid=pParam.getFlushbonadingetinfossid();
+        if (StringUtils.isBlank(fdssid)){
+            LogUtil.intoLog(this.getClass(),"param.getFdssid():"+fdssid);
+            result.setMessage("参数为空");
+            return result;
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        String iid=pParam.getIid();
+
+        if (StringUtils.isEmpty(iid)){
+            LogUtil.intoLog(this.getClass(),"参数iid为空，"+JacksonUtil.objebtToString(pParam));
+            result.setMessage("参数异常");
+            return result;
+        }
+
+        GetAllFileListByIidParam pparam=new GetAllFileListByIidParam();
+        pparam.setPort(flushbonadinginfo.getPort());
+        pparam.setIp(flushbonadinginfo.getEtip());
+        pparam.setPasswd(flushbonadinginfo.getPasswd());
+        pparam.setUser(flushbonadinginfo.getUser());
+        pparam.setIid(iid);
+        RResult<GetAllFileListByIidVO> result2=new RResult<GetAllFileListByIidVO>();
+        result2=fdDeal.getAllFileListByIid(pparam,result2);
+        if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())&&null!=result2.getData()){
+            GetAllFileListByIidVO allFileListByIidVO=result2.getData();
+
+        }else{
+            result.setMessage("请求获取设备文件下的文件列表失败");
         }
 
         return result;

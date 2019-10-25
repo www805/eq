@@ -214,8 +214,8 @@ public interface ToOutService_qrs {
 
     /**
      * 设置设备NTP同步
-     * @param pParam
      * @param result
+     * @param pParam
      * @return
      */
     RResult setFDNTP(SetFDNTPParam_out pParam, RResult result);
@@ -251,5 +251,15 @@ public interface ToOutService_qrs {
      * @return
      */
     RResult getFDOSD(GetFDOSDParam_out pParam, RResult result);
+
+
+    /**
+     * 获取设备硬盘中iid对应的所有文件（包括视频、文本、Word等）
+     * @param pParam
+     * @param result
+     * @return
+     */
+    RResult getFDAllFileListByIid(GetFDAllFileListByIidParam_out pParam, RResult result);
+
 
 }

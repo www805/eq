@@ -51,6 +51,26 @@ public class Xml2Object {
         return null;
     }
 
+    /**
+     * API 接口-获取录像 ID 的文件夹下的所有文件
+     * 吐血
+     * @param xml
+     * @return
+     */
+    public static GetAllFileListByIidXml getAllFileListByIidXml( String xml) {
+        try {
+
+
+
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 
     /**
      * 解析录像上传文件到服务器的xml
@@ -375,10 +395,18 @@ public class Xml2Object {
     public static int setNTPXml( String xml) {
         try {
 
-            String startstr="<set_ntp t=\"set\">";
-            String endstr="</set_ntp>";
+            if(null!=xml&&xml.indexOf("ser_ntp") > -1&&xml.indexOf("rs") > -1){
 
-            return jxXml(xml,startstr,endstr);
+                String startstr="<set_ntp t=\"do\">";
+                String endstr="</set_ntp>";
+
+                String rr=jxXml(xml,startstr,endstr,1);
+
+                startstr="<rs>";
+                endstr="</rs>";
+
+                return jxXml(rr,startstr,endstr);
+            }
         }catch (Exception e) {
             e.printStackTrace();
         }

@@ -308,4 +308,12 @@ public interface FDInterface {
      */
     public RResult<GetOSDVO> getOSD(GetOSDParam param, RResult<GetOSDVO> result);
 
+    /**
+     * 获取设备硬盘中iid对应的所有文件（包括视频、文本、Word等）
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<GetAllFileListByIidVO> getAllFileListByIid(GetAllFileListByIidParam param, RResult<GetAllFileListByIidVO> result);
+
 }
