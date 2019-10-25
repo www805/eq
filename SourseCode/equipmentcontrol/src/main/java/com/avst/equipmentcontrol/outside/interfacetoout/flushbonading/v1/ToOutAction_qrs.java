@@ -71,6 +71,21 @@ public class ToOutAction_qrs extends BaseAction {
         return rResult;
     }
 
+    //设备结束工作(意外情况下的处理)
+    @RequestMapping("/workOver_Accident")
+    @ResponseBody
+    public RResult workOver_Accident(@RequestBody ReqParam<WorkOver_AccidentParam> param){
+        RResult rResult=createNewResultOfFail();
+        WorkOver_AccidentParam sparam=param.getParam();
+        if(null!=sparam){
+            rResult=getToOutServiceImpl(sparam.getFdType()).workOver_Accident(sparam,rResult);
+        }else{
+            LogUtil.intoLog(this.getClass(),"workOver_Accident---param.getParam() ---参数异常");
+            rResult.setMessage("参数异常");
+        }
+        return rResult;
+    }
+
     //暂停/继续工作
     @RequestMapping("/workPauseOrContinue")
     @ResponseBody

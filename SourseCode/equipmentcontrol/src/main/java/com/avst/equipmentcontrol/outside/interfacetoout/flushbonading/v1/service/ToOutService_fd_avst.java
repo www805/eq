@@ -277,7 +277,88 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         return result;
     }
 
+    public RResult workOver_Accident(WorkOver_AccidentParam param, RResult result){
 
+        String fdid=param.getFdid();
+        String fdssid=param.getFlushbonadingetinfossid();
+        //查询是否存在任务
+        if(null!=FDCache.getFDByFDSsid(fdid,fdssid)){//按正常关闭来
+            return workOver(param,result);
+        }
+
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return result;
+        }
+
+        String iid=param.getIid();
+        if(StringUtils.isEmpty(iid)){
+            iid=fdid+"_"+fdssid;//avstmc的iid的组合默认是会议ssid_设备ssid
+        }
+
+        if(param.isCloaseRecbool()){//需要关闭设备录像
+            //关闭设备工作
+            StopRecParam sparam=new StopRecParam();
+            sparam.setIp(flushbonadinginfo.getEtip());
+            sparam.setPort(flushbonadinginfo.getPort());
+            sparam.setPasswd(flushbonadinginfo.getPasswd());
+            sparam.setUser(flushbonadinginfo.getUser());
+            result=fdDeal.stopRec(sparam,result);
+            if(null==result||!result.getActioncode().equals(Code.SUCCESS.toString())){
+                LogUtil.intoLog(4,this.getClass(),"workOver_Accident 关闭设备录像失败 没有什么影响，继续执行");
+            }
+        }
+
+        //准备存储的处理
+        String sstype=SSType.AVST;
+        SaveFileParam saveFileParam=new SaveFileParam();
+        saveFileParam.setIid(iid);
+        saveFileParam.setSourseIp(flushbonadinginfo.getEtip());
+        saveFileParam.setSsType(sstype);
+        saveFileParam.setSourseFDETSsid(fdssid);
+        saveFileParam.setStartrecordtime(param.getMtRecordTime());
+        RResult result2=new RResult();
+        result2=getToOutServiceImpl(sstype).saveFile(saveFileParam,result2);//v1默认给avst版的存储服务
+        if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+            LogUtil.intoLog(this.getClass(),"推送设备保存文件到服务器成功fdssid："+fdssid);
+        }else{
+            LogUtil.intoLog(this.getClass(),"推送设备保存文件到服务器失败 fdssid："+fdssid);
+        }
+
+        result.setData(iid);
+        FDCache.delFDList(fdid);
+
+        FDCache.setLeastRecordTime(fdssid,(new Date()).getTime());//最后一次关闭录像时间
+
+        //查看是否需要把光盘刻录结束掉
+        Integer burnbool=flushbonadinginfo.getBurnbool();
+        if(null!=burnbool&&burnbool==1){//需要进行光盘刻录
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        StopRec_RomParam  gparam=new StopRec_RomParam();
+                        gparam.setIp(flushbonadinginfo.getEtip());
+                        gparam.setPort(flushbonadinginfo.getPort());
+                        gparam.setPasswd(flushbonadinginfo.getPasswd());
+                        gparam.setUser(flushbonadinginfo.getUser());
+                        gparam.setDx(0);
+
+                        RResult<StopRec_RomVO> stoprec=fdDeal.stopRec_Rom(gparam,new RResult<StopRec_RomVO>());
+                        LogUtil.intoLog(1,this.getClass(),"请求光盘刻录结束的结果："+JacksonUtil.objebtToString(stoprec));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+
+        return result;
+    }
 
     public RResult workPauseOrContinue(WorkPauseOrContinueParam param, RResult result){
 

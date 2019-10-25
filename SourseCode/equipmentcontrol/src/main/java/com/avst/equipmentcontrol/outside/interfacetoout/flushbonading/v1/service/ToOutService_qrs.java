@@ -22,6 +22,14 @@ public interface ToOutService_qrs {
     public RResult workOver(WorkOverParam param, RResult result);
 
     /**
+     * 设备结束工作(意外情况下的处理)
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult workOver_Accident(WorkOver_AccidentParam param, RResult result);
+
+    /**
      * 设备暂停或者继续工作
      * @param param
      * @param result
