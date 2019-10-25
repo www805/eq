@@ -425,7 +425,7 @@ function AddOrUpdateFlushbonading(version) {
         }
     };
 
-    console.log(data);
+    // console.log(data);
 
     ajaxSubmitByJson(url, data, callAddOrUpdate);
 }

@@ -58,7 +58,7 @@ function callgetNavList(data) {
                     bottom_url="#";
                 }
 
-                if (isNotEmpty(appCache.data.bottom.img.src) && appCache.data.bottom.img.src != '/') {
+                if (isNotEmpty(appCache.data.bottom.image.src) && appCache.data.bottom.image.src != '/') {
                     $(".layui-footer").css("height", "50px").css("margin-top", "5px");
                     bottom_html = " <a href=\"" + bottom_url + "\">" + "<img style='margin-top: 5px;' width='" + appCache.data.bottom.img.width + "' height='" + appCache.data.bottom.img.height + "' src='" + appCache.data.bottom.img.src + "'>" + "</a>";
                 } else {

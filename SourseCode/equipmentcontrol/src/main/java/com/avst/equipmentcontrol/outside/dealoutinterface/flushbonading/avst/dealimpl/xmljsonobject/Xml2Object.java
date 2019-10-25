@@ -395,7 +395,7 @@ public class Xml2Object {
     public static int setNTPXml( String xml) {
         try {
 
-            if(null!=xml&&xml.indexOf("ser_ntp") > -1&&xml.indexOf("rs") > -1){
+            if(null!=xml&&xml.indexOf("set_ntp") > -1&&xml.indexOf("rs") > -1){
 
                 String startstr="<set_ntp t=\"do\">";
                 String endstr="</set_ntp>";

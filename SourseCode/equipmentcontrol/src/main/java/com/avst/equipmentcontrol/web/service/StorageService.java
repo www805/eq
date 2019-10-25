@@ -181,6 +181,10 @@ public class StorageService extends BaseService {
         ss_saveinfo.setMtssid(base_equipmentinfo.getSsid());
         ss_saveinfo.setSsid(OpenUtil.getUUID_32());
 
+        if (StringUtils.isBlank(paramParam.getExplain())) {
+            ss_saveinfo.setExplain(paramParam.getEtip());
+        }
+
         Integer insert = ss_saveinfoMapper.insert(ss_saveinfo);
         System.out.println("add_boot：" + insert);
         if(insert == 1){
@@ -288,6 +292,10 @@ public class StorageService extends BaseService {
         saveinfo.setDatasavebasepath(paramParam.getDatasavebasepath());
         saveinfo.setExplain(paramParam.getExplain());
         saveinfo.setMtssid(equipmentinfo.getSsid());
+
+        if (StringUtils.isBlank(paramParam.getExplain())) {
+            saveinfo.setExplain(paramParam.getEtip());
+        }
 
         Integer update = ss_saveinfoMapper.update(saveinfo, ew);
         System.out.println("update_boot：" + update);

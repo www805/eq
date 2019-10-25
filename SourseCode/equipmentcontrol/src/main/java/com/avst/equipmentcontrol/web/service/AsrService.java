@@ -191,6 +191,10 @@ public class AsrService extends BaseService {
         asr_et_ettype.setEquipmentssid(base_equipmentinfo.getSsid());
         asr_et_ettype.setSsid(OpenUtil.getUUID_32());
 
+        if (StringUtils.isBlank(paramParam.getExplain())) {
+            asr_et_ettype.setExplain(paramParam.getEtip());
+        }
+
         Integer insert = asr_etinfoMapper.insert(asr_et_ettype);
         System.out.println("add_boot：" + insert);
         if(insert == 1){
@@ -304,6 +308,10 @@ public class AsrService extends BaseService {
         asrEtEttype.setAsrkey(paramParam.getAsrkey());
         asrEtEttype.setExplain(paramParam.getExplain());
         asrEtEttype.setEquipmentssid(equipmentinfo.getSsid());
+
+        if (StringUtils.isBlank(paramParam.getExplain())) {
+            asrEtEttype.setExplain(paramParam.getEtip());
+        }
 
         Integer update = asr_etinfoMapper.update(asrEtEttype, ew);
         System.out.println("update_boot：" + update);

@@ -248,6 +248,10 @@ public class FlushbonadingService extends BaseService {
         flushbonading_etinfo.setEquipmentssid(base_equipmentinfo.getSsid());
         flushbonading_etinfo.setSsid(OpenUtil.getUUID_32());
 
+        if (StringUtils.isBlank(paramParam.getExplain())) {
+            flushbonading_etinfo.setExplain(paramParam.getEtip());
+        }
+
         if (1 == paramParam.getDefaulturlbool()) {
             //全部设置为0
             Flushbonading_etinfo flushbonading = new Flushbonading_etinfo();
@@ -439,6 +443,10 @@ public class FlushbonadingService extends BaseService {
         flushbonading_etinfo.setDiskrecbool(paramParam.getDiskrecbool());
         flushbonading_etinfo.setExplain(paramParam.getExplain());
         flushbonading_etinfo.setSsid(paramParam.getSsid());
+
+        if (StringUtils.isBlank(paramParam.getExplain())) {
+            flushbonading_etinfo.setExplain(paramParam.getEtip());
+        }
 
         if (1 == paramParam.getDefaulturlbool()) {
             //全部设置为0

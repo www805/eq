@@ -178,6 +178,10 @@ public class PolygraphService extends BaseService {
         polygraph_etinfo.setEquipmentssid(base_equipmentinfo.getSsid());
         polygraph_etinfo.setSsid(OpenUtil.getUUID_32());
 
+        if (StringUtils.isBlank(paramParam.getExplain())) {
+            polygraph_etinfo.setExplain(paramParam.getEtip());
+        }
+
         Integer insert = polygraph_etinfoMapper.insert(polygraph_etinfo);
         System.out.println("add_boot：" + insert);
         if(insert == 1){
@@ -281,6 +285,10 @@ public class PolygraphService extends BaseService {
         polygraphEtinfo.setPolygraphkey(paramParam.getPolygraphkey());
         polygraphEtinfo.setExplain(paramParam.getExplain());
         polygraphEtinfo.setEquipmentssid(equipmentinfo.getSsid());
+
+        if (StringUtils.isBlank(paramParam.getExplain())) {
+            polygraphEtinfo.setExplain(paramParam.getEtip());
+        }
 
         Integer update = polygraph_etinfoMapper.update(polygraphEtinfo, ew);
         System.out.println("update_boot：" + update);

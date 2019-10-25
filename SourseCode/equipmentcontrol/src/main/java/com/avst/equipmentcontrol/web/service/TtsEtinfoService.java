@@ -195,6 +195,10 @@ public class TtsEtinfoService extends BaseService {
         tts_etinfo.setEquipmentssid(base_equipmentinfo.getSsid());
         tts_etinfo.setSsid(OpenUtil.getUUID_32());
 
+        if (StringUtils.isBlank(paramParam.getExplain())) {
+            tts_etinfo.setExplain(paramParam.getEtip());
+        }
+
         Integer insert = tts_etinfoMapper.insert(tts_etinfo);
         System.out.println("add_boot：" + insert);
         if(insert == 1){
@@ -307,6 +311,10 @@ public class TtsEtinfoService extends BaseService {
         etinfo.setTtstype(paramParam.getTtstype());
         etinfo.setExplain(paramParam.getExplain());
         etinfo.setEquipmentssid(equipmentinfo.getSsid());
+
+        if (StringUtils.isBlank(paramParam.getExplain())) {
+            etinfo.setExplain(paramParam.getEtip());
+        }
 
         Integer update = tts_etinfoMapper.update(etinfo, ew);
         System.out.println("update_boot：" + update);

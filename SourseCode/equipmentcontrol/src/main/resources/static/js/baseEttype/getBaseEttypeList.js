@@ -183,9 +183,9 @@ function opneModal_1(ettype) {
                     </div>\
                 </div>\
                 <div class="layui-form-item">\
-                    <label class="layui-form-label" style="width: 120px;padding-left:0px;"><span style="color: red;">*</span>设备类型中文解释</label>\
+                    <label class="layui-form-label" style="width: 120px;padding-left:0px;"><span style="color: red;">*</span>设备类型设备注释</label>\
                     <div class="layui-input-block" style="margin-left: 140px;">\
-                    <textarea name="explain" id="explain" lay-verify="explain" placeholder="请输入设备类型中文解释" class="layui-textarea">'+explain+'</textarea>\
+                    <textarea name="explain" id="explain" lay-verify="explain" placeholder="请输入设备类型设备注释" class="layui-textarea">'+explain+'</textarea>\
                     </div>\
                 </div>\
             </form>';
@@ -207,7 +207,7 @@ function opneModal_1(ettype) {
 
                 //自定义验证规则
                 form.verify({
-                    ettypenum:[/\S/,'请输入设备类型标号'], explain: [/\S/,'请输入设备类型中文解释']
+                    ettypenum:[/\S/,'请输入设备类型标号'], explain: [/\S/,'请输入设备类型设备注释']
                 });
                 //监听提交
                 form.on('submit(fromContent)', function(data){
