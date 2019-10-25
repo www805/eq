@@ -509,12 +509,12 @@ public class ToOutAction_qrs extends BaseAction {
      */
     @RequestMapping("/setFDNTP")
     @ResponseBody
-    public RResult setFDNTP(@RequestBody GetFDNetWorkParam_out param){
+    public RResult setFDNTP(@RequestBody SetFDNTPParam_out param){
         RResult result=this.createNewResultOfFail();
         if(null!=param){
-            GetFDNetWorkParam_out pParam=param;
+            SetFDNTPParam_out pParam=param;
             if(null != pParam.getFdType()){
-                result=getToOutServiceImpl(pParam.getFdType()).getFDNetWork(pParam,result);
+                result=getToOutServiceImpl(pParam.getFdType()).setFDNTP(pParam,result);
             }
         }
         result.setEndtime(DateUtil.getDateAndMinute());
@@ -528,12 +528,12 @@ public class ToOutAction_qrs extends BaseAction {
      */
     @RequestMapping("/getFDNTP")
     @ResponseBody
-    public RResult getFDNTP(@RequestBody GetFDNetWorkParam_out param){
+    public RResult getFDNTP(@RequestBody GetFDNTPParam_out param){
         RResult result=this.createNewResultOfFail();
         if(null!=param){
-            GetFDNetWorkParam_out pParam=param;
+            GetFDNTPParam_out pParam=param;
             if(null != pParam.getFdType()){
-                result=getToOutServiceImpl(pParam.getFdType()).getFDNetWork(pParam,result);
+                result=getToOutServiceImpl(pParam.getFdType()).getFDNTP(pParam,result);
             }
         }
         result.setEndtime(DateUtil.getDateAndMinute());
@@ -547,12 +547,12 @@ public class ToOutAction_qrs extends BaseAction {
      */
     @RequestMapping("/supplementBurn")
     @ResponseBody
-    public RResult supplementBurn(@RequestBody GetFDNetWorkParam_out param){
+    public RResult supplementBurn(@RequestBody SupplementBurnParam_out param){
         RResult result=this.createNewResultOfFail();
         if(null!=param){
-            GetFDNetWorkParam_out pParam=param;
+            SupplementBurnParam_out pParam=param;
             if(null != pParam.getFdType()){
-                result=getToOutServiceImpl(pParam.getFdType()).getFDNetWork(pParam,result);
+                result=getToOutServiceImpl(pParam.getFdType()).supplementBurn(pParam,result);
             }
         }
         result.setEndtime(DateUtil.getDateAndMinute());
@@ -566,12 +566,12 @@ public class ToOutAction_qrs extends BaseAction {
      */
     @RequestMapping("/setFDOSD")
     @ResponseBody
-    public RResult setFDOSD(@RequestBody GetFDNetWorkParam_out param){
+    public RResult setFDOSD(@RequestBody SetFDOSDParam_out param){
         RResult result=this.createNewResultOfFail();
         if(null!=param){
-            GetFDNetWorkParam_out pParam=param;
+            SetFDOSDParam_out pParam=param;
             if(null != pParam.getFdType()){
-                result=getToOutServiceImpl(pParam.getFdType()).getFDNetWork(pParam,result);
+                result=getToOutServiceImpl(pParam.getFdType()).setFDOSD(pParam,result);
             }
         }
         result.setEndtime(DateUtil.getDateAndMinute());
@@ -585,12 +585,12 @@ public class ToOutAction_qrs extends BaseAction {
      */
     @RequestMapping("/getFDOSD")
     @ResponseBody
-    public RResult getFDOSD(@RequestBody GetFDNetWorkParam_out param){
+    public RResult getFDOSD(@RequestBody GetFDOSDParam_out param){
         RResult result=this.createNewResultOfFail();
         if(null!=param){
-            GetFDNetWorkParam_out pParam=param;
+            GetFDOSDParam_out pParam=param;
             if(null != pParam.getFdType()){
-                result=getToOutServiceImpl(pParam.getFdType()).getFDNetWork(pParam,result);
+                result=getToOutServiceImpl(pParam.getFdType()).getFDOSD(pParam,result);
             }
         }
         result.setEndtime(DateUtil.getDateAndMinute());

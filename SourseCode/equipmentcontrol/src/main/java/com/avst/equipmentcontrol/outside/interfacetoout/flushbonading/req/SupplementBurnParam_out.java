@@ -3,11 +3,11 @@ package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req;
 public class SupplementBurnParam_out extends BaseParam {
 
 
-    private int burn_v;//是否需要刻录视频
+    private int burn_v;//是否需要刻录视频，1需要，0不需要
 
-    private int burn_bl;//是否需要刻录笔录信息
+    private int burn_bl;//是否需要刻录笔录信息，1需要，0不需要
 
-    private int burn_payer;//是否需要刻录播放器
+    private int burn_payer;//是否需要刻录播放器，1需要，0不需要
 
     public int getBurn_v() {
         return burn_v;
