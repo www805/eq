@@ -15,11 +15,26 @@ public class AsrTxtParam_avst {
 
     @XmlElement
     /**
+     * 跟msg是一样的意思，lyj个坑货适配2个asr类型
+     */
+    private String txt;
+
+    @XmlElement
+    private String endtime;
+
+    @XmlElement
+    /**
      * //本句话的开始时间，基于本次语音识别开始的ms数值，
      * 这个参数2个作用，1用于标记在总录音的位置，2用来区分句与句之间的间隔，
      * 每句话的time时间不同
      */
     private String time;
+
+    @XmlElement
+    /**
+     * 跟time是一样的意思，lyj个坑货适配2个asr类型
+     */
+    private String starttime;
 
     @XmlElement
     private String id;
@@ -32,6 +47,30 @@ public class AsrTxtParam_avst {
      * 音频通道的索引，如果是单asrid对应多路语音识别的话，就需要这个参数来标记到底是哪个麦克风
      */
     private String index;
+
+    public String getTxt() {
+        return txt;
+    }
+
+    public void setTxt(String txt) {
+        this.txt = txt;
+    }
+
+    public String getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(String endtime) {
+        this.endtime = endtime;
+    }
+
+    public String getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(String starttime) {
+        this.starttime = starttime;
+    }
 
     public String getIndex() {
         return index;
