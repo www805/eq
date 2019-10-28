@@ -27,6 +27,20 @@ public class AsrTxtParam_avst {
     @XmlElement
     private String type;
 
+    @XmlElement
+    /**
+     * 音频通道的索引，如果是单asrid对应多路语音识别的话，就需要这个参数来标记到底是哪个麦克风
+     */
+    private String index;
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
+    }
+
     public String getMsg() {
         return msg;
     }

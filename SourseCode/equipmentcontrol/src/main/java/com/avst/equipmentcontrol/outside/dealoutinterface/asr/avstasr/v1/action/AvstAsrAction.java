@@ -67,6 +67,11 @@ public class AvstAsrAction {
 //            ReadWriteFile.writeApptoTxtFile(newStr+"\r\n",path);
             //查询数据库，把avst语音服务的ssid找出来，这里是avst asr语音服务的处理（以后写入缓存）
             String asrid=asrTxtParam_avst.getId();//语音识别唯一通用识别码，用于关联本次识别服务的双方
+
+            String index=asrTxtParam_avst.getIndex();//判断这个参数有没有值，有的话说明用的是单ID对应多语音识别，这里的asrid就需要组合
+            if(StringUtils.isNotEmpty(index)){
+                asrid+="_"+index;
+            }
             String Equipmentssid=AsrCache.getAsrServerssidByAsrid(asrid);
 
             if(null==Equipmentssid){//如果为null就需要从数据库中获取,这种一般情况下不会

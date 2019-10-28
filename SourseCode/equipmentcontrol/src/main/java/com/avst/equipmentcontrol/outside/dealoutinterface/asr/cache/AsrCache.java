@@ -345,6 +345,12 @@ public class AsrCache {
     private static Map<String ,String > serverssidToIdMap=null;
 
     public synchronized static String getAsrServerssidByAsrid(String asrid){
+
+        if(asrid.indexOf("_") > -1){
+            String[] arr=asrid.split("_");
+            asrid=arr[0];
+        }
+
         if(null!=serverssidToIdMap&&serverssidToIdMap.containsKey(asrid)){
             return serverssidToIdMap.get(asrid);
         }
@@ -362,6 +368,10 @@ public class AsrCache {
 
     public synchronized static boolean delAsrServerssidByAsrid(String asrid){
 
+        if(asrid.indexOf("_") > -1){
+            String[] arr=asrid.split("_");
+            asrid=arr[0];
+        }
         if(null!=serverssidToIdMap&&serverssidToIdMap.containsKey(asrid)){
             serverssidToIdMap.remove(asrid);
             return true;

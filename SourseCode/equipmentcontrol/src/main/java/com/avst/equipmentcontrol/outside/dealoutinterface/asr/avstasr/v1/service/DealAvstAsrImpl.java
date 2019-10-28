@@ -121,6 +121,13 @@ public class DealAvstAsrImpl {
             return vo;
         }
 
+        boolean bool_id=false;//确认是关闭的哪一种类型，带_的可以忽略返回
+        if(id.indexOf("_") > -1){
+            String[] arr=id.split("_");
+            id=arr[0];
+            bool_id=true;
+        }
+
         String url="http://"+ip+":"+port+"/audiodiscern/impl" ;
         String quitparam= "method=quit&id="+id;
         String rr= HttpRequest.readContentFromGet_noencode(url,quitparam);
@@ -129,16 +136,21 @@ public class DealAvstAsrImpl {
         quit=(AvstSDKInterfaceBackParam_quit) XMLUtil.xmlToStr(quit,rr);
 
         if(null!=quit){//说明请求有正确的返回
-            String code=quit.getCode();
-            if(StringUtils.isEmpty(code)||!code.equals("1")){
-                LogUtil.intoLog(DealAvstAsrImpl.class,code+":code 请求返回异常 quit  quit.getMsg():"+quit.getMsg());
-                vo.setMessage("语音服务器请求返回异常");
-            }else{
+            if(bool_id){
                 vo.setT(true);
                 vo.setCode(1);
+            }else{
+                String code=quit.getCode();
+                if(StringUtils.isEmpty(code)||!code.equals("1")){
+                    LogUtil.intoLog(4,DealAvstAsrImpl.class,code+":code 请求返回异常 quit  quit.getMsg():"+quit.getMsg());
+                    vo.setMessage("语音服务器请求返回异常");
+                }else{
+                    vo.setT(true);
+                    vo.setCode(1);
+                }
             }
         }else{
-            LogUtil.intoLog(DealAvstAsrImpl.class,quit+":quit 请求返回为空 quit");
+            LogUtil.intoLog(4,DealAvstAsrImpl.class,quit+":quit 请求返回为空 quit");
             vo.setMessage("语音服务器请求异常");
         }
         return vo;

@@ -5,16 +5,14 @@ import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.param.AsrMessageParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.cache.param.AsrTxtParam_toout;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.conf.AsrHeartbeatThread;
+import org.apache.commons.lang.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 关于语音识别的缓存
- * 以asrssid为key进行保存
- * 这个asrssid是asr服务器返回回来的
+ * 以asrid为key进行保存
+ * 这个asrid是asr服务器返回回来的
  */
 public class AsrCache_toout {
 
@@ -171,10 +169,23 @@ public class AsrCache_toout {
 
     public synchronized static AsrMessageParam getAsrMassege(String asrid){
 
+        if(asrid.indexOf("_") > -1){
+            String[] arr=asrid.split("_");
+            asrid=arr[0];
+        }
+
         if(null!=asrMassegeMap&&asrMassegeMap.containsKey(asrid)){
             return asrMassegeMap.get(asrid);
         }
 
+        return null;
+    }
+
+    public synchronized static Set<String> getAsridList(){
+
+        if(null!=asrMassegeMap&&null!=asrMassegeMap.keySet()){
+            return asrMassegeMap.keySet();
+        }
         return null;
     }
 
@@ -183,12 +194,24 @@ public class AsrCache_toout {
         if(null==asrMassegeMap){
             asrMassegeMap=new HashMap<String,AsrMessageParam>();
         }
-        asrMassegeMap.put(asrid,asr);
 
-        return false;
+        if(StringUtils.isNotEmpty(asrid)){
+            if(asrid.indexOf("_") > -1){
+                String[] arr=asrid.split("_");
+                asrid=arr[0];
+            }
+            asrMassegeMap.put(asrid,asr);
+        }
+
+        return true;
     }
 
     public synchronized static boolean delAsrMassege(String asrid){
+
+        if(asrid.indexOf("_") > -1){
+            String[] arr=asrid.split("_");
+            asrid=arr[0];
+        }
 
         if(null!=asrMassegeMap&&asrMassegeMap.containsKey(asrid)){
 

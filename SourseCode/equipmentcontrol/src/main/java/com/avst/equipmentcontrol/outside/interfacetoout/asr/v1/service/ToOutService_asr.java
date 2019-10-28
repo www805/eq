@@ -12,6 +12,14 @@ public interface ToOutService_asr {
 
     public RResult startAsr(StartAsrParam param,RResult rResult);
 
+    /**
+     * 整个会议里面的所有语音识别全部一起启动
+     * @param param
+     * @param rResult
+     * @return
+     */
+    public RResult startAsr_all(StartAsrParam param,RResult rResult);
+
     public RResult overAsr(OverAsrParam param,RResult rResult);
 
     public RResult pauseOrContinueAsr(PauseOrContinueAsrParam param, RResult rResult);

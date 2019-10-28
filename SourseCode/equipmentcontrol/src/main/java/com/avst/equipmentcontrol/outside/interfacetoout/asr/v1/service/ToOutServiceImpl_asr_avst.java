@@ -27,7 +27,9 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * avst语音服务器的service处理类
@@ -45,6 +47,17 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
     @Override
     public RResult startAsr(StartAsrParam param,RResult rResult) {
 
+        String tdssid=param.getTdssid();
+        if(StringUtils.isEmpty(tdssid)){
+            rResult.setMessage("设备通道唯一标识参数为空，开启失败");
+            return rResult;
+        }
+        if(tdssid.indexOf(",") > 0){//说明是多音频一起开启，调用另一个开启方法
+
+            return startAsr_all(param,rResult);
+        }
+
+
         //1调第三方的开始
         String asrserverssid=param.getAsrEquipmentssid();
         EntityWrapper ew=new EntityWrapper();
@@ -57,7 +70,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         }
         String audiourl="";
         try {
-            String tdssid=param.getTdssid();
+
             EntityWrapper<Flushbonading_ettd> ew2=new EntityWrapper<Flushbonading_ettd>();
             ew2.eq("ssid",tdssid);
             Flushbonading_ettd flushbonading_ettd=flushbonading_ettdMapper.selectList(ew2).get(0);
@@ -72,6 +85,97 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
             rResult.setMessage("没有找到设备通道，开启失败");
             return rResult;
         }
+
+        AVSTAsrParam_reg reg=new AVSTAsrParam_reg(asr_et_ettype.getEtip(),asr_et_ettype.getPort()+"",audiourl,asrserverssid);
+        //参数txtcallbackurl如果接口不传就去缓存中拿
+        String avstbacktxtinterface=AsrCache_toout.avstbacktxtinterface;
+        if(avstbacktxtinterface.indexOf("localhost") > -1){
+            avstbacktxtinterface=avstbacktxtinterface.replace("localhost", OpenUtil.getMyIP());
+        }
+        reg.setTxtcallbackurl(avstbacktxtinterface);
+        RRParam<String> rrParam= AvstAsrImpl.reg(reg);
+        String reqendtime= new Date().getTime()+"";//当前时间long ms值，作为asr识别开始时间
+        //2给一个线程用于定时刷新心跳
+        if(null!=rrParam&&rrParam.getCode()==1){
+            String asrid=rrParam.getT();
+            String asrtype=param.getAsrtype();//这里需要查数据库，通过asrEquipmentssid，换着写成缓存，找出类型
+            AVSTAsrParam_heartbeat avstAsrParam_heartbeat=new AVSTAsrParam_heartbeat(reg.getIp(),reg.getPort(),asrid);
+            AsrMessageParam<AVSTAsrParam_heartbeat> asr=new AsrMessageParam<AVSTAsrParam_heartbeat>();
+            AsrHeartbeatThread<AVSTAsrParam_heartbeat> asrHeartbeatThread=
+                    new AsrHeartbeatThread<AVSTAsrParam_heartbeat>(avstAsrParam_heartbeat,asrtype);
+            asrHeartbeatThread.start();
+            asr.setAsrtype(asrtype);
+            asr.setAsrHeartbeatThread(asrHeartbeatThread);
+
+            AsrCache_toout.setAsrMassege(asrid,asr);//写入本次语音识别信息的缓存
+            rResult.changeToTrue(asrid);
+            rResult.setEndtime(reqendtime);
+        }else{
+            rResult.setMessage("开启语音识别失败");
+        }
+        return rResult;
+    }
+
+    @Override
+    public RResult startAsr_all(StartAsrParam param, RResult rResult) {
+
+        String tdssid=param.getTdssid();
+        if(StringUtils.isEmpty(tdssid)){
+            rResult.setMessage("设备通道唯一标识参数为空，开启失败");
+            return rResult;
+        }
+        if(tdssid.indexOf(",") < 1){//说明是单音频开启，调用另一个开启方法
+            return startAsr(param,rResult);
+        }
+
+        //1调第三方的开始
+        String asrserverssid=param.getAsrEquipmentssid();
+        EntityWrapper ew=new EntityWrapper();
+        ew.eq("aet.ssid",asrserverssid);
+        Asr_et_ettype asr_et_ettype= asr_etinfoMapper.getAsrinfo(ew);
+        if(null==asr_et_ettype){
+            LogUtil.intoLog(this.getClass(),asrserverssid+":asrserverssid 没有找到这个asr服务器，开启失败");
+            rResult.setMessage("没有找到这个asr服务器，开启失败");
+            return rResult;
+        }
+
+        String[] tdssidarr=tdssid.split(",");
+        String  audiourl="<root><asrchannel>asrnum</<asrchannel>";
+        int asrnum=0;
+        int asrchannel=param.getAsrchannel();
+        for(String td:tdssidarr){
+
+            if(StringUtils.isEmpty(td)){
+                continue;
+            }
+
+            try {
+
+                EntityWrapper<Flushbonading_ettd> ew2=new EntityWrapper<Flushbonading_ettd>();
+                ew2.eq("ssid",td);
+                Flushbonading_ettd flushbonading_ettd=flushbonading_ettdMapper.selectList(ew2).get(0);
+                if(null==flushbonading_ettd|| StringUtils.isEmpty(flushbonading_ettd.getPullflowurl())){
+                    LogUtil.intoLog(this.getClass(),tdssid+":tdssid 没有找到这个设备通道，开启失败");
+                    rResult.setMessage("没有找到这个设备通道，开启失败");
+                    continue;
+                }
+                audiourl="<task><index>"+flushbonading_ettd.getTdnum()+"</index><stream>"+flushbonading_ettd.getPullflowurl()+"</stream></task>";
+                asrnum++;
+            } catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+
+        if(asrnum==0){
+            rResult.setMessage("没有找到设备通道，开启失败");
+            return rResult;
+        }else if(asrnum>asrchannel){//当要开启的通道大于规定的识别通道数，就给这个语音识别任务最大识别数
+            audiourl=audiourl.replace("asrnum",asrchannel+"");
+        }else{
+            audiourl=audiourl.replace("asrnum",asrnum+"");
+        }
+        audiourl+="</root>";
 
         AVSTAsrParam_reg reg=new AVSTAsrParam_reg(asr_et_ettype.getEtip(),asr_et_ettype.getPort()+"",audiourl,asrserverssid);
         //参数txtcallbackurl如果接口不传就去缓存中拿
