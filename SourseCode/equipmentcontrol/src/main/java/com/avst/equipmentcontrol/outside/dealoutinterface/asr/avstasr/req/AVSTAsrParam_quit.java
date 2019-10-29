@@ -1,5 +1,7 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req;
 
+import com.avst.equipmentcontrol.common.conf.AsrServerModel;
+
 public class AVSTAsrParam_quit extends BaseParam{
 
    private String id;
@@ -14,6 +16,11 @@ public class AVSTAsrParam_quit extends BaseParam{
 
     public AVSTAsrParam_quit(String ip, String port, String id) {
         super(ip, port);
+        this.id = id;
+    }
+
+    public AVSTAsrParam_quit(String ip, String port, String id,String asrServerModel) {
+        super(ip, port,asrServerModel);
         this.id = id;
     }
 

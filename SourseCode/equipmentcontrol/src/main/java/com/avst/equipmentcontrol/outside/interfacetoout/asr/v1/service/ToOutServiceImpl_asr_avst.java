@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service;
 
+import com.avst.equipmentcontrol.common.conf.AsrServerModel;
 import com.avst.equipmentcontrol.common.conf.NetTool;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_et_ettype;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper.Asr_etinfoMapper;
@@ -9,6 +10,8 @@ import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RRParam;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
+import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_settaskinfo;
+import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.param.TaskParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.v1.action.AvstAsrImpl;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_heartbeat;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_quit;
@@ -128,6 +131,12 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
             return startAsr(param,rResult);
         }
 
+        if(tdssid.indexOf(";") < 0){
+            LogUtil.intoLog(this.getClass(),tdssid+":tdssid 一对多的模式下通道标识异常，开启失败");
+            rResult.setMessage("一对多的模式下通道标识异常，开启失败");
+            return rResult;
+        }
+
         //1调第三方的开始
         String asrserverssid=param.getAsrEquipmentssid();
         EntityWrapper ew=new EntityWrapper();
@@ -139,28 +148,41 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
             return rResult;
         }
 
-        String[] tdssidarr=tdssid.split(",");
+        String[] tdarr=tdssid.split(";");
         String  audiourl="<root><asrchannel>asrnum</<asrchannel>";
         int asrnum=0;
         int asrchannel=param.getAsrchannel();
-        for(String td:tdssidarr){
+        List<TaskParam> taskParamList=new ArrayList<TaskParam>();
+        for(String td:tdarr){
 
             if(StringUtils.isEmpty(td)){
                 continue;
             }
 
             try {
+                String[] tdarr2=td.split(",");
+                String index =tdarr2[0];
+                String ssid =tdarr2[1];
 
                 EntityWrapper<Flushbonading_ettd> ew2=new EntityWrapper<Flushbonading_ettd>();
-                ew2.eq("ssid",td);
+                ew2.eq("ssid",ssid);
                 Flushbonading_ettd flushbonading_ettd=flushbonading_ettdMapper.selectList(ew2).get(0);
                 if(null==flushbonading_ettd|| StringUtils.isEmpty(flushbonading_ettd.getPullflowurl())){
                     LogUtil.intoLog(this.getClass(),tdssid+":tdssid 没有找到这个设备通道，开启失败");
                     rResult.setMessage("没有找到这个设备通道，开启失败");
                     continue;
                 }
-                audiourl="<task><index>"+flushbonading_ettd.getTdnum()+"</index><stream>"+flushbonading_ettd.getPullflowurl()+"</stream></task>";
+                audiourl+="<task><index>"+index+"</index><stream>"+flushbonading_ettd.getPullflowurl()+"</stream></task>";
                 asrnum++;
+
+                TaskParam taskParam=new TaskParam();
+                taskParam.setIndex(index);
+                if(null==flushbonading_ettd.getShockenergy()||flushbonading_ettd.getShockenergy().intValue()<1){
+                    taskParam.setShockenergy(3500);//默认3500
+                }else{
+                    taskParam.setShockenergy(flushbonading_ettd.getShockenergy());
+                }
+                taskParamList.add(taskParam);
             } catch (Exception e) {
                 e.printStackTrace();
                 continue;
@@ -177,7 +199,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         }
         audiourl+="</root>";
 
-        AVSTAsrParam_reg reg=new AVSTAsrParam_reg(asr_et_ettype.getEtip(),asr_et_ettype.getPort()+"",audiourl,asrserverssid);
+        AVSTAsrParam_reg reg=new AVSTAsrParam_reg(asr_et_ettype.getEtip(),asr_et_ettype.getPort()+"",audiourl,asrserverssid, AsrServerModel.m2);
         //参数txtcallbackurl如果接口不传就去缓存中拿
         String avstbacktxtinterface=AsrCache_toout.avstbacktxtinterface;
         if(avstbacktxtinterface.indexOf("localhost") > -1){
@@ -190,7 +212,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         if(null!=rrParam&&rrParam.getCode()==1){
             String asrid=rrParam.getT();
             String asrtype=param.getAsrtype();//这里需要查数据库，通过asrEquipmentssid，换着写成缓存，找出类型
-            AVSTAsrParam_heartbeat avstAsrParam_heartbeat=new AVSTAsrParam_heartbeat(reg.getIp(),reg.getPort(),asrid);
+            AVSTAsrParam_heartbeat avstAsrParam_heartbeat=new AVSTAsrParam_heartbeat(reg.getIp(),reg.getPort(),asrid, AsrServerModel.m2);
             AsrMessageParam<AVSTAsrParam_heartbeat> asr=new AsrMessageParam<AVSTAsrParam_heartbeat>();
             AsrHeartbeatThread<AVSTAsrParam_heartbeat> asrHeartbeatThread=
                     new AsrHeartbeatThread<AVSTAsrParam_heartbeat>(avstAsrParam_heartbeat,asrtype);
@@ -201,6 +223,17 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
             AsrCache_toout.setAsrMassege(asrid,asr);//写入本次语音识别信息的缓存
             rResult.changeToTrue(asrid);
             rResult.setEndtime(reqendtime);
+
+            //这种1对多的模式需要给每一路音频赋予一个阀值
+            AVSTAsrParam_settaskinfo settaskparam=new AVSTAsrParam_settaskinfo(reg.getIp(),reg.getPort(), AsrServerModel.m2);
+            settaskparam.setAsrid(asrid);
+            settaskparam.setTaskParamList(taskParamList);
+            RRParam<Boolean> settaskvo=AvstAsrImpl.settaskinfo(settaskparam);
+            if(null!=settaskvo&&settaskvo.getCode()==1){
+                LogUtil.intoLog(1,this.getClass(),asrid+":asrid,设置音频流音频能量激活语音阀值 失败");
+            }else{
+                LogUtil.intoLog(4,this.getClass(),asrid+":asrid,设置音频流音频能量激活语音阀值 失败");
+            }
         }else{
             rResult.setMessage("开启语音识别失败");
         }
@@ -254,6 +287,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
 
         String asrid=param.getAsrid();
         String asrserverssid=param.getAsrEquipmentssid();
+        int asrServerModel=param.getAsrServerModel();
         EntityWrapper ew=new EntityWrapper();
         ew.eq("aet.ssid",asrserverssid);
         Asr_et_ettype asr_et_ettype= asr_etinfoMapper.getAsrinfo(ew);
@@ -262,7 +296,8 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
             rResult.setMessage("没有找到这个asr服务器，开启失败");
             return rResult;
         }
-        AVSTAsrParam_quit qparam=new AVSTAsrParam_quit(asr_et_ettype.getEtip(),asr_et_ettype.getPort()+"",asrid);
+        String asrServerModel_=asrServerModel==2?AsrServerModel.m2:AsrServerModel.m1;
+        AVSTAsrParam_quit qparam=new AVSTAsrParam_quit(asr_et_ettype.getEtip(),asr_et_ettype.getPort()+"",asrid,asrServerModel_);
 
         //1、调第三方的关闭
         RRParam<Boolean> rrParam=AvstAsrImpl.quit(qparam);

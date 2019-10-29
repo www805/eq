@@ -1,5 +1,7 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req;
 
+import com.avst.equipmentcontrol.common.conf.AsrServerModel;
+
 public class BaseParam {
 
     /**
@@ -11,6 +13,15 @@ public class BaseParam {
      */
     private String port;
 
+    private String asrServerModel= AsrServerModel.m1;//语音识别服务器的识别模式
+
+    public String getAsrServerModel() {
+        return asrServerModel;
+    }
+
+    public void setAsrServerModel(String asrServerModel) {
+        this.asrServerModel = asrServerModel;
+    }
 
     public String getIp() {
         return ip;
@@ -28,9 +39,15 @@ public class BaseParam {
         this.port = port;
     }
 
+    public BaseParam(String ip, String port,String asrServerModel) {
+        this.ip = ip;
+        this.port = port;
+        this.asrServerModel=asrServerModel;
+    }
     public BaseParam(String ip, String port) {
         this.ip = ip;
         this.port = port;
+        this.asrServerModel= AsrServerModel.m1;
     }
 
     @Override

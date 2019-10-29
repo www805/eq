@@ -38,15 +38,20 @@ public class AVSTAsrParam_reg extends BaseParam{
         this.txtcallbackurl = txtcallbackurl;
     }
 
-    public AVSTAsrParam_reg(String ip, String port, String audiourl,String asrserverssid) {
-        super(ip, port);
+    public AVSTAsrParam_reg(String ip, String port, String audiourl,String asrserverssid,String asrServerModel) {
+        super(ip, port,asrServerModel);
         this.audiourl = audiourl;
-        this.txtcallbackurl = txtcallbackurl;
         this.asrserverssid = asrserverssid;
     }
 
-    public AVSTAsrParam_reg(String ip, String port, String audiourl, String txtcallbackurl,String asrserverssid) {
+    public AVSTAsrParam_reg(String ip, String port, String audiourl,String asrserverssid) {
         super(ip, port);
+        this.audiourl = audiourl;
+        this.asrserverssid = asrserverssid;
+    }
+
+    public AVSTAsrParam_reg(String ip, String port, String audiourl, String txtcallbackurl,String asrserverssid,String asrServerModel) {
+        super(ip, port,asrServerModel);
         this.audiourl = audiourl;
         this.txtcallbackurl = txtcallbackurl;
         this.asrserverssid = asrserverssid;

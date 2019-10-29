@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.asr.conf;
 
 import com.avst.equipmentcontrol.common.conf.ASRType;
+import com.avst.equipmentcontrol.common.conf.AsrServerModel;
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RRParam;

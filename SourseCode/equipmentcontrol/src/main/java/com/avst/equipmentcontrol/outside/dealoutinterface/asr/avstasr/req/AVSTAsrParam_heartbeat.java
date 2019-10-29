@@ -17,6 +17,11 @@ public class AVSTAsrParam_heartbeat extends BaseParam{
         this.id = id;
     }
 
+    public AVSTAsrParam_heartbeat(String ip, String port, String id,String asrServerModel) {
+        super(ip, port,asrServerModel);
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "AVSTAsrParam_heartbeat{" +

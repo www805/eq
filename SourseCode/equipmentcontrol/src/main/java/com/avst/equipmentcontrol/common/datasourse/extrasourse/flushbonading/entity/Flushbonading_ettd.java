@@ -43,6 +43,13 @@ public class Flushbonading_ettd extends Model<Flushbonading_ettd> {
      */
     private Integer tdtype;
 
+    /**
+     * 音频音能激活语音阀值(0-20000)
+     * 默认3500
+     */
+    private Integer shockenergy=3500;
+
+
     private String string1;
 
     private String string2;
@@ -52,6 +59,18 @@ public class Flushbonading_ettd extends Model<Flushbonading_ettd> {
     private Integer integer2;
 
     private String ssid;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Integer getShockenergy() {
+        return shockenergy;
+    }
+
+    public void setShockenergy(Integer shockenergy) {
+        this.shockenergy = shockenergy;
+    }
 
     public Integer getId() {
         return id;

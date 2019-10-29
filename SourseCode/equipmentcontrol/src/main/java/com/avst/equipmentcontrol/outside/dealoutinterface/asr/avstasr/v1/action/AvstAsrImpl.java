@@ -1,11 +1,14 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.v1.action;
 
+import com.avst.equipmentcontrol.common.conf.AsrServerModel;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RRParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_heartbeat;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_quit;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_reg;
+import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_settaskinfo;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.v1.service.DealAvstAsrImpl;
+import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.v1.service.DealAvstAsrImpl_m2;
 
 /**
  * 顺泰伟成语音识别服务接口实现
@@ -19,7 +22,11 @@ public class AvstAsrImpl {
         if(null==param){
             vo.setMessage("参数为空");
         }else{
-            vo= DealAvstAsrImpl.reg(param,vo);
+            if(param.getAsrServerModel().equals(AsrServerModel.m2)){
+                vo= DealAvstAsrImpl_m2.reg(param,vo);
+            }else{
+                vo= DealAvstAsrImpl.reg(param,vo);
+            }
         }
         return vo;
     }
@@ -29,7 +36,11 @@ public class AvstAsrImpl {
         if(null==param){
             vo.setMessage("参数为空");
         }else{
-            vo= DealAvstAsrImpl.heartbeat(param,vo);
+            if(param.getAsrServerModel().equals(AsrServerModel.m2)){
+                vo= DealAvstAsrImpl_m2.heartbeat(param,vo);
+            }else{
+                vo= DealAvstAsrImpl.heartbeat(param,vo);
+            }
         }
         return vo;
     }
@@ -39,7 +50,30 @@ public class AvstAsrImpl {
         if(null==param){
             vo.setMessage("参数为空");
         }else{
-            vo= DealAvstAsrImpl.quit(param,vo);
+            if(param.getAsrServerModel().equals(AsrServerModel.m2)){
+                vo= DealAvstAsrImpl_m2.quit(param,vo);
+            }else{
+                vo= DealAvstAsrImpl.quit(param,vo);
+            }
+        }
+        return vo;
+    }
+
+    /**
+     * 设置音频流音频能量激活语音阀值
+     * @param param
+     * @return
+     */
+    public static RRParam<Boolean> settaskinfo(AVSTAsrParam_settaskinfo param){
+        RRParam<Boolean> vo = new RRParam<Boolean>();
+        if(null==param){
+            vo.setMessage("参数为空");
+        }else{
+            if(param.getAsrServerModel().equals(AsrServerModel.m2)){
+                vo= DealAvstAsrImpl_m2.settaskinfo(param,vo);
+            }else{
+                vo.setMessage("模式m1暂时不需要设置麦的音频大小阈值");
+            }
         }
         return vo;
     }
