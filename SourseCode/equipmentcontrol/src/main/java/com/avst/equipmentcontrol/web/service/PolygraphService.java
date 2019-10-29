@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -103,6 +104,7 @@ public class PolygraphService extends BaseService {
 
 
     //新增
+    @Transactional
     public void addPolygraph(RResult result, ReqParam<UpdatePolygraphParam> param){
 
         //请求参数转换
@@ -194,6 +196,7 @@ public class PolygraphService extends BaseService {
     }
 
     //修改
+    @Transactional
     public void updatePolygraph(RResult result, ReqParam<UpdatePolygraphParam> param){
 
         //请求参数转换
@@ -301,6 +304,7 @@ public class PolygraphService extends BaseService {
     }
 
     //删除
+    @Transactional
     public void delPolygraph(RResult result, ReqParam<PolygraphParam> param){
 
         //请求参数转换

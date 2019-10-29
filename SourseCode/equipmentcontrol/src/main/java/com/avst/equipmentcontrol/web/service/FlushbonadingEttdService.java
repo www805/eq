@@ -115,6 +115,7 @@ public class FlushbonadingEttdService extends BaseService {
 
         FlushbonadingEttd flushbonadingEttd = new FlushbonadingEttd();
         flushbonadingEttd.setFlushbonadingssid(paramParam.getFlushbonadingssid());
+        flushbonadingEttd.setShockenergy(paramParam.getShockenergy());
         flushbonadingEttd.setTdnum(paramParam.getTdnum());
         flushbonadingEttd.setPullflowurl(paramParam.getPullflowurl());
         flushbonadingEttd.setTdtype(paramParam.getTdtype());
@@ -154,6 +155,10 @@ public class FlushbonadingEttdService extends BaseService {
             result.setMessage("通道编号不能为空");
             return;
         }
+        if (null==paramParam.getShockenergy()){
+            result.setMessage("音频音能激活语音阀值不能为空");
+            return;
+        }
         if (StringUtils.isBlank(paramParam.getPullflowurl())){
             result.setMessage("通道拉流地址不能为空");
             return;
@@ -169,6 +174,7 @@ public class FlushbonadingEttdService extends BaseService {
 
         FlushbonadingEttd flushbonadingEttd = new FlushbonadingEttd();
         flushbonadingEttd.setTdnum(paramParam.getTdnum());
+        flushbonadingEttd.setShockenergy(paramParam.getShockenergy());
         flushbonadingEttd.setPullflowurl(paramParam.getPullflowurl());
         flushbonadingEttd.setTdtype(paramParam.getTdtype());
         flushbonadingEttd.setSsid(paramParam.getSsid());

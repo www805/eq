@@ -42,6 +42,13 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>音频音能激活语音阀值</label>
+            <div class="layui-input-block">
+                <input type="number" name="shockenergy" id="shockenergy" required  lay-verify="required" placeholder="请输入音频音能激活语音阀值" autocomplete="off" class="layui-input"  onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>通道类型</label>
             <div class="layui-input-block">
                 <select name="tdtype" id="tdtype" lay-filter="aihao">

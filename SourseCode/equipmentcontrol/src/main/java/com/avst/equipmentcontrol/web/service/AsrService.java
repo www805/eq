@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -105,6 +106,7 @@ public class AsrService extends BaseService {
 
 
     //新增
+    @Transactional
     public void addAsr(RResult result, ReqParam<UpdateAsrParam> param){
 
         //请求参数转换
@@ -207,6 +209,7 @@ public class AsrService extends BaseService {
     }
 
     //修改
+    @Transactional
     public void updateAsr(RResult result, ReqParam<UpdateAsrParam> param){
 
         //请求参数转换
@@ -325,6 +328,7 @@ public class AsrService extends BaseService {
     }
 
     //删除
+    @Transactional
     public void delAsr(RResult result, ReqParam<AsrParam> param){
 
         //请求参数转换

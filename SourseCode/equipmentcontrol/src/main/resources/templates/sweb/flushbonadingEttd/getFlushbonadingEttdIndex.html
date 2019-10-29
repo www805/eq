@@ -38,6 +38,7 @@
             <th>序号</th>
             <th>通道编号</th>
             <th>通道拉流地址</th>
+            <th>音频音能激活语音阀值</th>
             <th>通道类型</th>
             <th>操作</th>
         </tr>
@@ -48,6 +49,7 @@
             <td>{{index+1}}</td>
             <td>{{value.tdnum==null?"":value.tdnum}}</td>
             <td>{{value.pullflowurl==null?"":value.pullflowurl}}</td>
+            <td>{{value.shockenergy==null?"0":value.shockenergy}}</td>
             <td>{{value.tdtype==null?"":value.tdtype==1?'音频':'视频'}}</td>
             <td style="white-space:nowrap;">
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/FlushbonadingEttd/addOrUpdateFlushbonadingEttd?ssid={{value.ssid}}&masterssid='+MasterSsid+'&etypessid='+etypessid;">修改</a>

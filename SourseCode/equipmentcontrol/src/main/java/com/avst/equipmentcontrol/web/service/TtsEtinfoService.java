@@ -25,6 +25,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -109,6 +110,7 @@ public class TtsEtinfoService extends BaseService {
 
 
     //新增
+    @Transactional
     public void addTtsetinfo(RResult result, ReqParam<UpdateTtsetinfoParam> param){
 
         //请求参数转换
@@ -210,6 +212,7 @@ public class TtsEtinfoService extends BaseService {
     }
 
     //修改
+    @Transactional
     public void updateTtsetinfo(RResult result, ReqParam<UpdateTtsetinfoParam> param){
 
         //请求参数转换
@@ -327,6 +330,7 @@ public class TtsEtinfoService extends BaseService {
     }
 
     //删除
+    @Transactional
     public void delTtsetinfo(RResult result, ReqParam<TtsetinfoParam> param){
 
         //请求参数转换

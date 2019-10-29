@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * 设备控制的代理
  */
-@FeignClient(value="mc")
+@FeignClient(value = "mc", url = "http://localhost:8081/")
 public interface MeetingControl {
 
     //avstmt

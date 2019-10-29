@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -100,6 +101,7 @@ public class StorageService extends BaseService {
 
 
     //新增
+    @Transactional
     public void addStorage(RResult result, ReqParam<UpdateStorageParam> param){
 
         //请求参数转换
@@ -197,6 +199,7 @@ public class StorageService extends BaseService {
     }
 
     //修改
+    @Transactional
     public void updateStorage(RResult result, ReqParam<UpdateStorageParam> param){
 
         //请求参数转换
@@ -308,6 +311,7 @@ public class StorageService extends BaseService {
     }
 
     //删除
+    @Transactional
     public void delStorage(RResult result, ReqParam<StorageParam> param){
 
         //请求参数转换

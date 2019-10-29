@@ -28,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -117,6 +118,7 @@ public class FlushbonadingService extends BaseService {
     }
 
     //新增
+    @Transactional
     public void addFlushbonading(RResult result, ReqParam<Flushbonadinginfo> param) {
 
         //请求参数转换
@@ -273,6 +275,7 @@ public class FlushbonadingService extends BaseService {
     /**
      * 修改
      */
+    @Transactional
     public void updateFlushbonading(RResult result, ReqParam<Flushbonadinginfo> param) {
 
         /**请求参数转换*/
@@ -468,6 +471,7 @@ public class FlushbonadingService extends BaseService {
     /**
      * 删除
      */
+    @Transactional
     public void delFlushbonading(RResult result, ReqParam<FlushbonadinginfoParam> param) {
 
         //请求参数转换
@@ -535,6 +539,7 @@ public class FlushbonadingService extends BaseService {
      * @param result
      * @param param
      */
+    @Transactional
     public void updateDefaulturlbool(RResult result, ReqParam<UpdateBurnboolFoDiskrecboolParam> param) {
 
         UpdateBurnboolFoDiskrecboolParam paramParam = param.getParam();
@@ -575,6 +580,7 @@ public class FlushbonadingService extends BaseService {
      * @param result
      * @param param
      */
+    @Transactional
     public void updateDiskrecbool(RResult result, ReqParam<UpdateBurnboolFoDiskrecboolParam> param) {
 
         UpdateBurnboolFoDiskrecboolParam paramParam = param.getParam();
@@ -610,6 +616,7 @@ public class FlushbonadingService extends BaseService {
      * @param result
      * @param param
      */
+    @Transactional
     public void updateBurnbool(RResult result, ReqParam<UpdateBurnboolFoDiskrecboolParam> param) {
 
         UpdateBurnboolFoDiskrecboolParam paramParam = param.getParam();
@@ -649,6 +656,7 @@ public class FlushbonadingService extends BaseService {
         }
     }
 
+    @Transactional
     public void updateBurnTime(Flushbonadinginfo param, RResult result) {
 
         EntityWrapper<Flushbonading_etinfo> ew = new EntityWrapper();
@@ -679,6 +687,7 @@ public class FlushbonadingService extends BaseService {
         }
     }
 
+    @Transactional
     public void setMiddleware_FTP(setMiddleware_FTPParam param, RResult result) {
 
         RResult middlewareFtp = fdInterface.setMiddleware_FTP(param, result);

@@ -76,6 +76,7 @@ function AddOrUpdateFlushbonadingEttd(version) {
 
     var tdnum=$("input[name='tdnum']").val();
     var pullflowurl=$("input[name='pullflowurl']").val();
+    var shockenergy=$("input[name='shockenergy']").val();
     var tdtype=$("#tdtype").val();
 
     if (!isNotEmpty(ssid)) {
@@ -89,6 +90,7 @@ function AddOrUpdateFlushbonadingEttd(version) {
         param: {
             ssid: ssid,
             flushbonadingssid:MasterSsid,
+            shockenergy: shockenergy,
             tdnum: tdnum,
             pullflowurl: pullflowurl,
             tdtype: tdtype
@@ -138,6 +140,7 @@ function callFlushbonadingEttdById(data){
 
             $("input[name='tdnum']").val(flushbonadingEttd.tdnum);
             $("input[name='pullflowurl']").val(flushbonadingEttd.pullflowurl);
+            $("input[name='shockenergy']").val(flushbonadingEttd.shockenergy);
 
 
             if (flushbonadingEttd.tdtype == 1) {
