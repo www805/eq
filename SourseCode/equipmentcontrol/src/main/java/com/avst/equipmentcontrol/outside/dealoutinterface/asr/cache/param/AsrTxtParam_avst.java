@@ -13,14 +13,6 @@ public class AsrTxtParam_avst {
     @XmlElement
     private String msg;
 
-    @XmlElement
-    /**
-     * 跟msg是一样的意思，lyj个坑货适配2个asr类型
-     */
-    private String txt;
-
-    @XmlElement
-    private String endtime;
 
     @XmlElement
     /**
@@ -29,12 +21,6 @@ public class AsrTxtParam_avst {
      * 每句话的time时间不同
      */
     private String time;
-
-    @XmlElement
-    /**
-     * 跟time是一样的意思，lyj个坑货适配2个asr类型
-     */
-    private String starttime;
 
     @XmlElement
     private String id;
@@ -47,30 +33,6 @@ public class AsrTxtParam_avst {
      * 音频通道的索引，如果是单asrid对应多路语音识别的话，就需要这个参数来标记到底是哪个麦克风
      */
     private String index;
-
-    public String getTxt() {
-        return txt;
-    }
-
-    public void setTxt(String txt) {
-        this.txt = txt;
-    }
-
-    public String getEndtime() {
-        return endtime;
-    }
-
-    public void setEndtime(String endtime) {
-        this.endtime = endtime;
-    }
-
-    public String getStarttime() {
-        return starttime;
-    }
-
-    public void setStarttime(String starttime) {
-        this.starttime = starttime;
-    }
 
     public String getIndex() {
         return index;

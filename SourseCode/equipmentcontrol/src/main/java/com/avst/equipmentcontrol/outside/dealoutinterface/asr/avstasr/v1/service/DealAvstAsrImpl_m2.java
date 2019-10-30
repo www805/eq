@@ -155,6 +155,7 @@ public class DealAvstAsrImpl_m2 {
                     LogUtil.intoLog(4, DealAvstAsrImpl_m2.class,code+":code 请求返回异常 quit  quit.getMsg():"+quit.getMsg());
                     vo.setMessage("语音服务器请求返回异常");
                 }else{
+                    LogUtil.intoLog(1, DealAvstAsrImpl_m2.class,code+":code 请求关闭语音识别成功 DealAvstAsrImpl_m2  quit.getMsg():"+quit.getMsg());
                     vo.setT(true);
                     vo.setCode(1);
                 }
@@ -177,7 +178,7 @@ public class DealAvstAsrImpl_m2 {
         String ip=param.getIp();
         String port=param.getPort();
         String id=param.getAsrid();
-        List<TaskParam> taskParamList=new ArrayList<TaskParam>();
+        List<TaskParam> taskParamList=param.getTaskParamList();
         if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(port)||StringUtils.isEmpty(id)
                 ||null==taskParamList||taskParamList.size()==0){
             vo.setMessage("有部分参数为空");
@@ -189,12 +190,12 @@ public class DealAvstAsrImpl_m2 {
         for(TaskParam task:taskParamList){
             xml+="<task><index>"+task.getIndex()+"</index><shockenergy>"+task.getShockenergy()+"</shockenergy></task>";
         }
-        xml+="<root>";
+        xml+="</root>";
 
         try {
             String url="http://"+ip+":"+port+"/audiodiscern/activate" ;
 
-            String settaskparam= "method=settaskinfo&id="+id+"&xml"+Base64.encodeBase64String(xml.getBytes("utf8"));
+            String settaskparam= "method=settaskinfo&id="+id+"&xml="+Base64.encodeBase64String(xml.getBytes("utf8"));
             LogUtil.intoLog(1, DealAvstAsrImpl_m2.class,url+":url ---xml:"+xml+":url ---id:"+id);
             String rr= HttpRequest.readContentFromGet_noencode(url,settaskparam);
             LogUtil.intoLog(1, DealAvstAsrImpl_m2.class,rr+":rr ---regparam:"+settaskparam);

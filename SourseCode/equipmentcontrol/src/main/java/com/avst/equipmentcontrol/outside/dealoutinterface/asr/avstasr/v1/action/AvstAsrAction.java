@@ -51,10 +51,6 @@ public class AvstAsrAction {
             AsrTxtParam_avst asrTxtParam_avst=new AsrTxtParam_avst();
             asrTxtParam_avst=(AsrTxtParam_avst)XMLUtil.xmlToStr(asrTxtParam_avst,rr);
 
-            if(StringUtils.isNotEmpty(asrTxtParam_avst.getIndex())){//index有值说明用的是第二种模式asrid 1对多，参数需要调整
-                asrTxtParam_avst.setMsg(asrTxtParam_avst.getTxt());
-                asrTxtParam_avst.setTime(asrTxtParam_avst.getStarttime());
-            }
             System.out.println("注意了============="+asrTxtParam_avst.toString());
 //            LogUtil.intoLog(this.getClass(),asrTxtParam_avst.getId()+"-------------asrTxtParam_avst.getId()");
 

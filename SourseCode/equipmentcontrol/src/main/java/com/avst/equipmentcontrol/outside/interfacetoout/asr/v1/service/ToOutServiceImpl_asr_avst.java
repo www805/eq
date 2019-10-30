@@ -149,7 +149,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         }
 
         String[] tdarr=tdssid.split(";");
-        String  audiourl="<root><asrchannel>asrnum</<asrchannel>";
+        String  audiourl="<root><asrchannel>asrnum</asrchannel>";
         int asrnum=0;
         int asrchannel=param.getAsrchannel();
         List<TaskParam> taskParamList=new ArrayList<TaskParam>();
@@ -230,7 +230,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
             settaskparam.setTaskParamList(taskParamList);
             RRParam<Boolean> settaskvo=AvstAsrImpl.settaskinfo(settaskparam);
             if(null!=settaskvo&&settaskvo.getCode()==1){
-                LogUtil.intoLog(1,this.getClass(),asrid+":asrid,设置音频流音频能量激活语音阀值 失败");
+                LogUtil.intoLog(1,this.getClass(),asrid+":asrid,设置音频流音频能量激活语音阀值 成功");
             }else{
                 LogUtil.intoLog(4,this.getClass(),asrid+":asrid,设置音频流音频能量激活语音阀值 失败");
             }
