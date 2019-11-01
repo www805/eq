@@ -290,16 +290,8 @@ function getMiddFtp() {
 
     var url = getUrl_manageZk().getMiddFtp;
 
-    ipServer = $("input[name='etip']").val();
-    portServer = $("input[name='port']").val();
-    userServer = $("input[name='user']").val();
-    passwordServer = $("input[name='passwd']").val();
-
     var data={
-        ip:ipServer,
-        port:portServer,
-        user:userServer,
-        password:passwordServer
+        fdssid:ssid
     };
     ajaxSubmitByJson(url,data,callgetMiddFtp);
 }
@@ -361,10 +353,7 @@ function setMiddFtp() {
         limit_speed: limit_speed,
         search_filter: search_filter,
         filter_enable: filter_enable.toString(),
-        ip:ipServer,
-        port:portServer,
-        user:userServer,
-        password:passwordServer
+        fdssid:ssid
     };
 
     ajaxSubmitByJson(url, data, callSetMiddFtp);

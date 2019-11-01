@@ -5,10 +5,7 @@ import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.web.req.flushbonading.FlushbonadinginfoParam;
-import com.avst.equipmentcontrol.web.req.flushbonading.UpdateBurnboolFoDiskrecboolParam;
-import com.avst.equipmentcontrol.web.req.flushbonading.getMiddleware_FTPParam;
-import com.avst.equipmentcontrol.web.req.flushbonading.setMiddleware_FTPParam;
+import com.avst.equipmentcontrol.web.req.flushbonading.*;
 import com.avst.equipmentcontrol.web.service.FlushbonadingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -138,7 +135,7 @@ public class FlushbonadingAction extends BaseAction {
      * @return
      */
     @RequestMapping("/getMiddleware_FTP")
-    public RResult getMiddleware_FTP(@RequestBody getMiddleware_FTPParam param){
+    public RResult getMiddleware_FTP(@RequestBody GetMiddleware_FTPParam_web param){
         RResult result=this.createNewResultOfFail();
         flushbonadingService.getMiddleware_FTP(param, result);
         result.setEndtime(DateUtil.getDateAndMinute());
@@ -152,7 +149,7 @@ public class FlushbonadingAction extends BaseAction {
      * @return
      */
     @RequestMapping("/setMiddleware_FTP")
-    public RResult setMiddleware_FTP(@RequestBody setMiddleware_FTPParam param){
+    public RResult setMiddleware_FTP(@RequestBody SetMiddleware_FTPParam_web param){
         RResult result=this.createNewResultOfFail();
         flushbonadingService.setMiddleware_FTP(param, result);
         result.setEndtime(DateUtil.getDateAndMinute());

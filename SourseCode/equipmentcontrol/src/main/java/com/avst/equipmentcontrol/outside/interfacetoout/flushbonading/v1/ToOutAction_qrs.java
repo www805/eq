@@ -292,14 +292,14 @@ public class ToOutAction_qrs extends BaseAction {
 
     @RequestMapping("/getptdjconst")
     @ResponseBody
-    public RResult getptdjconst(@RequestBody ReqParam<GetptdjconstParam_out> param){
-        RResult result=this.createNewResultOfFail();
-        if(null!=param.getParam()){
-            GetptdjconstParam_out pParam=param.getParam();
-            if(null != pParam.getFdType()){
-                result=getToOutServiceImpl(pParam.getFdType()).getptdjconst(pParam,result);
+        public RResult getptdjconst(@RequestBody ReqParam<GetptdjconstParam_out> param){
+            RResult result=this.createNewResultOfFail();
+            if(null!=param.getParam()){
+                GetptdjconstParam_out pParam=param.getParam();
+                if(null != pParam.getFdType()){
+                    result=getToOutServiceImpl(pParam.getFdType()).getptdjconst(pParam,result);
+                }
             }
-        }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }

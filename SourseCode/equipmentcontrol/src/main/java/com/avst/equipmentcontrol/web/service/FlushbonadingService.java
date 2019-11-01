@@ -2,9 +2,9 @@ package com.avst.equipmentcontrol.web.service;
 
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDInterface;
-import com.avst.equipmentcontrol.web.req.flushbonading.UpdateBurnboolFoDiskrecboolParam;
-import com.avst.equipmentcontrol.web.req.flushbonading.getMiddleware_FTPParam;
-import com.avst.equipmentcontrol.web.req.flushbonading.setMiddleware_FTPParam;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.GetMiddleware_FTPParam;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.SetMiddleware_FTPParam;
+import com.avst.equipmentcontrol.web.req.flushbonading.*;
 import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
@@ -19,11 +19,11 @@ import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.web.req.flushbonading.FlushbonadinginfoParam;
 import com.avst.equipmentcontrol.web.vo.flushbonading.BaseEquipmentinfoOrEttypeVO;
 import com.avst.equipmentcontrol.web.vo.flushbonading.FlushbonadinginfoVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +50,8 @@ public class FlushbonadingService extends BaseService {
 
     @Autowired
     private FDInterface fdInterface;
+
+    private Gson gson=new Gson();
 
     //查询
     public void getFlushbonadingList(RResult result, ReqParam<FlushbonadinginfoParam> param) {
@@ -672,9 +674,24 @@ public class FlushbonadingService extends BaseService {
     }
 
 
-    public void getMiddleware_FTP(getMiddleware_FTPParam param, RResult result) {
+    public void getMiddleware_FTP(GetMiddleware_FTPParam_web param, RResult result) {
 
-        RResult middlewareFtp = fdInterface.getMiddleware_FTP(param, result);
+        String fdssid=param.getFdssid();
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return ;
+        }
+        GetMiddleware_FTPParam getMiddleware_ftpParam=new GetMiddleware_FTPParam();
+        getMiddleware_ftpParam.setIp(flushbonadinginfo.getEtip());
+        getMiddleware_ftpParam.setPasswd(flushbonadinginfo.getPasswd());
+        getMiddleware_ftpParam.setPort(flushbonadinginfo.getPort());
+        getMiddleware_ftpParam.setUser(flushbonadinginfo.getUser());
+
+        RResult middlewareFtp = fdInterface.getMiddleware_FTP(getMiddleware_ftpParam, result);
 
         if(null != middlewareFtp){
             result.setVersion(middlewareFtp.getVersion());
@@ -688,9 +705,29 @@ public class FlushbonadingService extends BaseService {
     }
 
     @Transactional
-    public void setMiddleware_FTP(setMiddleware_FTPParam param, RResult result) {
+    public void setMiddleware_FTP(SetMiddleware_FTPParam_web param, RResult result) {
 
-        RResult middlewareFtp = fdInterface.setMiddleware_FTP(param, result);
+        String fdssid=param.getFdssid();
+        //查询数据库找到设备
+        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+        ew.eq("fet.ssid",fdssid);
+        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            result.setMessage("设备未找到，请查询数据");
+            return ;
+        }
+        SetMiddleware_FTPParam setMiddleware_ftpParam=new SetMiddleware_FTPParam();
+        setMiddleware_ftpParam=gson.fromJson(gson.toJson(param),SetMiddleware_FTPParam.class);
+        if(null==setMiddleware_ftpParam){
+            result.setMessage("设置集中控制参数异常");
+            return ;
+        }
+        setMiddleware_ftpParam.setIp(flushbonadinginfo.getEtip());
+        setMiddleware_ftpParam.setPasswd(flushbonadinginfo.getPasswd());
+        setMiddleware_ftpParam.setPort(flushbonadinginfo.getPort());
+        setMiddleware_ftpParam.setUser(flushbonadinginfo.getUser());
+
+        RResult middlewareFtp = fdInterface.setMiddleware_FTP(setMiddleware_ftpParam, result);
 
         if(null != middlewareFtp){
             result.setVersion(middlewareFtp.getVersion());
