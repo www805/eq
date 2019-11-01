@@ -27,6 +27,7 @@ import com.avst.equipmentcontrol.outside.interfacetoout.base.vo.GethomeVO;
 import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttd;
 import com.avst.equipmentcontrol.web.vo.baseEttype.EquipmentBasicsVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -133,35 +134,48 @@ public class ToOutMainServiceImpl extends BaseService implements ToOutMainServic
         ServerIpssidParam storageip = getServerIpParam.getStorageip();
         ServerIpssidParam ttsetinfoip = getServerIpParam.getTtsetinfoip();
 
-        EntityWrapper ewasr = new EntityWrapper();
-        ewasr.eq("ssid", asrip.getSsid());
-        Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
-        base_equipmentinfo.setEtip(asrip.getEtip());
-        Integer update = base_equipmentinfoMapper.update(base_equipmentinfo, ewasr);
+        Integer update = 0;
+        Integer update1 = 0;
 
-        EntityWrapper ewflushbonadingip = new EntityWrapper();
-        ewflushbonadingip.eq("ssid", flushbonadingip.getSsid());
-        Base_equipmentinfo base_equipmentinfo2 = new Base_equipmentinfo();
-        base_equipmentinfo2.setEtip(flushbonadingip.getEtip());
-        Integer update1 = base_equipmentinfoMapper.update(base_equipmentinfo2, ewflushbonadingip);
+        if(null != asrip && StringUtils.isNotBlank(asrip.getEtip())){
+            EntityWrapper ewasr = new EntityWrapper();
+            ewasr.eq("ssid", asrip.getSsid());
+            Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
+            base_equipmentinfo.setEtip(asrip.getEtip());
+            update = base_equipmentinfoMapper.update(base_equipmentinfo, ewasr);
+        }
 
-        EntityWrapper ewpolygraphip = new EntityWrapper();
-        ewpolygraphip.eq("ssid", polygraphip.getSsid());
-        Base_equipmentinfo base_equipmentinfo3 = new Base_equipmentinfo();
-        base_equipmentinfo3.setEtip(polygraphip.getEtip());
-        Integer update2 = base_equipmentinfoMapper.update(base_equipmentinfo3, ewpolygraphip);
+        if(null != flushbonadingip && StringUtils.isNotBlank(flushbonadingip.getEtip())){
+            EntityWrapper ewflushbonadingip = new EntityWrapper();
+            ewflushbonadingip.eq("ssid", flushbonadingip.getSsid());
+            Base_equipmentinfo base_equipmentinfo2 = new Base_equipmentinfo();
+            base_equipmentinfo2.setEtip(flushbonadingip.getEtip());
+            update1 = base_equipmentinfoMapper.update(base_equipmentinfo2, ewflushbonadingip);
+        }
 
-        EntityWrapper ewstorageip = new EntityWrapper();
-        ewstorageip.eq("ssid", storageip.getSsid());
-        Base_equipmentinfo base_equipmentinfo4 = new Base_equipmentinfo();
-        base_equipmentinfo4.setEtip(storageip.getEtip());
-        Integer update3 = base_equipmentinfoMapper.update(base_equipmentinfo4, ewstorageip);
+        if(null != polygraphip && StringUtils.isNotBlank(polygraphip.getEtip())){
+            EntityWrapper ewpolygraphip = new EntityWrapper();
+            ewpolygraphip.eq("ssid", polygraphip.getSsid());
+            Base_equipmentinfo base_equipmentinfo3 = new Base_equipmentinfo();
+            base_equipmentinfo3.setEtip(polygraphip.getEtip());
+            Integer update2 = base_equipmentinfoMapper.update(base_equipmentinfo3, ewpolygraphip);
+        }
 
-        EntityWrapper ewttsetinfoip = new EntityWrapper();
-        ewttsetinfoip.eq("ssid", ttsetinfoip.getSsid());
-        Base_equipmentinfo base_equipmentinfo5 = new Base_equipmentinfo();
-        base_equipmentinfo5.setEtip(ttsetinfoip.getEtip());
-        Integer update4 = base_equipmentinfoMapper.update(base_equipmentinfo5, ewttsetinfoip);
+        if(null != storageip && StringUtils.isNotBlank(storageip.getEtip())){
+            EntityWrapper ewstorageip = new EntityWrapper();
+            ewstorageip.eq("ssid", storageip.getSsid());
+            Base_equipmentinfo base_equipmentinfo4 = new Base_equipmentinfo();
+            base_equipmentinfo4.setEtip(storageip.getEtip());
+            Integer update3 = base_equipmentinfoMapper.update(base_equipmentinfo4, ewstorageip);
+        }
+
+        if(null != ttsetinfoip && StringUtils.isNotBlank(ttsetinfoip.getEtip())){
+            EntityWrapper ewttsetinfoip = new EntityWrapper();
+            ewttsetinfoip.eq("ssid", ttsetinfoip.getSsid());
+            Base_equipmentinfo base_equipmentinfo5 = new Base_equipmentinfo();
+            base_equipmentinfo5.setEtip(ttsetinfoip.getEtip());
+            Integer update4 = base_equipmentinfoMapper.update(base_equipmentinfo5, ewttsetinfoip);
+        }
 
         if (1 == update1) {
             EntityWrapper ew3 = new EntityWrapper();
