@@ -1,6 +1,8 @@
 package com.avst.equipmentcontrol.web.action;
 
 import com.avst.equipmentcontrol.common.cache.AppCache;
+import com.avst.equipmentcontrol.common.cache.NavCache;
+import com.avst.equipmentcontrol.common.cache.param.Base_ettypeCacheParam;
 import com.avst.equipmentcontrol.common.conf.Constant;
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RequestMapping("/ec/main")
 @Controller
@@ -35,6 +38,8 @@ public class MainAction extends BaseAction {
 
     @RequestMapping(value = "/gotomain")
     public ModelAndView gotomain(Model model) {
+        List<Base_ettypeCacheParam> navCache = NavCache.getNavCache();
+        model.addAttribute("navCache", navCache);
         model.addAttribute("title", "设备管理系统");
         return new ModelAndView("sweb/main", "main", model);
     }
