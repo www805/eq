@@ -195,15 +195,15 @@ function getMiddFtp() {
         '            </div>\n' +
         '            <div class="layui-form-item">\n' +
         '                <div class="layui-inline">\n' +
-        '                    <label class="layui-form-label"><span style="color: red;">*</span>心跳服务器地址</label>\n' +
+        '                    <label class="layui-form-label">心跳服务器地址</label>\n' +
         '                    <div class="layui-input-block">\n' +
-        '                        <input type="text" name="hreadbeatip" required  lay-verify="required|setip" placeholder="请输入心跳服务器地址" autocomplete="off" class="layui-input"  onkeyup="this.value=value.replace(/[^\\d|.]/g,\'\');if(this.value==\'\')(this.value=\'\');">\n' +
+        '                        <input type="text" name="hreadbeatip"  lay-verify="" placeholder="请输入心跳服务器地址" autocomplete="off" class="layui-input"  onkeyup="this.value=value.replace(/[^\\d|.]/g,\'\');if(this.value==\'\')(this.value=\'\');">\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '                <div class="layui-inline">\n' +
-        '                    <label class="layui-form-label"><span style="color: red;">*</span>流控限速(kb)</label>\n' +
+        '                    <label class="layui-form-label">流控限速(kb)</label>\n' +
         '                    <div class="layui-input-block">\n' +
-        '                        <input type="number" name="limit_speed" required  lay-verify="required|number" placeholder="请输入流控限速" autocomplete="off" class="layui-input" onKeypress="return (/[\\d]/.test(String.fromCharCode(event.keyCode)))">\n' +
+        '                        <input type="number" name="limit_speed"  lay-verify="" placeholder="请输入流控限速" autocomplete="off" class="layui-input" onKeypress="return (/[\\d]/.test(String.fromCharCode(event.keyCode)))">\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '            </div>\n' +
@@ -266,14 +266,14 @@ function getMiddFtp() {
                         fromFTPStr = fromFTP;
                         goaction = true;
 
-                        if(!(/([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}/.test(data.field.serverip))){
-                            layer.msg("服务器地址IP，不是一个正确的IP",{icon: 5});
-                            return false;
-                        }
-                        if(!(/([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}/.test(data.field.hreadbeatip))){
-                            layer.msg("心跳服务器地址，不是一个正确的IP",{icon: 5});
-                            return false;
-                        }
+                        // if(!(/([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}/.test(data.field.serverip))){
+                        //     layer.msg("服务器地址IP，不是一个正确的IP",{icon: 5});
+                        //     return false;
+                        // }
+                        // if(!(/([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}/.test(data.field.hreadbeatip))){
+                        //     layer.msg("心跳服务器地址，不是一个正确的IP",{icon: 5});
+                        //     return false;
+                        // }
 
                         setMiddFtp();
                     }

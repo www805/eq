@@ -131,11 +131,11 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
             return startAsr(param,rResult);
         }
 
-        if(tdssid.indexOf(";") < 0){
-            LogUtil.intoLog(this.getClass(),tdssid+":tdssid 一对多的模式下通道标识异常，开启失败");
-            rResult.setMessage("一对多的模式下通道标识异常，开启失败");
-            return rResult;
-        }
+//        if(tdssid.indexOf(";") < 0){
+//            LogUtil.intoLog(this.getClass(),tdssid+":tdssid 一对多的模式下通道标识异常，开启失败");
+//            rResult.setMessage("一对多的模式下通道标识异常，开启失败");
+//            return rResult;
+//        }
 
         //1调第三方的开始
         String asrserverssid=param.getAsrEquipmentssid();
