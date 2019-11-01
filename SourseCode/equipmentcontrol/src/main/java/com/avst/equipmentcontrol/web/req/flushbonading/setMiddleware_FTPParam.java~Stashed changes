@@ -1,6 +1,0 @@
-package com.avst.equipmentcontrol.web.req.flushbonading;
-
-
-public class SetMiddleware_FTPParam extends com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.SetMiddleware_FTPParam {
-
-}
