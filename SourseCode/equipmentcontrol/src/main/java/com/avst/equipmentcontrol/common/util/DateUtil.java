@@ -633,6 +633,21 @@ public class DateUtil {
 		return day;
 
 	}
+
+	/**
+	 * 获取当前时间，最后十位
+	 * @return
+	 */
+	public static String getcCurrentTime_10() {
+
+		int month=getMonth();
+		int day=getDay();
+		String hour=get24Hour();
+		String mm=getMinute();
+		String ss=getSecond();
+		return (month>9?month+"":("0"+month))+(day>9?day+"":("0"+day))+(hour.length()==2?hour:("0"+hour))+(mm.length()==2?mm:("0"+mm))+(ss.length()==2?ss:("0"+ss));
+
+	}
 	
 	public static int getMaxDayByMonth(int year,int month){
 		if(year !=0&&month!=0){
@@ -854,10 +869,8 @@ public class DateUtil {
     	}
     public static void main(String[] args) {
 
-		LogUtil.intoLog(new Date());
-		LogUtil.intoLog(DateUtil.class,getHour(new Date()));
-		LogUtil.intoLog(DateUtil.class,getMM(new Date()));
-		LogUtil.intoLog(DateUtil.class,getSS(new Date()));
+		System.out.println(getcCurrentTime_10());
+		System.out.println(getSecond());
 
 			
 	}
