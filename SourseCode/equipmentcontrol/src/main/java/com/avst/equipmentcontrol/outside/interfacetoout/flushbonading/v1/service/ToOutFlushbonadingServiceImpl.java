@@ -1,18 +1,17 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service;
 
-import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.AddOrUpdateToOutFlushbonadingParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.BaseParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetBurnTimeParam;
-import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.GetToOutFlushbonadingListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.req.*;
 import com.avst.equipmentcontrol.web.req.flushbonading.FlushbonadinginfoParam;
+import com.avst.equipmentcontrol.web.req.flushbonading.GetMiddleware_FTPParam_web;
+import com.avst.equipmentcontrol.web.req.flushbonading.SetMiddleware_FTPParam_web;
 import com.avst.equipmentcontrol.web.service.FlushbonadingService;
 import com.avst.equipmentcontrol.web.vo.flushbonading.FlushbonadinginfoVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +80,13 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
         flushbonadinginfo.setEtip(param.getEtip());
         flushbonadinginfo.setEtypessid(param.getEtypessid());
         flushbonadinginfo.setExplain(param.getExplain());
+        flushbonadinginfo.setPreviewurl(param.getPreviewurl());
+        flushbonadinginfo.setDiskrecbool(param.getDiskrecbool());
+        flushbonadinginfo.setBurnbool(param.getBurnbool());
+        flushbonadinginfo.setDefaulturlbool(param.getDefaulturlbool());
+        flushbonadinginfo.setBurntime(param.getBurntime());
+        flushbonadinginfo.setPtjson(param.getPtjson());
+        flushbonadinginfo.setPtshowtime(param.getPtshowtime());
         reqParam.setParam(flushbonadinginfo);
 
         flushbonadingService.addFlushbonading(result, reqParam);
@@ -105,6 +111,13 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
         flushbonadinginfo.setEtip(param.getEtip());
         flushbonadinginfo.setEtypessid(param.getEtypessid());
         flushbonadinginfo.setExplain(param.getExplain());
+        flushbonadinginfo.setPreviewurl(param.getPreviewurl());
+        flushbonadinginfo.setDiskrecbool(param.getDiskrecbool());
+        flushbonadinginfo.setBurnbool(param.getBurnbool());
+        flushbonadinginfo.setDefaulturlbool(param.getDefaulturlbool());
+        flushbonadinginfo.setBurntime(param.getBurntime());
+        flushbonadinginfo.setPtjson(param.getPtjson());
+        flushbonadinginfo.setPtshowtime(param.getPtshowtime());
         reqParam.setParam(flushbonadinginfo);
 
         flushbonadingService.updateFlushbonading(result, reqParam);
@@ -125,6 +138,28 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
             result.setMessage("没找到默认的审讯主机...");
         }
 
+        return result;
+    }
+
+    @Override
+    public RResult getToOutMiddleware_FTP(GetToOutMiddleware_FTPParam param, RResult result) {
+        Gson gson=new Gson();
+        if (null!=param){
+            GetMiddleware_FTPParam_web getMiddleware_ftpParam= gson.fromJson(gson.toJson(param),GetMiddleware_FTPParam_web.class);
+            getMiddleware_ftpParam.setFdssid(param.getFlushbonadingetinfossid());
+            flushbonadingService.getMiddleware_FTP(getMiddleware_ftpParam,result);
+        }
+        return result;
+    }
+
+    @Override
+    public RResult setToOutMiddleware_FTP(SetToOutMiddleware_FTPParam param, RResult result) {
+        Gson gson=new Gson();
+        if (null!=param){
+            SetMiddleware_FTPParam_web setMiddleware_ftpParam= gson.fromJson(gson.toJson(param),SetMiddleware_FTPParam_web.class);
+            setMiddleware_ftpParam.setFdssid(param.getFlushbonadingetinfossid());
+            flushbonadingService.setMiddleware_FTP(setMiddleware_ftpParam,result);
+        }
         return result;
     }
 
