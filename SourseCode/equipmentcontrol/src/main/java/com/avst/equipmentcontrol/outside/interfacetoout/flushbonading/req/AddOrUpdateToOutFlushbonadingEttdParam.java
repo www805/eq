@@ -30,6 +30,16 @@ public class AddOrUpdateToOutFlushbonadingEttdParam extends BaseParam {
 
     private String ssid;
 
+    private Integer shockenergy=3500;
+
+    public Integer getShockenergy() {
+        return shockenergy;
+    }
+
+    public void setShockenergy(Integer shockenergy) {
+        this.shockenergy = shockenergy;
+    }
+
     public Integer getId() {
         return id;
     }
