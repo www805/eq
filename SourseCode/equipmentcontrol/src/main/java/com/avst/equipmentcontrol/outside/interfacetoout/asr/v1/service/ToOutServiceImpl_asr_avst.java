@@ -152,6 +152,9 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         String  audiourl="<root><asrchannel>asrnum</asrchannel>";
         int asrnum=0;
         int asrchannel=param.getAsrchannel();
+        if(asrchannel==0){
+            asrchannel=1;//最少要有一个识别数
+        }
         List<TaskParam> taskParamList=new ArrayList<TaskParam>();
         for(String td:tdarr){
 
