@@ -59,6 +59,70 @@ public class AddOrUpdateToOutFlushbonadingParam extends BaseParam {
      */
     private String ettypenum;
 
+    private String previewurl;
+    private Integer diskrecbool;
+    private Integer burnbool;
+    private Integer defaulturlbool;
+    private Integer burntime;
+    private Integer ptshowtime;
+    private String ptjson;
+
+    public String getPreviewurl() {
+        return previewurl;
+    }
+
+    public void setPreviewurl(String previewurl) {
+        this.previewurl = previewurl;
+    }
+
+    public Integer getDiskrecbool() {
+        return diskrecbool;
+    }
+
+    public void setDiskrecbool(Integer diskrecbool) {
+        this.diskrecbool = diskrecbool;
+    }
+
+    public Integer getBurnbool() {
+        return burnbool;
+    }
+
+    public void setBurnbool(Integer burnbool) {
+        this.burnbool = burnbool;
+    }
+
+    public Integer getDefaulturlbool() {
+        return defaulturlbool;
+    }
+
+    public void setDefaulturlbool(Integer defaulturlbool) {
+        this.defaulturlbool = defaulturlbool;
+    }
+
+    public Integer getBurntime() {
+        return burntime;
+    }
+
+    public void setBurntime(Integer burntime) {
+        this.burntime = burntime;
+    }
+
+    public Integer getPtshowtime() {
+        return ptshowtime;
+    }
+
+    public void setPtshowtime(Integer ptshowtime) {
+        this.ptshowtime = ptshowtime;
+    }
+
+    public String getPtjson() {
+        return ptjson;
+    }
+
+    public void setPtjson(String ptjson) {
+        this.ptjson = ptjson;
+    }
+
     public Integer getId() {
         return id;
     }

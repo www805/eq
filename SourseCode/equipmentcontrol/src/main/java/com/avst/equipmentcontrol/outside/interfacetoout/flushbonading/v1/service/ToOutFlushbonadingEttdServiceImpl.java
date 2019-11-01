@@ -95,6 +95,7 @@ public class ToOutFlushbonadingEttdServiceImpl extends BaseService implements To
         flushbonadingEttdParam.setTdnum(param.getTdnum());
         flushbonadingEttdParam.setPullflowurl(param.getPullflowurl());
         flushbonadingEttdParam.setTdtype(param.getTdtype());
+        flushbonadingEttdParam.setShockenergy(param.getShockenergy());
         reqParam.setParam(flushbonadingEttdParam);
 
         flushbonadingEttdService.updateFlushbonadingEttd(result, reqParam);

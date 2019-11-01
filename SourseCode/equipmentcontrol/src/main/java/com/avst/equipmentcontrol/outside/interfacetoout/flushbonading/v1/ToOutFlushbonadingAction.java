@@ -106,4 +106,44 @@ public class ToOutFlushbonadingAction extends BaseAction {
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     };
+
+
+    /**
+     * 获取集中存储配置,ftp的上传服务器配置
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getToOutMiddleware_FTP")
+    @ResponseBody
+    public RResult getToOutMiddleware_FTP(@RequestBody ReqParam<GetToOutMiddleware_FTPParam> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetToOutMiddleware_FTPParam pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result = getToOutService(pParam.getFdType()).getToOutMiddleware_FTP(pParam, result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+
+    /**
+     * 集中存储配置,配置设备ftp上传
+     * @param param
+     * @return
+     */
+    @RequestMapping("/setToOutMiddleware_FTP")
+    @ResponseBody
+    public RResult setToOutMiddleware_FTP(@RequestBody ReqParam<SetToOutMiddleware_FTPParam> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            SetToOutMiddleware_FTPParam pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result = getToOutService(pParam.getFdType()).setToOutMiddleware_FTP(pParam, result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
 }
