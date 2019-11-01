@@ -29,19 +29,15 @@
         <a th:href="@{/ec/main/gotomain}"><h1 class="layui-logo"  style="color: #fff; font-size: 18px; font-weight:bold; font-style:italic" id="TopTitle" th:text="${title}"></h1></a>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left" id="nav_list">
-            <!--<li class="layui-nav-item">-->
-                <!--<a href="javascript:;">用户管理</a>-->
-                <!--<dl class="layui-nav-child">-->
-                    <!--<dd><a  target="option">用户列表</a></dd>-->
-                    <!--<dd><a  target="option">角色列表</a></dd>-->
-
-                <!--</dl>-->
+            <!--<li class="layui-nav-item" th:each="nav,navStat : ${navCache}">-->
+                <!--<a th:href="@{${nav.url}}" th:text="${nav.explain}" target="option">审讯设备</a>-->
             <!--</li>-->
             <li class="layui-nav-item"><a th:href="@{/Flushbonading/getFlushbonadingIndex?etypessid=gft67896ijyy}" target="option">审讯设备</a></li>
             <li class="layui-nav-item"><a th:href="@{/Asr/getAsrIndex?etypessid=sade431}" target="option">语音服务器</a></li>
             <li class="layui-nav-item"><a th:href="@{/Polygraph/getPolygraphIndex?etypessid=4562cdrtawe}" target="option">测谎仪</a></li>
             <li class="layui-nav-item"><a th:href="@{/Storage/getStorageIndex?etypessid=sscunchufuwu}" target="option">存储设备</a></li>
             <li class="layui-nav-item"><a th:href="@{/ttsetinfo/getTtsetinfoIndex?etypessid=tts1type}" target="option">文字转语音服务</a></li>
+
             <li class="layui-nav-item">
                 <a href="javascript:;">设备设置</a>
                 <dl class="layui-nav-child">
