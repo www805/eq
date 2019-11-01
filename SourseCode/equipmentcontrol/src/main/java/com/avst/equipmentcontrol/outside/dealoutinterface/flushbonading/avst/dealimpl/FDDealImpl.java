@@ -1394,4 +1394,48 @@ public class FDDealImpl implements FDInterface{
         }
         return result;
     }
+
+    @Override
+    public RResult<ViewKeyMarkVO> viewKeyMark(ViewKeyMarkParam param, RResult<ViewKeyMarkVO> result) {
+
+        String ip=param.getIp();
+        String passwd=param.getPasswd();
+        String user=param.getUser();
+        int port=param.getPort();
+
+        if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
+            result.setMessage("录像重点标记参数为空");
+            LogUtil.intoLog(4,this.getClass(),param.toString()+"----------viewKeyMark");
+            return result;
+        }
+
+        String kettext=param.getKeyText();
+        if(StringUtils.isEmpty(kettext)){
+            kettext=DateUtil.getDateAndMinute();
+        }else if(kettext.length() > 10){
+            LogUtil.intoLog(3,this.getClass(),kettext+":kettext--viewKeyMark----重点标记的KEY文件大于了10个字，自动截取");
+            kettext=kettext.substring(0,9);
+        }
+
+        try {
+
+            String url="http://"+ip+":"+port+"/stcmd" ;
+            String regparam="action=do&type=view&cmd=import"+
+                    "&labeltext="+kettext+
+                    "&authvusr="+user+"&authpwd="+passwd;
+            String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
+            LogUtil.intoLog(this.getClass(),rr+":rr--viewKeyMark----regparam:"+regparam);
+            int bool= Xml2Object.viewKeyMarkXml(rr);
+            if(bool==1){
+                result.changeToTrue();
+            }else{
+                result.setMessage("请求录像重点标记失败");
+                LogUtil.intoLog(4,this.getClass(),"viewKeyMark----请求录像重点标记失败,regparam:"+regparam);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 }

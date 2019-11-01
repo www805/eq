@@ -316,4 +316,12 @@ public interface FDInterface {
      */
     public RResult<GetAllFileListByIidVO> getAllFileListByIid(GetAllFileListByIidParam param, RResult<GetAllFileListByIidVO> result);
 
+    /**
+     * 录像重点标记
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult<ViewKeyMarkVO> viewKeyMark(ViewKeyMarkParam param, RResult<ViewKeyMarkVO> result);
+
 }

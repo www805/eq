@@ -1750,35 +1750,84 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         }
 
         //查询数据库找到设备
-        EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
-        ew.eq("fet.ssid",fdssid);
-        Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
-        if(null==flushbonadinginfo){
-            result.setMessage("设备未找到，请查询数据");
-            return result;
+        try {
+            EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+            ew.eq("fet.ssid",fdssid);
+            Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+            if(null==flushbonadinginfo){
+                result.setMessage("设备未找到，请查询数据");
+                return result;
+            }
+
+            String iid=pParam.getIid();
+
+            if (StringUtils.isEmpty(iid)){
+                LogUtil.intoLog(this.getClass(),"参数iid为空，"+JacksonUtil.objebtToString(pParam));
+                result.setMessage("参数异常");
+                return result;
+            }
+
+            GetAllFileListByIidParam pparam=new GetAllFileListByIidParam();
+            pparam.setPort(flushbonadinginfo.getPort());
+            pparam.setIp(flushbonadinginfo.getEtip());
+            pparam.setPasswd(flushbonadinginfo.getPasswd());
+            pparam.setUser(flushbonadinginfo.getUser());
+            pparam.setIid(iid);
+            RResult<GetAllFileListByIidVO> result2=new RResult<GetAllFileListByIidVO>();
+            result2=fdDeal.getAllFileListByIid(pparam,result2);
+            if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())&&null!=result2.getData()){
+                GetAllFileListByIidVO allFileListByIidVO=result2.getData();
+
+            }else{
+                result.setMessage("请求获取设备文件下的文件列表失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        String iid=pParam.getIid();
+        return result;
+    }
 
-        if (StringUtils.isEmpty(iid)){
-            LogUtil.intoLog(this.getClass(),"参数iid为空，"+JacksonUtil.objebtToString(pParam));
-            result.setMessage("参数异常");
-            return result;
-        }
+    @Override
+    public RResult viewKeyMark(ViewKeyMarkParam_out param, RResult result) {
 
-        GetAllFileListByIidParam pparam=new GetAllFileListByIidParam();
-        pparam.setPort(flushbonadinginfo.getPort());
-        pparam.setIp(flushbonadinginfo.getEtip());
-        pparam.setPasswd(flushbonadinginfo.getPasswd());
-        pparam.setUser(flushbonadinginfo.getUser());
-        pparam.setIid(iid);
-        RResult<GetAllFileListByIidVO> result2=new RResult<GetAllFileListByIidVO>();
-        result2=fdDeal.getAllFileListByIid(pparam,result2);
-        if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())&&null!=result2.getData()){
-            GetAllFileListByIidVO allFileListByIidVO=result2.getData();
+        try {
+            String fdssid=param.getFlushbonadingetinfossid();
+            if (StringUtils.isBlank(fdssid)){
+                LogUtil.intoLog(4,this.getClass(),"viewKeyMark param.getFdssid():"+fdssid);
+                result.setMessage("参数为空");
+                return result;
+            }
 
-        }else{
-            result.setMessage("请求获取设备文件下的文件列表失败");
+            //查询数据库找到设备
+            EntityWrapper<Flushbonading_etinfo> ew=new EntityWrapper<Flushbonading_etinfo>();
+            ew.eq("fet.ssid",fdssid);
+            Flushbonadinginfo flushbonadinginfo=flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+            if(null==flushbonadinginfo){
+                result.setMessage("设备未找到，请查询数据");
+                return result;
+            }
+
+            ViewKeyMarkParam viewKeyMarkParam=new ViewKeyMarkParam();
+            viewKeyMarkParam.setPort(flushbonadinginfo.getPort());
+            viewKeyMarkParam.setIp(flushbonadinginfo.getEtip());
+            viewKeyMarkParam.setPasswd(flushbonadinginfo.getPasswd());
+            viewKeyMarkParam.setUser(flushbonadinginfo.getUser());
+            viewKeyMarkParam.setKeyText(param.getKeyText());
+
+            RResult<ViewKeyMarkVO> result2=new RResult<ViewKeyMarkVO>();
+            result2=fdDeal.viewKeyMark(viewKeyMarkParam,result2);
+            if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+                result.changeToTrue();
+            }else{
+                if(null!=result){
+                    result.setMessage(result.getMessage());
+                }else{
+                    result.setMessage("设备录像重点标记失败");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return result;

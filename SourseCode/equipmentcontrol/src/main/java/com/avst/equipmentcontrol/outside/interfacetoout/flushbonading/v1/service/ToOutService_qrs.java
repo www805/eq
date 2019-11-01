@@ -269,5 +269,12 @@ public interface ToOutService_qrs {
      */
     RResult getFDAllFileListByIid(GetFDAllFileListByIidParam_out pParam, RResult result);
 
+    /**
+     * 设备录像重点标记
+     * @param param
+     * @param result
+     * @return
+     */
+    public RResult viewKeyMark(ViewKeyMarkParam_out param, RResult result);
 
 }

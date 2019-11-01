@@ -631,7 +631,24 @@ public class ToOutAction_qrs extends BaseAction {
         return result;
     }
 
-
+    /**
+     * 设置设备当前时间
+     * @param param
+     * @return
+     */
+    @RequestMapping("/viewKeyMark")
+    @ResponseBody
+    public RResult viewKeyMark(@RequestBody ViewKeyMarkParam_out param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param){
+            ViewKeyMarkParam_out pParam=param;
+            if(null != pParam.getFdType()){
+                result=getToOutServiceImpl(pParam.getFdType()).viewKeyMark(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
 
 
 
@@ -758,6 +775,13 @@ public class ToOutAction_qrs extends BaseAction {
             gparam.setFdType(FDType.FD_AVST);
             gparam.setFlushbonadingetinfossid("sxsba2");
             System.out.println("getFDNetWork--"+JacksonUtil.objebtToString(getFDNetWork(gparam)));
+        }else if(type==15){
+
+            ViewKeyMarkParam_out  gparam=new ViewKeyMarkParam_out();
+            gparam.setFdType(FDType.FD_AVST);
+            gparam.setFlushbonadingetinfossid("sxsba2");
+            gparam.setKeyText(pm);
+            System.out.println("viewKeyMark--"+JacksonUtil.objebtToString(viewKeyMark(gparam)));
         }
 
         return rResult;

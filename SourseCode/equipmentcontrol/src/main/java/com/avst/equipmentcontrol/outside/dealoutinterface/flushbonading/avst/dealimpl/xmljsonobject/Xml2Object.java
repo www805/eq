@@ -187,6 +187,23 @@ public class Xml2Object {
     }
 
     /**
+     * 解析录像重点标记
+     * @param xml
+     * @return
+     */
+    public static int viewKeyMarkXml( String xml) {
+        try {
+
+            String startstr="<import t=\"view\">";
+            String endstr="</import>";
+            return jxXml(xml,startstr,endstr);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
      * 解析开始光盘暂停刻录
      * @param xml
      * @return
