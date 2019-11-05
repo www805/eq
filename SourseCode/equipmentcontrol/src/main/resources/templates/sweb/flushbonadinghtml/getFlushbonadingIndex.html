@@ -65,13 +65,13 @@
         <thead>
         <tr>
             <th>序号</th>
+            <th>设备名称</th>
+            <th>设备IP</th>
             <th>直播地址</th>
             <th>直播预览地址</th>
             <th>开放接口的端口</th>
             <th>登录用户名</th>
             <th>登录密码</th>
-            <th>设备编号</th>
-            <th>设备IP</th>
             <th>是否需要硬盘录像</th>
             <th>是否需要光盘同刻</th>
             <th>设为默认设备</th>
@@ -82,13 +82,13 @@
         {{#  layui.each(pagelist, function(index, value){ }}
         <tr>
             <td>{{index+1}}</td>
+            <td>{{value.etnum==null?"":value.etnum}}</td>
+            <td>{{value.etip==null?"":value.etip}}</td>
             <td>{{value.livingurl==null?"":value.livingurl}}</td>
             <td>{{value.previewurl==null?"":value.previewurl}}</td>
             <td>{{value.port==null?"":value.port}}</td>
             <td>{{value.user==null?"":value.user}}</td>
             <td>{{value.passwd==null?"":value.passwd}}</td>
-            <td>{{value.etnum==null?"":value.etnum}}</td>
-            <td>{{value.etip==null?"":value.etip}}</td>
             <td><input type="checkbox" {{value.diskrecbool==1?"checked":""}} name="diskrecbool" id="diskrecbool" lay-skin="switch" lay-filter="diskrecbool" lay-text="需要|不需要" value="{{value.ssid}}"></td>
             <td><input type="checkbox" {{value.burnbool==1?"checked":""}} name="burnbool" id="burnbool" lay-skin="switch" lay-filter="burnbool" lay-text="需要|不需要" value="{{value.ssid}}"></td>
             <td><input type="checkbox" {{value.defaulturlbool==1?"checked":""}} name="defaulturlbool" id="defaulturlbool" lay-skin="switch" lay-filter="defaulturlbool" lay-text="默认|不默认" value="{{value.ssid}}"></td>

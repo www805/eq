@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.web.service;
 
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDInterface;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.GetMiddleware_FTPParam;
@@ -150,7 +151,7 @@ public class FlushbonadingService extends BaseService {
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtnum())) {
-            result.setMessage("设备编号不能为空");
+            result.setMessage("设备名称不能为空");
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtip())) {
@@ -158,24 +159,20 @@ public class FlushbonadingService extends BaseService {
             return;
         }
         if (null == paramParam.getBurntime()) {
-            result.setMessage("刻录选时时长不能为空");
-            return;
+            paramParam.setBurntime(8);
         }
         if (null == paramParam.getBurnbool()) {
-            result.setMessage("是否需要光盘同刻不能为空");
-            return;
+            paramParam.setBurnbool(0);
         }
         if (null == paramParam.getPtshowtime()) {
-            result.setMessage("片头显示时间不能为空");
-            return;
+            paramParam.setPtshowtime(5);
         }
         if (null == paramParam.getDiskrecbool()) {
-            result.setMessage("是否需要硬盘录像不能为空");
-            return;
+            paramParam.setDiskrecbool(1);
         }
 
         boolean isip = OpenUtil.isIp(paramParam.getEtip());
-        if(isip == false){
+        if(!isip){
             result.setMessage("设备IP不是一个正确的IP");
             return;
         }
@@ -186,38 +183,14 @@ public class FlushbonadingService extends BaseService {
         }
 
         EntityWrapper<Flushbonading_etinfo> wrapper = new EntityWrapper<>();
-        wrapper.eq("f.port", paramParam.getPort());
-        wrapper.eq("f.user", paramParam.getUser());
-        wrapper.eq("f.passwd", paramParam.getPasswd());
-        wrapper.eq("f.uploadbasepath", paramParam.getUploadbasepath());
-        wrapper.eq("f.diskrecbool", paramParam.getDiskrecbool());
-        wrapper.eq("f.burnbool", paramParam.getBurnbool());
-        wrapper.eq("f.burntime", paramParam.getBurntime());
-        wrapper.eq("f.ptshowtime", paramParam.getPtshowtime());
         wrapper.eq("b.etnum", paramParam.getEtnum());
         wrapper.eq("b.etip", paramParam.getEtip());
 
         int repetitionCount = flushbonading_etinfoMapper.getRepetition(wrapper);
         if (repetitionCount > 0) {
-            result.setMessage("该审讯设备已经存在");
+            result.setMessage("该审讯设备已经存在，设备名称和设备IP的组合一定是唯一的");
             return;
         }
-
-        EntityWrapper<Flushbonading_etinfo> ew = new EntityWrapper<>();
-        ew.eq("b.etip", paramParam.getEtip());
-        int repetition = flushbonading_etinfoMapper.getRepetition(ew);
-        if (repetition > 0) {
-            result.setMessage("该设备IP已经存在");
-            return;
-        }
-
-//        Flushbonading_etinfo etinfo = new Flushbonading_etinfo();
-//        etinfo.setUser(paramParam.getUser());
-//        Flushbonading_etinfo etinfoOne = flushbonading_etinfoMapper.selectOne(etinfo);
-//        if (null != etinfoOne) {
-//            result.setMessage("用户名已经存在！");
-//            return;
-//        }
 
         Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
         base_equipmentinfo.setEtnum(paramParam.getEtnum());
@@ -225,8 +198,8 @@ public class FlushbonadingService extends BaseService {
         base_equipmentinfo.setEtypessid(paramParam.getEtypessid());
         base_equipmentinfo.setSsid(OpenUtil.getUUID_32());
 
-        base_equipmentinfoMapper.insert(base_equipmentinfo);
-
+        int insert_bool=base_equipmentinfoMapper.insert(base_equipmentinfo);
+        LogUtil.intoLog(1,this.getClass(),insert_bool+":insert_bool 新增设备是否成功--");
 
         //拼接直播地址，直播预览地址
         String urlModeLlivingurl = PropertiesListenerConfig.getProperty("urlModel.livingurl");//value
@@ -260,18 +233,20 @@ public class FlushbonadingService extends BaseService {
             //全部设置为0
             Flushbonading_etinfo flushbonading = new Flushbonading_etinfo();
             flushbonading.setDefaulturlbool(0);
-            flushbonading_etinfoMapper.update(flushbonading, null);
+            int update_bool=flushbonading_etinfoMapper.update(flushbonading, null);
+            LogUtil.intoLog(1,this.getClass(),update_bool+":update_bool 修改设备是否成功--");
         }
 
         Integer insert = flushbonading_etinfoMapper.insert(flushbonading_etinfo);
-        System.out.println("add_boot：" + insert);
+        LogUtil.intoLog(1,this.getClass(),insert+":insert 修改录像设备是否成功--");
         if (insert == 1) {
             result.setData(flushbonading_etinfo.getSsid());
+            changeResultToSuccess(result);
         } else {
             result.setData(insert);
+            result.setMessage("录像设备新增失败");
         }
 
-        changeResultToSuccess(result);
     }
 
     /**

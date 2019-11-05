@@ -47,9 +47,10 @@ public class SSChecckDataThread extends  Thread{
 
         String savebasepath=ss_dataMessageParam.getDatasavebasepath();//这一类文件存储的主路径
         String sorsefilepath=ss_dataMessageParam.getSoursedatapath();
+        LogUtil.intoLog(this.getClass(),sorsefilepath+":sorsefilepath iscoming  SSChecckDataThread");
         String iid=ss_dataMessageParam.getIid();
         if(StringUtils.isEmpty(sorsefilepath)||StringUtils.isEmpty(savebasepath)){
-            LogUtil.intoLog(this.getClass(),sorsefilepath+":sorsefilepath=====有一个参数为空====savebasepath:"+savebasepath);
+            LogUtil.intoLog(4,this.getClass(),sorsefilepath+":sorsefilepath=====有一个参数为空====savebasepath:"+savebasepath);
             SSThreadCache.delSSChecckDataThread(iid);//关闭这个检测文件是否正常的线程的缓存
             return ;
         }
@@ -71,10 +72,15 @@ public class SSChecckDataThread extends  Thread{
                 savefilepathlist=FileUtil.getAllFiles(file,savefilepathlist,1);
                 if(null!=savefilepathlist&&savefilepathlist.size() > 0){
                     int size=savefilepathlist.size();
-                    for(int i=size-1;i>=0;i--){//从最后面查起
+                    boolean bool_find=false;
+                    //从最后面查起
+                    for(int i=size-1;i>=0;i--){
                         String path=savefilepathlist.get(i);
-                       /* LogUtil.intoLog(this.getClass(),path+":path 路径对比 filename:"+filename);*/
-                        if(path.endsWith(filename)){//当找到指定文件后进行大小比较
+//                       LogUtil.intoLog(this.getClass(),path+":path 路径对比 filename:"+filename);
+                        //当找到指定文件后进行大小比较
+                        if(path.endsWith(filename)){
+
+                            bool=true;//找到这个文件
 
                             File savefile=new File(path);
                             long filerealsize=savefile.length();
@@ -140,13 +146,19 @@ public class SSChecckDataThread extends  Thread{
                             break;//找到了文件就不需要再找了
                         }
                     }
+
+                    if(!bool_find){
+                        LogUtil.intoLog(4,this.getClass(),"SSChecckDataThread filename is not found filename:"+filename);
+                    }
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                LogUtil.intoLog(4,this.getClass(),"SSChecckDataThread 异常抛错了"+e.getMessage());
             }
 
             if(!bool){
-                LogUtil.intoLog(this.getClass(),"SSChecckDataThread 被主动中止,可能是已经完成了--filename："+filename);
+                LogUtil.intoLog(3,this.getClass(),"SSChecckDataThread 被主动中止,可能是已经完成了--filename："+filename);
                 break;
             }
 

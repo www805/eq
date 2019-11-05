@@ -1261,6 +1261,12 @@ public static String numtoStr(int digit,Integer num){
 	 */
 	public static boolean isIp(String ip) {
 		boolean b1 = ip.matches("([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}");
+
+		if(!b1){
+			if(ip.equals("localhost")){
+				b1=true;
+			}
+		}
 		return b1;
 	}
 

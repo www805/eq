@@ -12,7 +12,7 @@ import java.util.List;
 public class Flushbonadinginfo extends Flushbonading_etinfo {
 
     /**
-     * 设备编号
+     * 设备名称
      */
     private String etnum;
 

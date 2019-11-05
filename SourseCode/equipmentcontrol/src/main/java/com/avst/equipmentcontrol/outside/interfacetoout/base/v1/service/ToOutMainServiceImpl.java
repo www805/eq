@@ -15,6 +15,7 @@ import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_equi
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_ettype;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_equipmentinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_ettypeMapper;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
@@ -86,32 +87,55 @@ public class ToOutMainServiceImpl extends BaseService implements ToOutMainServic
 
         GetServerIpALLParam paramParam = param.getParam();
 
+        String fdssid=paramParam.getFdssid();
         EntityWrapper ew = new EntityWrapper();
-        ew.eq("fet.ssid", paramParam.getFdssid());
+        ew.eq("fet.ssid", fdssid);
         /**审讯设备**/
         Flushbonadinginfo flushbonadinginfo = flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
+        if(null==flushbonadinginfo){
+            LogUtil.intoLog(this.getClass(),fdssid+":fdssid 没有找到这个审讯设备");
+            result.setMessage("没有找到这个审讯设备");
+        }
 
+        String asrssid=paramParam.getAsrssid();
         EntityWrapper ew1=new EntityWrapper();
-        ew1.eq("aet.ssid",paramParam.getAsrssid());
+        ew1.eq("aet.ssid",asrssid);
         /**语音服务器**/
         Asr_et_ettype asrinfo = asr_etinfoMapper.getAsrinfo(ew1);
+        if(null==asrinfo){
+            LogUtil.intoLog(this.getClass(),asrssid+":asrssid 没有找到这个语音服务器");
+            result.setMessage("没有找到这个语音服务器");
+        }
 
+        String phssid=paramParam.getPolygraphssid();
         EntityWrapper ew2 = new EntityWrapper();
-        ew2.eq("pet.ssid",paramParam.getPolygraphssid());
-        /**测谎仪**/
+        ew2.eq("pet.ssid",phssid);
+        /**审讯监护服务**/
         PolygraphInfo polygraphInfo = polygraph_etinfoMapper.getPolygraphInfo(ew2);
+        if(null==polygraphInfo){
+            LogUtil.intoLog(4,this.getClass(),phssid+":phssid 没有找到这个审讯监护服务");
+            result.setMessage("没有找到这个审讯监护服务");
+        }
 
         EntityWrapper ew3 = new EntityWrapper();
         ew3.eq("et.EXPLAIN", "存储服务");
         ew3.last("LIMIT 1");
         /**存储服务**/
         EquipmentBasicsVO ccfwIp = base_equipmentinfoMapper.getEquipmentBasicsByIp(ew3);
+        if(null==ccfwIp){
+            LogUtil.intoLog(4,this.getClass(),"没有找到这个存储服务");
+            result.setMessage("没有找到这个存储服务");
+        }
 
         EntityWrapper ew4 = new EntityWrapper();
         ew4.eq("et.EXPLAIN", "文字转语音服务");
         ew4.last("LIMIT 1");
         /**文字转语音服务**/
         EquipmentBasicsVO wzzyyfwIp = base_equipmentinfoMapper.getEquipmentBasicsByIp(ew4);
+        if(null==wzzyyfwIp){
+            LogUtil.intoLog(4,this.getClass(),"没有找到文字转语音服务");
+            result.setMessage("没有找到文字转语音服务");
+        }
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("flushbonadingip", flushbonadinginfo);

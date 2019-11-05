@@ -31,6 +31,20 @@
     </div>
     <form class="layui-form  layui-main site-inline" action="" style="margin-top: 30px;">
         <input type="hidden" name="ssid" id="ssid" value=""/>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>设备名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="etnum" id="etnum" required lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>设备IP</label>
+            <div class="layui-input-inline" >
+                <input type="text" name="etip" id="etip" required  lay-verify="setip" placeholder="请输入设备IP" autocomplete="off" class="layui-input" onkeyup="if(this.value=='')(this.value='');if(this.value=='localhost')(this.value='localhost');">
+            </div>
+            <input type="button" style="float: left;" class="layui-btn layui-btn-normal" onclick="setLocahostIp()" value="localhost" />
+
+        </div>
         <div class="layui-form-item" id="livingurlItem">
             <label class="layui-form-label"><span style="color: red;">*</span>直播地址</label>
             <div class="layui-input-block">
@@ -69,20 +83,6 @@
             <label class="layui-form-label"><span style="color: red;">*</span>ftp上传存储路径</label>
             <div class="layui-input-block">
                 <input type="text" name="uploadbasepath" id="uploadbasepath" required lay-verify="required" placeholder="请输入ftp上传存储路径" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label"><span style="color: red;">*</span>设备编号</label>
-            <div class="layui-input-block">
-                <input type="text" name="etnum" id="etnum" required lay-verify="required" placeholder="请输入设备编号" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label"><span style="color: red;">*</span>设备IP</label>
-            <div class="layui-input-block">
-                <input type="text" name="etip" id="etip" required  lay-verify="setip" placeholder="请输入设备IP" autocomplete="off" class="layui-input" onkeyup="this.value=value.replace(/[^\d|.]/g,'');if(this.value=='')(this.value='');">
             </div>
         </div>
 
@@ -218,6 +218,10 @@
         }else{
             $("#getptdjconstBtn").val("更新片头列表");
         }
+    }
+
+    function setLocahostIp(){
+        $("#etip").val("localhost");
     }
 
 </script>
