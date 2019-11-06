@@ -153,8 +153,7 @@ public class TtsEtinfoService extends BaseService {
             return;
         }
 
-        boolean isip = OpenUtil.isIp(paramParam.getEtip());
-        if(isip == false){
+        if(!OpenUtil.isIp(paramParam.getEtip())){
             result.setMessage("设备IP不是一个正确的IP");
             return;
         }
@@ -259,8 +258,7 @@ public class TtsEtinfoService extends BaseService {
             return;
         }
 
-        boolean isip = OpenUtil.isIp(paramParam.getEtip());
-        if(isip == false){
+        if(!OpenUtil.isIp(paramParam.getEtip())){
             result.setMessage("设备IP不是一个正确的IP");
             return;
         }
