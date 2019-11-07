@@ -632,7 +632,7 @@ public class ToOutAction_qrs extends BaseAction {
     }
 
     /**
-     * 设置设备当前时间
+     * 设备录像重点标记
      * @param param
      * @return
      */
