@@ -25,6 +25,7 @@ function FlushbonadingEttdIndex(port, currPage, pageSize) {
     var data={
         token:INIT_CLIENTKEY,
         param:{
+            ssid: ssid,
             port: port,
             currPage:currPage,
             pageSize:pageSize

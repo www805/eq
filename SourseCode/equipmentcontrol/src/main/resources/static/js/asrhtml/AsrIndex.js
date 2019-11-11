@@ -228,7 +228,7 @@ function showpagetohtml(){
         arrparam[1]=port;
         arrparam[2]=asrkey;
         arrparam[3]=etnum;
-        showpage("paging",arrparam,'getPolygraphListParam',currPage,pageCount,pageSize);
+        showpage("paging",arrparam,'getAsrListParam',currPage,pageCount,pageSize);
     }
 }
 
