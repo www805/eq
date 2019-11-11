@@ -1,6 +1,8 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service;
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_et_ettype;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_etinfo;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper.Asr_etinfoMapper;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.asr.req.AddOrUpdateToOutAsrParam;
@@ -20,22 +22,28 @@ public class ToOutAsrServiceImpl implements ToOutAsrService {
     @Autowired
     private AsrService asrService;
 
+    @Autowired
+    private Asr_etinfoMapper asr_etinfoMapper;
+
     //查询列表
     @Override
     public RResult getToOutAsrList(GetToOutAsrListParam param, RResult result) {
 
-        ReqParam<AsrParam> reqParam = new ReqParam<AsrParam>();
+        List<Asr_etinfo> asr_etinfos = asr_etinfoMapper.selectList(null);
+        result.changeToTrue(asr_etinfos);
 
-        AsrParam asrParam = new AsrParam();
-        reqParam.setParam(asrParam);
-
-        asrService.getAsrList(result, reqParam);
-
-        if(!"FAIL".equals(result.getActioncode())){
-            AsrVO data = (AsrVO) result.getData();
-            List<Asr_et_ettype> list = data.getPagelist();
-            result.setData(list);
-        }
+//        ReqParam<AsrParam> reqParam = new ReqParam<AsrParam>();
+//
+//        AsrParam asrParam = new AsrParam();
+//        reqParam.setParam(asrParam);
+//
+//        asrService.getAsrList(result, reqParam);
+//
+//        if(!"FAIL".equals(result.getActioncode())){
+//            AsrVO data = (AsrVO) result.getData();
+//            List<Asr_et_ettype> list = data.getPagelist();
+//            result.setData(list);
+//        }
 
         return result;
     }

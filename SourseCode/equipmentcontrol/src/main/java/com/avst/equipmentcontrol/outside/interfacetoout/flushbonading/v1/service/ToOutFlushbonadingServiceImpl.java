@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service;
 
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
@@ -38,13 +39,17 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
         FlushbonadinginfoParam flushbonadinginfoParam = new FlushbonadinginfoParam();
         reqParam.setParam(flushbonadinginfoParam);
 
-        flushbonadingService.getFlushbonadingList(result, reqParam);
+        List<Flushbonading_etinfo> flushbonading_etinfos = flushbonading_etinfoMapper.selectList(null);
 
-        if(!"FAIL".equals(result.getActioncode())){
-            FlushbonadinginfoVO data = (FlushbonadinginfoVO) result.getData();
-            List<Flushbonadinginfo> list = data.getPagelist();
-            result.setData(list);
-        }
+        result.changeToTrue(flushbonading_etinfos);
+
+//        flushbonadingService.getFlushbonadingList(result, reqParam);
+
+//        if(!"FAIL".equals(result.getActioncode())){
+//            FlushbonadinginfoVO data = (FlushbonadinginfoVO) result.getData();
+//            List<Flushbonadinginfo> list = data.getPagelist();
+//            result.setData(list);
+//        }
 
         return result;
     }

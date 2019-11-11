@@ -14,13 +14,13 @@ function getFlushbonadingList_init(currPage,pageSize) {
     var url = getUrl_manageZk().getFlushbonadingList;
     var livingurl=$("input[name='livingurl']").val();
     var user=$("input[name='user']").val();
-    // var etnum=$("input[name='etnum']").val();
+    var etnum=$("input[name='etnum']").val();
     var data={
         token:INIT_CLIENTKEY,
         param:{
             livingurl: livingurl,
             user: user,
-            // etnum: etnum,
+            etnum: etnum,
             etypessid: etypessid,
             currPage:currPage,
             pageSize:pageSize

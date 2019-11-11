@@ -60,7 +60,7 @@ function delStorage(ssidd) {
     var url = getUrl_manageZk().delStorage;
     ssid = ssidd;
 
-    layer.confirm('真的要删除该存储设备？', {
+    layer.confirm('真的要删除该存储服务？', {
         btn: ['确定','取消'] //按钮
     }, function(){
         var data={

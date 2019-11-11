@@ -70,14 +70,14 @@ public class StorageAction extends BaseAction {
     //显示列表页面
     @RequestMapping(value = "/getStorageIndex")
     public ModelAndView getStorageIndex(Model model) {
-        model.addAttribute("title", "存储设备列表");
+        model.addAttribute("title", "存储服务列表");
         return new ModelAndView("sweb/storagehtml/getStorageIndex", "getStorageIndexModel", model);
     }
 
     //显示新增/修改页面
     @RequestMapping(value = "/addOrUpdateStorage")
     public ModelAndView addOrUpdateStorage(Model model) {
-        model.addAttribute("title", "存储设备 新增/修改");
+        model.addAttribute("title", "存储服务 新增/修改");
         return new ModelAndView("sweb/storagehtml/addOrUpdateStorage", "addOrUpdateStorageModel", model);
     }
 

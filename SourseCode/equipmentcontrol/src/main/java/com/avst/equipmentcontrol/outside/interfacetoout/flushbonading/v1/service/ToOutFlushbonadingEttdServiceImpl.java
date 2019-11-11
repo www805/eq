@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.flushbonading.v1.service;
 
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_ettdMapper;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttd;
@@ -14,6 +15,7 @@ import com.avst.equipmentcontrol.web.req.flushbonadingEttd.UpdateFlushbonadingEt
 import com.avst.equipmentcontrol.web.service.FlushbonadingEttdService;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.avst.equipmentcontrol.web.vo.flushbonadingEttd.FlushbonadingEttdVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,16 +39,28 @@ public class ToOutFlushbonadingEttdServiceImpl extends BaseService implements To
 
         ReqParam<FlushbonadingEttdParam> reqParam = new ReqParam<FlushbonadingEttdParam>();
 
-        FlushbonadingEttdParam flushbonadingEttdParam = new FlushbonadingEttdParam();
-        flushbonadingEttdParam.setSsid(param.getSsid());
-        reqParam.setParam(flushbonadingEttdParam);
-
-        flushbonadingEttdService.getFlushbonadingEttdList(result, reqParam);
-        if(!"FAIL".equals(result.getActioncode())){
-            FlushbonadingEttdVO data = (FlushbonadingEttdVO) result.getData();
-            List<FlushbonadingEttd> list = data.getPagelist();
-            result.setData(list);
+        if (StringUtils.isBlank(param.getSsid())){
+            result.setMessage("查询的参数ssid不能为空");
+            return result;
         }
+
+        EntityWrapper<Flushbonading_ettd> ew = new EntityWrapper<>();
+        ew.eq("flushbonadingssid", param.getSsid());//设备的ssid，现查的是通道
+
+        List<Flushbonading_ettd> flushbonading_ettds = flushbonading_ettdMapper.selectList(ew);
+        result.changeToTrue(flushbonading_ettds);
+
+//        FlushbonadingEttdParam flushbonadingEttdParam = new FlushbonadingEttdParam();
+//        flushbonadingEttdParam.setSsid(param.getSsid());
+//        reqParam.setParam(flushbonadingEttdParam);
+
+//        flushbonadingEttdService.getFlushbonadingEttdList(result, reqParam);
+//        if(!"FAIL".equals(result.getActioncode())){
+//            FlushbonadingEttdVO data = (FlushbonadingEttdVO) result.getData();
+//            List<FlushbonadingEttd> list = data.getPagelist();
+//            result.setData(list);
+//        }
+
         return result;
     }
 

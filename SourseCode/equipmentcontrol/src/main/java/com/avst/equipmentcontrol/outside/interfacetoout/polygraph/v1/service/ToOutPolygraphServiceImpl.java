@@ -1,6 +1,8 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.polygraph.v1.service;
 
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.Polygraph_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.param.PolygraphInfo;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.mapper.Polygraph_etinfoMapper;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.AddOrUpdateToOutPolygraphParam;
@@ -20,22 +22,28 @@ public class ToOutPolygraphServiceImpl implements ToOutPolygraphService {
     @Autowired
     private PolygraphService polygraphService;
 
+    @Autowired
+    private Polygraph_etinfoMapper polygraph_etinfoMapper;
+
     //查询列表
     @Override
     public RResult getToOutPolygraphList(GetToOutPolygraphListParam param, RResult result) {
 
         ReqParam<PolygraphParam> reqParam = new ReqParam<PolygraphParam>();
 
-        PolygraphParam polygraphParam = new PolygraphParam();
-        reqParam.setParam(polygraphParam);
+        List<Polygraph_etinfo> polygraph_etinfos = polygraph_etinfoMapper.selectList(null);
+        result.changeToTrue(polygraph_etinfos);
 
-        polygraphService.getPolygraphList(result, reqParam);
-
-        if(!"FAIL".equals(result.getActioncode())){
-            PolygraphVO data = (PolygraphVO) result.getData();
-            List<PolygraphInfo> list = data.getPagelist();
-            result.setData(list);
-        }
+//        PolygraphParam polygraphParam = new PolygraphParam();
+//        reqParam.setParam(polygraphParam);
+//
+//        polygraphService.getPolygraphList(result, reqParam);
+//
+//        if(!"FAIL".equals(result.getActioncode())){
+//            PolygraphVO data = (PolygraphVO) result.getData();
+//            List<PolygraphInfo> list = data.getPagelist();
+//            result.setData(list);
+//        }
 
         return result;
     }
