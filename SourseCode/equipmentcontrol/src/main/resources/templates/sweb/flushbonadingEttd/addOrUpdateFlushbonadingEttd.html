@@ -30,21 +30,21 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>通道编号</label>
             <div class="layui-input-block">
-                <input type="text" name="tdnum" id="tdnum" required  lay-verify="required" placeholder="请输入通道编号" autocomplete="off" class="layui-input">
+                <input type="number" name="tdnum" id="tdnum" required  lay-verify="required" placeholder="请输入通道编号" autocomplete="off" class="layui-input" onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" onkeyup="this.value=this.value.replace(/[^\d]/g,'') "  onafterpaste="this.value=this.value.replace(/[^\d]/g,'')">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>通道拉流地址</label>
             <div class="layui-input-block">
-                <input type="text" name="pullflowurl" id="pullflowurl" required  lay-verify="required" placeholder="请输入通道拉流地址" autocomplete="off" class="layui-input">
+                <input type="url" name="pullflowurl" id="pullflowurl" required  lay-verify="urlCache" placeholder="请输入通道拉流地址" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>音频音能激活语音阀值</label>
             <div class="layui-input-block">
-                <input type="number" name="shockenergy" id="shockenergy" required  lay-verify="required" placeholder="请输入音频音能激活语音阀值" autocomplete="off" class="layui-input"  onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))">
+                <input type="number" name="shockenergy" id="shockenergy" required  lay-verify="required" placeholder="请输入音频音能激活语音阀值" autocomplete="off" class="layui-input"  onkeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" onkeyup="this.value=this.value.replace(/[^\d]/g,'') "  onafterpaste="this.value=this.value.replace(/[^\d]/g,'')">
             </div>
         </div>
 

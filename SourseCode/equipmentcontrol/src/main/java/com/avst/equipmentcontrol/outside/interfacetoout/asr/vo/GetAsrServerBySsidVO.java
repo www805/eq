@@ -40,7 +40,7 @@ public class GetAsrServerBySsidVO {
     private Integer port;
 
     /**
-     * 设备编号
+     * 设备名称
      */
     private Integer etnum;
 

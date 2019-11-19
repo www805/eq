@@ -30,28 +30,28 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>开放接口的端口</label>
             <div class="layui-input-block">
-                <input type="number" name="port" id="port" required  lay-verify="required|number" placeholder="请输入开放接口的端口" autocomplete="off" class="layui-input" onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))">
+                <input type="number" name="port" id="port" required  lay-verify="required|number" placeholder="请输入开放接口的端口" autocomplete="off" class="layui-input" onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" onkeyup="this.value=this.value.replace(/[^\d]/g,'') "  onafterpaste="this.value=this.value.replace(/[^\d]/g,'')">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>服务类型</label>
             <div class="layui-input-block">
-                <input type="text" name="polygraphtype" id="polygraphtype" required  lay-verify="required" placeholder="请输入服务类型" autocomplete="off" class="layui-input">
+                <input type="text" name="polygraphtype" id="polygraphtype" required  lay-verify="required|zhongwen" placeholder="请输入服务类型" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">验证密匙</label>
+            <label class="layui-form-label"><span style="color: red;">*</span>验证密匙</label>
             <div class="layui-input-block">
-                <input type="text" name="polygraphkey" id="polygraphkey" required lay-verify="" placeholder="请输入验证密匙" autocomplete="off" class="layui-input">
+                <input type="text" name="polygraphkey" id="polygraphkey" required lay-verify="required|zhongwen" placeholder="请输入验证密匙" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label"><span style="color: red;">*</span>设备编号</label>
+            <label class="layui-form-label"><span style="color: red;">*</span>设备名称</label>
             <div class="layui-input-block">
-                <input type="text" name="etnum" id="etnum" required lay-verify="required" placeholder="请输入设备编号" autocomplete="off" class="layui-input">
+                <input type="text" name="etnum" id="etnum" required lay-verify="required|zhongwen" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
             </div>
         </div>
 

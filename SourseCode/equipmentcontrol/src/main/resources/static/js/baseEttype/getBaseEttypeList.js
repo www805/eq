@@ -98,7 +98,7 @@ function callAddOrUpdate(data){
             }else{
                 layer.msg("操作失败",{icon: 5});
             }
-            // setTimeout("window.location.reload()",1500);
+            setTimeout("window.location.reload()",1500);
         }
     }else{
         layer.msg(data.message,{icon: 5});

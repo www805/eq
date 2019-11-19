@@ -17,12 +17,12 @@
 
             <label class="layui-form-label" style="padding-left: 0;">识别语种</label>
             <div class="layui-input-inline">
-                <input type="text" name="language" id="language" lay-verify="required" placeholder="请输入识别语种" autocomplete="off" class="layui-input">
+                <input type="text" name="language" id="language" lay-verify="required" placeholder="请输入识别语种" autocomplete="off" class="layui-input" onKeypress="return (/[\d][\u4E00-\u9FA5]/g.test(String.fromCharCode(event.keyCode)))">
             </div>
 
             <label class="layui-form-label" style="text-align: right;padding: 9px;">端口号：</label>
             <div class="layui-input-inline">
-                <input type="number" name="port" id="port" lay-verify="required" placeholder="请输入端口号" autocomplete="off" class="layui-input" onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))">
+                <input type="number" name="port" id="port" lay-verify="required" placeholder="请输入端口号" autocomplete="off" class="layui-input" onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))"  onkeyup="this.value=this.value.replace(/[^\d]/g,'') "  onafterpaste="this.value=this.value.replace(/[^\d]/g,'')">
             </div>
 
             <label class="layui-form-label" style="padding-left: 0;">TTS密匙集</label>
@@ -30,9 +30,9 @@
                 <input type="text" name="ttskeys" id="ttskeys" lay-verify="required" placeholder="请输入TTS密匙集" autocomplete="off" class="layui-input">
             </div>
 
-            <label class="layui-form-label" style="padding-left: 0;">设备编号</label>
+            <label class="layui-form-label" style="padding-left: 0;">设备名称</label>
             <div class="layui-input-inline">
-                <input type="text" name="etnum" id="etnum" lay-verify="required" placeholder="请输入设备编号" autocomplete="off" class="layui-input">
+                <input type="text" name="etnum" id="etnum" lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
             </div>
 
             <input type="button" id="search" class="layui-btn layui-btn-normal" value="查询" onclick="getTtsetinfoList_init(1,10);" >
@@ -66,7 +66,7 @@
             <th>开放接口的端口</th>
             <th>tts服务类型</th>
             <th>TTS密匙集</th>
-            <th>设备编号</th>
+            <th>设备名称</th>
             <th>设备IP</th>
             <th>操作</th>
         </tr>

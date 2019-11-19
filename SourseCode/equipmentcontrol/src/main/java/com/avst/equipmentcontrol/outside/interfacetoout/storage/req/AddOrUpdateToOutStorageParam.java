@@ -39,7 +39,7 @@ public class AddOrUpdateToOutStorageParam extends BaseParam {
     private String ssid;
 
     /**
-     * 设备编号
+     * 设备名称
      */
     private String etnum;
 

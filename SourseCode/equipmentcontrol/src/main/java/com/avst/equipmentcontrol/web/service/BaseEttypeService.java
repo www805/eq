@@ -101,8 +101,7 @@ public class BaseEttypeService extends BaseService {
             return;
         }
 
-        boolean isEnNum = OpenUtil.isEnNum(paramParam.getEttypenum());
-        if(isEnNum == false){
+        if(!OpenUtil.isEnNum(paramParam.getEttypenum())){
             result.setMessage("设备类型标号必须是英文或数字");
             return;
         }
@@ -157,8 +156,7 @@ public class BaseEttypeService extends BaseService {
             return;
         }
 
-        boolean isEnNum = OpenUtil.isEnNum(paramParam.getEttypenum());
-        if(isEnNum == false){
+        if(!OpenUtil.isEnNum(paramParam.getEttypenum())){
             result.setMessage("设备类型标号必须是英文或数字");
             return;
         }

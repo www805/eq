@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class TtsEtinfoService extends BaseService {
@@ -40,6 +41,8 @@ public class TtsEtinfoService extends BaseService {
 
     @Autowired
     private Base_ettypeMapper base_ettypeMapper;
+
+    private String pattern = ".*[\\u4E00-\\u9FA5].*";
 
     //查询
     public void getTtsetinfoList(RResult result, ReqParam<TtsetinfoParam> param){
@@ -145,7 +148,19 @@ public class TtsEtinfoService extends BaseService {
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtnum())){
-            result.setMessage("设备编号不能为空");
+            result.setMessage("设备名称不能为空");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getTtstype())){
+            result.setMessage("tts服务类型不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getTtskeys())){
+            result.setMessage("TTS密匙集不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getEtnum())){
+            result.setMessage("设备名称不能有中文");
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtip())){
@@ -250,7 +265,20 @@ public class TtsEtinfoService extends BaseService {
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtnum())){
-            result.setMessage("设备编号不能为空");
+            result.setMessage("设备名称不能为空");
+            return;
+        }
+
+        if(Pattern.matches(pattern, paramParam.getTtstype())){
+            result.setMessage("tts服务类型不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getTtskeys())){
+            result.setMessage("TTS密匙集不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getEtnum())){
+            result.setMessage("设备名称不能有中文");
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtip())){

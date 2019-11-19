@@ -7,7 +7,7 @@ import java.util.List;
 public class Asr_et_ettype extends Asr_etinfo {
 
     /**
-     * 设备编号
+     * 设备名称
      */
     private String etnum;
 

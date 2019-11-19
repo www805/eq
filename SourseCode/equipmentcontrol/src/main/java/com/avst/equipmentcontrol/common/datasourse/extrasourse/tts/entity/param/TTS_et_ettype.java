@@ -9,7 +9,7 @@ import java.util.List;
 public class TTS_et_ettype extends Tts_etinfo {
 
     /**
-     * 设备编号
+     * 设备名称
      */
     private String etnum;
 

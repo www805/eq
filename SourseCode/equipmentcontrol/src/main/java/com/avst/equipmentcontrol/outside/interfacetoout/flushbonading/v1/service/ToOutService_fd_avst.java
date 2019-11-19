@@ -1223,6 +1223,25 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
         RResult<Set_networkVO> result2=new RResult<Set_networkVO>();
         result2=fdDeal.set_network(set_networkParam,result2);
         if(null!=result2&&result2.getActioncode().equals(Code.SUCCESS.toString())){
+
+            if("eth0".equals(param.getDev())){
+                EntityWrapper<Flushbonading_etinfo> wrapper = new EntityWrapper<>();
+                wrapper.eq("ssid",param.getFlushbonadingetinfossid());
+
+                String livingurl = flushbonadinginfo.getLivingurl();
+                String previewurl = flushbonadinginfo.getPreviewurl();
+                livingurl = livingurl.replace(flushbonadinginfo.getEtip(), param.getIp_new());
+                previewurl = previewurl.replace(flushbonadinginfo.getEtip(), param.getIp_new());
+
+                Flushbonadinginfo flush = new Flushbonadinginfo();
+                flush.setLivingurl(livingurl);
+                flush.setPreviewurl(previewurl);
+
+                Integer update = flushbonading_etinfoMapper.update(flush, wrapper);
+                LogUtil.intoLog(1, this.getClass(), update == 1 ? "审讯设备默认IP修改成功!" : "审讯设备默认IP，修改失败");
+            }
+
+
             result.changeToTrue();
         }else{
             if(null!=result){

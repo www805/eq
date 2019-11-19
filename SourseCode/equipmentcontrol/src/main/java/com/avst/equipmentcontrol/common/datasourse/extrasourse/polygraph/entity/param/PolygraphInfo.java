@@ -8,7 +8,7 @@ import java.util.List;
 public class PolygraphInfo extends Polygraph_etinfo {
 
     /**
-     * 设备编号
+     * 设备名称
      */
     private String etnum;
 

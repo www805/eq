@@ -167,7 +167,7 @@ function getMiddFtp() {
         '                <div class="layui-inline">\n' +
         '                    <label class="layui-form-label"><span style="color: red;">*</span>服务器端口</label>\n' +
         '                    <div class="layui-input-inline">\n' +
-        '                        <input type="number" name="serverport" required  lay-verify="required|number" placeholder="请输入服务器端口" autocomplete="off" class="layui-input" onKeypress="return (/[\\d]/.test(String.fromCharCode(event.keyCode)))">\n' +
+        '                        <input type="number" name="serverport" required  lay-verify="required|number" placeholder="请输入服务器端口" autocomplete="off" class="layui-input" onKeypress="return (/[\\d]/.test(String.fromCharCode(event.keyCode)))" onkeyup="this.value=this.value.replace(/[^\\d]/g,\'\') "  onafterpaste="this.value=this.value.replace(/[^\\d]/g,\'\')">\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '            </div>\n' +
@@ -203,7 +203,7 @@ function getMiddFtp() {
         '                <div class="layui-inline">\n' +
         '                    <label class="layui-form-label">流控限速(kb)</label>\n' +
         '                    <div class="layui-input-block">\n' +
-        '                        <input type="number" name="limit_speed"  lay-verify="" placeholder="请输入流控限速" autocomplete="off" class="layui-input" onKeypress="return (/[\\d]/.test(String.fromCharCode(event.keyCode)))">\n' +
+        '                        <input type="number" name="limit_speed"  lay-verify="" placeholder="请输入流控限速" autocomplete="off" class="layui-input" onKeypress="return (/[\\d]/.test(String.fromCharCode(event.keyCode)))" onkeyup="this.value=this.value.replace(/[^\\d]/g,\'\') "  onafterpaste="this.value=this.value.replace(/[^\\d]/g,\'\')">\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '            </div>\n' +
@@ -244,19 +244,19 @@ function getMiddFtp() {
             },
             yes:function(index, layero){
                 //自定义验证规则
-                form.verify({
-                    setip: function(value, item){ //value：表单的值、item：表单的DOM对象
-                        if(''==value){
-                            goaction = true;
-                            return "设备IP不能为空";
-                        }
-                        if(!(/([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}/.test(value))){
-                            goaction = true;
-                            return '请输入一个正确的IP地址';
-                        }
-                        goaction = false;
-                    }
-                });
+                // form.verify({
+                //     setip: function(value, item){ //value：表单的值、item：表单的DOM对象
+                //         if(''==value){
+                //             goaction = true;
+                //             return "设备IP不能为空";
+                //         }
+                //         if(value == "localhost"){
+                //             goaction = true;
+                //             return '请输入一个正确的IP地址';
+                //         }
+                //         goaction = false;
+                //     }
+                // });
                 //监听提交
                 form.on('submit(fromFTP)', function(data){
                     // console.log(data);
@@ -266,11 +266,11 @@ function getMiddFtp() {
                         fromFTPStr = fromFTP;
                         goaction = true;
 
-                        // if(!(/([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}/.test(data.field.serverip))){
+                        // if(!(/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/.test(data.field.serverip))){
                         //     layer.msg("服务器地址IP，不是一个正确的IP",{icon: 5});
                         //     return false;
                         // }
-                        // if(!(/([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}/.test(data.field.hreadbeatip))){
+                        // if(!(/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/.test(data.field.hreadbeatip))){
                         //     layer.msg("心跳服务器地址，不是一个正确的IP",{icon: 5});
                         //     return false;
                         // }
@@ -549,11 +549,11 @@ function callUpdateBurnboolFoDiskrecbool(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
             if (data.data != 0) {
-                layer.msg("修改成功",{icon: 6});
+                layer.msg("修改成功，客户端需要“登出”才能生效",{icon: 6});
             }else{
                 layer.msg("修改失败",{icon: 5});
             }
-            setTimeout("window.location.reload()",1500);
+            setTimeout("window.location.reload()",2500);
         }
     }else{
         layer.msg(data.message,{icon: 5});
@@ -651,7 +651,7 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
             if(''==value){
                 return "设备IP不能为空";
             }
-            if(!(/([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}/.test(value))){
+            if (value != "localhost" && !(/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/.test(value))) {
                 return '请输入一个正确的IP地址';
             }
         }

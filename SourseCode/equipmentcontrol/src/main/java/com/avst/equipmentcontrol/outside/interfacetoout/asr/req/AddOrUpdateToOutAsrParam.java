@@ -43,7 +43,7 @@ public class AddOrUpdateToOutAsrParam extends BaseReqParam {
     private Integer port;
 
     /**
-     * 设备编号
+     * 设备名称
      */
     private String etnum;
 

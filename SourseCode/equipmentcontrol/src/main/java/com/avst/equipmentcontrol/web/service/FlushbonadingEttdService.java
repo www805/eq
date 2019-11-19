@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class FlushbonadingEttdService extends BaseService {
@@ -27,6 +28,8 @@ public class FlushbonadingEttdService extends BaseService {
 
     @Autowired
     private Flushbonading_etinfoMapper flushbonading_etinfoMapper;
+
+    private String pattern = ".*[\\u4E00-\\u9FA5].*";
 
     //查询
     public void getFlushbonadingEttdList(RResult result, ReqParam<FlushbonadingEttdParam> param){
@@ -113,6 +116,17 @@ public class FlushbonadingEttdService extends BaseService {
             return;
         }
 
+        if(Pattern.matches(pattern, paramParam.getPullflowurl())){
+            result.setMessage("通道拉流地址不能有中文");
+            return;
+        }
+
+        String regex = "(http|ftp|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&:/~\\+#]*[\\w\\-\\@?^=%&/~\\+#])?";
+        if(!Pattern.matches(regex, paramParam.getPullflowurl())){
+            result.setMessage("请输入一个正确的地址，而且必须要有http://开头';");
+            return;
+        }
+
         FlushbonadingEttd flushbonadingEttd = new FlushbonadingEttd();
         flushbonadingEttd.setFlushbonadingssid(paramParam.getFlushbonadingssid());
         flushbonadingEttd.setShockenergy(paramParam.getShockenergy());
@@ -168,6 +182,16 @@ public class FlushbonadingEttdService extends BaseService {
             return;
         }
 
+        if(Pattern.matches(pattern, paramParam.getPullflowurl())){
+            result.setMessage("通道拉流地址不能有中文");
+            return;
+        }
+
+        String regex = "(http|ftp|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&:/~\\+#]*[\\w\\-\\@?^=%&/~\\+#])?";
+        if(!Pattern.matches(regex, paramParam.getPullflowurl())){
+            result.setMessage("请输入一个正确的地址，而且必须要有http://开头';");
+            return;
+        }
 
         EntityWrapper ew = new EntityWrapper();
         ew.eq("ssid", paramParam.getSsid());

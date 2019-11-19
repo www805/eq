@@ -7,7 +7,7 @@ import java.util.List;
 public class Storage_ettype extends Ss_saveinfo{
 
     /**
-     * 设备编号
+     * 设备名称
      */
     private String etnum;
 

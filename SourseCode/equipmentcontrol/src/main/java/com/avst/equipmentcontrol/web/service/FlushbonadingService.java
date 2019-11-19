@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 @Service
 public class FlushbonadingService extends BaseService {
@@ -53,6 +54,8 @@ public class FlushbonadingService extends BaseService {
     private FDInterface fdInterface;
 
     private Gson gson=new Gson();
+
+    private String pattern = ".*[\\u4E00-\\u9FA5].*";
 
     //查询
     public void getFlushbonadingList(RResult result, ReqParam<FlushbonadinginfoParam> param) {
@@ -152,6 +155,22 @@ public class FlushbonadingService extends BaseService {
         }
         if (StringUtils.isBlank(paramParam.getEtnum())) {
             result.setMessage("设备名称不能为空");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getUser())){
+            result.setMessage("登录用户名不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getPasswd())){
+            result.setMessage("登录密码不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getEtypessid())){
+            result.setMessage("设备类型不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getEtnum())){
+            result.setMessage("设备名称不能有中文");
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtip())) {
@@ -287,7 +306,23 @@ public class FlushbonadingService extends BaseService {
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtnum())) {
-            result.setMessage("设备编号不能为空");
+            result.setMessage("设备名称不能为空");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getUser())){
+            result.setMessage("登录用户名不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getPasswd())){
+            result.setMessage("登录密码不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getEtypessid())){
+            result.setMessage("设备类型不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getEtnum())){
+            result.setMessage("设备名称不能有中文");
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtip())) {

@@ -21,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class PolygraphService extends BaseService {
@@ -34,6 +36,8 @@ public class PolygraphService extends BaseService {
 
     @Autowired
     private Base_ettypeMapper base_ettypeMapper;
+
+    private String pattern = ".*[\\u4E00-\\u9FA5].*";
 
     //查询
     public void getPolygraphList(RResult result, ReqParam<PolygraphParam> param){
@@ -48,9 +52,7 @@ public class PolygraphService extends BaseService {
         }
 
         EntityWrapper ew=new EntityWrapper();
-        if (StringUtils.isNotBlank(paramParam.getPort())){
-            ew.like("pet.port",paramParam.getPort());
-        }
+        ew.like("pet.port",paramParam.getPort());
         if (StringUtils.isNotBlank(paramParam.getPolygraphkey())){
             ew.like("pet.polygraphkey",paramParam.getPolygraphkey());
         }
@@ -60,6 +62,7 @@ public class PolygraphService extends BaseService {
         if (StringUtils.isNotBlank(paramParam.getEtypessid())){
             ew.eq("et.etypessid",paramParam.getEtypessid());
         }
+
 
         int count = polygraph_etinfoMapper.getPolygraphInfoCount(ew);
         paramParam.setRecordCount(count);
@@ -131,7 +134,23 @@ public class PolygraphService extends BaseService {
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtnum())){
-            result.setMessage("设备编号不能为空");
+            result.setMessage("设备名称不能为空");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getPolygraphtype())){
+            result.setMessage("服务类型不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getPolygraphkey())){
+            result.setMessage("验证密匙不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getEtypessid())){
+            result.setMessage("设备类型不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getEtnum())){
+            result.setMessage("设备名称不能有中文");
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtip())){
@@ -226,7 +245,23 @@ public class PolygraphService extends BaseService {
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtnum())){
-            result.setMessage("设备编号不能为空");
+            result.setMessage("设备名称不能为空");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getPolygraphtype())){
+            result.setMessage("服务类型不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getPolygraphkey())){
+            result.setMessage("验证密匙不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getEtypessid())){
+            result.setMessage("设备类型不能有中文");
+            return;
+        }
+        if(Pattern.matches(pattern, paramParam.getEtnum())){
+            result.setMessage("设备名称不能有中文");
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtip())){

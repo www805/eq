@@ -24,7 +24,7 @@ public class Base_equipmentinfo extends Model<Base_equipmentinfo> {
     private Integer id;
 
     /**
-     * 设备编号
+     * 设备名称
      */
     private String etnum;
 

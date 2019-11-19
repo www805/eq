@@ -241,8 +241,13 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
             if(''==value){
                 return "设备IP不能为空";
             }
-            if(!(/([1-9]|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}/.test(value))){
+            if(!(/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/.test(value))){
                 return '请输入一个正确的IP地址';
+            }
+        },
+        zhongwen: function(value, item){ //value：表单的值、item：表单的DOM对象
+            if((/[\u4E00-\u9FA5]/g.test(value))){
+                return '不能输入中文';
             }
         }
     });
