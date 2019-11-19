@@ -15,17 +15,21 @@ import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_equi
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_ettypeMapper;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
+import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.web.req.LoginParam;
 import com.avst.equipmentcontrol.web.vo.EcCountVO;
+import com.avst.equipmentcontrol.web.vo.GetLoginCookieVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class MainService {
+public class MainService extends BaseService {
 
     @Autowired
     private Flushbonading_etinfoMapper flushbonading_etinfoMapper;
@@ -57,7 +61,7 @@ public class MainService {
     @Autowired
     private Tts_etinfoMapper tts_etinfoMapper;
 
-    public RResult logining(RResult result, HttpServletRequest request, LoginParam loginParam){
+    public RResult logining(RResult result, HttpServletRequest request, HttpServletResponse response, LoginParam loginParam){
 
         AppCacheParam cacheParam = AppCache.getAppCacheParam();
         if (StringUtils.isBlank(cacheParam.getTitle()) || null == cacheParam.getData()) {
@@ -79,6 +83,27 @@ public class MainService {
         if(!loginParam.getPassword().equals(password)){
             result.setMessage("用户名或密码错误");
             return result;
+        }
+
+        boolean rememberpassword=loginParam.isRememberpassword();
+        if (rememberpassword){
+            Cookie ecloginaccount=new Cookie("ECLOGINACCOUNT",loginaccount);
+            ecloginaccount.setMaxAge(60*60*24*7);
+            ecloginaccount.setPath("/");
+            Cookie ecrememberme=new Cookie("ECREMEMBERME","YES");
+            ecrememberme.setMaxAge(60*60*24*7);
+            ecrememberme.setPath("/");
+            response.addCookie(ecloginaccount);
+            response.addCookie(ecrememberme);
+        }else {
+            Cookie ecloginaccount=new Cookie("ECLOGINACCOUNT",null);
+            ecloginaccount.setMaxAge(0);
+            ecloginaccount.setPath("/");
+            Cookie ecrememberme=new Cookie("ECREMEMBERME",null);
+            ecrememberme.setMaxAge(0);
+            ecrememberme.setPath("/");
+            response.addCookie(ecloginaccount);
+            response.addCookie(ecrememberme);
         }
 
         result.changeToTrue();
@@ -126,5 +151,41 @@ public class MainService {
 
         result.setData(cacheParam);
         result.changeToTrue();
+    }
+
+    public void getLoginCookie(RResult result,HttpServletRequest request){
+        GetLoginCookieVO vo=new GetLoginCookieVO();
+        String loginaccount = "";
+        String password = "";
+
+        //获取当前站点的所有Cookie
+        String rememberme=null;
+        Cookie[] cookies = request.getCookies();
+        if (null != cookies && cookies.length > 0) {
+            for (int i = 0; i < cookies.length; i++) {//对cookies中的数据进行遍历，找到用户名、密码的数据
+                if ("ECLOGINACCOUNT".equals(cookies[i].getName())) {
+                    loginaccount = cookies[i].getValue();
+                } else if ("ECREMEMBERME".equals(cookies[i].getName())) {
+                    rememberme = cookies[i].getValue();
+                }
+            }
+        }
+
+        if (StringUtils.isNotEmpty(rememberme)&&rememberme.equals("YES")&&StringUtils.isNotEmpty(loginaccount)){
+            AppCacheParam cacheParam = AppCache.getAppCacheParam();
+            if (StringUtils.isBlank(cacheParam.getTitle()) || null == cacheParam.getData()) {
+                RResult rr = new RResult();
+                this.getNavList(rr);
+            }
+            Map<String, Object> loginData = cacheParam.getData();
+            password = (String) loginData.get("password");
+        }
+
+
+        vo.setLoginaccount(loginaccount);
+        vo.setPassword(password);
+        result.setData(vo);
+        result.changeToTrue();
+        return;
     }
 }

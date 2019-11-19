@@ -18,7 +18,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/");
         registration.addPathPatterns("/ec/**");
         registration.addPathPatterns("/sweb/**");
-        registration.excludePathPatterns("/gotologin", "/logining", "/error", "/static/**", "/logout", "/ec/main/getNavList");       //添加不拦截路径 , " / ec);/**"
+        registration.excludePathPatterns("/gotologin", "/logining", "/error", "/static/**", "/logout", "/ec/main/getNavList","/ec/main/getLoginCookie");       //添加不拦截路径 , " / ec);/**"
 
         //权限拦截的管理器
 

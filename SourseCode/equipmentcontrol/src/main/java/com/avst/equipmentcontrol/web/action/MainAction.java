@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RequestMapping("/ec/main")
@@ -76,9 +77,9 @@ public class MainAction extends BaseAction {
 
     @PostMapping(value = "/logining")
     @ResponseBody
-    public RResult checklogin(Model model, HttpServletRequest request, LoginParam loginParam) {
+    public RResult checklogin(Model model, HttpServletRequest request, HttpServletResponse response, LoginParam loginParam) {
         RResult result=createNewResultOfFail();
-        mainService.logining(result,request,loginParam);
+        mainService.logining(result,request,response,loginParam);
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }
@@ -104,6 +105,19 @@ public class MainAction extends BaseAction {
     public  RResult getNavList(){
         RResult result=this.createNewResultOfFail();
         mainService.getNavList(result);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    @RequestMapping("/getLoginCookie")
+    @ResponseBody
+    public  RResult getLoginCookie(HttpServletRequest request) {
+        RResult result = this.createNewResultOfFail();
+        try {
+            mainService.getLoginCookie(result,request);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }

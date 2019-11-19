@@ -30,8 +30,7 @@ function getUrl_manage() {
 		logout:getPath()+basepath+"main/logout",
 		getNavList: getPath() + "/ec/main/getNavList",
 		getptdjconst:getPath()+"/flushbonading/v1/getptdjconst",
-
-
+        getLoginCookie:getPath()+basepath+"main/getLoginCookie",
 	};
 }
 

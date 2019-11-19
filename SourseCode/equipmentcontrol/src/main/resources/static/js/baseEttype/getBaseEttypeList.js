@@ -98,8 +98,9 @@ function callAddOrUpdate(data){
             }else{
                 layer.msg("操作失败",{icon: 5});
             }
-            setTimeout("window.location.reload()",1500);
         }
+        getBaseEttypeList_init(1,10);
+        layer.close(opneModal_1_index)
     }else{
         layer.msg(data.message,{icon: 5});
     }
@@ -165,6 +166,7 @@ function showpagetohtml(){
     }
 }
 
+var opneModal_1_index;
 function opneModal_1(ettype) {
 
     var ettypenum = "";
@@ -189,10 +191,41 @@ function opneModal_1(ettype) {
                     </div>\
                 </div>\
             </form>';
-
-    layui.use('form', function(){
+    layui.use(['layer','element','form','laydate'], function() {
         var form = layui.form;
-        var index = layer.open({
+        opneModal_1_index=layer.open({
+            type:1,
+            title:'设备类型编辑',
+            content:html,
+            area: ['550px', '320px'],
+            btn: ['确定','取消'],
+            success:function(layero, index){
+                layero.addClass('layui-form');//添加form标识
+                layero.find('.layui-layer-btn0').attr('lay-filter', 'fromContent').attr('lay-submit', '');//将按钮弄成能提交的
+                form.render();
+            },
+            yes:function(index, layero){
+                //自定义验证规则
+                form.verify({
+                    ettypenum:[/\S/,'请输入设备类型标号'], explain: [/\S/,'请输入设备类型设备注释']
+                });
+                //监听提交
+                form.on('submit(fromContent)', function(data){
+                    if (isNotEmpty(ettype) ) {
+                        AddOrUpdateBaseEttype();//修改
+                    } else {
+                        AddOrUpdateBaseEttype(1);//新增
+                    };
+                });
+            },
+            btn2:function(index, layero){
+                layer.close(index);
+            }
+        });
+    });
+  /*  layui.use('form', function(){
+        var form = layui.form;
+         opneModal_1_index = layer.open({
             type: 1,
             title: '设备类型编辑',
             content: html,
@@ -233,5 +266,5 @@ function opneModal_1(ettype) {
                 layer.close(index);
             }
         });
-    });
+    });*/
 }
