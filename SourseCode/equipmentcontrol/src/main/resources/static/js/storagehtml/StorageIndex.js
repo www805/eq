@@ -258,8 +258,9 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
 
         if (Storage_btnData != Storage_btn) {
             Storage_btnData = Storage_btn;
-            AddOrUpdateStorage();
+
         }
+        AddOrUpdateStorage();
         return false;
     });
 });

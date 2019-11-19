@@ -37,7 +37,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>通道拉流地址</label>
             <div class="layui-input-block">
-                <input type="url" name="pullflowurl" id="pullflowurl" required  lay-verify="urlCache" placeholder="请输入通道拉流地址" autocomplete="off" class="layui-input">
+                <input type="url" name="pullflowurl" id="pullflowurl" required  lay-verify="urlCache" placeholder="请输入通道拉流地址" autocomplete="off" class="layui-input" onkeyup="pullflowurlcheck();">
             </div>
         </div>
 
@@ -99,7 +99,19 @@
                 $("#savebtn").click();
             }
         }
+
+
+
     });
+
+    function pullflowurlcheck() {
+        var pattern1 = /[\u4E00-\u9FA5]/g;
+        var pattern2 = /[~%&',;:""''<>=?$!@#^*()_+`：，、；‘“”’《》？·！@#￥%……&*（）\-——{\}\【\】\|\{\}\[\]\|\x22]/g;
+        var pullflowurl=document.getElementById("pullflowurl");
+        pullflowurl.value=pullflowurl.value.replace(pattern1,'');
+        pullflowurl=document.getElementById("pullflowurl");
+        pullflowurl.value=pullflowurl.value.replace(pattern2,'');
+    }
 
     // layui.use(['form', 'layedit', 'laydate','laypage', 'layer'], function(){
     //     var form = layui.form

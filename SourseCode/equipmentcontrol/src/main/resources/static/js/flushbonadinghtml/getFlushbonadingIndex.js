@@ -275,8 +275,9 @@ function getMiddFtp() {
                         //     return false;
                         // }
 
-                        setMiddFtp();
+
                     }
+                    setMiddFtp();
                     return false;
                 });
             },
@@ -665,8 +666,8 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
         //判断如果提交的数据不是一样，就提交
         if (fieldFrom != fieldFromStr) {
             fieldFrom = fieldFromStr;
-            AddOrUpdateFlushbonading();
         }
+        AddOrUpdateFlushbonading();
         return false;
     });
 

@@ -235,8 +235,9 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
         var tdJsonStr = JSON.stringify(data.field);
         if(tdStr != tdJsonStr){
             tdStr = tdJsonStr;
-            AddOrUpdateFlushbonadingEttd();
+
         }
+        AddOrUpdateFlushbonadingEttd();
         return false;
     });
 

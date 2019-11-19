@@ -250,8 +250,8 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
 
         if (Polygraph_btnData != Polygraph_btn) {
             Polygraph_btnData = Polygraph_btn;
-            AddOrUpdatePolygraph();
         }
+        AddOrUpdatePolygraph();
         return false;
     });
 });

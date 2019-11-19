@@ -264,8 +264,9 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
 
         if (Asr_btnData != Asr_btn) {
             Asr_btnData = Asr_btn;
-            AddOrUpdateAsr();
+
         }
+        AddOrUpdateAsr();
         return false;
     });
 

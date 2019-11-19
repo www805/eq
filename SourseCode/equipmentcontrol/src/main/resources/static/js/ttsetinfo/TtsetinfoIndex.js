@@ -264,8 +264,9 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
 
         if (TtsetinfoData != Ttsetinfo) {
             TtsetinfoData = Ttsetinfo;
-            AddOrUpdateTtsetinfo();
+
         }
+        AddOrUpdateTtsetinfo();
         return false;
     });
 
