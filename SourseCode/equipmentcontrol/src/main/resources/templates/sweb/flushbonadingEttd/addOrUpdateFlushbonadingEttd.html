@@ -106,7 +106,7 @@
 
     function pullflowurlcheck() {
         var pattern1 = /[\u4E00-\u9FA5]/g;
-        var pattern2 = /[~%&',;:""''<>=?$!@#^*()_+`：，、；‘“”’《》？·！@#￥%……&*（）\-——{\}\【\】\|\{\}\[\]\|\x22]/g;
+        var pattern2 = /[~%&',;""''<>=?$!@#^*()_+`：，、；‘“”’《》？·！@#￥%……&*（）\-——{\}\【\】\|\{\}\[\]\|\x22]/g;
         var pullflowurl=document.getElementById("pullflowurl");
         pullflowurl.value=pullflowurl.value.replace(pattern1,'');
         pullflowurl=document.getElementById("pullflowurl");
