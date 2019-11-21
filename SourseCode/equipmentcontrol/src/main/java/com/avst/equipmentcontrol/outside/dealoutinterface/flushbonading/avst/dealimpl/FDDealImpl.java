@@ -1002,7 +1002,6 @@ public class FDDealImpl implements FDInterface{
         String regparam="action=api&type=audio_info"+
                 "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000,"gbk");//大一点超时时间
-        LogUtil.intoLog(this.getClass(),rr+":rr--getAudioConf----regparam:"+regparam);
         GetAudioConfXml getAudioConfXml=Xml2Object.getAudioConfXml(rr);
         if(null!=getAudioConfXml){
             Gson gson=new Gson();
@@ -1010,6 +1009,7 @@ public class FDDealImpl implements FDInterface{
             result.changeToTrue(vo);
         }else{
             result.setMessage("请求当前音频配置失败");
+            LogUtil.intoLog(this.getClass(),rr+":rr--getAudioConf----regparam:"+regparam);
         }
         return result;
     }

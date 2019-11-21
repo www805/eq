@@ -71,6 +71,34 @@ public class FileUtil {
     }
 
     /**
+     * 通过源路径找到这个路径下的下一个文件列表
+     * 文件和文件夹在一块
+     * @param basepath
+     * @return
+     */
+    public static List<String> getAllFiles_OneClass(String basepath){
+        try {
+            if(null==basepath||basepath.trim().equals("")){
+                return null;
+            }
+            File dir=new File(basepath);
+
+            List<String> filelist=new ArrayList<String>();
+            File[] fs = dir.listFiles();
+            if(null==fs||fs.length==0){
+                return null;
+            }
+            for (int i = 0; i < fs.length; i++) {
+                filelist.add(fs[i].getAbsolutePath());
+            }
+            return filelist;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 删除单个文件
      * @param   sPath    被删除文件的文件名
      * @return 单个文件删除成功返回true，否则返回false

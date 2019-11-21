@@ -219,27 +219,12 @@
             <artifactId>assertj-core</artifactId>
         </dependency>
 
-        <!--<dependency>
-            <groupId>org.apache.mina</groupId>
-            <artifactId>mina-core</artifactId>
-            <version>2.0.13</version>
-        </dependency>
+
         <dependency>
-            <groupId>org.apache.mina</groupId>
-            <artifactId>mina-integration-beans</artifactId>
-            <version>2.0.13</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.mina</groupId>
-                    <artifactId>mina-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>-->
-        <!--<dependency>
             <groupId>org.apache.ftpserver</groupId>
             <artifactId>ftpserver-core</artifactId>
-            <version>1.0.6</version>
-        </dependency>-->
+            <version>1.1.1</version>
+        </dependency>
 
         <!--jar 打包使用开始-->
         <dependency>

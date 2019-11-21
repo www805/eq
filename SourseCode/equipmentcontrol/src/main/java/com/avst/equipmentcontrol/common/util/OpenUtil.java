@@ -5,9 +5,11 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
+import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 import java.net.InetAddress;
 import java.security.MessageDigest;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -890,7 +892,7 @@ public static String numtoStr(int digit,Integer num){
      * @return Set<String>
    */
 	public static Set<String> getStrContainData(String str, String start, String end, boolean isSpecial){
-		Set<String> result = new HashSet<>();
+		Set<String> result = new HashSet<String>();
 		if(isSpecial){
 			start = "\\" + start;
 			end = "\\" + end;
@@ -1051,8 +1053,7 @@ public static String numtoStr(int digit,Integer num){
 			
 			i++;
 		}
-		
-		
+
 		return list;
 	}
 
@@ -1289,6 +1290,10 @@ public static String numtoStr(int digit,Integer num){
 		catch (Exception e) {}
 		return (myIPaddress.getHostAddress());
 	}
+
+
+
+
 
 	public static void main(String[] args) {
 

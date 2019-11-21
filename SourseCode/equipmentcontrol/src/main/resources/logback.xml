@@ -121,12 +121,14 @@
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="INFO_FILE"/>
         <appender-ref ref="ERROR_FILE"/>
+        <appender-ref ref="WARN_FILE" />
     </logger>
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="INFO_FILE" />
         <appender-ref ref="ERROR_FILE" />
+        <appender-ref ref="WARN_FILE" />
     </root>
 
 </configuration>
