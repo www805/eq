@@ -217,12 +217,12 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
             if(''==value){
                 return "地址不能为空";
             }
-            if((/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/.test(value))){
-                return '请输入一个正确的地址，而且必须要有http://开头';
+            if(!(/^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/.test(value))){
+                return '请输入一个正确的地址';
             }
         },
         zhongwen: function(value, item){ //value：表单的值、item：表单的DOM对象
-            if((/[\u4E00-\u9FA5]/g.test(value))){
+            if(!(/[\u4E00-\u9FA5]/g.test(value))){
                 return '不能输入中文';
             }
         }

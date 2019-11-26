@@ -121,9 +121,9 @@ public class FlushbonadingEttdService extends BaseService {
             return;
         }
 
-        String regex = "(http|ftp|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&:/~\\+#]*[\\w\\-\\@?^=%&/~\\+#])?";
+        String regex = "^((https|http|ftp|rtsp|mms)?:\\/\\/)[^\\s]+";
         if(!Pattern.matches(regex, paramParam.getPullflowurl())){
-            result.setMessage("请输入一个正确的地址，而且必须要有http://开头';");
+            result.setMessage("请输入一个正确的地址");
             return;
         }
 
@@ -187,9 +187,9 @@ public class FlushbonadingEttdService extends BaseService {
             return;
         }
 
-        String regex = "(http|ftp|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&:/~\\+#]*[\\w\\-\\@?^=%&/~\\+#])?";
+        String regex = "^((https|http|ftp|rtsp|mms)?:\\/\\/)[^\\s]+";
         if(!Pattern.matches(regex, paramParam.getPullflowurl())){
-            result.setMessage("请输入一个正确的地址，而且必须要有http://开头';");
+            result.setMessage("请输入一个正确的地址");
             return;
         }
 
