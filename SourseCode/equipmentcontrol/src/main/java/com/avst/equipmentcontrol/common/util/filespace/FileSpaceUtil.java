@@ -2,12 +2,15 @@ package com.avst.equipmentcontrol.common.util.filespace;
 
 import com.avst.equipmentcontrol.common.util.JacksonUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import sun.rmi.runtime.Log;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileSpaceUtil {
 
@@ -41,13 +44,14 @@ public class FileSpaceUtil {
                 driverName="ALL";
             }
             DriverSpaceParam driverSpaceParam=new DriverSpaceParam();
+            driverSpaceParam.setDriverName(driverName);
             if(driverName.equals("ALL")){
                 driverSpaceParam.setDriverName("ALL");
             }else if(!driverName.endsWith(":")){
                 driverName=driverName+":";
-            }else{
-                driverSpaceParam.setDriverName(driverName);
             }
+            driverSpaceParam.setDriverPath(driverName);
+            driverSpaceParam.setFolderBool(true);
 
             // 当前文件系统类
             FileSystemView fsv = FileSystemView.getFileSystemView();
@@ -82,7 +86,34 @@ public class FileSpaceUtil {
     }
 
     /**
-     * 获取文件夹对应的容量信息
+     * 获取文件夹对应的下一级所有文件/文件夹的容量信息
+     * win可用
+     * @param filepath 文件路径
+     */
+    public static List<DriverSpaceParam> getFilePathSpaceByParentNodePath(String filepath){
+
+        try {
+            if(StringUtils.isEmpty(filepath)){
+                return null;
+            }
+            List<String> nextNodePaths=getAllFilePath(filepath);
+            if(null==nextNodePaths||nextNodePaths.size()==0){
+                LogUtil.intoLog(4,FileSpaceUtil.class,filepath+":filepath 文件路径查询为空");
+                return null;
+            }
+            List<DriverSpaceParam> spacelist=new ArrayList<DriverSpaceParam>();
+            for(String path:nextNodePaths){
+                spacelist.add(getFilePathSpace(path));
+            }
+            return spacelist;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 获取文件夹/文件夹对应的容量信息
      * win可用
      * @param filepath 文件路径
      */
@@ -96,9 +127,14 @@ public class FileSpaceUtil {
 
             File file=new File(filepath);
             if(null!=file&&file.exists()){
+
+                if(file.isDirectory()){
+                    driverSpaceParam.setFolderBool(true);
+                }
                 long freespace=file.getFreeSpace();
                 long totalspace=file.getTotalSpace();
-                driverSpaceParam.setDriverName(filepath);
+                driverSpaceParam.setDriverName(getsavename(filepath));
+                driverSpaceParam.setDriverPath(filepath);
                 driverSpaceParam.setFreeSpace(freespace);
                 driverSpaceParam.setFreeSpace_str(FormetFileSize(freespace));
                 driverSpaceParam.setTotalSpace_str(FormetFileSize(totalspace));
@@ -114,6 +150,35 @@ public class FileSpaceUtil {
         return null;
     }
 
+    /**
+     * 获取文件夹下一级的所有文件的路径
+     * @param basepath 获取文件路径的文件夹的路径
+     * @return
+     */
+    public static List<String> getAllFilePath(String basepath){
+
+        File file_base = new File(basepath);
+        try {
+            List<String> filelist = new ArrayList<String>();
+            if (file_base.exists()){
+                File[] fs = file_base.listFiles();
+                for (int i = 0; i < fs.length; i++) {
+                    //只存文件路径
+                    File file=fs[i];
+                    if(file.exists()){
+                       filelist.add(file.getAbsolutePath());
+                    }
+                }
+                return filelist;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return null;
+    }
+
+
     /*
      * 小写转大写
      */
@@ -128,6 +193,53 @@ public class FileSpaceUtil {
             rr+=Character.isLowerCase(c) ? Character.toUpperCase(c):c;
         }
         return rr;
+    }
+
+    /**
+     * 获取文件路径下的文件名
+     * @param filePath
+     * @return
+     */
+    public static String getsavename(String filePath) {
+
+        if(StringUtils.isEmpty(filePath)){
+            LogUtil.intoLog(4,FileSpaceUtil.class,"is null filePath:"+filePath);
+            return null;
+        }
+        String savename=null;
+        if(filePath.indexOf("\\") > 0){
+            savename=filePath.substring(filePath.lastIndexOf("\\")+1);
+        }else if(filePath.indexOf("/") > 0){
+            savename=filePath.substring(filePath.lastIndexOf("/")+1);
+        }else{
+            LogUtil.intoLog(4,FileSpaceUtil.class,"filePath.indexOf(\\) and filePath.indexOf(/) is < 0,filePath:"+filePath);
+            return null;
+        }
+
+        return savename;
+    }
+    /**
+     * 获取文件所在文件夹路径
+     * @param filePath
+     * @return
+     */
+    public static String getsavepath(String filePath) {
+
+        if(StringUtils.isEmpty(filePath)){
+            LogUtil.intoLog(4,FileSpaceUtil.class,"is null filePath:"+filePath);
+            return null;
+        }
+        String savapath=null;
+        if(filePath.indexOf("\\") > 0){
+            savapath=filePath.substring(0,filePath.lastIndexOf("\\"));
+        }else if(filePath.indexOf("/") > 0){
+            savapath=filePath.substring(0,filePath.lastIndexOf("/"));
+        }else{
+            LogUtil.intoLog(4,FileSpaceUtil.class,"filePath.indexOf(\\) and filePath.indexOf(/) is < 0,filePath:"+filePath);
+            return null;
+        }
+
+        return savapath;
     }
 
 

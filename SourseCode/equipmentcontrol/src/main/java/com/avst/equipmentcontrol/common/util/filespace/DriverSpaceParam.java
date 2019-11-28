@@ -1,7 +1,7 @@
 package com.avst.equipmentcontrol.common.util.filespace;
 
 /**
- * 磁盘描述对象
+ * 磁盘路径描述对象
  */
 public class DriverSpaceParam {
     /**
@@ -25,9 +25,35 @@ public class DriverSpaceParam {
     private String freeSpace_str;
 
     /**
-     * 磁盘名称
+     * 本级的路径
+     */
+    private String driverPath;
+
+    /**
+     * 名称
      */
     private String driverName;
+
+    /**
+     * 是否是文件夹,不是的话就是文件
+     */
+    private boolean folderBool=false;
+
+    public boolean isFolderBool() {
+        return folderBool;
+    }
+
+    public void setFolderBool(boolean folderBool) {
+        this.folderBool = folderBool;
+    }
+
+    public String getDriverPath() {
+        return driverPath;
+    }
+
+    public void setDriverPath(String driverPath) {
+        this.driverPath = driverPath;
+    }
 
     public long getTotalSpace() {
         return totalSpace;
