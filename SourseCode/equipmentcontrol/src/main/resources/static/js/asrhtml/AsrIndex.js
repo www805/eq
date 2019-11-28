@@ -252,6 +252,22 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
                 return '请输入一个正确的IP地址';
             }
         },
+        portnum: function(value, item){ //value：表单的值、item：表单的DOM对象
+            if(''==value){
+                return "端口不能为空";
+            }
+            if(value.length > 10){
+                return '端口的长度不能超过10个字符';
+            }
+        },
+        maxnum: function(value, item){ //value：表单的值、item：表单的DOM对象
+            if(''==value){
+                return "并发数不能为空";
+            }
+            if(value.length > 10){
+                return '并发数的长度不能超过10个字符';
+            }
+        },
         zhongwen: function(value, item){ //value：表单的值、item：表单的DOM对象
             if((/[\u4E00-\u9FA5]/g.test(value))){
                 return '不能输入中文';
@@ -260,12 +276,11 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
     });
 
     form.on('submit(addOrUpdateAsr_btn)', function (data) {
-        var Asr_btn = JSON.stringify(data.field);
-
-        if (Asr_btnData != Asr_btn) {
-            Asr_btnData = Asr_btn;
-
-        }
+        // var Asr_btn = JSON.stringify(data.field);
+        //
+        // if (Asr_btnData != Asr_btn) {
+        //     Asr_btnData = Asr_btn;
+        // }
         AddOrUpdateAsr();
         return false;
     });

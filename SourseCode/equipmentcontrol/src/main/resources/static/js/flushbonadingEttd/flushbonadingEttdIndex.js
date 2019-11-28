@@ -232,11 +232,10 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
 
     form.on('submit(addOrUpdateFlushbonadingEttd_btn)', function (data) {
 
-        var tdJsonStr = JSON.stringify(data.field);
-        if(tdStr != tdJsonStr){
-            tdStr = tdJsonStr;
-
-        }
+        // var tdJsonStr = JSON.stringify(data.field);
+        // if(tdStr != tdJsonStr){
+        //     tdStr = tdJsonStr;
+        // }
         AddOrUpdateFlushbonadingEttd();
         return false;
     });

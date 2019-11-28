@@ -146,10 +146,6 @@ public class StorageService extends BaseService {
             result.setMessage("设备类型不能有中文");
             return;
         }
-        if(Pattern.matches(pattern, paramParam.getEtnum())){
-            result.setMessage("设备名称不能有中文");
-            return;
-        }
         if (StringUtils.isBlank(paramParam.getEtip())){
             result.setMessage("设备IP不能为空");
             return;
@@ -257,10 +253,6 @@ public class StorageService extends BaseService {
         }
         if(Pattern.matches(pattern, paramParam.getEtypessid())){
             result.setMessage("设备类型不能有中文");
-            return;
-        }
-        if(Pattern.matches(pattern, paramParam.getEtnum())){
-            result.setMessage("设备名称不能有中文");
             return;
         }
         if (StringUtils.isBlank(paramParam.getEtip())){

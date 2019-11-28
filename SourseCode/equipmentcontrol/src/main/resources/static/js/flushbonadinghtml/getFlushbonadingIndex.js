@@ -655,18 +655,26 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
             if (value != "localhost" && !(/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/.test(value))) {
                 return '请输入一个正确的IP地址';
             }
+        },
+        portnum: function(value, item){ //value：表单的值、item：表单的DOM对象
+            if(''==value){
+                return "端口不能为空";
+            }
+            if(value.length > 10){
+                return '端口的长度不能超过10个字符';
+            }
         }
     });
 
     form.on('submit(addOrUpdateFlushbonading_btn)', function (data) {
         // console.log(data);
 
-        var fieldFromStr = JSON.stringify(data.field);
-
-        //判断如果提交的数据不是一样，就提交
-        if (fieldFrom != fieldFromStr) {
-            fieldFrom = fieldFromStr;
-        }
+        // var fieldFromStr = JSON.stringify(data.field);
+        //
+        // //判断如果提交的数据不是一样，就提交
+        // if (fieldFrom != fieldFromStr) {
+        //     fieldFrom = fieldFromStr;
+        // }
         AddOrUpdateFlushbonading();
         return false;
     });

@@ -245,6 +245,22 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
                 return '请输入一个正确的IP地址';
             }
         },
+        portnum: function(value, item){ //value：表单的值、item：表单的DOM对象
+            if(''==value){
+                return "端口不能为空";
+            }
+            if(value.length > 10){
+                return '端口的长度不能超过10个字符';
+            }
+        },
+        totalcapacitynum: function(value, item){ //value：表单的值、item：表单的DOM对象
+            if(''==value){
+                return "容量不能为空";
+            }
+            if(value.length > 10){
+                return '容量的长度不能超过10个字符';
+            }
+        },
         zhongwen: function(value, item){ //value：表单的值、item：表单的DOM对象
             if((/[\u4E00-\u9FA5]/g.test(value))){
                 return '不能输入中文';
@@ -254,12 +270,11 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
 
     form.on('submit(addOrUpdateStorage_btn)', function (data) {
 
-        var Storage_btn = JSON.stringify(data.field);
-
-        if (Storage_btnData != Storage_btn) {
-            Storage_btnData = Storage_btn;
-
-        }
+        // var Storage_btn = JSON.stringify(data.field);
+        //
+        // if (Storage_btnData != Storage_btn) {
+        //     Storage_btnData = Storage_btn;
+        // }
         AddOrUpdateStorage();
         return false;
     });

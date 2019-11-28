@@ -30,21 +30,21 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>识别语种</label>
             <div class="layui-input-block">
-                <input type="text" name="language" id="language" required  lay-verify="required|zhongwen" placeholder="请输入识别语种" autocomplete="off" class="layui-input">
+                <input type="text" name="language" id="language" required  lay-verify="required" placeholder="请输入识别语种" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>并发数</label>
             <div class="layui-input-block">
-                <input type="number" name="maxnum" id="maxnum" required  lay-verify="required" placeholder="请输入并发数" autocomplete="off" class="layui-input" onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" onkeyup="this.value=this.value.replace(/[^\d]/g,'') "  onafterpaste="this.value=this.value.replace(/[^\d]/g,'')">
+                <input type="number" name="maxnum" id="maxnum" required  lay-verify="maxnum" placeholder="请输入并发数" autocomplete="off" class="layui-input" onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" onkeyup="this.value=this.value.replace(/[^\d]/g,'') "  onafterpaste="this.value=this.value.replace(/[^\d]/g,'')">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>开放接口的端口</label>
             <div class="layui-input-block">
-                <input type="number" name="port" id="port" required  lay-verify="required" placeholder="请输入开放接口的端口" autocomplete="off" class="layui-input" onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" onkeyup="this.value=this.value.replace(/[^\d]/g,'') "  onafterpaste="this.value=this.value.replace(/[^\d]/g,'')">
+                <input type="number" name="port" id="port" required  lay-verify="portnum" placeholder="请输入开放接口的端口" autocomplete="off" class="layui-input" onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))" onkeyup="this.value=this.value.replace(/[^\d]/g,'') "  onafterpaste="this.value=this.value.replace(/[^\d]/g,'')">
             </div>
         </div>
 
@@ -65,7 +65,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>设备名称</label>
             <div class="layui-input-block">
-                <input type="text" name="etnum" id="etnum" required lay-verify="required|zhongwen" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
+                <input type="text" name="etnum" id="etnum" required lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input">
             </div>
         </div>
 
