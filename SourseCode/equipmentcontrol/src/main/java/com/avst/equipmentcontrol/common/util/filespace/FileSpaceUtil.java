@@ -126,18 +126,22 @@ public class FileSpaceUtil {
             DriverSpaceParam driverSpaceParam=new DriverSpaceParam();
 
             File file=new File(filepath);
+            long usespace=file.length();
             if(null!=file&&file.exists()){
 
                 if(file.isDirectory()){
                     driverSpaceParam.setFolderBool(true);
+                    usespace = getTotalSizeOfFilesInDir(file);
                 }
                 long freespace=file.getFreeSpace();
                 long totalspace=file.getTotalSpace();
                 driverSpaceParam.setDriverName(getsavename(filepath));
                 driverSpaceParam.setDriverPath(filepath);
                 driverSpaceParam.setFreeSpace(freespace);
+                driverSpaceParam.setUseSpace(usespace);
                 driverSpaceParam.setFreeSpace_str(FormetFileSize(freespace));
                 driverSpaceParam.setTotalSpace_str(FormetFileSize(totalspace));
+                driverSpaceParam.setUseSpace_str(FormetFileSize(usespace));
                 driverSpaceParam.setTotalSpace(totalspace);
                 return driverSpaceParam;
             }else{
@@ -242,9 +246,22 @@ public class FileSpaceUtil {
         return savapath;
     }
 
+    // 递归方式 计算文件的大小
+    private static long getTotalSizeOfFilesInDir(final File file) {
+        if (file.isFile())
+            return file.length();
+        final File[] children = file.listFiles();
+        long total = 0;
+        if (children != null)
+            for (final File child : children)
+                total += getTotalSizeOfFilesInDir(child);
+        return total;
+    }
 
     public static void main(String[] args) {
         System.out.println(JacksonUtil.objebtToString(getFilePathSpace("D:\\ftpdata")));
+        System.out.println(JacksonUtil.objebtToString(getAllFilePath("D:\\ftpdata")));
+        System.out.println(JacksonUtil.objebtToString(getFilePathSpaceByParentNodePath("D:\\ftpdata")));
     }
 
 }

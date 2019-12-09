@@ -15,6 +15,10 @@ public class DriverSpaceParam {
     private long freeSpace;
 
     /**
+     * 已用容量大小
+     */
+    private long useSpace;
+    /**
      * 总容量大小
      */
     private String totalSpace_str;
@@ -23,6 +27,11 @@ public class DriverSpaceParam {
      * 可用容量大小
      */
     private String freeSpace_str;
+
+    /**
+     * yi用容量大小
+     */
+    private String useSpace_str;
 
     /**
      * 本级的路径
@@ -38,6 +47,22 @@ public class DriverSpaceParam {
      * 是否是文件夹,不是的话就是文件
      */
     private boolean folderBool=false;
+
+    public long getUseSpace() {
+        return useSpace;
+    }
+
+    public void setUseSpace(long useSpace) {
+        this.useSpace = useSpace;
+    }
+
+    public String getUseSpace_str() {
+        return useSpace_str;
+    }
+
+    public void setUseSpace_str(String useSpace_str) {
+        this.useSpace_str = useSpace_str;
+    }
 
     public boolean isFolderBool() {
         return folderBool;

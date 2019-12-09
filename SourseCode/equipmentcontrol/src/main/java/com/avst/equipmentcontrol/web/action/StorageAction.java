@@ -67,6 +67,16 @@ public class StorageAction extends BaseAction {
         return result;
     }
 
+
+    //通过ssid查询文件管理
+    @RequestMapping(value = "/getFileSpaceByssid")
+    public RResult getFileSpaceByssid(@RequestBody ReqParam<StorageParam> param){
+        RResult result=this.createNewResultOfFail();
+        storageService.getFileSpaceByssid(result,param);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
     //显示列表页面
     @RequestMapping(value = "/getStorageIndex")
     public ModelAndView getStorageIndex(Model model) {
@@ -81,5 +91,10 @@ public class StorageAction extends BaseAction {
         return new ModelAndView("sweb/storagehtml/addOrUpdateStorage", "addOrUpdateStorageModel", model);
     }
 
-
+    //磁盘管理
+    @RequestMapping("/getFileSpacePage")
+    public ModelAndView getFileSpacePage(Model model) {
+        model.addAttribute("title", "磁盘文件管理");
+        return new ModelAndView("sweb/storagehtml/getFileSpacePage", "getFileSpacePage", model);
+    }
 }

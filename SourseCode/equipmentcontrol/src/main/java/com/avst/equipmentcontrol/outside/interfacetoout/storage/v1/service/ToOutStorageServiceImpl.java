@@ -70,7 +70,7 @@ public class ToOutStorageServiceImpl extends BaseService implements ToOutStorage
         ReqParam<UpdateStorageParam> reqParam = new ReqParam<UpdateStorageParam>();
 
         UpdateStorageParam storageParam = new UpdateStorageParam();
-        storageParam.setTotalcapacity(param.getTotalcapacity());
+//        storageParam.setTotalcapacity(param.getTotalcapacity());
         storageParam.setPort(param.getPort());
         storageParam.setSstype(param.getSstype());
         storageParam.setDatasavebasepath(param.getDatasavebasepath());
@@ -93,7 +93,7 @@ public class ToOutStorageServiceImpl extends BaseService implements ToOutStorage
 
         UpdateStorageParam storageParam = new UpdateStorageParam();
         storageParam.setSsid(param.getSsid());
-        storageParam.setTotalcapacity(param.getTotalcapacity());
+//        storageParam.setTotalcapacity(param.getTotalcapacity());
         storageParam.setPort(param.getPort());
         storageParam.setSstype(param.getSstype());
         storageParam.setDatasavebasepath(param.getDatasavebasepath());

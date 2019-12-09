@@ -81,7 +81,6 @@ function AddOrUpdateStorage(version) {
 
     var url = getUrl_manageZk().updateStorage;
 
-    var totalcapacity=$("input[name='totalcapacity']").val();
     var port=$("input[name='port']").val();
     var sstype=$("input[name='sstype']").val();
     var datasavebasepath=$("input[name='datasavebasepath']").val();
@@ -98,16 +97,11 @@ function AddOrUpdateStorage(version) {
         layer.msg("端口号必须由数字组成",{icon: 5});
         return;
     }
-    if (!isNumber(totalcapacity)) {
-        layer.msg("并发数必须由数字组成",{icon: 5});
-        return;
-    }
 
     var data = {
         token: INIT_CLIENTKEY,
         param: {
             ssid: ssid,
-            totalcapacity: totalcapacity,
             port: port,
             sstype: sstype,
             datasavebasepath: datasavebasepath,
@@ -159,7 +153,6 @@ function callStorageById(data){
         if (isNotEmpty(data.data)){
             var storage = data.data;
 
-            $("input[name='totalcapacity']").val(storage.totalcapacity);
             $("input[name='port']").val(storage.port);
             $("input[name='sstype']").val(storage.sstype);
             $("input[name='datasavebasepath']").val(storage.datasavebasepath);
@@ -251,14 +244,6 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
             }
             if(value.length > 10){
                 return '端口的长度不能超过10个字符';
-            }
-        },
-        totalcapacitynum: function(value, item){ //value：表单的值、item：表单的DOM对象
-            if(''==value){
-                return "容量不能为空";
-            }
-            if(value.length > 10){
-                return '容量的长度不能超过10个字符';
             }
         },
         zhongwen: function(value, item){ //value：表单的值、item：表单的DOM对象

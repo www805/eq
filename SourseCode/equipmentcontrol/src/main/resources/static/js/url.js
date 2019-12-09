@@ -67,6 +67,7 @@ function getUrl_manageZk() {
 		addStorage:getPath()+"/Storage/addStorage",
 		updateStorage:getPath()+"/Storage/updateStorage",
 		delStorage:getPath()+"/Storage/delStorage",
+		getFileSpaceByssid:getPath()+"/Storage/getFileSpaceByssid",
 
 		getTtsetinfoList:getPath()+"/ttsetinfo/getTtsetinfoList",
 		getTtsetinfoById:getPath()+"/ttsetinfo/getTtsetinfoById",

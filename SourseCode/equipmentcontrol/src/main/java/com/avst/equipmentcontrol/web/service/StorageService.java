@@ -7,12 +7,16 @@ import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_equi
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_ettype;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_equipmentinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_ettypeMapper;
+import com.avst.equipmentcontrol.common.util.FileUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
+import com.avst.equipmentcontrol.common.util.filespace.DriverSpaceParam;
+import com.avst.equipmentcontrol.common.util.filespace.FileSpaceUtil;
 import com.avst.equipmentcontrol.web.req.storage.StorageParam;
 import com.avst.equipmentcontrol.web.req.storage.UpdateStorageParam;
+import com.avst.equipmentcontrol.web.vo.storage.GetFileSpaceByssidVO;
 import com.avst.equipmentcontrol.web.vo.storage.StorageVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -21,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -114,10 +119,6 @@ public class StorageService extends BaseService {
             return;
         }
 
-        if (null == paramParam.getTotalcapacity()) {
-            result.setMessage("总容量不能为空");
-            return;
-        }
         if (null == paramParam.getPort()) {
             result.setMessage("开放接口的端口不能为空");
             return;
@@ -161,8 +162,49 @@ public class StorageService extends BaseService {
             return;
         }
 
+        File dataPathFile = new File(paramParam.getDatasavebasepath());
+        if (!dataPathFile.exists()) {
+            result.setMessage("存储本地文件夹base路径不存在！");
+            return;
+        }
+
+        String datasavebasepath = paramParam.getDatasavebasepath();
+        String substring1 = datasavebasepath.substring(datasavebasepath.length() - 3);
+        String substring2 = datasavebasepath.substring(datasavebasepath.length() - 2);
+        String substring3 = datasavebasepath.substring(datasavebasepath.length() - 1);
+
+        if (":".equals(substring3) || ":/".equals(substring2) || "://".equals(substring1)) {
+            result.setMessage("存储路径不能是磁盘！");
+            return;
+        }
+
+        //获取已用容量
+        DriverSpaceParam filePathSpace = FileSpaceUtil.getFilePathSpace(paramParam.getDatasavebasepath());
+
+        long usedcapacity = filePathSpace.getUseSpace();//已用容量
+        long totalSpace = filePathSpace.getTotalSpace();//总容量
+
+        Integer totalSpaceNum = 1;
+        if (totalSpace >= 1000d) {
+            String totalSpaceStr = String.valueOf(totalSpace);
+            //去除后四位数
+            String substring = totalSpaceStr.substring(0, totalSpaceStr.length() - 4);
+            totalSpaceNum = Integer.valueOf(substring);
+        }else{
+            totalSpaceNum = Double.hashCode(totalSpace);
+        }
+
+        Integer usedcapacityNum = 1;
+        if (usedcapacity >= 1000d) {
+            String usedcapacityStr = String.valueOf(usedcapacity);
+            //去除后四位数
+            String substring = usedcapacityStr.substring(0, usedcapacityStr.length() - 4);
+            usedcapacityNum = Integer.valueOf(substring);
+        }else{
+            usedcapacityNum = Double.hashCode(usedcapacity);
+        }
+
         EntityWrapper<Ss_saveinfo> wrapper = new EntityWrapper<>();
-        wrapper.eq("s.totalcapacity", paramParam.getTotalcapacity());
         wrapper.eq("s.port", paramParam.getPort());
         wrapper.eq("s.sstype", paramParam.getSstype());
         wrapper.eq("s.datasavebasepath", paramParam.getDatasavebasepath());
@@ -184,8 +226,8 @@ public class StorageService extends BaseService {
         base_equipmentinfoMapper.insert(base_equipmentinfo);
 
         Ss_saveinfo ss_saveinfo = new Ss_saveinfo();
-        ss_saveinfo.setTotalcapacity(paramParam.getTotalcapacity());
-        ss_saveinfo.setUsedcapacity(0);
+        ss_saveinfo.setTotalcapacity(totalSpaceNum);
+        ss_saveinfo.setUsedcapacity(usedcapacityNum);
         ss_saveinfo.setPort(paramParam.getPort());
         ss_saveinfo.setSstype(paramParam.getSstype());
         ss_saveinfo.setDatasavebasepath(paramParam.getDatasavebasepath());
@@ -223,10 +265,6 @@ public class StorageService extends BaseService {
             result.setMessage("修改的ssid不能为空");
             return;
         }
-        if (null == paramParam.getTotalcapacity()) {
-            result.setMessage("总容量不能为空");
-            return;
-        }
         if (null == paramParam.getPort()) {
             result.setMessage("开放接口的端口不能为空");
             return;
@@ -270,11 +308,56 @@ public class StorageService extends BaseService {
             return;
         }
 
+
+        String datasavebasepath = paramParam.getDatasavebasepath().trim();
+        String substring1 = datasavebasepath.substring(datasavebasepath.length() - 3);
+        String substring2 = datasavebasepath.substring(datasavebasepath.length() - 2);
+        String substring3 = datasavebasepath.substring(datasavebasepath.length() - 1);
+
+        if (":".equals(substring3) || ":/".equals(substring2) || "://".equals(substring1)) {
+            result.setMessage("存储路径不能是磁盘！");
+            return;
+        }
+
+        File dataPathFile = new File(datasavebasepath);
+        if (!dataPathFile.exists()) {
+            result.setMessage("存储本地文件夹base路径不存在！");
+            return;
+        }
+
+        //获取已用容量
+        DriverSpaceParam filePathSpace = FileSpaceUtil.getFilePathSpace(datasavebasepath);
+
+        long usedcapacity = filePathSpace.getUseSpace();//已用容量
+        long totalSpace = filePathSpace.getTotalSpace();//总容量
+
+        Integer totalSpaceNum = 1;
+        if (totalSpace >= 1000d) {
+            String totalSpaceStr = String.valueOf(totalSpace);
+            //去除后四位数
+            String substring = totalSpaceStr.substring(0, totalSpaceStr.length() - 4);
+            totalSpaceNum = Integer.valueOf(substring);
+        }else{
+            totalSpaceNum = Double.hashCode(totalSpace);
+        }
+
+        Integer usedcapacityNum = 1;
+        if (usedcapacity >= 1000d) {
+            String usedcapacityStr = String.valueOf(usedcapacity);
+            //去除后四位数
+            String substring = usedcapacityStr.substring(0, usedcapacityStr.length() - 4);
+            usedcapacityNum = Integer.valueOf(substring);
+        }else{
+            usedcapacityNum = Double.hashCode(usedcapacity);
+        }
+
+
+//        String fileSize = FileSpaceUtil.FormetFileSize(usedcapacity);
+
         EntityWrapper<Ss_saveinfo> wrapper = new EntityWrapper<>();
-        wrapper.eq("s.totalcapacity", paramParam.getTotalcapacity());
         wrapper.eq("s.port", paramParam.getPort());
         wrapper.eq("s.sstype", paramParam.getSstype());
-        wrapper.eq("s.datasavebasepath", paramParam.getDatasavebasepath());
+        wrapper.eq("s.datasavebasepath", paramParam.getDatasavebasepath().trim());
         wrapper.eq("b.etnum", paramParam.getEtnum());
         wrapper.eq("b.etip", paramParam.getEtip());
         wrapper.ne("s.ssid", paramParam.getSsid());
@@ -306,10 +389,11 @@ public class StorageService extends BaseService {
         ew.eq("ssid", paramParam.getSsid());
 
         Ss_saveinfo saveinfo = new Ss_saveinfo();
-        saveinfo.setTotalcapacity(paramParam.getTotalcapacity());
+        saveinfo.setTotalcapacity(totalSpaceNum);
+        saveinfo.setUsedcapacity(usedcapacityNum);
         saveinfo.setPort(paramParam.getPort());
         saveinfo.setSstype(paramParam.getSstype());
-        saveinfo.setDatasavebasepath(paramParam.getDatasavebasepath());
+        saveinfo.setDatasavebasepath(paramParam.getDatasavebasepath().trim());
         saveinfo.setExplain(paramParam.getExplain());
         saveinfo.setMtssid(equipmentinfo.getSsid());
 
@@ -366,6 +450,61 @@ public class StorageService extends BaseService {
 
     }
 
+    /**
+     * 获取总容量(MB)
+     * @param datasavebasepath
+     */
+    public void getSpace(String datasavebasepath) {
+
+//        EntityWrapper ew=new EntityWrapper();
+//        ew.eq("ss.ssid",ssid);
+
+//        Storage_ettype storageinfo = ss_saveinfoMapper.getStorageinfo(ew);
 
 
+//        Storage_ettype storage = new Storage_ettype();
+//        storage.setDatasavebasepath(datasavebasepath);
+//
+//        Ss_saveinfo ss_saveinfo = ss_saveinfoMapper.selectOne(storage);
+//        if (null != ss_saveinfo) {
+//
+//        }
+
+        if(StringUtils.isNotBlank(datasavebasepath)){
+            DriverSpaceParam filePathSpace = FileSpaceUtil.getFilePathSpace(datasavebasepath);
+
+
+        }
+
+
+    }
+
+
+    public void getFileSpaceByssid(RResult result, ReqParam<StorageParam> param) {
+
+        StorageParam paramParam = param.getParam();
+        if(StringUtils.isBlank(paramParam.getSsid())){
+            result.setMessage("ssid不能为空");
+            return;
+        }
+
+        Ss_saveinfo ss_saveinfo = new Ss_saveinfo();
+        ss_saveinfo.setSsid(paramParam.getSsid());
+
+        Ss_saveinfo saveinfo = ss_saveinfoMapper.selectOne(ss_saveinfo);
+        if(null == saveinfo || StringUtils.isBlank(saveinfo.getDatasavebasepath())){
+            result.setMessage("没找到当前存储信息");
+            return;
+        }
+
+        DriverSpaceParam filePathSpace = FileSpaceUtil.getFilePathSpace(saveinfo.getDatasavebasepath());//获取文件夹/文件夹对应的容量信息
+        List<DriverSpaceParam> filePathSpaceByParentNodePath = FileSpaceUtil.getFilePathSpaceByParentNodePath(saveinfo.getDatasavebasepath());//获取文件夹对应的下一级所有文件/文件夹的容量信息
+
+        GetFileSpaceByssidVO fileSpaceByssidVO = new GetFileSpaceByssidVO();
+        fileSpaceByssidVO.setFilePathSpace(filePathSpace);
+        fileSpaceByssidVO.setFilePathSpaceByParentNodePath(filePathSpaceByParentNodePath);
+
+        result.changeToTrue(fileSpaceByssidVO);
+
+    }
 }
