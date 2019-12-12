@@ -5,6 +5,7 @@ import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDInterface;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.GetMiddleware_FTPParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.req.SetMiddleware_FTPParam;
+import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.vo.GetMiddleware_FTPVO;
 import com.avst.equipmentcontrol.web.req.flushbonading.*;
 import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
@@ -469,6 +470,41 @@ public class FlushbonadingService extends BaseService {
         } else {
             result.setData(update);
         }
+
+        GetMiddleware_FTPParam getMiddleware_ftpParam=new GetMiddleware_FTPParam();
+        getMiddleware_ftpParam.setIp(flushbonadingEtinfo.getEtip());
+        getMiddleware_ftpParam.setPasswd(flushbonadingEtinfo.getPasswd());
+        getMiddleware_ftpParam.setPort(flushbonadingEtinfo.getPort());
+        getMiddleware_ftpParam.setUser(flushbonadingEtinfo.getUser());
+
+        RResult middlewareFtp = fdInterface.getMiddleware_FTP(getMiddleware_ftpParam, result);
+
+        if(!"FAIL".equals(middlewareFtp.getActioncode())){
+            GetMiddleware_FTPVO middlewareData = (GetMiddleware_FTPVO) middlewareFtp.getData();
+
+            //因为设备ID要和ftp上传存储路径名要保持一致
+            if(null != middlewareData && !middlewareData.getDeviceid().equals(paramParam.getUploadbasepath())){
+                SetMiddleware_FTPParam setMiddleware_ftpParam = new SetMiddleware_FTPParam();
+                setMiddleware_ftpParam.setEnable(middlewareData.getEnable());
+                setMiddleware_ftpParam.setPasvmode(middlewareData.getPassvmode());
+                setMiddleware_ftpParam.setServicename(middlewareData.getServicename());
+                setMiddleware_ftpParam.setServerport(middlewareData.getServiceport());
+                setMiddleware_ftpParam.setServerip(middlewareData.getServerip());
+                setMiddleware_ftpParam.setHreadbeatip(middlewareData.getHreadbeatip());
+                setMiddleware_ftpParam.setIp(paramParam.getEtip());
+                setMiddleware_ftpParam.setPort(paramParam.getPort());
+                setMiddleware_ftpParam.setPasswd(middlewareData.getPass());
+                setMiddleware_ftpParam.setUser(middlewareData.getUser());
+                setMiddleware_ftpParam.setLimit_speed(middlewareData.getLimit_speed());
+                setMiddleware_ftpParam.setFilter_enable(middlewareData.getFilter_enable());
+                setMiddleware_ftpParam.setSearch_filter(middlewareData.getSearch_filter());
+                setMiddleware_ftpParam.setDeviceid(paramParam.getUploadbasepath());
+
+                middlewareFtp = fdInterface.setMiddleware_FTP(setMiddleware_ftpParam, result);
+                LogUtil.intoLog(1, this.getClass(), "设备ID和ftp储路径名修改成一致：" + middlewareFtp.getMessage());
+            }
+        }
+
         changeResultToSuccess(result);
     }
 
@@ -724,6 +760,17 @@ public class FlushbonadingService extends BaseService {
             result.setMessage("设置集中控制参数异常");
             return ;
         }
+
+        //因为设备ID要和ftp上传存储路径名要保持一致
+        if(!flushbonadinginfo.getUploadbasepath().equals(param.getDeviceid())){
+            Flushbonading_etinfo flushInfo = new Flushbonadinginfo();
+            flushInfo.setUploadbasepath(param.getDeviceid());
+            EntityWrapper<Flushbonading_etinfo> wrapper = new EntityWrapper<>();
+            wrapper.eq("ssid",fdssid);
+            Integer update = flushbonading_etinfoMapper.update(flushInfo, wrapper);
+            LogUtil.intoLog(1, this.getClass(), "设备ID和ftp储路径名修改成一致：" + update);
+        }
+
         setMiddleware_ftpParam.setIp(flushbonadinginfo.getEtip());
         setMiddleware_ftpParam.setPasswd(flushbonadinginfo.getPasswd());
         setMiddleware_ftpParam.setPort(flushbonadinginfo.getPort());

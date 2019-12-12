@@ -14,6 +14,7 @@ import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.common.util.filespace.DriverSpaceParam;
 import com.avst.equipmentcontrol.common.util.filespace.FileSpaceUtil;
+import com.avst.equipmentcontrol.web.req.storage.FileSpaceByssidParam;
 import com.avst.equipmentcontrol.web.req.storage.StorageParam;
 import com.avst.equipmentcontrol.web.req.storage.UpdateStorageParam;
 import com.avst.equipmentcontrol.web.vo.storage.GetFileSpaceByssidVO;
@@ -450,39 +451,9 @@ public class StorageService extends BaseService {
 
     }
 
-    /**
-     * 获取总容量(MB)
-     * @param datasavebasepath
-     */
-    public void getSpace(String datasavebasepath) {
+    public void getFileSpaceByssid(RResult result, ReqParam<FileSpaceByssidParam> param) {
 
-//        EntityWrapper ew=new EntityWrapper();
-//        ew.eq("ss.ssid",ssid);
-
-//        Storage_ettype storageinfo = ss_saveinfoMapper.getStorageinfo(ew);
-
-
-//        Storage_ettype storage = new Storage_ettype();
-//        storage.setDatasavebasepath(datasavebasepath);
-//
-//        Ss_saveinfo ss_saveinfo = ss_saveinfoMapper.selectOne(storage);
-//        if (null != ss_saveinfo) {
-//
-//        }
-
-        if(StringUtils.isNotBlank(datasavebasepath)){
-            DriverSpaceParam filePathSpace = FileSpaceUtil.getFilePathSpace(datasavebasepath);
-
-
-        }
-
-
-    }
-
-
-    public void getFileSpaceByssid(RResult result, ReqParam<StorageParam> param) {
-
-        StorageParam paramParam = param.getParam();
+        FileSpaceByssidParam paramParam = param.getParam();
         if(StringUtils.isBlank(paramParam.getSsid())){
             result.setMessage("ssid不能为空");
             return;
@@ -499,6 +470,80 @@ public class StorageService extends BaseService {
 
         DriverSpaceParam filePathSpace = FileSpaceUtil.getFilePathSpace(saveinfo.getDatasavebasepath());//获取文件夹/文件夹对应的容量信息
         List<DriverSpaceParam> filePathSpaceByParentNodePath = FileSpaceUtil.getFilePathSpaceByParentNodePath(saveinfo.getDatasavebasepath());//获取文件夹对应的下一级所有文件/文件夹的容量信息
+
+        GetFileSpaceByssidVO fileSpaceByssidVO = new GetFileSpaceByssidVO();
+        fileSpaceByssidVO.setFilePathSpace(filePathSpace);
+        fileSpaceByssidVO.setFilePathSpaceByParentNodePath(filePathSpaceByParentNodePath);
+
+        result.changeToTrue(fileSpaceByssidVO);
+
+    }
+
+    public void delFileSpaceByPath(RResult result, ReqParam<FileSpaceByssidParam> param) {
+
+        FileSpaceByssidParam paramParam = param.getParam();
+        if(StringUtils.isBlank(paramParam.getPath())){
+            result.setMessage("文件路径不能为空");
+            return;
+        }
+
+        String path = paramParam.getPath();
+
+        boolean b = false;
+
+        File file = new File(path);//判断是否是文件夹 true=文件夹 false=文件
+        if(file.isDirectory()){
+            FileUtil.delFolder(path);
+            b = true;
+        }else{
+            b = FileUtil.deleteFile(path);
+        }
+
+        if (b) {
+            result.changeToTrue(b);
+        }
+
+    }
+
+    public void delFileSpaceAll(RResult result, ReqParam<FileSpaceByssidParam> param) {
+
+        FileSpaceByssidParam paramParam = param.getParam();
+        if(StringUtils.isBlank(paramParam.getPath())){
+            result.setMessage("文件路径不能为空");
+            return;
+        }
+
+        String path = paramParam.getPath();
+        File file = new File(path);
+        String[] files = file.list();
+        if (files.length == 0) {
+            result.setMessage("该文件夹是空的！");
+            return;
+        }
+
+        boolean b = FileUtil.delAllFile(path);
+        if (b) {
+            result.changeToTrue(b);
+        }
+    }
+
+    public void getFileSpaceAll(RResult result, ReqParam<FileSpaceByssidParam> param) {
+
+        FileSpaceByssidParam paramParam = param.getParam();
+        if(StringUtils.isBlank(paramParam.getPath())){
+            result.setMessage("文件路径不能为空");
+            return;
+        }
+
+        String path = paramParam.getPath();
+        File file = new File(path);//判断是否是文件夹 true=文件夹 false=文件
+        if(!file.isDirectory()){
+            result.setMessage("该文件不是文件夹，不能进入");
+            return;
+        }
+
+        DriverSpaceParam filePathSpace = FileSpaceUtil.getFilePathSpace(path);//获取文件夹/文件夹对应的容量信息
+        List<DriverSpaceParam> filePathSpaceByParentNodePath = FileSpaceUtil.getFilePathSpaceByParentNodePath(path);//获取文件夹对应的下一级所有文件/文件夹的容量信息
 
         GetFileSpaceByssidVO fileSpaceByssidVO = new GetFileSpaceByssidVO();
         fileSpaceByssidVO.setFilePathSpace(filePathSpace);

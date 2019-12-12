@@ -71,23 +71,23 @@
         <table class="layui-table" lay-even="" lay-skin="line" style="width: 600px;margin-left: 10px;">
             <tr>
                 <td>磁盘名称：</td>
-                <td id="sysVersion">D盘</td>
+                <td id="sysVersion"></td>
             </tr>
             <tr>
                 <td>磁盘总容量：</td>
-                <td id="companyname">1000GB</td>
+                <td id="companyname"></td>
             </tr>
             <tr>
                 <td>磁盘可用容量：</td>
-                <td id="sysStartTime">320GB</td>
+                <td id="sysStartTime"></td>
             </tr>
             <tr>
                 <td>当前base路径：</td>
-                <td id="workTime">D:/ftpdata</td>
+                <td id="workTime"></td>
             </tr>
             <tr>
                 <td>当前base已用容量：</td>
-                <td id="basenum">200GB</td>
+                <td id="basenum"></td>
             </tr>
         </table>
 
@@ -138,21 +138,22 @@
                 <!--<button type="button" class="layui-btn layui-btn-danger remove" id="removebutton"><i class="layui-icon layui-icon-delete"></i>删除</button>-->
             <!--</p>-->
             <div style=" margin:10px auto; padding:5px 0 15px 0; border-bottom:1px solid #666;">
-                <p id="ftpdatapath" style="padding: 0px 10px 15px 10px;">当前路径：D:/ftpdata</p>
-                <input type="button" value="返回上一页" onclick="javascript:history.go(-1);" style="margin-left:10px; "/>
+                <p id="ftpdatapath" style="padding: 0px 10px 15px 10px;">当前路径：</p>
+                <input type="button" value="返回上一页" style="margin-left:10px;display: none; " id="looktg"/>
                 <!--<input type="button" value="创建新文件夹" class="carrynews"/>-->
                 <input type="button" value="清空所有文件" class="removeall"/>
                 <input type="button" value="删除文件" class="remove" id="removebutton"/>
+                <input type="button" value="刷新" onclick='var path = $("#ftpdatapath").attr("name");getFileSpaceAll(path);' id="refresh"/>
             </div><br/>
             <div  class="alldom">
-                <ul id="divall">
-                    <li><span class="layui-badge layui-bg-cyan">青</span><input type="text" class="changename" value="我的文件夹一" disabled/></li>
-                    <li class="img_file"><span class="layui-badge layui-bg-cyan">青</span><input type="text" class="changename" value="我的文件夹二" disabled/></li>
-                    <li class="img_video"><input type="text" class="changename" value="我的文件夹三" disabled/></li>
-                    <li><input type="text" class="changename" value="我的文件夹四" disabled/></li>
-                    <li><input type="text" class="changename" value="我的文件夹五" disabled/></li>
-                    <li><input type="text" class="changename" value="我的文件夹六" disabled/></li>
-                    <li><input type="text" class="changename" value="我的文件夹七" disabled/></li>
+                <ul id="divall" style="height:500px;overflow-y:scroll;">
+                    <!--<li><span class="layui-badge layui-bg-cyan">青</span><input type="text" class="changename" value="我的文件夹一" disabled/></li>-->
+                    <!--<li class="img_file"><span class="layui-badge layui-bg-cyan">青</span><input type="text" class="changename" value="我的文件夹二" disabled/></li>-->
+                    <!--<li class="img_video"><input type="text" class="changename" value="我的文件夹三" disabled/></li>-->
+                    <!--<li><input type="text" class="changename" value="我的文件夹四" disabled/></li>-->
+                    <!--<li><input type="text" class="changename" value="我的文件夹五" disabled/></li>-->
+                    <!--<li><input type="text" class="changename" value="我的文件夹六" disabled/></li>-->
+                    <!--<li><input type="text" class="changename" value="我的文件夹七" disabled/></li>-->
                 </ul>
             </div>
             <div style=" clear:both;"></div>
@@ -212,7 +213,6 @@
 
 <script th:inline="javascript">
 
-
     var INIT_CLIENT;
     var INIT_CLIENTKEY;
     $(function(){
@@ -222,7 +222,6 @@
         if(ssid){
             getFileSpaceByssid(ssid);
         }
-
 
         var $parent = $('#divall'), $bgcolor = $('#divall li'), $carry = $('.carrynews'),
             $removenews = $('.remove'), $removeall = $('.removeall'), $removeright = $('#removethispc'),
@@ -238,12 +237,16 @@
         });
         //清空
         $removeall.live('click', function() {
-            alert('确定清空所有文件夹？')
-            setTimeout(
-                function() {
-                    $parent.empty();
-                    alert('删除了。。')
-                }, 500);
+
+            layer.confirm('确定清空该目录下的所有文件？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var path = $('#ftpdatapath').attr("name");
+                delFileSpaceAll(path);
+            }, function(){
+                layer.closeAll();
+            });
+
         }); //新文件夹不起作用！！
 
         //变色
@@ -253,54 +256,52 @@
             $removenews.fadeIn(250);
             $(this).addClass('bgclocrc').siblings().removeClass('bgclocrc');
             $(this).attr("id", 'remove').siblings().attr('id', '');
-            $(" input[type=text] ").attr("id", 'namecc').siblings().attr('id', ' ');
+            // $(" input[type=text] ").attr("id", 'namecc').siblings().attr('id', ' ');
             btns.onclick = function() {//js 调用
-                alert('确定删除文件夹？');
 
+                layer.confirm('确定删除该文件', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    setTimeout(
+                        function () {
+                            $bgcolor = $('#divall li');
+                            console.log($bgcolor.hasClass('bgclocrc'));
+                            if ($bgcolor.hasClass('bgclocrc')) {
+                                var path = $('#remove').attr("name");
+                                delFileSpaceByPath(path);
+                            } else {
+                                layer.closeAll();
+                                layer.msg('请选择文件', {icon: 5});
+                            }
+                        }, 250);
 
-                setTimeout(
-                    function() {
+                }, function(){
+                    layer.closeAll();
+                });
 
-                        // var removeId = document.getElementById('remove');
-                        var valPath = $(".bgclocrc").attr("value");
-                        console.log(valPath);
-
-                        // console.log($bgcolor.hasClass('bgclocrc'));
-                        // if ($bgcolor.hasClass('bgclocrc'))
-                        // {
-                        //     //alert(123)
-                        //     // document.getElementById('remove').remove();//js
-                        //     $('#remove').remove();//jq
-                        //     $removenews.fadeOut(250);
-                        // } else
-                        // {
-                        //     alert('请选择文件')
-                        // }
-                    }, 250)
             }//
 
             btns02.onclick = function() {//js 调用
-                alert('确定删除文件夹？');
-                setTimeout(
-                    function() {
+                layer.confirm('确定删除该文件？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    setTimeout(
+                        function () {
+                            $bgcolor = $('#divall li');
 
-                        // var removeId = document.getElementById('remove');
-                        var valPath = $(".bgclocrc").attr("value");
-                        console.log(valPath);
+                            console.log($bgcolor.hasClass('bgclocrc'));
+                            if ($bgcolor.hasClass('bgclocrc')) {
+                                var path = $('#remove').attr("name");
+                                delFileSpaceByPath(path);
+                            } else {
+                                layer.closeAll();
+                                layer.msg('请选择文件', {icon: 5});
+                            }
+                        }, 250);
 
-
-
-
-                        // console.log($bgcolor.hasClass('bgclocrc'));
-                        // if ($bgcolor.hasClass('bgclocrc'))
-                        // {
-                        //     $('#remove').remove();//jq
-                        //     $removenews.fadeOut(250);
-                        // } else
-                        // {
-                        //     alert('请选择文件')
-                        // }
-                    }, 250)
+                }, function(){
+                    layer.closeAll();
+                });
             }//	右键功能---删除
 
             //右键菜单
@@ -309,6 +310,12 @@
 
             /*显示菜单*/
             function showMenu() {
+
+                if($('#remove').is(".img_file")){
+                    $(".menu-one").hide();
+                }else{
+                    $(".menu-one").show();
+                }
 
                 var evt = window.event;
 
@@ -350,12 +357,15 @@
             LTEvent.addListener(container, "contextmenu", showMenu);
             LTEvent.addListener(document, "click", hideMenu);
             $changename.live('click', function() {
-
+                $bgcolor = $('#divall li');
                 if ($bgcolor.hasClass('bgclocrc')){
-                    $('#remove').find('.changename').val('');
-                    $('#remove').find('.changename').css('border', '1px solid #FF0000')
+                    // $('#remove').find('.changename').val('');
+                    // $('#remove').find('.changename').css('border', '1px solid #FF0000')
+                    var path = $('#remove').attr("name");
+                    // path = path.replace(/\\/g, "\\\\");
+                    getFileSpaceAll(path);
                 } else{
-                    alert('请选择文件')
+                    alert('请选择文件');
                 }
             });
         });

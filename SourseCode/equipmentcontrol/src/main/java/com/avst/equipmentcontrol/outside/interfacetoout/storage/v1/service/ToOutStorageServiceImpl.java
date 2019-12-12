@@ -1,13 +1,19 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service;
 
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Ss_saveinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Storage_ettype;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.param.Ss_dataMessageParam;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_saveinfoMapper;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
+import com.avst.equipmentcontrol.common.util.filespace.DriverSpaceParam;
+import com.avst.equipmentcontrol.common.util.filespace.FileSpaceUtil;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.AddOrUpdateToOutStorageParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.GetToOutStorageListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.param.Ss_saveinfoParam;
+import com.avst.equipmentcontrol.web.req.storage.FileSpaceByssidParam;
 import com.avst.equipmentcontrol.web.req.storage.StorageParam;
 import com.avst.equipmentcontrol.web.req.storage.UpdateStorageParam;
 import com.avst.equipmentcontrol.web.service.StorageService;
@@ -17,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,6 +34,9 @@ public class ToOutStorageServiceImpl extends BaseService implements ToOutStorage
 
     @Autowired
     private Ss_databaseMapper ssDatabaseMapper;
+
+    @Autowired
+    private Ss_saveinfoMapper ss_saveinfoMapper;
 
     //查询列表
     @Override
@@ -129,6 +139,92 @@ public class ToOutStorageServiceImpl extends BaseService implements ToOutStorage
         List<Ss_dataMessageParam> ss_databaseByIid = ssDatabaseMapper.getSs_databaseByIid(ew);
         result.setData(ss_databaseByIid);
         changeResultToSuccess(result);
+        return result;
+    }
+
+    @Override
+    public RResult getToOutFileSpaceList(GetToOutStorageListParam pParam, RResult result) {
+
+        List<Ss_saveinfo> selectList = ss_saveinfoMapper.selectList(null);
+
+        ArrayList<Ss_saveinfoParam> list = new ArrayList<>();
+
+        if (selectList.size() > 0) {
+            for (int i = 0; i < selectList.size(); i++) {
+
+                Ss_saveinfo ss_saveinfo = selectList.get(i);
+                DriverSpaceParam filePathSpace = FileSpaceUtil.getFilePathSpace(ss_saveinfo.getDatasavebasepath());//获取文件夹/文件夹对应的容量信息
+
+                Ss_saveinfoParam ss_saveinfoParam = new Ss_saveinfoParam();
+                ss_saveinfoParam.setSs_saveinfo(ss_saveinfo);
+                ss_saveinfoParam.setDriverSpaceParam(filePathSpace);
+
+                list.add(ss_saveinfoParam);
+            }
+
+            result.changeToTrue(list);
+        }
+
+        return result;
+    }
+
+    @Override
+    public RResult getToOutFileSpaceByssid(GetToOutStorageListParam pParam, RResult result) {
+
+        FileSpaceByssidParam fileSpaceByssidParam = new FileSpaceByssidParam();
+        fileSpaceByssidParam.setSsid(pParam.getSsid());
+        fileSpaceByssidParam.setPath(pParam.getPath());
+
+        ReqParam reqParam = new ReqParam();
+        reqParam.setParam(fileSpaceByssidParam);
+
+        storageService.getFileSpaceByssid(result, reqParam);
+
+        return result;
+    }
+
+    @Override
+    public RResult getToOutFileSpaceAll(GetToOutStorageListParam pParam, RResult result) {
+
+        FileSpaceByssidParam fileSpaceByssidParam = new FileSpaceByssidParam();
+        fileSpaceByssidParam.setSsid(pParam.getSsid());
+        fileSpaceByssidParam.setPath(pParam.getPath());
+
+        ReqParam reqParam = new ReqParam();
+        reqParam.setParam(fileSpaceByssidParam);
+
+        storageService.getFileSpaceAll(result, reqParam);
+
+        return result;
+    }
+
+    @Override
+    public RResult delToOutFileSpaceAll(GetToOutStorageListParam pParam, RResult result) {
+
+        FileSpaceByssidParam fileSpaceByssidParam = new FileSpaceByssidParam();
+        fileSpaceByssidParam.setSsid(pParam.getSsid());
+        fileSpaceByssidParam.setPath(pParam.getPath());
+
+        ReqParam reqParam = new ReqParam();
+        reqParam.setParam(fileSpaceByssidParam);
+
+        storageService.delFileSpaceAll(result, reqParam);
+
+        return result;
+    }
+
+    @Override
+    public RResult delToOutFileSpaceByPath(GetToOutStorageListParam pParam, RResult result) {
+
+        FileSpaceByssidParam fileSpaceByssidParam = new FileSpaceByssidParam();
+        fileSpaceByssidParam.setSsid(pParam.getSsid());
+        fileSpaceByssidParam.setPath(pParam.getPath());
+
+        ReqParam reqParam = new ReqParam();
+        reqParam.setParam(fileSpaceByssidParam);
+
+        storageService.delFileSpaceByPath(result, reqParam);
+
         return result;
     }
 

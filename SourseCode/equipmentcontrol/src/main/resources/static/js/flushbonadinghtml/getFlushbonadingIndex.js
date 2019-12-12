@@ -440,7 +440,7 @@ function callSetMiddFtp(data){
 
     if(null!=data&&data.actioncode=='SUCCESS'){
         layer.msg("操作成功",{icon: 6});
-        setTimeout("layer.closeAll();",1500);
+        setTimeout("layer.closeAll();window.location.reload();",1500);
     }else{
         layer.msg(data.message,{icon: 5});
     }

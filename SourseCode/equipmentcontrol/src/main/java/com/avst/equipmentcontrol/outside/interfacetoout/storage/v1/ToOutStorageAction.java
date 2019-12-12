@@ -90,6 +90,20 @@ public class ToOutStorageAction extends BaseAction {
         return result;
     }
 
+    //提供磁盘使用信息列表
+    @RequestMapping("/getToOutFileSpaceList")
+    @ResponseBody
+    public RResult getToOutFileSpaceList(@RequestBody ReqParam<GetToOutStorageListParam> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetToOutStorageListParam pParam=param.getParam();
+            if(null != pParam.getSsType()){
+                result=getToOutService(pParam.getSsType()).getToOutFileSpaceList(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    };
 
     //根据iid查询
     @RequestMapping("/getToOutStorageByiid")
@@ -105,5 +119,67 @@ public class ToOutStorageAction extends BaseAction {
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }
+
+
+    //通过ssid查询文件管理
+    @RequestMapping("/getToOutFileSpaceByssid")
+    @ResponseBody
+    public RResult getToOutFileSpaceByssid(@RequestBody ReqParam<GetToOutStorageListParam> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetToOutStorageListParam pParam=param.getParam();
+            if(null != pParam.getSsType()){
+                result=getToOutService(pParam.getSsType()).getToOutFileSpaceByssid(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    //查询路径下的所有文件
+    @RequestMapping("/getToOutFileSpaceAll")
+    @ResponseBody
+    public RResult getToOutFileSpaceAll(@RequestBody ReqParam<GetToOutStorageListParam> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetToOutStorageListParam pParam=param.getParam();
+            if(null != pParam.getSsType()){
+                result=getToOutService(pParam.getSsType()).getToOutFileSpaceAll(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    //删除当前路径下的所有文件
+    @RequestMapping("/delToOutFileSpaceAll")
+    @ResponseBody
+    public RResult delToOutFileSpaceAll(@RequestBody ReqParam<GetToOutStorageListParam> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetToOutStorageListParam pParam=param.getParam();
+            if(null != pParam.getSsType()){
+                result=getToOutService(pParam.getSsType()).delToOutFileSpaceAll(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    //删除单个文件
+    @RequestMapping("/delToOutFileSpaceByPath")
+    @ResponseBody
+    public RResult delToOutFileSpaceByPath(@RequestBody ReqParam<GetToOutStorageListParam> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetToOutStorageListParam pParam=param.getParam();
+            if(null != pParam.getSsType()){
+                result=getToOutService(pParam.getSsType()).delToOutFileSpaceByPath(pParam,result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
 
 }

@@ -134,6 +134,7 @@ public class FileUtil {
             }
             if (temp.isFile()) {
                 temp.delete();
+                flag = true;
             }
             if (temp.isDirectory()) {
                 delAllFile(path + "/" + tempList[i]);//先删除文件夹里面的文件

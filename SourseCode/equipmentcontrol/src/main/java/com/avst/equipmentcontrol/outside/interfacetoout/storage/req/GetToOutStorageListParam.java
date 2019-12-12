@@ -4,6 +4,7 @@ public class GetToOutStorageListParam extends BaseParam{
 
     private String iid;
     private String ssid;
+    private String path;//路径
 
     public String getSsid() {
         return ssid;
@@ -19,5 +20,13 @@ public class GetToOutStorageListParam extends BaseParam{
 
     public void setIid(String iid) {
         this.iid = iid;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

@@ -4,6 +4,7 @@ import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
+import com.avst.equipmentcontrol.web.req.storage.FileSpaceByssidParam;
 import com.avst.equipmentcontrol.web.req.storage.StorageParam;
 import com.avst.equipmentcontrol.web.req.storage.UpdateStorageParam;
 import com.avst.equipmentcontrol.web.service.StorageService;
@@ -67,12 +68,38 @@ public class StorageAction extends BaseAction {
         return result;
     }
 
-
     //通过ssid查询文件管理
     @RequestMapping(value = "/getFileSpaceByssid")
-    public RResult getFileSpaceByssid(@RequestBody ReqParam<StorageParam> param){
+    public RResult getFileSpaceByssid(@RequestBody ReqParam<FileSpaceByssidParam> param){
         RResult result=this.createNewResultOfFail();
         storageService.getFileSpaceByssid(result,param);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    //查询路径下的所有文件
+    @RequestMapping(value = "/getFileSpaceAll")
+    public RResult getFileSpaceAll(@RequestBody ReqParam<FileSpaceByssidParam> param){
+        RResult result=this.createNewResultOfFail();
+        storageService.getFileSpaceAll(result,param);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    //删除当前路径下的所有文件
+    @RequestMapping(value = "/delFileSpaceAll")
+    public RResult delFileSpaceAll(@RequestBody ReqParam<FileSpaceByssidParam> param){
+        RResult result=this.createNewResultOfFail();
+        storageService.delFileSpaceAll(result,param);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    //删除单个文件
+    @RequestMapping(value = "/delFileSpaceByPath")
+    public RResult delFileSpaceByPath(@RequestBody ReqParam<FileSpaceByssidParam> param){
+        RResult result=this.createNewResultOfFail();
+        storageService.delFileSpaceByPath(result,param);
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }

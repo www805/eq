@@ -21,4 +21,19 @@ public interface ToOutStorageService {
     //根据iid查询
     public RResult getToOutStorageByiid(GetToOutStorageListParam param, RResult result);
 
+    //提供磁盘使用信息列表
+    RResult getToOutFileSpaceList(GetToOutStorageListParam pParam, RResult result);
+
+    //通过ssid查询文件管理
+    RResult getToOutFileSpaceByssid(GetToOutStorageListParam pParam, RResult result);
+
+    //查询路径下的所有文件
+    RResult getToOutFileSpaceAll(GetToOutStorageListParam pParam, RResult result);
+
+    //删除当前路径下的所有文件
+    RResult delToOutFileSpaceAll(GetToOutStorageListParam pParam, RResult result);
+
+    //删除单个文件
+    RResult delToOutFileSpaceByPath(GetToOutStorageListParam pParam, RResult result);
+
 }
