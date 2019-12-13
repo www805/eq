@@ -16,47 +16,42 @@ import java.util.List;
 
 public class FTPServer {
 
-    public static boolean startFTPServer(){
+    public static boolean startFTPServer(int port,List<FTPUser> ftpUsers){
 
         try {
-            /*FtpServerFactory serverFactory = new FtpServerFactory();
+            FtpServerFactory serverFactory = new FtpServerFactory();
 
             ListenerFactory factory = new ListenerFactory();
             //设置监听端口
-            factory.setPort(21);
+            factory.setPort(port);
 
             Listener listener=factory.createListener();
 
             //替换默认监听
             serverFactory.addListener("default", listener);
 
-           *//*
-             * 也可以使用配置文件来管理用户
-            *//*
-//            PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
-//            userManagerFactory.setFile(new File(OpenUtil.getXMSoursePath()+"/ftpserver.properties"));
-//            serverFactory.setUserManager(userManagerFactory.createUserManager());
+            for(FTPUser ftp:ftpUsers){
+                //用户名
+                BaseUser user = new BaseUser();
+                user.setName(ftp.getName());
+                //密码 如果不设置密码就是匿名用户
+                user.setPassword(ftp.getPassword());
+                //用户主目录
+                user.setHomeDirectory(ftp.getHomeDirectory());
 
+                List<Authority> authorities = new ArrayList<Authority>();
+                //增加写权限
+                authorities.add(new WritePermission());
+                user.setAuthorities(authorities);
 
-            //用户名
-            BaseUser user = new BaseUser();
-            user.setName("admin");
-            //密码 如果不设置密码就是匿名用户
-            user.setPassword("admin123");
-            //用户主目录
-            user.setHomeDirectory("d:/ftpdata");
-
-            List<Authority> authorities = new ArrayList<Authority>();
-            //增加写权限
-            authorities.add(new WritePermission());
-            user.setAuthorities(authorities);
-
-            //增加该用户
-            try {
-                serverFactory.getUserManager().save(user);
-            } catch (FtpException e) {
-                e.printStackTrace();
+                //增加该用户
+                try {
+                    serverFactory.getUserManager().save(user);
+                } catch (FtpException e) {
+                    e.printStackTrace();
+                }
             }
+
 
             try {
                 FtpServer server = serverFactory.createServer();
@@ -64,7 +59,7 @@ public class FTPServer {
                 return true;
             } catch (FtpException e) {
                 e.printStackTrace();
-            }*/
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -75,7 +70,7 @@ public class FTPServer {
     }
 
     public static void main(String[] args) {
-        System.out.println(startFTPServer());
+//        System.out.println(startFTPServer());
     }
 
 

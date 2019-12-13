@@ -222,8 +222,8 @@
 
         <dependency>
             <groupId>org.apache.ftpserver</groupId>
-            <artifactId>ftpserver-core</artifactId>
-            <version>1.1.1</version>
+            <artifactId>ftpserver-core-wb</artifactId>
+            <version>1.1.2</version>
         </dependency>
 
         <!--jar 打包使用开始-->

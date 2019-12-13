@@ -172,7 +172,7 @@ public class FDDealImpl implements FDInterface{
 
         if(StringUtils.isEmpty(ip)||StringUtils.isEmpty(user)||StringUtils.isEmpty(passwd)){
             result.setMessage("有部分参数为空");
-            LogUtil.intoLog(this.getClass(),param.toString()+"----------setMiddleware_FTP");
+            LogUtil.intoLog(this.getClass(),param.toString()+"----------getFTPUploadSpeed");
             return result;
         }
 
@@ -185,7 +185,7 @@ public class FDDealImpl implements FDInterface{
         GetFTPUploadSpeedXml xml=Xml2Object.getFTPUploadSpeedXml(rr);
 
         if(null!=xml){
-            //设置ftp成功
+            //
             result.changeToTrue();
             System.out.println(xml);
 

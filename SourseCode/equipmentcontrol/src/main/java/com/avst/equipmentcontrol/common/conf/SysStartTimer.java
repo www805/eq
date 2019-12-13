@@ -5,9 +5,11 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss
 import com.avst.equipmentcontrol.common.util.*;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.ftp.FTPServer;
+import com.avst.equipmentcontrol.common.util.ftp.FTPUser;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.feignclient.zk.ZkControl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import org.apache.commons.jexl3.JexlBuilder;
 import org.apache.commons.jexl3.JexlEngine;
 import org.apache.commons.jexl3.JexlExpression;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +47,37 @@ public class SysStartTimer implements ApplicationRunner {
 
         checkAndClearSys();
 
-//        FTPServer.startFTPServer();//启动ftp服务器
+        startFTPServer();
+    }
+
+    public void startFTPServer(){
+
+        int port=21;
+        List<FTPUser> ftpUsers=new ArrayList<FTPUser>();
+//        Wrapper<Ss_saveinfo> wrapper=new EntityWrapper<Ss_saveinfo>();
+//        List<Ss_saveinfo> userlist=ss_saveinfoMapper.selectList(wrapper);
+//        if(null!=userlist&&userlist.size() > 0){
+//
+//            for(Ss_saveinfo ss:userlist){
+//                FTPUser ftpUser=new FTPUser();
+//
+//            }
+//
+//        }else{
+//            FTPUser ftpUser=new FTPUser();
+//            ftpUser.setHomeDirectory("d:/ftpdata");
+//            ftpUser.setName("admin");
+//            ftpUser.setPassword("admin123");
+//            ftpUsers.add(ftpUser);
+//        }
+
+        FTPUser ftpUser=new FTPUser();
+        ftpUser.setHomeDirectory("d:/ftpdata");
+        ftpUser.setName("admin");
+        ftpUser.setPassword("admin123");
+        ftpUsers.add(ftpUser);
+
+        FTPServer.startFTPServer(port,ftpUsers);//启动ftp服务器
     }
 
     /**
