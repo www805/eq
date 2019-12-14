@@ -49,6 +49,24 @@ public class Ss_saveinfo extends Model<Ss_saveinfo> {
     private String datasavebasepath;
 
     /**
+     * 存储服务的协议类型
+     */
+    private String xytype;
+    /**
+     * 默认用户密码
+     */
+    private String passwd;
+    /**
+     * 默认用户名
+     */
+    private String user;
+
+    /**
+     * 存储服务器的状态
+     */
+    private Integer ssstate;
+
+    /**
      * 服务中文说明
      */
     private String explain;
@@ -65,6 +83,38 @@ public class Ss_saveinfo extends Model<Ss_saveinfo> {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public Integer getSsstate() {
+        return ssstate;
+    }
+
+    public void setSsstate(Integer ssstate) {
+        this.ssstate = ssstate;
+    }
+
+    public String getXytype() {
+        return xytype;
+    }
+
+    public void setXytype(String xytype) {
+        this.xytype = xytype;
+    }
+
+    public String getPasswd() {
+        return passwd;
+    }
+
+    public void setPasswd(String passwd) {
+        this.passwd = passwd;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public Integer getId() {

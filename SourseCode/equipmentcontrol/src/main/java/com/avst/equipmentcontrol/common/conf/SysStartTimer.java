@@ -53,29 +53,39 @@ public class SysStartTimer implements ApplicationRunner {
     public void startFTPServer(){
 
         int port=21;
+        String ftpport=PropertiesListenerConfig.getProperty("ftpport");
+        if(StringUtils.isNotEmpty(ftpport)){
+            try {
+                port=Integer.parseInt(ftpport);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
         List<FTPUser> ftpUsers=new ArrayList<FTPUser>();
-//        Wrapper<Ss_saveinfo> wrapper=new EntityWrapper<Ss_saveinfo>();
-//        List<Ss_saveinfo> userlist=ss_saveinfoMapper.selectList(wrapper);
-//        if(null!=userlist&&userlist.size() > 0){
-//
-//            for(Ss_saveinfo ss:userlist){
-//                FTPUser ftpUser=new FTPUser();
-//
-//            }
-//
-//        }else{
-//            FTPUser ftpUser=new FTPUser();
-//            ftpUser.setHomeDirectory("d:/ftpdata");
-//            ftpUser.setName("admin");
-//            ftpUser.setPassword("admin123");
-//            ftpUsers.add(ftpUser);
-//        }
+        Wrapper<Ss_saveinfo> wrapper=new EntityWrapper<Ss_saveinfo>();
+        List<Ss_saveinfo> userlist=ss_saveinfoMapper.selectList(wrapper);
+        if(null!=userlist&&userlist.size() > 0){
 
-        FTPUser ftpUser=new FTPUser();
-        ftpUser.setHomeDirectory("d:/ftpdata");
-        ftpUser.setName("admin");
-        ftpUser.setPassword("admin123");
-        ftpUsers.add(ftpUser);
+            for(Ss_saveinfo ss:userlist){
+                if(null!=ss.getSsstate()&&ss.getSsstate()==1){//ss.getXytype()==ftp 以后还需要判断是否是ftp服务器
+                    FTPUser ftpUser=new FTPUser();
+
+                    ftpUser.setHomeDirectory(ss.getDatasavebasepath());
+                    ftpUser.setName(ss.getUser());
+                    ftpUser.setPassword(ss.getPasswd());
+                    ftpUsers.add(ftpUser);
+                    LogUtil.intoLog(1,this.getClass(),"ftp存储服务开启了一个用户："+JacksonUtil.objebtToString(ftpUser));
+                }
+            }
+
+        }else{
+            FTPUser ftpUser=new FTPUser();
+            ftpUser.setHomeDirectory("d:/ftpdata");
+            ftpUser.setName("admin");
+            ftpUser.setPassword("admin123");
+            ftpUsers.add(ftpUser);
+            LogUtil.intoLog(3,this.getClass(),"ftp存储服务在数据库中未找到，默认开启了一个用户："+JacksonUtil.objebtToString(ftpUser));
+        }
 
         FTPServer.startFTPServer(port,ftpUsers);//启动ftp服务器
     }
