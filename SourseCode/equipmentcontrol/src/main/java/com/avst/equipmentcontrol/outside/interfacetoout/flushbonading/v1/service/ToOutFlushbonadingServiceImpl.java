@@ -13,6 +13,7 @@ import com.avst.equipmentcontrol.web.service.FlushbonadingService;
 import com.avst.equipmentcontrol.web.vo.flushbonading.FlushbonadinginfoVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.gson.Gson;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -134,7 +135,12 @@ public class ToOutFlushbonadingServiceImpl implements ToOutFlushbonadingService 
     public RResult getToOutDefault(GetToOutFlushbonadingListParam param, RResult result) {
 
         EntityWrapper<Flushbonadinginfo> ew = new EntityWrapper<>();
-        ew.eq("defaulturlbool", 1);
+        String flushbonadingetinfossid=param.getFlushbonadingetinfossid();
+        if (StringUtils.isNotEmpty(flushbonadingetinfossid)){
+            ew.eq("fet.ssid", flushbonadingetinfossid);
+        }else {
+            ew.eq("fet.defaulturlbool", 1);
+        }
 
         Flushbonadinginfo flushbonadinginfo = flushbonading_etinfoMapper.getFlushbonadinginfo(ew);
         if (null != flushbonadinginfo) {
