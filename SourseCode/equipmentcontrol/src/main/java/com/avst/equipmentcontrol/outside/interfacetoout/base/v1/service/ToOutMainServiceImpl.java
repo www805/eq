@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.base.v1.service;
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_et_ettype;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper.Asr_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
@@ -202,6 +203,18 @@ public class ToOutMainServiceImpl extends BaseService implements ToOutMainServic
         }
 
         if (1 == update1) {
+
+            //修改所有语音识别识别到推给trm的接口
+            String trmip = getServerIpParam.getTrmip();
+            List<Asr_etinfo> asr_etinfos = asr_etinfoMapper.selectList(null);
+            for (Asr_etinfo asr_etinfo : asr_etinfos) {
+                String backtxtinterface = asr_etinfo.getBacktxtinterface();
+                int indexOf = backtxtinterface.indexOf(":8081/");
+                String endPath = backtxtinterface.substring(indexOf);
+                asr_etinfo.setBacktxtinterface("http://" + trmip + endPath);
+                asr_etinfo.updateById();
+            }
+
             EntityWrapper ew3 = new EntityWrapper();
             ew3.eq("f.equipmentssid", flushbonadingip.getSsid());
             List<FlushbonadingEttd> flushbonadingEttdList = flushbonading_ettdMapper.getFlushbonadingEttdList(ew3);

@@ -2,9 +2,18 @@ package com.avst.equipmentcontrol.outside.interfacetoout.base.req;
 
 public class GetServerIpALLParam {
 
+    private String baseType;
     private String fdssid;
     private String polygraphssid;
     private String asrssid;
+
+    public String getBaseType() {
+        return baseType;
+    }
+
+    public void setBaseType(String baseType) {
+        this.baseType = baseType;
+    }
 
     public String getFdssid() {
         return fdssid;

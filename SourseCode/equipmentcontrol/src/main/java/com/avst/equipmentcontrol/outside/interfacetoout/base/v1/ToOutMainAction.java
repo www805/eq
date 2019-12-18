@@ -46,7 +46,12 @@ public class ToOutMainAction extends BaseAction {
     @ResponseBody
     public RResult getServerIpALL(@RequestBody ReqParam<GetServerIpALLParam> param){
         RResult result=this.createNewResultOfFail();
-        toOutMainService.getServerIpALL(param,result);
+        if(null!=param){
+            GetServerIpALLParam param1 = param.getParam();
+            if(null != param1.getBaseType()){
+                getToOutServiceImpl(param1.getBaseType()).getServerIpALL(param,result);
+            }
+        }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     };
@@ -59,7 +64,11 @@ public class ToOutMainAction extends BaseAction {
     @ResponseBody
     public RResult updateServerIp(@RequestBody GetServerIpParam getServerIpParam) {
         RResult result=this.createNewResultOfFail();
-        toOutMainService.updateServerIp(getServerIpParam,result);
+        if(null!=getServerIpParam){
+            if(null != getServerIpParam.getBaseType()){
+                getToOutServiceImpl(getServerIpParam.getBaseType()).updateServerIp(getServerIpParam,result);
+            }
+        }
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }
