@@ -50,6 +50,13 @@ public class Asr_etinfo extends Model<Asr_etinfo> {
     private String asrkey;
 
     /**
+     * 语音识别的返回接口
+     * 被动式接受数据
+     */
+    private String backtxtinterface;
+
+
+    /**
      * 服务中文说明
      */
     private String explain;
@@ -65,6 +72,14 @@ public class Asr_etinfo extends Model<Asr_etinfo> {
     private String ssid;
 
     private Integer port;
+
+    public String getBacktxtinterface() {
+        return backtxtinterface;
+    }
+
+    public void setBacktxtinterface(String backtxtinterface) {
+        this.backtxtinterface = backtxtinterface;
+    }
 
     public Integer getPort() {
         return port;

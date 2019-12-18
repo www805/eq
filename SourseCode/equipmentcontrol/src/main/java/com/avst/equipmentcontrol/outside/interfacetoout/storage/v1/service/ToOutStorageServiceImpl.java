@@ -5,13 +5,21 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.St
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.param.Ss_dataMessageParam;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_saveinfoMapper;
+import com.avst.equipmentcontrol.common.util.JacksonUtil;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.common.util.filespace.DriverSpaceParam;
 import com.avst.equipmentcontrol.common.util.filespace.FileSpaceUtil;
+import com.avst.equipmentcontrol.common.util.ftp.FTPServer;
+import com.avst.equipmentcontrol.common.util.ftp.FTPUser;
+import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.AddOrUpdateToOutStorageParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.GetDefaultSaveInfoParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.GetToOutStorageListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.ReStartFTPServerParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.GetDefaultSaveInfoVO;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.vo.param.Ss_saveinfoParam;
 import com.avst.equipmentcontrol.web.req.storage.FileSpaceByssidParam;
 import com.avst.equipmentcontrol.web.req.storage.StorageParam;
@@ -19,6 +27,8 @@ import com.avst.equipmentcontrol.web.req.storage.UpdateStorageParam;
 import com.avst.equipmentcontrol.web.service.StorageService;
 import com.avst.equipmentcontrol.web.vo.storage.StorageVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -228,5 +238,76 @@ public class ToOutStorageServiceImpl extends BaseService implements ToOutStorage
         return result;
     }
 
+    @Override
+    public RResult getDefaultSaveInfo(GetDefaultSaveInfoParam pParam, RResult result) {
 
+        EntityWrapper<Ss_saveinfo> wrapper=new EntityWrapper<Ss_saveinfo>();
+        wrapper.eq("defaultsavebool",1);
+        wrapper.eq("ssstate",1);
+        List<Ss_saveinfo> sslist=ss_saveinfoMapper.selectList(wrapper);
+        if(null!=sslist&&sslist.size() > 0){
+            Ss_saveinfo ss_saveinfo=sslist.get(0);
+            Gson gson=new Gson();
+            GetDefaultSaveInfoVO getDefaultSaveInfoVO=gson.fromJson(gson.toJson(ss_saveinfo),GetDefaultSaveInfoVO.class);
+
+            String httpbasestaticpath=PropertiesListenerConfig.getProperty("httpbasestaticpath");
+            getDefaultSaveInfoVO.setHttpbasestaticpath(httpbasestaticpath);//trm会做非空判断
+
+            result.changeToTrue(getDefaultSaveInfoVO);
+        }else{
+            result.setMessage("没有找到默认存储设备");
+            LogUtil.intoLog(4,this.getClass(),"数据库异常，没有找到默认存储设备");
+        }
+        return result;
+    }
+
+    @Override
+    public RResult reStartFTPServer(ReStartFTPServerParam pParam, RResult result) {
+
+        try {
+            int port=21;
+            String ftpport=PropertiesListenerConfig.getProperty("ftpport");
+            if(StringUtils.isNotEmpty(ftpport)){
+                try {
+                    port=Integer.parseInt(ftpport);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+            List<FTPUser> ftpUsers=new ArrayList<FTPUser>();
+            Wrapper<Ss_saveinfo> wrapper=new EntityWrapper<Ss_saveinfo>();
+            List<Ss_saveinfo> userlist=ss_saveinfoMapper.selectList(wrapper);
+            if(null!=userlist&&userlist.size() > 0){
+
+                for(Ss_saveinfo ss:userlist){
+                    if(null!=ss.getSsstate()&&ss.getSsstate()==1){//ss.getXytype()==ftp 以后还需要判断是否是ftp服务器
+                        FTPUser ftpUser=new FTPUser();
+
+                        ftpUser.setHomeDirectory(ss.getDatasavebasepath());
+                        ftpUser.setName(ss.getUser());
+                        ftpUser.setPassword(ss.getPasswd());
+                        ftpUsers.add(ftpUser);
+                        LogUtil.intoLog(1,this.getClass(),"ftp存储服务开启了一个用户："+ JacksonUtil.objebtToString(ftpUser));
+                    }
+                }
+
+            }else{
+                FTPUser ftpUser=new FTPUser();
+                ftpUser.setHomeDirectory("d:/ftpdata");
+                ftpUser.setName("admin");
+                ftpUser.setPassword("admin123");
+                ftpUsers.add(ftpUser);
+                LogUtil.intoLog(3,this.getClass(),"ftp存储服务在数据库中未找到，默认开启了一个用户："+JacksonUtil.objebtToString(ftpUser));
+            }
+
+            FTPServer.startFTPServer(port,ftpUsers);//启动ftp服务器
+
+            result.changeToTrue();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 }

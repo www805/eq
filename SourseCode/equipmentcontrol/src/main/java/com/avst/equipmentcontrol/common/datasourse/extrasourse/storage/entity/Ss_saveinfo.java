@@ -67,6 +67,18 @@ public class Ss_saveinfo extends Model<Ss_saveinfo> {
     private Integer ssstate;
 
     /**
+     * 割切存储路径
+     */
+    private String ssstatic;
+
+
+    /**
+     * 是否是默认的存储设备
+     */
+    private Integer defaultsavebool;
+
+
+    /**
      * 服务中文说明
      */
     private String explain;
@@ -80,6 +92,22 @@ public class Ss_saveinfo extends Model<Ss_saveinfo> {
     private Integer integer2;
 
     private String ssid;
+
+    public Integer getDefaultsavebool() {
+        return defaultsavebool;
+    }
+
+    public void setDefaultsavebool(Integer defaultsavebool) {
+        this.defaultsavebool = defaultsavebool;
+    }
+
+    public String getSsstatic() {
+        return ssstatic;
+    }
+
+    public void setSsstatic(String ssstatic) {
+        this.ssstatic = ssstatic;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

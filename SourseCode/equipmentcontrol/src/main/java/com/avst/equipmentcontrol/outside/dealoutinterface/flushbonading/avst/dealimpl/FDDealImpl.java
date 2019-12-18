@@ -819,7 +819,7 @@ public class FDDealImpl implements FDInterface{
         String regparam="action=get&type=audpowermap"+
                 "&usr="+user+"&pwd="+passwd+"&authvusr="+user+"&authpwd="+passwd;
         String rr= HttpRequest.readContentFromGet_noencode(url,regparam,20000);//大一点超时时间
-        LogUtil.intoLog(this.getClass(),rr+"--getAudPowerMap");
+//        LogUtil.intoLog(this.getClass(),rr+"--getAudPowerMap");
         String audpowermap=Xml2Object.getAudPowerMapXml(rr);
         if(StringUtils.isNotEmpty(audpowermap)){
             String[] arr=audpowermap.split(",");//现在的切割字符是，

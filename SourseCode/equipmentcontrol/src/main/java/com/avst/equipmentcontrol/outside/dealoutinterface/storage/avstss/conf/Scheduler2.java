@@ -3,6 +3,7 @@ package com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.conf;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.param.Ss_dataMessageParam;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_datasaveMapper;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_saveinfoMapper;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.cache.SSThreadCache;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -25,8 +26,6 @@ public class Scheduler2 {
     @Autowired
     private Ss_databaseMapper ss_databaseMapper;
 
-    @Autowired
-    private Ss_datasaveMapper ss_datasaveMapper;
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 

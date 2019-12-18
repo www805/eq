@@ -53,6 +53,23 @@ public class Tts_etinfo extends Model<Tts_etinfo> {
      */
     private String ttskeys;
 
+
+    /**
+     * tts音频存储路径
+     */
+    private String ttsbasepath;
+
+    /**
+     * 割切存储路径
+     */
+    private String ttsstatic;
+
+    /**
+     * tts请求地址
+     */
+    private String ttsurl;
+
+
     /**
      * 服务中文说明
      */
@@ -68,8 +85,36 @@ public class Tts_etinfo extends Model<Tts_etinfo> {
 
     private String ssid;
 
+    public String getTtsurl() {
+        return ttsurl;
+    }
+
+    public void setTtsurl(String ttsurl) {
+        this.ttsurl = ttsurl;
+    }
+
     public Integer getId() {
         return id;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getTtsbasepath() {
+        return ttsbasepath;
+    }
+
+    public void setTtsbasepath(String ttsbasepath) {
+        this.ttsbasepath = ttsbasepath;
+    }
+
+    public String getTtsstatic() {
+        return ttsstatic;
+    }
+
+    public void setTtsstatic(String ttsstatic) {
+        this.ttsstatic = ttsstatic;
     }
 
     public void setId(Integer id) {

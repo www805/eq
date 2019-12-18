@@ -1,11 +1,14 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.storage.avstss.conf;
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Ss_database;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Ss_saveinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.param.Ss_dataMessageParam;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_databaseMapper;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_saveinfoMapper;
 import com.avst.equipmentcontrol.common.util.FileUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
+import com.avst.equipmentcontrol.common.util.SpringUtil;
 import com.avst.equipmentcontrol.common.util.ff.FFThreadCache;
 import com.avst.equipmentcontrol.common.util.ff.VideoChangeThread;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
@@ -26,9 +29,12 @@ public class SSCreateDataUrlThread extends  Thread{
 
     private Ss_dataMessageParam ss_dataMessageParam;
 
-    public SSCreateDataUrlThread(Ss_databaseMapper ss_databaseMapper, Ss_dataMessageParam ss_dataMessageParam) {
+    private Ss_saveinfoMapper ss_saveinfoMapper ;
+
+    public SSCreateDataUrlThread( Ss_databaseMapper ss_databaseMapper, Ss_dataMessageParam ss_dataMessageParam) {
         this.ss_databaseMapper = ss_databaseMapper;
         this.ss_dataMessageParam = ss_dataMessageParam;
+        ss_saveinfoMapper = SpringUtil.getBean(Ss_saveinfoMapper.class);
     }
 
     public boolean bool=true;
@@ -46,6 +52,24 @@ public class SSCreateDataUrlThread extends  Thread{
                 LogUtil.intoLog(4,this.getClass(),filename+":filename=====有一个参数为空====savepath:"+savepath);
                 SSThreadCache.delSSCreateDataUrlThread(iid);//关闭这个生成网络地址的线程的缓存
                 return ;
+            }
+
+            String staticpath= "ftpdata";//默认
+            if(null!=ss_saveinfoMapper){
+                try {
+                    Ss_saveinfo ss_saveinfo=new Ss_saveinfo();
+                    ss_saveinfo.setSsid(ss_dataMessageParam.getSaveinfossid());
+                    ss_saveinfo=ss_saveinfoMapper.selectOne(ss_saveinfo);
+                    if(null!=ss_saveinfo&&StringUtils.isNotEmpty(ss_saveinfo.getSsstatic())){
+                        staticpath=ss_saveinfo.getSsstatic();
+                    }else{
+                        LogUtil.intoLog(4,this.getClass(),staticpath+":staticpath 获取http切割路径未找到，采用默认的路径,ss_saveinfo:"+ss_saveinfo+"--ss_saveinfo.getSsstatic()"+ ss_saveinfo==null?"null":ss_saveinfo.getSsstatic());
+                    }
+                } catch (Exception e) {
+                    LogUtil.intoLog(4,this.getClass(),staticpath+":staticpath 获取http切割路径报错，采用默认的路径");
+                }
+            }else{
+                LogUtil.intoLog(4,this.getClass(),ss_saveinfoMapper+":ss_saveinfoMapper is null 获取http切割路径异常，采用默认的路径");
             }
 
             while (bool){
@@ -108,7 +132,7 @@ public class SSCreateDataUrlThread extends  Thread{
 
                     //建立对外开放的请求地址(给个NGINX，可以配置网络资源请求地址)
                     //http 最简单的
-                    String staticpath= PropertiesListenerConfig.getProperty("staticpath");
+
                     String httpbasestaticpath=PropertiesListenerConfig.getProperty("httpbasestaticpath");
                     String uploadparh=httpbasestaticpath+OpenUtil.strMinusBasePath(staticpath,savepath);//下载路径
                     //修改数据库的原始保存文件记录表

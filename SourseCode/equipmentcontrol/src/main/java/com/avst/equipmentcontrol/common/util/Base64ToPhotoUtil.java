@@ -63,11 +63,11 @@ public class Base64ToPhotoUtil {
             return encoder.encode(data);
         }
         public static void main(String[] args) {
-            String imgpath = "I:\\wubin\\笔录管理系统\\系统设计\\测谎仪服务\\img.png";
-            String base64path = "I:\\wubin\\笔录管理系统\\系统设计\\测谎仪服务\\ceshiimg.txt";
-            StringBuffer strImg=new StringBuffer();
-            strImg.append(ReadWriteFile.readTxtFileToStr(base64path));
-            generateImage(strImg.toString(), imgpath);
+//            String imgpath = "I:\\wubin\\笔录管理系统\\系统设计\\测谎仪服务\\img.png";
+//            String base64path = "I:\\wubin\\笔录管理系统\\系统设计\\测谎仪服务\\ceshiimg.txt";
+//            StringBuffer strImg=new StringBuffer();
+//            strImg.append(ReadWriteFile.readTxtFileToStr(base64path));
+//            generateImage(strImg.toString(), imgpath);
         }
 
 }

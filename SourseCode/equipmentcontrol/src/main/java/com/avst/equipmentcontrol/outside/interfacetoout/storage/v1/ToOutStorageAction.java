@@ -6,7 +6,9 @@ import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.AddOrUpdateToOutStorageParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.GetDefaultSaveInfoParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.GetToOutStorageListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.ReStartFTPServerParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service.ToOutStorageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -181,5 +183,33 @@ public class ToOutStorageAction extends BaseAction {
         return result;
     }
 
+    //获取可用的默认存储服务器
+    @RequestMapping("/getDefaultSaveInfo")
+    @ResponseBody
+    public RResult getDefaultSaveInfo(@RequestBody GetDefaultSaveInfoParam param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param&&null != param.getSsType()){
+            result=getToOutService(param.getSsType()).getDefaultSaveInfo(param,result);
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    /**
+     * 重启ftpserver
+     * @param param
+     * @return
+     */
+    @RequestMapping("/reStartFTPServer")
+    @ResponseBody
+    public RResult reStartFTPServer(@RequestBody ReStartFTPServerParam param){
+        RResult rResult=this.createNewResultOfFail();
+
+        if(null!=param&&null!=param.getSsType()){
+            rResult=getToOutService(param.getSsType()).reStartFTPServer(param,rResult);
+        }
+
+        return rResult;
+    };
 
 }

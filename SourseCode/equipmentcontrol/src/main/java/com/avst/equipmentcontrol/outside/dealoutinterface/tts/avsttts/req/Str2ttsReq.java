@@ -12,6 +12,36 @@ public class Str2ttsReq extends BaseParam{
 
     private String dev_key;
 
+    private String ttsstatic;//tts http调用的切割路径
+
+    private String ttsbasepath;//tts音频存储的路径
+
+    private String ttsURL="/tts/SynthText";//tts请求路径
+
+    public String getTtsURL() {
+        return ttsURL;
+    }
+
+    public void setTtsURL(String ttsURL) {
+        this.ttsURL = ttsURL;
+    }
+
+    public String getTtsstatic() {
+        return ttsstatic;
+    }
+
+    public void setTtsstatic(String ttsstatic) {
+        this.ttsstatic = ttsstatic;
+    }
+
+    public String getTtsbasepath() {
+        return ttsbasepath;
+    }
+
+    public void setTtsbasepath(String ttsbasepath) {
+        this.ttsbasepath = ttsbasepath;
+    }
+
     public String getText() {
         return text;
     }

@@ -2,7 +2,9 @@ package com.avst.equipmentcontrol.outside.interfacetoout.storage.v1.service;
 
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.AddOrUpdateToOutStorageParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.GetDefaultSaveInfoParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.GetToOutStorageListParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.storage.req.ReStartFTPServerParam;
 
 public interface ToOutStorageService {
 
@@ -35,5 +37,12 @@ public interface ToOutStorageService {
 
     //删除单个文件
     RResult delToOutFileSpaceByPath(GetToOutStorageListParam pParam, RResult result);
+
+    //获取默认的存储设备
+    RResult getDefaultSaveInfo(GetDefaultSaveInfoParam pParam, RResult result);
+
+    //重启ftpserver
+    RResult reStartFTPServer(ReStartFTPServerParam pParam, RResult result);
+
 
 }

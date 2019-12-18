@@ -29,6 +29,7 @@ public class DealAvstTtsImpl {
         String appkey=param.getApp_key();
         String capkey=param.getCap_key();
         String devkey=param.getDev_key();
+
         String lang_speaker_domain=param.getLang_speaker_domain();
         if(StringUtils.isEmpty(appkey)||StringUtils.isEmpty(capkey)
                 ||StringUtils.isEmpty(devkey)||StringUtils.isEmpty(lang_speaker_domain)){
@@ -41,14 +42,17 @@ public class DealAvstTtsImpl {
             LogUtil.intoLog(4,DealAvstTtsImpl.class,"部分密匙为空，keys："+ JacksonUtil.objebtToString(param));
             return result;
         }
-        String url="http://"+ip+":"+port+"/tts/SynthText";
+
+        String ttspath=param.getTtsbasepath();
+        String ttsstatic=param.getTtsstatic();
+        String ttsurl=param.getTtsURL();
+
+        String url="http://"+ip+":"+port+ttsurl;
 
         //先获取本次转的WAV的路径
         String wavfilename= OpenUtil.getUUID_32()+".wav";
-        String ttsstatic= PropertiesListenerConfig.getProperty("staticpath");
-        String ttsbasepath= PropertiesListenerConfig.getProperty("ttsbasepath");
         String httpbasestaticpath = PropertiesListenerConfig.getProperty("httpbasestaticpath");
-        String wavfilepath=OpenUtil.createpath_fileByBasepath(ttsbasepath,wavfilename);
+        String wavfilepath=OpenUtil.createpath_fileByBasepath(ttspath,wavfilename);
         //
         boolean bool=TTSUtil.tts(text,url,appkey,lang_speaker_domain,capkey,devkey,wavfilepath);
         if(bool){//成功之后返回播放地址

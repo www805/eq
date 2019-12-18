@@ -91,7 +91,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
 
         AVSTAsrParam_reg reg=new AVSTAsrParam_reg(asr_et_ettype.getEtip(),asr_et_ettype.getPort()+"",audiourl,asrserverssid);
         //参数txtcallbackurl如果接口不传就去缓存中拿
-        String avstbacktxtinterface=AsrCache_toout.avstbacktxtinterface;
+        String avstbacktxtinterface=asr_et_ettype.getBacktxtinterface();
         if(avstbacktxtinterface.indexOf("localhost") > -1){
             avstbacktxtinterface=avstbacktxtinterface.replace("localhost", OpenUtil.getMyIP());
         }
@@ -204,7 +204,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
 
         AVSTAsrParam_reg reg=new AVSTAsrParam_reg(asr_et_ettype.getEtip(),asr_et_ettype.getPort()+"",audiourl,asrserverssid, AsrServerModel.m2);
         //参数txtcallbackurl如果接口不传就去缓存中拿
-        String avstbacktxtinterface=AsrCache_toout.avstbacktxtinterface;
+        String avstbacktxtinterface=asr_et_ettype.getBacktxtinterface();
         if(avstbacktxtinterface.indexOf("localhost") > -1){
             avstbacktxtinterface=avstbacktxtinterface.replace("localhost", OpenUtil.getMyIP());
         }

@@ -93,6 +93,9 @@ public class ToOutServiceImpl_tts_avst implements ToOutService_tts {
         ttsReq.setLang_speaker_domain(Lang_speaker_domain);
         ttsReq.setIp(tts_etinfo.getEtip());
         ttsReq.setPort(tts_etinfo.getPort());
+        ttsReq.setTtsbasepath(tts_etinfo.getTtsbasepath());
+        ttsReq.setTtsstatic(tts_etinfo.getTtsstatic());
+        ttsReq.setTtsURL(tts_etinfo.getTtsurl());
         ttsReq.setText(text);
         RResult<Str2ttsVO> rResult = dealAvstTts.str2tts(ttsReq,new RResult());
         if(null!=rResult&&rResult.getActioncode().equals(Code.SUCCESS.toString())){

@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.common.util.ftp;
 
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
@@ -16,9 +17,17 @@ import java.util.List;
 
 public class FTPServer {
 
+    public static FtpServer ftpserver=null;
+
     public static boolean startFTPServer(int port,List<FTPUser> ftpUsers){
 
         try {
+
+            if(null!=ftpserver){
+                LogUtil.intoLog(3,FTPServer.class,"ftp服务器正在运行中，需要关闭才能再次开启");
+                ftpserver.stop();
+            }
+
             FtpServerFactory serverFactory = new FtpServerFactory();
 
             ListenerFactory factory = new ListenerFactory();
@@ -54,8 +63,8 @@ public class FTPServer {
 
 
             try {
-                FtpServer server = serverFactory.createServer();
-                server.start();
+                ftpserver = serverFactory.createServer();
+                ftpserver.start();
                 return true;
             } catch (FtpException e) {
                 e.printStackTrace();

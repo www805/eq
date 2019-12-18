@@ -2,6 +2,8 @@ package com.avst.equipmentcontrol.common.conf;
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Ss_saveinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_saveinfoMapper;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.entity.Tts_etinfo;
+import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.mapper.Tts_etinfoMapper;
 import com.avst.equipmentcontrol.common.util.*;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.ftp.FTPServer;
@@ -39,13 +41,26 @@ public class SysStartTimer implements ApplicationRunner {
     @Autowired
     private Ss_saveinfoMapper ss_saveinfoMapper;
 
+    @Autowired
+    private Tts_etinfoMapper tts_etinfoMapper;
+
     //获取服务器时间进行比对
     @Override
     public void run(ApplicationArguments args) {
 
         pushMessageToZK();
 
-        checkAndClearSys();
+        //清理以往的硬盘缓存
+        try {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    checkAndClearSys();
+                }
+            }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         startFTPServer();
     }
@@ -181,16 +196,26 @@ public class SysStartTimer implements ApplicationRunner {
 
         //wav
         try {
-            String ttsbasepath=PropertiesListenerConfig.getProperty("ttsbasepath");//wav文件生成的地方
-            FileUtil.delAllFile(ttsbasepath);
+            EntityWrapper entityWrapper=new EntityWrapper();
+            List<Tts_etinfo> ttslist=tts_etinfoMapper.selectList(entityWrapper);
+            if(null!=ttslist&&ttslist.size() > 0){
+                for(Tts_etinfo tts:ttslist){
+                    String ttsbasepath=tts.getTtsbasepath();
+                    System.out.println(ttsbasepath+":ttsbasepath 清理tts服务器的垃圾");
+                    if(StringUtils.isNotEmpty(ttsbasepath)){
+                        FileUtil.delAllFile(ttsbasepath);
+                    }
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        //ts
+        //ts和压缩
         try {
-            EntityWrapper entityWrapper=new EntityWrapper();
-            List<Ss_saveinfo> sslist=ss_saveinfoMapper.selectList(entityWrapper);
+            EntityWrapper entityWrapper2=new EntityWrapper();
+            List<Ss_saveinfo> sslist=ss_saveinfoMapper.selectList(entityWrapper2);
 
             String changetype=PropertiesListenerConfig.getProperty("changetype");
             String leastvideolength=PropertiesListenerConfig.getProperty("leastvideolength");
@@ -201,24 +226,36 @@ public class SysStartTimer implements ApplicationRunner {
                     String datasavebasepath=ss.getDatasavebasepath();
                     if(StringUtils.isNotEmpty(datasavebasepath)){
 
-                        List<String> pathlist=FileUtil.getAllFiles(datasavebasepath,1);
-                        if(null!=pathlist&&pathlist.size() > 0){
-                            for(String path:pathlist){
-                                try {
-                                    if(!path.endsWith(changetype)){//判断不是我们需要的视频文件
-                                        File file=new File(path);
-                                        String checktype="."+OpenUtil.getfiletype(path);
-                                        String newtype="."+changetype;
-                                        String newpath=path.replace(checktype,newtype);
-                                        if(file.length()>leastvideolength_long //判断大于1M的不是我们需要的文件
-                                                && OpenUtil.fileisexist(newpath)){ //并且这个文件夹下的可播放的文件存在
-                                            file.delete(); //就可以直接删除大于1M的非播放文件
+                        //TS
+                        try {
+                            List<String> pathlist=FileUtil.getAllFiles(datasavebasepath,1);
+                            if(null!=pathlist&&pathlist.size() > 0){
+                                for(String path:pathlist){
+                                    try {
+                                        if(!path.endsWith(changetype)){//判断不是我们需要的视频文件
+                                            File file=new File(path);
+                                            String checktype="."+OpenUtil.getfiletype(path);
+                                            String newtype="."+changetype;
+                                            String newpath=path.replace(checktype,newtype);
+                                            if(file.length()>leastvideolength_long //判断大于1M的不是我们需要的文件
+                                                    && OpenUtil.fileisexist(newpath)){ //并且这个文件夹下的可播放的文件存在
+                                                file.delete(); //就可以直接删除大于1M的非播放文件
+                                            }
                                         }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
                                 }
                             }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        //清理压缩
+                        try {
+                            delGZIP(datasavebasepath);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }
@@ -226,6 +263,39 @@ public class SysStartTimer implements ApplicationRunner {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+    }
+
+
+    /**
+     * 开启的时候自动删除打包的文件
+     */
+    private void delGZIP(String datasavebasepath){
+
+        LogUtil.intoLog(1,this.getClass(),"准备清理上一次开启产生的zip压缩包,监测自身的定时器");
+        //先获取要删除文件的格式
+        String gztype= PropertiesListenerConfig.getProperty("gztype");
+        if(StringUtils.isEmpty(gztype)){
+            gztype=".zip";
+        }
+
+        //获取所有等待检测的文件
+        String ftpsavebasepath= datasavebasepath;
+        if(StringUtils.isEmpty(ftpsavebasepath)){
+            ftpsavebasepath="d:/ftpdata/";
+        }
+        List<String> filelist=FileUtil.getAllFilePath(ftpsavebasepath,2);
+        if(null!=filelist&&filelist.size() > 0){
+            for(String path:filelist){
+                //对比删除
+                if(path.endsWith(gztype)){//删除GZIP的文件
+                    File file=new File(path);
+                    boolean bool=file.delete();
+                    System.out.println(bool+":bool 删除GZIP的文件,path:"+path);
+                    file=null;
+                }
+            }
         }
 
     }
