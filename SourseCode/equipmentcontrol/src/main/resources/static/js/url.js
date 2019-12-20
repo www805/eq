@@ -29,6 +29,7 @@ function getUrl_manage() {
 		main:getPath()+basepath+"main/gotomain",
 		logout:getPath()+basepath+"main/logout",
 		getNavList: getPath() + "/ec/main/getNavList",
+		getBaseEc: getPath() + "/ec/main/getBaseEc",
 		getptdjconst:getPath()+"/flushbonading/v1/getptdjconst",
         getLoginCookie:getPath()+basepath+"main/getLoginCookie",
 	};

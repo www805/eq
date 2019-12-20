@@ -169,8 +169,8 @@ function callAsrById(data){
             $("input[name='port']").val(asr.port);
             $("input[name='asrtype']").val(asr.asrtype);
             $("input[name='asrkey']").val(asr.asrkey);
-            $("input[name='etnum']").val(asr.etnum);
-            $("input[name='etip']").val(asr.etip);
+            $("input[name='etnum']").val(asr.etnum).attr("disabled",true);
+            $("input[name='etip']").val(asr.etip).attr("disabled",true);
             $("#explain").text(asr.explain);
 
         }

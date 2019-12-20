@@ -7,16 +7,14 @@ import com.avst.equipmentcontrol.common.conf.Constant;
 import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
+import com.avst.equipmentcontrol.web.req.GetBaseEcParam;
 import com.avst.equipmentcontrol.web.req.LoginParam;
 import com.avst.equipmentcontrol.web.service.MainService;
 import com.avst.equipmentcontrol.web.vo.EcCountVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -105,6 +103,19 @@ public class MainAction extends BaseAction {
     public  RResult getNavList(){
         RResult result=this.createNewResultOfFail();
         mainService.getNavList(result);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    /**
+     * 获取所有基础设备
+     * @return
+     */
+    @RequestMapping("/getBaseEc")
+    @ResponseBody
+    public  RResult getBaseEc(@RequestBody GetBaseEcParam param){
+        RResult result=this.createNewResultOfFail();
+        mainService.getBaseEc(result, param);
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }

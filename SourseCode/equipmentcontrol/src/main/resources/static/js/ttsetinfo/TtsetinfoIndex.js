@@ -168,8 +168,8 @@ function callTtsetinfoById(data){
             $("input[name='port']").val(ttsetinfo.port==null?"":ttsetinfo.port);
             $("input[name='ttstype']").val(ttsetinfo.ttstype==null?"":ttsetinfo.ttstype);
             $("input[name='ttskeys']").val(ttsetinfo.ttskeys==null?"":ttsetinfo.ttskeys);
-            $("input[name='etnum']").val(ttsetinfo.etnum==null?"":ttsetinfo.etnum);
-            $("input[name='etip']").val(ttsetinfo.etip==null?"":ttsetinfo.etip);
+            $("input[name='etnum']").val(ttsetinfo.etnum==null?"":ttsetinfo.etnum).attr("disabled",true);
+            $("input[name='etip']").val(ttsetinfo.etip==null?"":ttsetinfo.etip).attr("disabled",true);
             $("#explain").text(ttsetinfo.explain==null?"":ttsetinfo.explain);
 
         }

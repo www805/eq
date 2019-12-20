@@ -73,14 +73,14 @@ public class PolygraphAction extends BaseAction {
     //显示列表页面
     @RequestMapping(value = "/getPolygraphIndex")
     public ModelAndView getPolygraphIndex(Model model) {
-        model.addAttribute("title", "测谎仪列表");
+        model.addAttribute("title", "身心监护列表");
         return new ModelAndView("sweb/polygraphhtml/getPolygraphIndex", "getPolygraphIndexModel", model);
     }
 
     //显示修改页面
     @RequestMapping(value = "/addOrUpdatePolygraph")
     public ModelAndView addOrUpdatePolygraph(Model model) {
-        model.addAttribute("title", "测谎仪新增/修改");
+        model.addAttribute("title", "身心监护新增/修改");
         return new ModelAndView("sweb/polygraphhtml/addOrUpdatePolygraph", "addOrUpdatePolygraphModel", model);
     }
 

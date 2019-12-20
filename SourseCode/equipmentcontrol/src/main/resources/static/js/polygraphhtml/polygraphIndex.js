@@ -55,6 +55,8 @@ function getPolygraphById(ssidd) {
     ajaxSubmitByJson(url,data,callPolygraphById);
 }
 
+
+
 //删除
 function delPolygraph(ssidd) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypeById);
@@ -131,6 +133,7 @@ function callAddOrUpdate(data){
     }
 }
 
+
 function callPolygraphList(data){
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
@@ -157,8 +160,8 @@ function callPolygraphById(data){
             $("input[name='port']").val(polygraph.port);
             $("input[name='polygraphtype']").val(polygraph.polygraphtype);
             $("input[name='polygraphkey']").val(polygraph.polygraphkey);
-            $("input[name='etnum']").val(polygraph.etnum);
-            $("input[name='etip']").val(polygraph.etip);
+            $("input[name='etnum']").val(polygraph.etnum).attr("disabled",true);
+            $("input[name='etip']").val(polygraph.etip).attr("disabled",true);
             $("#explain").text(polygraph.explain);
 
         }

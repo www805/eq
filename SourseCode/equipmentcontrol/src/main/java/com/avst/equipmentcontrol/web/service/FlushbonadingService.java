@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.web.service;
 
+import com.avst.equipmentcontrol.common.cache.BaseEcCache;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDInterface;
@@ -208,14 +209,31 @@ public class FlushbonadingService extends BaseService {
             return;
         }
 
-        Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
-        base_equipmentinfo.setEtnum(paramParam.getEtnum());
-        base_equipmentinfo.setEtip(paramParam.getEtip());
-        base_equipmentinfo.setEtypessid(paramParam.getEtypessid());
-        base_equipmentinfo.setSsid(OpenUtil.getUUID_32());
+        //如果存在就不添加了
+        EntityWrapper<Base_equipmentinfo> ew = new EntityWrapper<>();
+        ew.eq("etnum", paramParam.getEtnum());
+        ew.eq("etip", paramParam.getEtip());
+        ew.eq("etypessid", paramParam.getEtypessid());
 
-        int insert_bool=base_equipmentinfoMapper.insert(base_equipmentinfo);
-        LogUtil.intoLog(1,this.getClass(),insert_bool+":insert_bool 新增设备是否成功--");
+        Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
+
+        List<Base_equipmentinfo> equipmentinfoList = base_equipmentinfoMapper.selectList(ew);
+        if (equipmentinfoList.size() == 0) {
+            base_equipmentinfo.setEtnum(paramParam.getEtnum());
+            base_equipmentinfo.setEtip(paramParam.getEtip());
+            base_equipmentinfo.setEtypessid(paramParam.getEtypessid());
+            base_equipmentinfo.setSsid(OpenUtil.getUUID_32());
+
+            base_equipmentinfoMapper.insert(base_equipmentinfo);
+            BaseEcCache.delBaseEcCache();
+        }else{
+            base_equipmentinfo = equipmentinfoList.get(0);
+        }
+
+        if(StringUtils.isBlank(base_equipmentinfo.getSsid())){
+            result.setMessage("设备表获取失败。。");
+            return;
+        }
 
         //拼接直播地址，直播预览地址
         String urlModeLlivingurl = PropertiesListenerConfig.getProperty("urlModel.livingurl");//value

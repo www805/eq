@@ -1,5 +1,6 @@
 package com.avst.equipmentcontrol.web.service;
 
+import com.avst.equipmentcontrol.common.cache.BaseEcCache;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.Polygraph_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.param.PolygraphInfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.mapper.Polygraph_etinfoMapper;
@@ -189,13 +190,31 @@ public class TtsEtinfoService extends BaseService {
             return;
         }
 
-        Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
-        base_equipmentinfo.setEtnum(paramParam.getEtnum());
-        base_equipmentinfo.setEtip(paramParam.getEtip());
-        base_equipmentinfo.setEtypessid(paramParam.getEtypessid());
-        base_equipmentinfo.setSsid(OpenUtil.getUUID_32());
+        //如果存在就不添加了
+        EntityWrapper<Base_equipmentinfo> ew = new EntityWrapper<>();
+        ew.eq("etnum", paramParam.getEtnum());
+        ew.eq("etip", paramParam.getEtip());
+        ew.eq("etypessid", paramParam.getEtypessid());
 
-        base_equipmentinfoMapper.insert(base_equipmentinfo);
+        Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
+
+        List<Base_equipmentinfo> equipmentinfoList = base_equipmentinfoMapper.selectList(ew);
+        if (equipmentinfoList.size() == 0) {
+            base_equipmentinfo.setEtnum(paramParam.getEtnum());
+            base_equipmentinfo.setEtip(paramParam.getEtip());
+            base_equipmentinfo.setEtypessid(paramParam.getEtypessid());
+            base_equipmentinfo.setSsid(OpenUtil.getUUID_32());
+
+            base_equipmentinfoMapper.insert(base_equipmentinfo);
+            BaseEcCache.delBaseEcCache();
+        }else{
+            base_equipmentinfo = equipmentinfoList.get(0);
+        }
+
+        if(StringUtils.isBlank(base_equipmentinfo.getSsid())){
+            result.setMessage("设备表获取失败。。");
+            return;
+        }
 
         Tts_etinfo tts_etinfo = new Tts_etinfo();
         tts_etinfo.setLanguage(paramParam.getLanguage());

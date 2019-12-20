@@ -157,8 +157,8 @@ function callStorageById(data){
             $("input[name='sstype']").val(storage.sstype);
             $("input[name='datasavebasepath']").val(storage.datasavebasepath);
             $("input[name='etypessid']").val(storage.etypessid);
-            $("input[name='etnum']").val(storage.etnum);
-            $("input[name='etip']").val(storage.etip);
+            $("input[name='etnum']").val(storage.etnum).attr("disabled",true);
+            $("input[name='etip']").val(storage.etip).attr("disabled",true);
             $("#explain").text(storage.explain);
 
         }

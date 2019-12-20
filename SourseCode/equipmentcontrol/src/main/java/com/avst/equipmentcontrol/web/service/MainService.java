@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.web.service;
 
 import com.avst.equipmentcontrol.common.cache.AppCache;
+import com.avst.equipmentcontrol.common.cache.BaseEcCache;
 import com.avst.equipmentcontrol.common.cache.param.AppCacheParam;
 import com.avst.equipmentcontrol.common.conf.Constant;
 import com.avst.equipmentcontrol.common.conf.NetTool;
@@ -18,6 +19,7 @@ import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
+import com.avst.equipmentcontrol.web.req.GetBaseEcParam;
 import com.avst.equipmentcontrol.web.req.LoginParam;
 import com.avst.equipmentcontrol.web.vo.EcCountVO;
 import com.avst.equipmentcontrol.web.vo.GetLoginCookieVO;
@@ -187,5 +189,23 @@ public class MainService extends BaseService {
         result.setData(vo);
         result.changeToTrue();
         return;
+    }
+
+    public void getBaseEc(RResult result, GetBaseEcParam param) {
+
+//        EntityWrapper<Base_equipmentinfo> ew = new EntityWrapper<>();
+
+//        System.out.println(param.getEtnum());
+
+//        if(StringUtils.isNotBlank(param.getEtnum())){
+//            ew.like("etnum", param.getEtnum());
+//        }
+
+//        List<Base_equipmentinfo> equipmentinfos = base_equipmentinfoMapper.selectList(ew);
+
+        List<Base_equipmentinfo> equipmentinfos = BaseEcCache.getBaseEcCache(param.getEtnum());//从缓存里读基础设备信息
+
+        result.changeToTrue(equipmentinfos);
+
     }
 }
