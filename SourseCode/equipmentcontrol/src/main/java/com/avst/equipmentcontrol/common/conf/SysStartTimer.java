@@ -67,7 +67,7 @@ public class SysStartTimer implements ApplicationRunner {
 
     public void startFTPServer(){
 
-        int port=21;
+        int port=6001;
         String ftpport=PropertiesListenerConfig.getProperty("ftpport");
         if(StringUtils.isNotEmpty(ftpport)){
             try {

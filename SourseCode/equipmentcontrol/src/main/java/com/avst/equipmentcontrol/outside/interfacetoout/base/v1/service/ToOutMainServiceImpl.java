@@ -207,9 +207,10 @@ public class ToOutMainServiceImpl extends BaseService implements ToOutMainServic
             //修改所有语音识别识别到推给trm的接口
             String trmip = getServerIpParam.getTrmip();
             List<Asr_etinfo> asr_etinfos = asr_etinfoMapper.selectList(null);
+            String port=PropertiesListenerConfig.getProperty("server.port");
             for (Asr_etinfo asr_etinfo : asr_etinfos) {
                 String backtxtinterface = asr_etinfo.getBacktxtinterface();
-                int indexOf = backtxtinterface.indexOf(":8081/");
+                int indexOf = backtxtinterface.indexOf(":"+port+"/");
                 String endPath = backtxtinterface.substring(indexOf);
                 asr_etinfo.setBacktxtinterface("http://" + trmip + endPath);
                 asr_etinfo.updateById();

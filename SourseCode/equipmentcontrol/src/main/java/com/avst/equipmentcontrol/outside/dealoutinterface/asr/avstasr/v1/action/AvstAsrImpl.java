@@ -81,7 +81,7 @@ public class AvstAsrImpl {
 
     public static void main(String[] args) {
 
-        AVSTAsrParam_reg reg=new AVSTAsrParam_reg("192.168.17.175","8000","http://192.168.17.154:80/1.wav","http://192.168.17.175:8081/toasr/v1/toAsrServerForTxtBack");
+        AVSTAsrParam_reg reg=new AVSTAsrParam_reg("192.168.17.175","8000","http://192.168.17.154:80/1.wav","http://192.168.17.175:6061/toasr/v1/toAsrServerForTxtBack");
 
         RRParam<String> rrParam=AvstAsrImpl.reg(reg);
 
