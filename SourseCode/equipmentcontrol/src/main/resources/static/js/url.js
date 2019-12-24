@@ -72,6 +72,7 @@ function getUrl_manageZk() {
 		delFileSpaceByPath:getPath()+"/Storage/delFileSpaceByPath",
 		getFileSpaceAll:getPath()+"/Storage/getFileSpaceAll",
 		delFileSpaceAll:getPath()+"/Storage/delFileSpaceAll",
+		updateDefaultsavebool:getPath()+"/Storage/updateDefaultsavebool",
 
 		getTtsetinfoList:getPath()+"/ttsetinfo/getTtsetinfoList",
 		getTtsetinfoById:getPath()+"/ttsetinfo/getTtsetinfoById",

@@ -34,21 +34,21 @@
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>设备名称</label>
             <div class="layui-input-block">
+                <input type="text" name="etnum" id="etnum" required  lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>设备IP</label>
+            <div class="layui-input-inline">
                 <div class="layui-form-select">
                     <div class="layui-select-title">
-                        <input type="text" name="etnum"  placeholder="请输入设备名称" autocomplete="off" class="layui-input" id="etnum" oninput="getEtnumList()"  onblur="select_Etnumblur();" onfocus="getEtnumList()">
+                        <input type="text" name="etip"  placeholder="请输入设备IP" lay-verify="required" autocomplete="off" class="layui-input" id="etip" oninput="getEtipList()"  onblur="select_Etipblur();" onfocus="getEtipList()" onkeyup="this.value=value.replace(/[^\d|.]/g,'');if(this.value=='')(this.value='');">
                     </div>
-                    <dl class="layui-anim layui-anim-upbit"  id="etnum_text"   >
+                    <dl class="layui-anim layui-anim-upbit"  id="etip_text"   >
 
                     </dl>
                 </div>
-            </div>
-
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label"><span style="color: red;">*</span>设备IP</label>
-            <div class="layui-input-inline" >
-                <input type="text" name="etip" id="etip" required  lay-verify="setip" placeholder="请输入设备IP" autocomplete="off" class="layui-input" onkeyup="if(this.value=='')(this.value='');if(this.value=='localhost')(this.value='localhost');">
             </div>
             <input type="button" style="float: left;" class="layui-btn layui-btn-normal" onclick="setLocahostIp()" value="localhost" id="ecipbutton"/>
 

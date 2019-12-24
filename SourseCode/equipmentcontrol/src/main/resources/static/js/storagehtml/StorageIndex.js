@@ -84,6 +84,12 @@ function AddOrUpdateStorage(version) {
     var port=$("input[name='port']").val();
     var sstype=$("input[name='sstype']").val();
     var datasavebasepath=$("input[name='datasavebasepath']").val();
+    var ssstatic=$("input[name='ssstatic']").val();
+    var xytype=$("input[name='xytype']").val();
+    var ssstate=$("#ssstate").val();
+    var defaultsavebool=$("#defaultsavebool").val();
+    var user=$("input[name='user']").val();
+    var passwd=$("input[name='passwd']").val();
     var etnum=$("input[name='etnum']").val();
     var etip=$("input[name='etip']").val();
     var explain=$("textarea[name='explain']").val();
@@ -106,6 +112,12 @@ function AddOrUpdateStorage(version) {
             sstype: sstype,
             datasavebasepath: datasavebasepath,
             etypessid: etypessid,
+            ssstatic: ssstatic,
+            xytype: xytype,
+            ssstate: parseInt(ssstate),
+            defaultsavebool: parseInt(defaultsavebool),
+            user: user,
+            passwd: passwd,
             etnum: etnum,
             etip: etip,
             explain: explain
@@ -113,6 +125,20 @@ function AddOrUpdateStorage(version) {
     };
 
     ajaxSubmitByJson(url, data, callAddOrUpdate);
+}
+
+function updateDefaultsavebool(ssid, defaultsavebool) {
+
+    var url=getUrl_manageZk().updateDefaultsavebool;
+    var data = {
+        token:INIT_CLIENTKEY,
+        param:{
+            ssid: ssid,
+            defaultsavebool: defaultsavebool
+        }
+    };
+
+    ajaxSubmitByJson(url,data,callAddOrUpdate);
 }
 
 function callAddOrUpdate(data){
@@ -157,10 +183,20 @@ function callStorageById(data){
             $("input[name='sstype']").val(storage.sstype);
             $("input[name='datasavebasepath']").val(storage.datasavebasepath);
             $("input[name='etypessid']").val(storage.etypessid);
-            $("input[name='etnum']").val(storage.etnum).attr("disabled",true);
-            $("input[name='etip']").val(storage.etip).attr("disabled",true);
+            $("input[name='etnum']").val(storage.etnum);
+            $("input[name='etip']").val(storage.etip);
+            $("input[name='user']").val(storage.user);
+            $("input[name='passwd']").val(storage.passwd);
+            $("input[name='ssstatic']").val(storage.ssstatic);
+            $("input[name='xytype']").val(storage.xytype);
+
+            $("#defaultsavebool").find("option[value='" + storage.defaultsavebool + "']").attr("selected", true);
+            $("#ssstate").find("option[value='" + storage.ssstate + "']").attr("selected", true);
+
             $("#explain").text(storage.explain);
 
+            base_etip = storage.etip;
+            base_etnum = storage.etnum;
         }
     }else{
         layer.msg(data.message,{icon: 5});
@@ -227,8 +263,6 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
         , laypage = layui.laypage;
     var table = layui.table;
 
-    form.render();
-
     form.verify({
         setip: function(value, item){ //value：表单的值、item：表单的DOM对象
             if(''==value){
@@ -253,6 +287,15 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
         }
     });
 
+    //设为默认设备
+    form.on('switch(switchDefaultsavebool)', function(data){
+        var shieldbool = 0;
+        if(this.checked){
+            shieldbool = 1;
+        }
+        updateDefaultsavebool(data.value, shieldbool);
+    });
+
     form.on('submit(addOrUpdateStorage_btn)', function (data) {
 
         // var Storage_btn = JSON.stringify(data.field);
@@ -263,6 +306,8 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
         AddOrUpdateStorage();
         return false;
     });
+
+    form.render();
 });
 
 function getQueryString(name) {

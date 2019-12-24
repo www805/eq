@@ -2,6 +2,7 @@ package com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.mapper
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.Polygraph_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.entity.param.PolygraphInfo;
+import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_equipmentinfo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -51,5 +52,15 @@ public interface Polygraph_etinfoMapper extends BaseMapper<Polygraph_etinfo> {
             " INNER JOIN base_equipmentinfo b ON p.equipmentssid = b.ssid" +
             " where 1=1 ${ew.sqlSegment}")
     int getRepetition(@Param("ew")EntityWrapper entityWrapper);
+
+
+    //获取身心监护关联的设备基表
+    @Select("SELECT " +
+            " b.* " +
+            " FROM " +
+            " polygraph_etinfo p " +
+            " INNER JOIN base_equipmentinfo b ON p.equipmentssid = b.ssid" +
+            " where 1=1 ${ew.sqlSegment}")
+    public List<Base_equipmentinfo> getBase_equipmentinfo(@Param("ew")EntityWrapper entityWrapper);
 
 }

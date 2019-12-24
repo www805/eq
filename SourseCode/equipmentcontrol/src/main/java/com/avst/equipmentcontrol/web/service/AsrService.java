@@ -140,6 +140,10 @@ public class AsrService extends BaseService {
             result.setMessage("验证密匙不能为空");
             return;
         }
+        if (StringUtils.isBlank(paramParam.getBacktxtinterface())){
+            result.setMessage("语音识别的返回接口不能为空");
+            return;
+        }
         if (StringUtils.isBlank(paramParam.getEtypessid())){
             result.setMessage("设备类型不能为空");
             return;
@@ -181,6 +185,7 @@ public class AsrService extends BaseService {
         wrapper.eq("a.port", paramParam.getPort());
         wrapper.eq("a.asrtype", paramParam.getAsrtype());
         wrapper.eq("a.asrkey", paramParam.getAsrkey());
+        wrapper.eq("a.backtxtinterface", paramParam.getBacktxtinterface());
         wrapper.eq("b.etnum", paramParam.getEtnum());
         wrapper.eq("b.etip", paramParam.getEtip());
 
@@ -223,6 +228,7 @@ public class AsrService extends BaseService {
         asr_et_ettype.setAsrtype(paramParam.getAsrtype());
         asr_et_ettype.setAsrkey(paramParam.getAsrkey());
         asr_et_ettype.setExplain(paramParam.getExplain());
+        asr_et_ettype.setBacktxtinterface(paramParam.getBacktxtinterface());
         asr_et_ettype.setEquipmentssid(base_equipmentinfo.getSsid());
         asr_et_ettype.setSsid(OpenUtil.getUUID_32());
 
@@ -276,6 +282,10 @@ public class AsrService extends BaseService {
             result.setMessage("验证密匙不能为空");
             return;
         }
+        if (StringUtils.isBlank(paramParam.getBacktxtinterface())){
+            result.setMessage("语音识别的返回接口不能为空");
+            return;
+        }
         if (StringUtils.isBlank(paramParam.getEtypessid())){
             result.setMessage("设备类型不能为空");
             return;
@@ -317,6 +327,7 @@ public class AsrService extends BaseService {
         wrapper.eq("a.port", paramParam.getPort());
         wrapper.eq("a.asrtype", paramParam.getAsrtype());
         wrapper.eq("a.asrkey", paramParam.getAsrkey());
+        wrapper.eq("a.backtxtinterface", paramParam.getBacktxtinterface());
         wrapper.eq("b.etnum", paramParam.getEtnum());
         wrapper.eq("b.etip", paramParam.getEtip());
         wrapper.ne("a.ssid", paramParam.getSsid());
@@ -353,6 +364,7 @@ public class AsrService extends BaseService {
         asrEtEttype.setPort(paramParam.getPort());
         asrEtEttype.setAsrtype(paramParam.getAsrtype());
         asrEtEttype.setAsrkey(paramParam.getAsrkey());
+        asrEtEttype.setBacktxtinterface(paramParam.getBacktxtinterface());
         asrEtEttype.setExplain(paramParam.getExplain());
         asrEtEttype.setEquipmentssid(equipmentinfo.getSsid());
 

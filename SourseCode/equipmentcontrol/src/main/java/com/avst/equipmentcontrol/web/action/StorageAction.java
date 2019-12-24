@@ -6,6 +6,7 @@ import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.web.req.storage.FileSpaceByssidParam;
 import com.avst.equipmentcontrol.web.req.storage.StorageParam;
+import com.avst.equipmentcontrol.web.req.storage.UpdateDefaultsaveboolParam;
 import com.avst.equipmentcontrol.web.req.storage.UpdateStorageParam;
 import com.avst.equipmentcontrol.web.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +101,15 @@ public class StorageAction extends BaseAction {
     public RResult delFileSpaceByPath(@RequestBody ReqParam<FileSpaceByssidParam> param){
         RResult result=this.createNewResultOfFail();
         storageService.delFileSpaceByPath(result,param);
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    //设置为默认
+    @RequestMapping(value = "/updateDefaultsavebool")
+    public RResult updateDefaultsavebool(@RequestBody ReqParam<UpdateDefaultsaveboolParam> param){
+        RResult result=this.createNewResultOfFail();
+        storageService.updateDefaultsavebool(result,param);
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }

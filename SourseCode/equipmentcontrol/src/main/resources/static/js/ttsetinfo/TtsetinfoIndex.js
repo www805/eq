@@ -87,6 +87,9 @@ function AddOrUpdateTtsetinfo(version) {
     var port=$("input[name='port']").val();
     var ttstype=$("input[name='ttstype']").val();
     var ttskeys=$("input[name='ttskeys']").val();
+    var ttsstatic=$("input[name='ttsstatic']").val();
+    var ttsbasepath=$("input[name='ttsbasepath']").val();
+    var ttsurl=$("input[name='ttsurl']").val();
     var etnum=$("input[name='etnum']").val();
     var etip=$("input[name='etip']").val();
     var explain=$("textarea[name='explain']").val();
@@ -112,6 +115,9 @@ function AddOrUpdateTtsetinfo(version) {
             language: language,
             maxnum: maxnum,
             port: port,
+            ttsstatic: ttsstatic,
+            ttsbasepath: ttsbasepath,
+            ttsurl: ttsurl,
             ttstype: ttstype,
             ttskeys: ttskeys,
             etnum: etnum,
@@ -168,10 +174,15 @@ function callTtsetinfoById(data){
             $("input[name='port']").val(ttsetinfo.port==null?"":ttsetinfo.port);
             $("input[name='ttstype']").val(ttsetinfo.ttstype==null?"":ttsetinfo.ttstype);
             $("input[name='ttskeys']").val(ttsetinfo.ttskeys==null?"":ttsetinfo.ttskeys);
-            $("input[name='etnum']").val(ttsetinfo.etnum==null?"":ttsetinfo.etnum).attr("disabled",true);
-            $("input[name='etip']").val(ttsetinfo.etip==null?"":ttsetinfo.etip).attr("disabled",true);
+            $("input[name='etnum']").val(ttsetinfo.etnum==null?"":ttsetinfo.etnum);
+            $("input[name='etip']").val(ttsetinfo.etip==null?"":ttsetinfo.etip);
+            $("input[name='ttsstatic']").val(ttsetinfo.ttsstatic==null?"":ttsetinfo.ttsstatic);
+            $("input[name='ttsbasepath']").val(ttsetinfo.ttsbasepath==null?"":ttsetinfo.ttsbasepath);
+            $("input[name='ttsurl']").val(ttsetinfo.ttsurl==null?"":ttsetinfo.ttsurl);
             $("#explain").text(ttsetinfo.explain==null?"":ttsetinfo.explain);
 
+            base_etip = ttsetinfo.etip;
+            base_etnum = ttsetinfo.etnum;
         }
     }else{
         layer.msg(data.message,{icon: 2});

@@ -203,7 +203,7 @@ public class MainService extends BaseService {
 
 //        List<Base_equipmentinfo> equipmentinfos = base_equipmentinfoMapper.selectList(ew);
 
-        List<Base_equipmentinfo> equipmentinfos = BaseEcCache.getBaseEcCache(param.getEtnum());//从缓存里读基础设备信息
+        List<Base_equipmentinfo> equipmentinfos = BaseEcCache.getBaseEcCache(param.getEtip());//从缓存里读基础设备信息
 
         result.changeToTrue(equipmentinfos);
 

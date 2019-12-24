@@ -20,6 +20,36 @@ public class UpdateStorageParam {
     private String etypessid;
 
     /**
+     * 存储服务的协议类型
+     */
+    private String xytype;
+
+    /**
+     * 默认用户密码
+     */
+    private String passwd;
+    /**
+     * 默认用户名
+     */
+    private String user;
+
+    /**
+     * 存储服务器的状态
+     */
+    private Integer ssstate;
+
+    /**
+     * 割切存储路径
+     */
+    private String ssstatic;
+
+
+    /**
+     * 是否是默认的存储设备
+     */
+    private Integer defaultsavebool;
+
+    /**
      * 设备名称
      */
     private String etnum;
@@ -96,5 +126,53 @@ public class UpdateStorageParam {
 
     public void setExplain(String explain) {
         this.explain = explain;
+    }
+
+    public String getXytype() {
+        return xytype;
+    }
+
+    public void setXytype(String xytype) {
+        this.xytype = xytype;
+    }
+
+    public String getPasswd() {
+        return passwd;
+    }
+
+    public void setPasswd(String passwd) {
+        this.passwd = passwd;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public Integer getSsstate() {
+        return ssstate;
+    }
+
+    public void setSsstate(Integer ssstate) {
+        this.ssstate = ssstate;
+    }
+
+    public String getSsstatic() {
+        return ssstatic;
+    }
+
+    public void setSsstatic(String ssstatic) {
+        this.ssstatic = ssstatic;
+    }
+
+    public Integer getDefaultsavebool() {
+        return defaultsavebool;
+    }
+
+    public void setDefaultsavebool(Integer defaultsavebool) {
+        this.defaultsavebool = defaultsavebool;
     }
 }

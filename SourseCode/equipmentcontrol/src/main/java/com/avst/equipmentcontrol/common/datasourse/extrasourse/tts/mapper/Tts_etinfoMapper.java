@@ -2,6 +2,7 @@ package com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.mapper;
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.entity.Tts_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.entity.param.TTS_et_ettype;
+import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_equipmentinfo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -60,4 +61,14 @@ public interface Tts_etinfoMapper extends BaseMapper<Tts_etinfo> {
             " INNER JOIN base_equipmentinfo b ON t.equipmentssid = b.ssid" +
             " where 1=1 ${ew.sqlSegment}")
     int getRepetition(@Param("ew")EntityWrapper entityWrapper);
+
+    //获取语音服务器关联的设备基表
+    @Select("SELECT " +
+            " b.* " +
+            " FROM " +
+            " tts_etinfo t " +
+            " INNER JOIN base_equipmentinfo b ON t.equipmentssid = b.ssid" +
+            " where 1=1 ${ew.sqlSegment}")
+    public List<Base_equipmentinfo> getBase_equipmentinfo(@Param("ew")EntityWrapper entityWrapper);
+
 }

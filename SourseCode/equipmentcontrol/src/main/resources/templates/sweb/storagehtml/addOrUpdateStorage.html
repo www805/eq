@@ -49,25 +49,74 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>割切存储路径</label>
+            <div class="layui-input-block">
+                <input type="text" name="ssstatic" id="ssstatic" required lay-verify="required" placeholder="请输入割切存储路径" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>默认用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="user" id="user" required lay-verify="required" placeholder="请输入默认用户名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>默认用户密码</label>
+            <div class="layui-input-block">
+                <input type="text" name="passwd" id="passwd" required lay-verify="required" placeholder="请输入默认用户密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>储存服务器类型</label>
+            <div class="layui-input-block">
+                <input type="text" name="xytype" id="xytype" required lay-verify="required" placeholder="请输入储存服务器类型" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>储存服务器状态</label>
+            <div class="layui-input-block">
+                <select name="ssstate" id="ssstate" lay-filter="ptshowtime">
+                    <option value="1">可以使用</option>
+                    <option value="0" >暂停使用</option>
+                    <option value="-1" >已删除</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>是否是默认的存储设备</label>
+            <div class="layui-input-block">
+                <select name="defaultsavebool" id="defaultsavebool" lay-filter="ptshowtime">
+                    <option value="1">是</option>
+                    <option value="0" >不是</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>设备名称</label>
             <div class="layui-input-block">
-                <div class="layui-form-select">
-                    <div class="layui-select-title">
-                        <input type="text" name="etnum"  placeholder="请输入设备名称" autocomplete="off" class="layui-input" id="etnum" oninput="getEtnumList()"  onblur="select_Etnumblur();" onfocus="getEtnumList()">
-                    </div>
-                    <dl class="layui-anim layui-anim-upbit"  id="etnum_text"   >
-
-                    </dl>
-                </div>
+                <input type="text" name="etnum" id="etnum" required  lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input" >
             </div>
-
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>设备IP</label>
             <div class="layui-input-block">
-                <input type="text" name="etip" id="etip" required  lay-verify="setip" placeholder="请输入设备IP" autocomplete="off" class="layui-input" onkeyup="this.value=value.replace(/[^\d|.]/g,'');if(this.value=='')(this.value='');">
+                <div class="layui-form-select">
+                    <div class="layui-select-title">
+                        <input type="text" name="etip"  placeholder="请输入设备IP" lay-verify="required" autocomplete="off" class="layui-input" id="etip" oninput="getEtipList()"  onblur="select_Etipblur();" onfocus="getEtipList()" onkeyup="this.value=value.replace(/[^\d|.]/g,'');if(this.value=='')(this.value='');">
+                    </div>
+                    <dl class="layui-anim layui-anim-upbit"  id="etip_text"   >
+
+                    </dl>
+                </div>
             </div>
+
         </div>
 
 

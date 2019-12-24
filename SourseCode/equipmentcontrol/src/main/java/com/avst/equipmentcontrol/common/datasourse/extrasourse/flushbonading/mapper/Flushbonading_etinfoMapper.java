@@ -2,6 +2,7 @@ package com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.ma
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_etinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.param.Flushbonadinginfo;
+import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_equipmentinfo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -55,5 +56,12 @@ public interface Flushbonading_etinfoMapper extends BaseMapper<Flushbonading_eti
     int getRepetition(@Param("ew")EntityWrapper entityWrapper);
 
 
-
+    //获取审讯设备关联的设备基表
+    @Select("SELECT " +
+            " b.* " +
+            " FROM " +
+            " flushbonading_etinfo f " +
+            " INNER JOIN base_equipmentinfo b ON f.equipmentssid = b.ssid" +
+            " where 1=1 ${ew.sqlSegment}")
+    public List<Base_equipmentinfo> getBase_equipmentinfo(@Param("ew")EntityWrapper entityWrapper);
 }

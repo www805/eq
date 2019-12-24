@@ -160,10 +160,11 @@ function callPolygraphById(data){
             $("input[name='port']").val(polygraph.port);
             $("input[name='polygraphtype']").val(polygraph.polygraphtype);
             $("input[name='polygraphkey']").val(polygraph.polygraphkey);
-            $("input[name='etnum']").val(polygraph.etnum).attr("disabled",true);
-            $("input[name='etip']").val(polygraph.etip).attr("disabled",true);
+            $("input[name='etnum']").val(polygraph.etnum);
+            $("input[name='etip']").val(polygraph.etip);
             $("#explain").text(polygraph.explain);
-
+            base_etip = polygraph.etip;
+            base_etnum = polygraph.etnum;
         }
     }else{
         layer.msg(data.message,{icon: 5});

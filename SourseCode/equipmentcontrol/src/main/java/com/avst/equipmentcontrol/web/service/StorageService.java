@@ -17,6 +17,7 @@ import com.avst.equipmentcontrol.common.util.filespace.DriverSpaceParam;
 import com.avst.equipmentcontrol.common.util.filespace.FileSpaceUtil;
 import com.avst.equipmentcontrol.web.req.storage.FileSpaceByssidParam;
 import com.avst.equipmentcontrol.web.req.storage.StorageParam;
+import com.avst.equipmentcontrol.web.req.storage.UpdateDefaultsaveboolParam;
 import com.avst.equipmentcontrol.web.req.storage.UpdateStorageParam;
 import com.avst.equipmentcontrol.web.vo.storage.GetFileSpaceByssidVO;
 import com.avst.equipmentcontrol.web.vo.storage.StorageVO;
@@ -133,6 +134,32 @@ public class StorageService extends BaseService {
             result.setMessage("存储本地文件夹base路径不能为空");
             return;
         }
+
+        if (StringUtils.isBlank(paramParam.getXytype())){
+            result.setMessage("存储服务的协议类型不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getUser())){
+            result.setMessage("默认用户名不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getPasswd())){
+            result.setMessage("默认用户密码不能为空");
+            return;
+        }
+        if (null == paramParam.getSsstate()) {
+            result.setMessage("存储服务器的状态不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getSsstatic())){
+            result.setMessage("割切存储路径不能为空");
+            return;
+        }
+        if (null == paramParam.getDefaultsavebool()){
+            result.setMessage("是否是默认的存储设备不能为空");
+            return;
+        }
+
         if (StringUtils.isBlank(paramParam.getEtypessid())){
             result.setMessage("设备类型不能为空");
             return;
@@ -210,6 +237,12 @@ public class StorageService extends BaseService {
         wrapper.eq("s.port", paramParam.getPort());
         wrapper.eq("s.sstype", paramParam.getSstype());
         wrapper.eq("s.datasavebasepath", paramParam.getDatasavebasepath());
+        wrapper.eq("s.xytype", paramParam.getEtnum());
+        wrapper.eq("s.user", paramParam.getEtnum());
+        wrapper.eq("s.passwd", paramParam.getEtnum());
+        wrapper.eq("s.ssstate", paramParam.getEtnum());
+        wrapper.eq("s.ssstatic", paramParam.getEtnum());
+        wrapper.eq("s.defaultsavebool", paramParam.getEtnum());
         wrapper.eq("b.etnum", paramParam.getEtnum());
         wrapper.eq("b.etip", paramParam.getEtip());
 
@@ -220,15 +253,18 @@ public class StorageService extends BaseService {
         }
 
         //如果存在就不添加了
-        EntityWrapper<Base_equipmentinfo> ew = new EntityWrapper<>();
-        ew.eq("etnum", paramParam.getEtnum());
-        ew.eq("etip", paramParam.getEtip());
-        ew.eq("etypessid", paramParam.getEtypessid());
+        EntityWrapper<Base_equipmentinfo> ewEtnum = new EntityWrapper<>();
+        EntityWrapper<Base_equipmentinfo> ewEtip = new EntityWrapper<>();
+        ewEtnum.eq("etnum", paramParam.getEtnum());
+//        ewEtnum.eq("etypessid", paramParam.getEtypessid());
+        ewEtip.eq("etip", paramParam.getEtip());
+//        ewEtip.eq("etypessid", paramParam.getEtypessid());
 
         Base_equipmentinfo base_equipmentinfo = new Base_equipmentinfo();
 
-        List<Base_equipmentinfo> equipmentinfoList = base_equipmentinfoMapper.selectList(ew);
-        if (equipmentinfoList.size() == 0) {
+        List<Base_equipmentinfo> equipmentinfoListEtnum = base_equipmentinfoMapper.selectList(ewEtnum);
+        List<Base_equipmentinfo> equipmentinfoListEtip = base_equipmentinfoMapper.selectList(ewEtip);
+        if (equipmentinfoListEtnum.size() == 0 && equipmentinfoListEtip.size() == 0) {
             base_equipmentinfo.setEtnum(paramParam.getEtnum());
             base_equipmentinfo.setEtip(paramParam.getEtip());
             base_equipmentinfo.setEtypessid(paramParam.getEtypessid());
@@ -236,8 +272,14 @@ public class StorageService extends BaseService {
 
             base_equipmentinfoMapper.insert(base_equipmentinfo);
             BaseEcCache.delBaseEcCache();
-        }else{
-            base_equipmentinfo = equipmentinfoList.get(0);
+        } else {
+            if (equipmentinfoListEtnum.size() > 0) {
+                result.setMessage("设备名称已经存在，请修改");
+                return;
+            }else if(equipmentinfoListEtip.size() > 0){
+                result.setMessage("设备ip已经存在，请修改");
+                return;
+            }
         }
 
         if(StringUtils.isBlank(base_equipmentinfo.getSsid())){
@@ -245,12 +287,23 @@ public class StorageService extends BaseService {
             return;
         }
 
+        //如果设置为默认就把其他的设为不默认
+        setStorageNo(paramParam.getDefaultsavebool());
+
         Ss_saveinfo ss_saveinfo = new Ss_saveinfo();
         ss_saveinfo.setTotalcapacity(totalSpaceNum);
         ss_saveinfo.setUsedcapacity(usedcapacityNum);
         ss_saveinfo.setPort(paramParam.getPort());
         ss_saveinfo.setSstype(paramParam.getSstype());
         ss_saveinfo.setDatasavebasepath(paramParam.getDatasavebasepath());
+
+        ss_saveinfo.setXytype(paramParam.getXytype());
+        ss_saveinfo.setUser(paramParam.getUser());
+        ss_saveinfo.setPasswd(paramParam.getPasswd());
+        ss_saveinfo.setSsstate(paramParam.getSsstate());
+        ss_saveinfo.setSsstatic(paramParam.getSsstatic());
+        ss_saveinfo.setDefaultsavebool(paramParam.getDefaultsavebool());
+
         ss_saveinfo.setExplain(paramParam.getExplain());
         ss_saveinfo.setMtssid(base_equipmentinfo.getSsid());
         ss_saveinfo.setSsid(OpenUtil.getUUID_32());
@@ -297,6 +350,32 @@ public class StorageService extends BaseService {
             result.setMessage("存储本地文件夹base路径不能为空");
             return;
         }
+
+        if (StringUtils.isBlank(paramParam.getXytype())){
+            result.setMessage("存储服务的协议类型不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getUser())){
+            result.setMessage("默认用户名不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getPasswd())){
+            result.setMessage("默认用户密码不能为空");
+            return;
+        }
+        if (null == paramParam.getSsstate()) {
+            result.setMessage("存储服务器的状态不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getSsstatic())){
+            result.setMessage("割切存储路径不能为空");
+            return;
+        }
+        if (null == paramParam.getDefaultsavebool()){
+            result.setMessage("是否是默认的存储设备不能为空");
+            return;
+        }
+
         if (StringUtils.isBlank(paramParam.getEtypessid())){
             result.setMessage("设备类型不能为空");
             return;
@@ -378,6 +457,12 @@ public class StorageService extends BaseService {
         wrapper.eq("s.port", paramParam.getPort());
         wrapper.eq("s.sstype", paramParam.getSstype());
         wrapper.eq("s.datasavebasepath", paramParam.getDatasavebasepath().trim());
+        wrapper.eq("s.xytype", paramParam.getEtnum());
+        wrapper.eq("s.user", paramParam.getEtnum());
+        wrapper.eq("s.passwd", paramParam.getEtnum());
+        wrapper.eq("s.ssstate", paramParam.getEtnum());
+        wrapper.eq("s.ssstatic", paramParam.getEtnum());
+        wrapper.eq("s.defaultsavebool", paramParam.getEtnum());
         wrapper.eq("b.etnum", paramParam.getEtnum());
         wrapper.eq("b.etip", paramParam.getEtip());
         wrapper.ne("s.ssid", paramParam.getSsid());
@@ -405,6 +490,9 @@ public class StorageService extends BaseService {
 
         base_equipmentinfoMapper.update(equipmentinfo, ew2);
 
+        //如果设置为默认就把其他的设为不默认
+        setStorageNo(paramParam.getDefaultsavebool());
+
         EntityWrapper ew = new EntityWrapper();
         ew.eq("ssid", paramParam.getSsid());
 
@@ -414,6 +502,14 @@ public class StorageService extends BaseService {
         saveinfo.setPort(paramParam.getPort());
         saveinfo.setSstype(paramParam.getSstype());
         saveinfo.setDatasavebasepath(paramParam.getDatasavebasepath().trim());
+
+        saveinfo.setXytype(paramParam.getXytype());
+        saveinfo.setUser(paramParam.getUser());
+        saveinfo.setPasswd(paramParam.getPasswd());
+        saveinfo.setSsstate(paramParam.getSsstate());
+        saveinfo.setSsstatic(paramParam.getSsstatic());
+        saveinfo.setDefaultsavebool(paramParam.getDefaultsavebool());
+
         saveinfo.setExplain(paramParam.getExplain());
         saveinfo.setMtssid(equipmentinfo.getSsid());
 
@@ -570,5 +666,42 @@ public class StorageService extends BaseService {
 
         result.changeToTrue(fileSpaceByssidVO);
 
+    }
+
+
+    public void updateDefaultsavebool(RResult result, ReqParam<UpdateDefaultsaveboolParam> param) {
+
+        UpdateDefaultsaveboolParam paramParam = param.getParam();
+
+        if (StringUtils.isBlank(paramParam.getSsid())) {
+            result.setMessage("会议模板的ssid不能为空");
+            return;
+        }
+        if (null == paramParam.getDefaultsavebool()) {
+            result.setMessage("会议模板是否默认的状态不能为空");
+            return;
+        }
+
+        setStorageNo(1);
+
+        EntityWrapper ew = new EntityWrapper();
+        ew.eq("ssid", paramParam.getSsid());
+
+        Ss_saveinfo ss_saveinfo = new Ss_saveinfo();
+        ss_saveinfo.setDefaultsavebool(paramParam.getDefaultsavebool());
+
+        Integer update = ss_saveinfoMapper.update(ss_saveinfo, ew);
+
+        result.setData(update);
+        result.changeToTrue();
+    }
+
+    //把所有会议模板变成不是默认
+    private void setStorageNo(Integer defaultsavebool){
+        if (null != defaultsavebool && 1 == defaultsavebool) {
+            Ss_saveinfo ss_saveinfo = new Ss_saveinfo();
+            ss_saveinfo.setDefaultsavebool(0);
+            ss_saveinfoMapper.update(ss_saveinfo, null);
+        }
     }
 }

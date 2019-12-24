@@ -152,6 +152,20 @@ public class TtsEtinfoService extends BaseService {
             result.setMessage("设备名称不能为空");
             return;
         }
+
+        if (StringUtils.isBlank(paramParam.getTtsstatic())){
+            result.setMessage("割切存储路径不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getTtsbasepath())){
+            result.setMessage("tts音频存储路径不能为空");
+            return;
+        }
+        if (StringUtils.isBlank(paramParam.getTtsurl())){
+            result.setMessage("tts请求地址不能为空");
+            return;
+        }
+
         if(Pattern.matches(pattern, paramParam.getTtstype())){
             result.setMessage("tts服务类型不能有中文");
             return;
@@ -181,6 +195,9 @@ public class TtsEtinfoService extends BaseService {
         wrapper.eq("t.port", paramParam.getPort());
         wrapper.eq("t.ttstype", paramParam.getTtstype());
         wrapper.eq("t.ttskeys", paramParam.getTtskeys());
+        wrapper.eq("t.ttsstatic", paramParam.getTtsstatic());
+        wrapper.eq("t.ttsbasepath", paramParam.getTtsbasepath());
+        wrapper.eq("t.ttsurl", paramParam.getTtsurl());
         wrapper.eq("b.etnum", paramParam.getEtnum());
         wrapper.eq("b.etip", paramParam.getEtip());
 
@@ -222,6 +239,9 @@ public class TtsEtinfoService extends BaseService {
         tts_etinfo.setPort(paramParam.getPort());
         tts_etinfo.setTtskeys(paramParam.getTtskeys());
         tts_etinfo.setTtstype(paramParam.getTtstype());
+        tts_etinfo.setTtsstatic(paramParam.getTtsstatic());
+        tts_etinfo.setTtsbasepath(paramParam.getTtsbasepath());
+        tts_etinfo.setTtsurl(paramParam.getTtsurl());
         tts_etinfo.setExplain(paramParam.getExplain());
         tts_etinfo.setEquipmentssid(base_equipmentinfo.getSsid());
         tts_etinfo.setSsid(OpenUtil.getUUID_32());

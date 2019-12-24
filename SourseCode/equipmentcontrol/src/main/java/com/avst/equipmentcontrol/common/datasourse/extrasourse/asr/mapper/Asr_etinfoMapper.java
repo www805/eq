@@ -2,6 +2,7 @@ package com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper;
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_et_ettype;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_etinfo;
+import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_equipmentinfo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -55,5 +56,14 @@ public interface Asr_etinfoMapper extends BaseMapper<Asr_etinfo> {
             " where 1=1 ${ew.sqlSegment}")
     int getRepetition(@Param("ew")EntityWrapper entityWrapper);
 
+
+    //获取语音服务器关联的设备基表
+    @Select("SELECT " +
+            " b.* " +
+            " FROM " +
+            " asr_etinfo a " +
+            " INNER JOIN base_equipmentinfo b ON a.equipmentssid = b.ssid" +
+            " where 1=1 ${ew.sqlSegment}")
+    public List<Base_equipmentinfo> getBase_equipmentinfo(@Param("ew")EntityWrapper entityWrapper);
 
 }

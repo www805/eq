@@ -2,13 +2,13 @@ package com.avst.equipmentcontrol.web.req;
 
 public class GetBaseEcParam {
 
-    private String etnum;
+    private String etip;
 
-    public String getEtnum() {
-        return etnum;
+    public String getEtip() {
+        return etip;
     }
 
-    public void setEtnum(String etnum) {
-        this.etnum = etnum;
+    public void setEtip(String etip) {
+        this.etip = etip;
     }
 }

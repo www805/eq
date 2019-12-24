@@ -2,6 +2,7 @@ var etypessid;
 var ssid;
 var Asr_btnData;
 
+
 function getAsrList_init(currPage,pageSize) {
     // var url=getActionURL(getactionid_manage().templateTypeList_getTemplateTypes);
     var url = getUrl_manageZk().getAsrList;
@@ -87,6 +88,7 @@ function AddOrUpdateAsr(version) {
     var language=$("input[name='language']").val();
     var maxnum=$("input[name='maxnum']").val();
     var port=$("input[name='port']").val();
+    var backtxtinterface=$("input[name='backtxtinterface']").val();
     var asrtype=$("input[name='asrtype']").val();
     var asrkey=$("input[name='asrkey']").val();
     var etnum=$("input[name='etnum']").val();
@@ -114,6 +116,7 @@ function AddOrUpdateAsr(version) {
             language: language,
             maxnum: maxnum,
             port: port,
+            backtxtinterface: backtxtinterface,
             asrtype: asrtype,
             asrkey: asrkey,
             etypessid: etypessid,
@@ -169,10 +172,13 @@ function callAsrById(data){
             $("input[name='port']").val(asr.port);
             $("input[name='asrtype']").val(asr.asrtype);
             $("input[name='asrkey']").val(asr.asrkey);
-            $("input[name='etnum']").val(asr.etnum).attr("disabled",true);
-            $("input[name='etip']").val(asr.etip).attr("disabled",true);
+            $("input[name='etnum']").val(asr.etnum);
+            $("input[name='etip']").val(asr.etip);
+            $("input[name='backtxtinterface']").val(asr.backtxtinterface);
             $("#explain").text(asr.explain);
 
+            base_etip = asr.etip;
+            base_etnum = asr.etnum;
         }
     }else{
         layer.msg(data.message,{icon: 5});

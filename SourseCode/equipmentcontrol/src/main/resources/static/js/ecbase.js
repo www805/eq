@@ -1,8 +1,10 @@
+var base_etip;
+var base_etnum;
 
 //可以选择重复的设备
-function getEtnumList() {
+function getEtipList() {
     var url=getUrl_manage().getBaseEc;
-    var etnum=$("#etnum").val();
+    var etip=$("#etip").val();
     // if (!isNotEmpty(etnum)) {
     //     $("#etnum_text").html("");
     //     $("#etnum_text").append('<p class="layui-select-none">无匹配项</p>');
@@ -10,42 +12,50 @@ function getEtnumList() {
     //     return;
     // }
     var data={
-        etnum:etnum
+        etip:etip
     };
-    ajaxSubmitByJson(url,data,callgetEtnumList);
+    ajaxSubmitByJson(url,data,callgetEtipList);
 }
 
 function select_etnum(obj) {
-    $("#etnum_text").css("display","none");
+    $("#etip_text").css("display","none");
     var etnum=$(obj).attr("lay-value");
     var etip=$(obj).attr("lay-ip");
     $("#etnum").val(etnum);
     $("#etip").val(etip);
     $(obj).focus();
-    $("#etnum_text").html("");
+    $("#etip_text").html("");
 }
 
-function select_Etnumblur() {
-    $("#etnum_text").css("display","none");
+function select_Etipblur() {
+    $("#etip_text").css("display","none");
 }
 
 
-function callgetEtnumList(data) {
+function callgetEtipList(data) {
     if(null!=data&&data.actioncode=='SUCCESS'){
         if (isNotEmpty(data)){
             var data=data.data;
 
-            $("#etnum_text").html("");
+            if(isNotEmpty(base_etip) && isNotEmpty(base_etnum)){
+                var baseinfo = {
+                    etnum : base_etnum,
+                    etip : base_etip
+                };
+                data.push(baseinfo);
+            }
+
+            $("#etip_text").html("");
             if (isNotEmpty(data)){
                 for (var i = 0; i < data.length; i++) {
                     var userinfo = data[i];
                     // console.log(userinfo);
-                    $("#etnum_text").append("<dd lay-value='" + userinfo.etnum + "' lay-ip='" + userinfo.etip + "' onmousedown='select_etnum(this);'>" + userinfo.etnum + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + userinfo.etip + "</dd>");
+                    $("#etip_text").append("<dd lay-value='" + userinfo.etnum + "' lay-ip='" + userinfo.etip + "' onmousedown='select_etnum(this);'>" + userinfo.etip + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + userinfo.etnum + "</dd>");
                 }
             }else{
-                $("#etnum_text").append('<p class="layui-select-none">无匹配项</p>');
+                $("#etip_text").append('<p class="layui-select-none">无匹配项</p>');
             }
-            $("#etnum_text").css("display","block");
+            $("#etip_text").css("display","block");
         }
     }else{
         parent.layer.msg(data.message,{icon: 5});

@@ -2,6 +2,7 @@ package com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper;
 
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Ss_saveinfo;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.entity.Storage_ettype;
+import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_equipmentinfo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -53,4 +54,17 @@ public interface Ss_saveinfoMapper extends BaseMapper<Ss_saveinfo> {
             " INNER JOIN base_equipmentinfo b ON s.mtssid = b.ssid" +
             " where 1=1 ${ew.sqlSegment}")
     int getRepetition(@Param("ew")EntityWrapper entityWrapper);
+
+
+    //获取存储服务关联的设备基表
+    @Select("SELECT " +
+            " b.* " +
+            " FROM " +
+            " ss_saveinfo s " +
+            " INNER JOIN base_equipmentinfo b ON s.mtssid = b.ssid" +
+            " where 1=1 ${ew.sqlSegment}")
+    public List<Base_equipmentinfo> getBase_equipmentinfo(@Param("ew")EntityWrapper entityWrapper);
+
+
+
 }

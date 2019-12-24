@@ -5,6 +5,12 @@
     <title  th:text="${getStorageIndexModel.title}">智能提讯系统</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
     <link rel="stylesheet" href="/uimaker/css/common.css">
+    <style>
+        .layui-form-onswitch {
+            border-color: #1E9FFF;
+            background-color: #1E9FFF;
+        }
+    </style>
 </head>
 <body>
 <div class="layui-fluid layadmin-message-fluid" style="padding: 0 15px">
@@ -51,6 +57,8 @@
             <col>
             <col>
             <col>
+            <col>
+            <col>
             <col width="200">
         </colgroup>
         <thead>
@@ -63,11 +71,13 @@
             <th>存储本地文件夹base路径</th>
             <th>设备名称</th>
             <th>设备IP</th>
+            <th>存储设备状态</th>
+            <th>是否为默认设备</th>
             <th>服务设备注释</th>
             <th>操作</th>
         </tr>
         </thead>
-        <tbody id="pagelisttemplates_tbody">
+        <tbody id="pagelisttemplates_tbody" class="layui-form">
         {{#  layui.each(pagelist, function(index, value){ }}
         <tr>
             <td>{{index+1}}</td>
@@ -78,6 +88,8 @@
             <td>{{value.datasavebasepath==null?"":value.datasavebasepath}}</td>
             <td>{{value.etnum==null?"":value.etnum}}</td>
             <td>{{value.etip==null?"":value.etip}}</td>
+            <td>{{value.ssstate==null?"":(value.ssstate==1?"可以使用":(value.ssstate==0?"暂停使用":(value.ssstate==-1?"已删除":"未知")))}}</td>
+            <td><input type="checkbox" name="defaultsavebool" lay-skin="switch" lay-filter="switchDefaultsavebool" lay-text="默认|不默认" {{value.defaultsavebool==0?'':'checked'}} value="{{value.ssid}}"/></td>
             <td>{{value.explain==null?"":value.explain}}</td>
             <td style="white-space:nowrap;">
                 <a  class="layui-btn layui-btn-normal layui-btn-sm" onclick="window.location.href='/Storage/getFileSpacePage/?ssid={{value.ssid}}&etypessid='+etypessid;">文件管理</a>

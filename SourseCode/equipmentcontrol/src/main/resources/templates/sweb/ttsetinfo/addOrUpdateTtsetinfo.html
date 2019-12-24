@@ -63,25 +63,46 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>割切存储路径</label>
+            <div class="layui-input-block">
+                <input type="text" name="ttsstatic" id="ttsstatic" required lay-verify="required|zhongwen" placeholder="请输入割切存储路径" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>tts音频存储路径</label>
+            <div class="layui-input-block">
+                <input type="text" name="ttsbasepath" id="ttsbasepath" required lay-verify="required|zhongwen" placeholder="请输入tts音频存储路径" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;">*</span>tts请求地址</label>
+            <div class="layui-input-block">
+                <input type="text" name="ttsurl" id="ttsurl" required lay-verify="required|zhongwen" placeholder="请输入tts请求地址" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>设备名称</label>
             <div class="layui-input-block">
-                <div class="layui-form-select">
-                    <div class="layui-select-title">
-                        <input type="text" name="etnum"  placeholder="请输入设备名称" autocomplete="off" class="layui-input" id="etnum" oninput="getEtnumList()"  onblur="select_Etnumblur();" onfocus="getEtnumList()">
-                    </div>
-                    <dl class="layui-anim layui-anim-upbit"  id="etnum_text"   >
-
-                    </dl>
-                </div>
+                <input type="text" name="etnum" id="etnum" required  lay-verify="required" placeholder="请输入设备名称" autocomplete="off" class="layui-input" >
             </div>
-
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"><span style="color: red;">*</span>设备IP</label>
             <div class="layui-input-block">
-                <input type="text" name="etip" id="etip" required lay-verify="setip|zhongwen" placeholder="请输入设备IP" autocomplete="off" class="layui-input" onkeyup="this.value=value.replace(/[^\d|.]/g,'');if(this.value=='')(this.value='');">
+                <div class="layui-form-select">
+                    <div class="layui-select-title">
+                        <input type="text" name="etip"  placeholder="请输入设备IP" lay-verify="required" autocomplete="off" class="layui-input" id="etip" oninput="getEtipList()"  onblur="select_Etipblur();" onfocus="getEtipList()" onkeyup="this.value=value.replace(/[^\d|.]/g,'');if(this.value=='')(this.value='');">
+                    </div>
+                    <dl class="layui-anim layui-anim-upbit"  id="etip_text"   >
+
+                    </dl>
+                </div>
             </div>
+
         </div>
 
         <div class="layui-form-item layui-form-text">

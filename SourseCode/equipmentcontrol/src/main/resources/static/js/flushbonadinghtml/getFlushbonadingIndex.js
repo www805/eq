@@ -526,8 +526,8 @@ function callFlushbonadingById(data){
             $("input[name='user']").val(flushbonading.user);
             $("input[name='passwd']").val(flushbonading.passwd);
             $("input[name='uploadbasepath']").val(flushbonading.uploadbasepath);
-            $("input[name='etnum']").val(flushbonading.etnum).attr("disabled",true);
-            $("input[name='etip']").val(flushbonading.etip).attr("disabled",true);
+            $("input[name='etnum']").val(flushbonading.etnum);
+            $("input[name='etip']").val(flushbonading.etip);
             $("#diskrecbool").prop("checked", flushbonading.diskrecbool == 1);
             $("#burnbool").prop("checked", flushbonading.burnbool == 1);
             $("#defaulturlbool").prop("checked", flushbonading.defaulturlbool == 1);
@@ -536,7 +536,9 @@ function callFlushbonadingById(data){
             $("input[name='ptjson']").val(flushbonading.ptjson);
             $("#explain").text(flushbonading.explain);
 
-            $("#ecipbutton").hide();
+            // $("#ecipbutton").hide();
+            base_etip = flushbonading.etip;
+            base_etnum = flushbonading.etnum;
 
             if (isNotEmpty(flushbonading.ptjson)) {
                 $("#getptdjconstBtn").val("更新片头列表");
