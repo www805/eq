@@ -146,4 +146,59 @@ public class ToOutFlushbonadingAction extends BaseAction {
         result.setEndtime(DateUtil.getDateAndMinute());
         return result;
     }
+
+    /**
+     * 获取默认设备ftp端口
+     * @param param
+     * @return
+     */
+    @RequestMapping("/getToOutFtpPort")
+    @ResponseBody
+    public RResult getToOutFtpPort(@RequestBody ReqParam<GetToOutMiddleware_FTPParam> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            GetToOutMiddleware_FTPParam pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result = getToOutService(pParam.getFdType()).getToOutFtpPort(pParam, result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    /**
+     * 修改数据库ec的asr_etinfo中的backtxtinterface的端口
+     * @param param
+     * @return
+     */
+    @RequestMapping("/setToOutBacktxtinterface")
+    @ResponseBody
+    public RResult setToOutBacktxtinterface(@RequestBody ReqParam<SetToOutBacktxtinterfaceParam> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            SetToOutBacktxtinterfaceParam pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result = getToOutService(pParam.getFdType()).setToOutBacktxtinterface(pParam, result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+    //数据库，ec的ss_saveinfo中的port
+    //设备集中控制ftp的port也要修改
+    @RequestMapping("/setFtpAndSaveinfoPort")
+    @ResponseBody
+    public RResult setFtpAndSaveinfoPort(@RequestBody ReqParam<SetToOutBacktxtinterfaceParam> param){
+        RResult result=this.createNewResultOfFail();
+        if(null!=param.getParam()){
+            SetToOutBacktxtinterfaceParam pParam=param.getParam();
+            if(null != pParam.getFdType()){
+                result = getToOutService(pParam.getFdType()).setFtpAndSaveinfoPort(pParam, result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
 }

@@ -26,4 +26,13 @@ public interface ToOutFlushbonadingService {
 
     public RResult setToOutMiddleware_FTP(SetToOutMiddleware_FTPParam param, RResult result);
 
+    //获取默认设备ftp端口
+    public RResult getToOutFtpPort(GetToOutMiddleware_FTPParam pParam, RResult result);
+
+    //修改数据库ec的asr_etinfo中的backtxtinterface的端口
+    public RResult setToOutBacktxtinterface(SetToOutBacktxtinterfaceParam pParam, RResult result);
+
+    //数据库，ec的ss_saveinfo中的port
+    //设备集中控制ftp的port也要修改
+    public RResult setFtpAndSaveinfoPort(SetToOutBacktxtinterfaceParam pParam, RResult result);
 }
