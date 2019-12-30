@@ -6,6 +6,7 @@ import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_et
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper.Asr_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_ettdMapper;
+import com.avst.equipmentcontrol.common.util.JacksonUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RRParam;
@@ -295,10 +296,11 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         ew.eq("aet.ssid",asrserverssid);
         Asr_et_ettype asr_et_ettype= asr_etinfoMapper.getAsrinfo(ew);
         if(null==asr_et_ettype){
-            LogUtil.intoLog(this.getClass(),asrserverssid+":asrserverssid 没有找到这个asr服务器，开启失败");
+            LogUtil.intoLog(4,this.getClass(),asrserverssid+":asrserverssid 没有找到这个asr服务器，开启失败");
             rResult.setMessage("没有找到这个asr服务器，开启失败");
             return rResult;
         }
+        LogUtil.intoLog(this.getClass(), JacksonUtil.objebtToString(asr_et_ettype)+":asr_et_ettype 关闭语音识别的参数");
         String asrServerModel_=asrServerModel==2?AsrServerModel.m2:AsrServerModel.m1;
         AVSTAsrParam_quit qparam=new AVSTAsrParam_quit(asr_et_ettype.getEtip(),asr_et_ettype.getPort()+"",asrid,asrServerModel_);
 
@@ -306,18 +308,21 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         RRParam<Boolean> rrParam=AvstAsrImpl.quit(qparam);
         if(null!=rrParam&&rrParam.getCode()==1){
 
-            //2给个定时监管缓存的线程，时间自定义
-            //结束本次心跳
-            String asrEquipmentssid=param.getAsrEquipmentssid();//
-            String asrtype=param.getAsrtype();//这里需要查数据库，通过asrEquipmentssid，换着写成缓存，找出类型
-            AsrOverThread asrOverThread=new AsrOverThread(qparam.getId());
-            asrOverThread.start();
-
+            LogUtil.intoLog(this.getClass(),"AvstAsrImpl.quit 关闭成功，qparam.getId()："+qparam.getId());
             rResult.changeToTrue(true);
         }else{
-            LogUtil.intoLog(this.getClass(),"AvstAsrImpl.quit 关闭失败，qparam.getId()："+qparam.getId());
+            LogUtil.intoLog(4,this.getClass(),"AvstAsrImpl.quit 关闭失败，qparam.getId()："+qparam.getId());
             rResult.setMessage("关闭"+qparam.getId()+"语音识别失败");
         }
+
+        //2给个定时监管缓存的线程，时间自定义
+        //结束本次心跳
+        String asrEquipmentssid=param.getAsrEquipmentssid();//
+        String asrtype=param.getAsrtype();//这里需要查数据库，通过asrEquipmentssid，换着写成缓存，找出类型
+        AsrOverThread asrOverThread=new AsrOverThread(qparam.getId());
+        asrOverThread.start();
+
+
         return rResult;
     }
 

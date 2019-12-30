@@ -36,7 +36,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
 
         String phssid=param.getPolygraphssid();
         if(StringUtils.isEmpty(phssid)){
-            LogUtil.intoLog(this.getClass()," phssid is null---"+phssid);
+            LogUtil.intoLog(4,this.getClass()," phssid is null---"+phssid);
             result.setMessage("身心监护标识为空");
             return result;
         }
@@ -44,7 +44,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
         entityWrapper.eq("pet.ssid",phssid);
         PolygraphInfo polygraphInfo=polygraph_etinfoMapper.getPolygraphInfo(entityWrapper);
         if(null==polygraphInfo){
-            LogUtil.intoLog(this.getClass(),"身心监护没有找到，请查看 phssid："+phssid);
+            LogUtil.intoLog(4,this.getClass(),"身心监护没有找到，请查看 phssid："+phssid);
             result.setMessage("身心监护没有找到");
             return result;
         }
@@ -58,9 +58,46 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
                 CheckPolygraphStateVO vo=new CheckPolygraphStateVO();
                 vo.setWorkstate(1);
                 result.changeToTrue(vo);
+                LogUtil.intoLog(this.getClass(),"身心监护状态正常 polygraphInfo.getEtip()："+polygraphInfo.getEtip());
             }else if(status==10){//正在初始化
-                LogUtil.intoLog(this.getClass(),"正在初始化请稍后 polygraphInfo.getEtip()："+polygraphInfo.getEtip());
+                LogUtil.intoLog(3,this.getClass(),"正在初始化请稍后 polygraphInfo.getEtip()："+polygraphInfo.getEtip());
+                CheckPolygraphStateVO vo=new CheckPolygraphStateVO();
+                vo.setWorkstate(1);
+                result.changeToTrue(vo);
                 result.setMessage("正在初始化请稍后");
+            }else{
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                xbox_checkStatusVO=dealPolygraph.xBOX_CheckStatus(xBoxParam);
+                if(null!=xbox_checkStatusVO&&(xbox_checkStatusVO.getStatus()==0||xbox_checkStatusVO.getStatus()==10)){
+                    CheckPolygraphStateVO vo=new CheckPolygraphStateVO();
+                    vo.setWorkstate(1);
+                    result.changeToTrue(vo);
+                    LogUtil.intoLog(3,this.getClass(),"警告，2次检测，身心监护状态正常 polygraphInfo.getEtip()："+polygraphInfo.getEtip());
+                }else{
+                    LogUtil.intoLog(4,this.getClass(),"身心监护状态异常："+polygraphInfo.getEtip());
+                    result.setMessage("身心监护状态异常");
+                }
+            }
+        }else{
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            xbox_checkStatusVO=dealPolygraph.xBOX_CheckStatus(xBoxParam);
+            if(null!=xbox_checkStatusVO&&(xbox_checkStatusVO.getStatus()==0||xbox_checkStatusVO.getStatus()==10)){
+                CheckPolygraphStateVO vo=new CheckPolygraphStateVO();
+                vo.setWorkstate(1);
+                result.changeToTrue(vo);
+                LogUtil.intoLog(3,this.getClass(),"警告，2次检测，身心监护状态正常 polygraphInfo.getEtip()："+polygraphInfo.getEtip());
+            }else{
+                LogUtil.intoLog(4,this.getClass(),"身心监护状态异常："+polygraphInfo.getEtip());
+                result.setMessage("身心监护状态异常");
             }
         }
         return result;
@@ -71,7 +108,7 @@ public class ToOutServiceImpl_ph_avst implements ToOutService_ph{
         Gson gson=new Gson();
         //因为mc公司的身心监护不需要临时开启，所以只需要检测是否在正常工作就可以了
         CheckPolygraphStateParam pparam=gson.fromJson(gson.toJson(param),CheckPolygraphStateParam.class);
-        checkPolygraphState(pparam,result);
+        result=checkPolygraphState(pparam,result);
         return result;
     }
 

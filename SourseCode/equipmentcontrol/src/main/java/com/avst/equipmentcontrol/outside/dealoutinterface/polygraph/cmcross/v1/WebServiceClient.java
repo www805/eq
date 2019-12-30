@@ -41,6 +41,7 @@ public class WebServiceClient {
             }
         }catch (Exception e){
             e.printStackTrace();
+            LogUtil.intoLog(4,WebServiceClient.class,e.getMessage()+"WebServiceClient ph异常抛错,ip:"+ip+"--"+port);
         }
 //        LogUtil.intoLog(WebServiceClient.class,result);
         return result;

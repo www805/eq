@@ -146,6 +146,13 @@ public class ToOutService_fd_avst implements ToOutService_qrs{
                 @Override
                 public void run() {
                     try {
+
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {//等待1秒请求光盘刻录
+                            e.printStackTrace();
+                        }
+
                         StartRec_RomParam  gparam=new StartRec_RomParam();
                         String iid=fdid+"_"+fdssid;
                         gparam.setIid(iid);//把会议的ssid+设备的唯一标识当做唯一标识传给设备

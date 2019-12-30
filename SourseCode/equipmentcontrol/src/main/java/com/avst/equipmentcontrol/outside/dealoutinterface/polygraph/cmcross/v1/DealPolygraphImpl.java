@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.v1;
 
 import com.avst.equipmentcontrol.common.util.JacksonUtil;
+import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseAction;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.conf.CMAction;
@@ -28,12 +29,15 @@ public class DealPolygraphImpl extends BaseAction implements BaseInterface {
         String rr=WebServiceClient.webClient(ip,port,action);
         if(null!=rr){
             try {
+                LogUtil.intoLog(3,this.getClass(),rr+"WebServiceClient.webClient XBOX_CheckStatus");
                 Gson gson=new Gson();
                 XBOX_CheckStatusVO vo=gson.fromJson(rr,XBOX_CheckStatusVO.class);
                 return vo;
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }else{
+            LogUtil.intoLog(4,this.getClass(),"WebServiceClient.webClient XBOX_CheckStatus is null");
         }
         return null;
     }
