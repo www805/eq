@@ -13,6 +13,6 @@ public interface ToOutService_ph {
 
     public RResult getPolygraphAnalysis(GetPolygraphAnalysisParam param,RResult result);//获取测谎心里分析数据
 
-    public RResult getPolygraphRealTimeImage(GetPolygraphRealTimeImageParam param,RResult result);//获取测谎仪心理分析的实时图像
+    public RResult getPolygraphRealTimeImage(GetPolygraphRealTimeImageParam param,RResult result);//获取身心监护心理分析的实时图像
 
 }

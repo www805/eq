@@ -210,10 +210,12 @@ public class ToOutMainServiceImpl extends BaseService implements ToOutMainServic
             String port=PropertiesListenerConfig.getProperty("server.port");
             for (Asr_etinfo asr_etinfo : asr_etinfos) {
                 String backtxtinterface = asr_etinfo.getBacktxtinterface();
-                int indexOf = backtxtinterface.indexOf(":"+port+"/");
-                String endPath = backtxtinterface.substring(indexOf);
-                asr_etinfo.setBacktxtinterface("http://" + trmip + endPath);
-                asr_etinfo.updateById();
+                int indexOf = backtxtinterface.indexOf(":" + port + "/");
+                if (indexOf != -1) {
+                    String endPath = backtxtinterface.substring(indexOf);
+                    asr_etinfo.setBacktxtinterface("http://" + trmip + endPath);
+                    asr_etinfo.updateById();
+                }
             }
 
             EntityWrapper ew3 = new EntityWrapper();

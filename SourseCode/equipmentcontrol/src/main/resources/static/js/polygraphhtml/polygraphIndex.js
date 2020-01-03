@@ -63,7 +63,7 @@ function delPolygraph(ssidd) {
     var url = getUrl_manageZk().delPolygraph;
     ssid = ssidd;
 
-    layer.confirm('真的要删除该测谎仪？', {
+    layer.confirm('真的要删除该身心监护？', {
         btn: ['确定','取消'] //按钮
     }, function(){
         var data={

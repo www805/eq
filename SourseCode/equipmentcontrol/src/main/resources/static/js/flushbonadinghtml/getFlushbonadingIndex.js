@@ -561,6 +561,9 @@ function callUpdateBurnboolFoDiskrecbool(data){
             setTimeout("window.location.reload()",2500);
         }
     }else{
+        if (data.message.indexOf("不默认") > -1) {
+
+        }
         layer.msg(data.message,{icon: 5});
     }
 }

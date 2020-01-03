@@ -2,9 +2,9 @@ package com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req;
 
 public class BaseParam {
 
-    private String phType;//测谎仪请求类型 avst PH_AVST
+    private String phType;//身心监护请求类型 avst PH_AVST
 
-    private  String polygraphssid;//测谎仪服务ssid;
+    private  String polygraphssid;//身心监护服务ssid;
 
     public String getPolygraphssid() {
         return polygraphssid;

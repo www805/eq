@@ -18,12 +18,17 @@ import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
+import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
+import com.avst.equipmentcontrol.feignclient.base.vo.ControlInfoParamVO;
+import com.avst.equipmentcontrol.feignclient.trm.TrmControl;
+import com.avst.equipmentcontrol.feignclient.zk.ZkControl;
 import com.avst.equipmentcontrol.web.req.GetBaseEcParam;
 import com.avst.equipmentcontrol.web.req.LoginParam;
 import com.avst.equipmentcontrol.web.vo.EcCountVO;
 import com.avst.equipmentcontrol.web.vo.GetLoginCookieVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +47,8 @@ import java.util.Map;
 @Service
 public class MainService extends BaseService {
 
+    private Gson gson = new Gson();
+
     @Autowired
     private Flushbonading_etinfoMapper flushbonading_etinfoMapper;
 
@@ -58,6 +65,9 @@ public class MainService extends BaseService {
     private Base_ettypeMapper base_ettypeMapper;
 
     @Autowired
+    private TrmControl trmControl;
+
+    @Autowired
     private Base_equipmentinfoMapper base_equipmentinfoMapper;
 
     @Autowired
@@ -65,27 +75,57 @@ public class MainService extends BaseService {
 
     public RResult logining(RResult result, HttpServletRequest request, HttpServletResponse response, LoginParam loginParam){
 
-        AppCacheParam cacheParam = AppCache.getAppCacheParam();
-        if (StringUtils.isBlank(cacheParam.getTitle()) || null == cacheParam.getData()) {
-            RResult rr = new RResult();
-            this.getNavList(rr);
+        String loginaccount = "";
+        Boolean loginbool = false;
+
+        if(StringUtils.isBlank(loginParam.getLoginaccount()) && StringUtils.isBlank(loginParam.getPassword())){
+
+            ReqParam reqParam = new ReqParam();
+            RResult userPwdResult = null;
+            try {
+                userPwdResult = trmControl.getUserPwd(reqParam);
+            } catch (Exception e) {
+                LogUtil.intoLog(4, this.getClass(), "远程请求trm获取账号密码失败。。。");
+            }
+
+            if(null != userPwdResult && "SUCCESS".equalsIgnoreCase(userPwdResult.getActioncode())){
+                ControlInfoParamVO vo = gson.fromJson(gson.toJson(userPwdResult.getData()), ControlInfoParamVO.class);
+                if(StringUtils.isNotBlank(vo.getLoginusername()) && StringUtils.isNotBlank(vo.getLoginpassword())){
+                    loginaccount = vo.getLoginusername();
+                    loginParam.setLoginaccount(loginaccount);
+                    loginParam.setPassword(vo.getLoginpassword());
+                    LogUtil.intoLog(1, this.getClass(), "获取trm账号密码成功！账号：" + loginParam.getLoginaccount() + " 密码：" + loginParam.getPassword());
+                    loginbool = true;
+                }
+            }
+
         }
 
-        /**取出账号密码**/
-        Map<String, Object> loginData = cacheParam.getData();
+        if(!loginbool){
+            AppCacheParam cacheParam = AppCache.getAppCacheParam();
+            if (StringUtils.isBlank(cacheParam.getTitle()) || null == cacheParam.getData()) {
+                RResult rr = new RResult();
+                this.getNavList(rr);
+            }
 
-        String loginaccount = (String) loginData.get("loginaccount");
-        String password = (String) loginData.get("password");
+            /**取出账号密码**/
+            Map<String, Object> loginData = cacheParam.getData();
 
-        if(!loginParam.getLoginaccount().equals(loginaccount)){
-            result.setMessage("用户不存在");
-            return result;
+            loginaccount = (String) loginData.get("loginaccount");
+            String password = (String) loginData.get("password");
+
+            if(null == loginParam.getLoginaccount() || !loginParam.getLoginaccount().equals(loginaccount)){
+                result.setMessage("用户不存在");
+                return result;
+            }
+
+            if(null == loginParam.getPassword() || !loginParam.getPassword().equals(password)){
+                result.setMessage("用户名或密码错误");
+                return result;
+            }
         }
 
-        if(!loginParam.getPassword().equals(password)){
-            result.setMessage("用户名或密码错误");
-            return result;
-        }
+
 
         boolean rememberpassword=loginParam.isRememberpassword();
         if (rememberpassword){

@@ -4,7 +4,7 @@ import com.avst.equipmentcontrol.outside.interfacetoout.polygraph.req.BaseParam;
 
 public class GetToOutEttypeListParam {
 
-    private String type;//测谎仪请求类型 avst PH_AVST
+    private String type;//身心监护请求类型 avst PH_AVST
 
     private String ettypessid;
 

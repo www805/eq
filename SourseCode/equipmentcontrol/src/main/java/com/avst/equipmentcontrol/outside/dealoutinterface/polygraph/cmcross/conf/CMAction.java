@@ -1,7 +1,7 @@
 package com.avst.equipmentcontrol.outside.dealoutinterface.polygraph.cmcross.conf;
 
 /**
- * CM测谎仪的接口名
+ * CM身心监护的接口名
  */
 public enum  CMAction {
 

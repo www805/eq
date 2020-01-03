@@ -501,7 +501,7 @@ public class FlushbonadingService extends BaseService {
             GetMiddleware_FTPVO middlewareData = (GetMiddleware_FTPVO) middlewareFtp.getData();
 
             //因为设备ID要和ftp上传存储路径名要保持一致
-            if(null != middlewareData && !middlewareData.getDeviceid().equals(paramParam.getUploadbasepath())){
+            if(null != middlewareData && null != middlewareData.getDeviceid() && !middlewareData.getDeviceid().equals(paramParam.getUploadbasepath())){
                 SetMiddleware_FTPParam setMiddleware_ftpParam = new SetMiddleware_FTPParam();
                 setMiddleware_ftpParam.setEnable(middlewareData.getEnable());
                 setMiddleware_ftpParam.setPasvmode(middlewareData.getPassvmode());
@@ -611,13 +611,22 @@ public class FlushbonadingService extends BaseService {
             return;
         }
 
+        EntityWrapper ew = new EntityWrapper();
+        ew.eq("ssid", paramParam.getSsid());
+
+        List<Flushbonading_etinfo> list = flushbonading_etinfoMapper.selectList(ew);
+        if (list.size() > 0) {
+            Flushbonading_etinfo etinfo = list.get(0);
+            if (etinfo.getDefaulturlbool() == 1) {
+                result.setMessage("当前是最后一个默认设备，不允许设置为不默认");
+                return;
+            }
+        }
+
         //全部设置为0
         Flushbonading_etinfo flushbonading = new Flushbonading_etinfo();
         flushbonading.setDefaulturlbool(0);
         flushbonading_etinfoMapper.update(flushbonading, null);
-
-        EntityWrapper ew = new EntityWrapper();
-        ew.eq("ssid", paramParam.getSsid());
 
         Flushbonading_etinfo flushbonading_etinfo = new Flushbonading_etinfo();
         flushbonading_etinfo.setDefaulturlbool(paramParam.getState());

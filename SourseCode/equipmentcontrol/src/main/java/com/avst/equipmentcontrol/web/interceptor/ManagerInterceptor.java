@@ -2,6 +2,10 @@ package com.avst.equipmentcontrol.web.interceptor;
 
 import com.avst.equipmentcontrol.common.conf.Constant;
 import com.avst.equipmentcontrol.common.util.LogUtil;
+import com.avst.equipmentcontrol.common.util.SpringUtil;
+import com.avst.equipmentcontrol.common.util.baseaction.RResult;
+import com.avst.equipmentcontrol.web.req.LoginParam;
+import com.avst.equipmentcontrol.web.service.MainService;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -43,10 +47,21 @@ public class ManagerInterceptor extends HandlerInterceptorAdapter {
             return false;
         }
 
+
+
 //        disbool = true;  //暂时让他成功
         if (disbool) {
             return true;  //通过拦截器，继续执行请求
         } else {//跳转登录界面
+//            RResult rresult = new RResult();
+//            LoginParam loginParam = new LoginParam();
+//            MainService mainService = SpringUtil.getBean(MainService.class);
+//            rresult = mainService.logining(rresult, request, response, loginParam);
+//            //登录成功就返回true
+//            if ("SUCCESS".equalsIgnoreCase(rresult.getActioncode())) {
+//                return true;
+//            }
+
             request.getRequestDispatcher(forstpageid).forward(request, response);
             return false;  //没有通过拦截器，返回登录页面
         }

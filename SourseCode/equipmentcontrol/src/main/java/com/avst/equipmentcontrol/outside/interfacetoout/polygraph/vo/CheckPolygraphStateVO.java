@@ -1,7 +1,7 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.polygraph.vo;
 
 /**
- * 检测测谎仪是否正常
+ * 检测身心监护是否正常
  */
 public class CheckPolygraphStateVO {
 

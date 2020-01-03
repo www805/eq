@@ -50,7 +50,7 @@ public class ToOutServiceImpl_tts_avst implements ToOutService_tts {
         List<TTS_et_ettype> ttslist=tts_etinfoMapper.getttsinfoList();
         if(null==ttslist||ttslist.size()==0){
             LogUtil.intoLog(this.getClass(),"tts没有没有找到一个可以用的");
-            result.setMessage("测谎仪没有找到");
+            result.setMessage("身心监护没有找到");
             return result;
         }
         TTS_et_ettype tts_etinfo=ttslist.get(0);//只需要获取任何一个就可以了

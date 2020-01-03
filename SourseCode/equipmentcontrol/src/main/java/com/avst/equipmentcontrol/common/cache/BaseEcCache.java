@@ -76,7 +76,9 @@ public class BaseEcCache {
     }
 
     public static synchronized void delBaseEcCache(){
-        base_ecListCache.clear();
+        if(null != base_ecListCache){
+            base_ecListCache.clear();
+        }
         base_ecListCache = null;
     }
 

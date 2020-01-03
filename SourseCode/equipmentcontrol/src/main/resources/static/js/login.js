@@ -6,8 +6,9 @@ function login_login(){
     var loginaccount =$('input[name="loginaccount"]').val();
     var password =$('input[name="password"]').val();
     var rememberpassword = $("#rememberpassword").is(":checked");//获取是否选中
-    var bool = checkjs(loginaccount, password);//自定义校验
+    // var bool = checkjs(loginaccount, password);//自定义校验
 
+    var bool = true;
     if(bool){
         var data={
             loginaccount:loginaccount,
@@ -134,11 +135,52 @@ function getQueryVariable(variable) {
     return(false);
 }
 
+layui.use(['form', 'layer'], function(){
+    var $ = layui.$ //由于layer弹层依赖jQuery，所以可以直接得到
+        ,form = layui.form
+        ,layer = layui.layer;
+
+
+    form.verify({
+        loginaccount:function (value) {
+            if (!(/\S/).test(value)) {
+                return "请输入登录账号";
+            }
+            if (!(/^(?!.*\s).{5,12}$/.test(value))) {
+                return "请输入5-12个字符不含空格的登录账号";
+            }
+        },
+        password:function (value) {
+            if (!(/\S/).test(value)) {
+                return "请输入密码";
+            }
+        }
+    });
+
+    // 监听提交
+    form.on('submit(loginbtn)', function(data){
+
+        if(isNotEmpty(data.field.loginaccount) && isNotEmpty(data.field.password)){
+
+            // var tdJsonStr = JSON.stringify(data.field);
+            // if(tdStr != tdJsonStr){
+            //     tdStr = tdJsonStr;
+            // }
+            login_login();
+        }
+        return false;
+    });
+
+    form.render();
+});
+
 function GetQueryString(name) {
     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
     if(r!=null)return  unescape(r[2]); return null;
 }
+
+
 
 //记住密码----------------------------------------start
 function getrememberpassword(){

@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 
 /**
- * 处理对接cmcross测谎仪
+ * 处理对接cmcross身心监护
  */
 @Service
 public class DealPolygraphImpl extends BaseAction implements BaseInterface {

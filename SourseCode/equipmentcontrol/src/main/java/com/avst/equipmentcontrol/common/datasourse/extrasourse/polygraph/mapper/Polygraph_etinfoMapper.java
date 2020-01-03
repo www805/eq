@@ -44,7 +44,7 @@ public interface Polygraph_etinfoMapper extends BaseMapper<Polygraph_etinfo> {
             " where 1=1 ${ew.sqlSegment}")
     List<PolygraphInfo> getPolygraphInfoPage(Page page, @Param("ew")EntityWrapper entityWrapper);
 
-    //测谎仪是否重复
+    //身心监护是否重复
     @Select("SELECT " +
             " count(p.id) " +
             " FROM " +

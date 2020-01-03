@@ -175,7 +175,7 @@ public class PolygraphService extends BaseService {
 
         int repetitionCount = polygraph_etinfoMapper.getRepetition(wrapper);
         if (repetitionCount > 0) {
-            result.setMessage("测谎仪已经存在");
+            result.setMessage("身心监护已经存在");
             return;
         }
 
@@ -301,7 +301,7 @@ public class PolygraphService extends BaseService {
 
         int repetitionCount = polygraph_etinfoMapper.getRepetition(wrapper);
         if (repetitionCount > 0) {
-            result.setMessage("测谎仪已经存在");
+            result.setMessage("身心监护已经存在");
             return;
         }
 

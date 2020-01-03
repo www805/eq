@@ -30,7 +30,7 @@ public class ToOutAction_ph extends BaseAction {
     }
 
     /**
-     * 检测测谎仪状态
+     * 检测身心监护状态
      * @param param
      * @return
      */
@@ -49,7 +49,7 @@ public class ToOutAction_ph extends BaseAction {
     };
 
     /**
-     * 开启测谎仪
+     * 开启身心监护
      * @param param
      * @return
      */
@@ -67,7 +67,7 @@ public class ToOutAction_ph extends BaseAction {
     };
 
     /**
-     * //结束测谎仪
+     * //结束身心监护
      * @param param
      * @return
      */
@@ -103,7 +103,7 @@ public class ToOutAction_ph extends BaseAction {
     };
 
     /**
-     * //获取测谎仪心理分析的实时图像
+     * //获取身心监护心理分析的实时图像
      * @param param
      * @return
      */
