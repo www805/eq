@@ -77,6 +77,7 @@ public class ToOutAsrServiceImpl implements ToOutAsrService {
         updateAsrParam.setAsrtype(param.getAsrtype());
         updateAsrParam.setEtnum(param.getEtnum());
         updateAsrParam.setEtip(param.getEtip());
+        updateAsrParam.setBacktxtinterface(param.getBacktxtinterface());
         updateAsrParam.setEtypessid(param.getEtypessid());
         updateAsrParam.setExplain(param.getExplain());
         reqParam.setParam(updateAsrParam);

@@ -43,6 +43,12 @@ public class AddOrUpdateToOutAsrParam extends BaseReqParam {
     private Integer port;
 
     /**
+     * 接口
+     */
+    private String backtxtinterface;
+
+
+    /**
      * 设备名称
      */
     private String etnum;
@@ -84,6 +90,14 @@ public class AddOrUpdateToOutAsrParam extends BaseReqParam {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public String getBacktxtinterface() {
+        return backtxtinterface;
+    }
+
+    public void setBacktxtinterface(String backtxtinterface) {
+        this.backtxtinterface = backtxtinterface;
     }
 
     public Integer getMaxnum() {
