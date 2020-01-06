@@ -24,9 +24,12 @@ import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.outside.interfacetoout.base.req.GetServerIpALLParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.base.req.GetServerIpParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.base.req.GetToOutBaseEcParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.base.req.ServerIpssidParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.base.vo.GethomeVO;
+import com.avst.equipmentcontrol.web.req.GetBaseEcParam;
 import com.avst.equipmentcontrol.web.req.flushbonadingEttd.FlushbonadingEttd;
+import com.avst.equipmentcontrol.web.service.MainService;
 import com.avst.equipmentcontrol.web.vo.baseEttype.EquipmentBasicsVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.apache.commons.lang.StringUtils;
@@ -63,6 +66,9 @@ public class ToOutMainServiceImpl extends BaseService implements ToOutMainServic
 
     @Autowired
     private Base_ettypeMapper base_ettypeMapper;
+
+    @Autowired
+    private MainService mainService;
 
     public  void gethome(ReqParam param, RResult result){
         EntityWrapper ew = new EntityWrapper();
@@ -294,6 +300,17 @@ public class ToOutMainServiceImpl extends BaseService implements ToOutMainServic
         if(null != base_ettypes){
             result.changeToTrue(base_ettypes);
         }
+
+        return result;
+    }
+
+    @Override
+    public RResult getToOutBaseEc(GetToOutBaseEcParam param, RResult result) {
+
+        GetBaseEcParam getBaseEcParam = new GetBaseEcParam();
+        getBaseEcParam.setEtip(param.getEtip());
+
+        mainService.getBaseEc(result, getBaseEcParam);
 
         return result;
     }

@@ -278,6 +278,11 @@ layui.use(['laypage', 'form', 'layer', 'layedit', 'laydate', 'table'], function 
             if((/[\u4E00-\u9FA5]/g.test(value))){
                 return '不能输入中文';
             }
+        },
+        httpUrlStart: function (value, item) {
+            if (!value.startsWith("http://")) {
+                return '接口地址开头必须要是http://开头的';
+            }
         }
     });
 
