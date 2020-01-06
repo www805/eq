@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.web.service;
 
 import com.avst.equipmentcontrol.common.cache.BaseEcCache;
+import com.avst.equipmentcontrol.common.conf.TaskExecutorConfig;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.outside.dealoutinterface.flushbonading.avst.dealimpl.FDInterface;
@@ -30,6 +31,8 @@ import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +57,9 @@ public class FlushbonadingService extends BaseService {
 
     @Autowired
     private FDInterface fdInterface;
+
+    @Autowired
+    private MiddlewareAsyncService middlewareAsyncService;
 
     private Gson gson=new Gson();
 
@@ -489,39 +495,8 @@ public class FlushbonadingService extends BaseService {
             result.setData(update);
         }
 
-        GetMiddleware_FTPParam getMiddleware_ftpParam=new GetMiddleware_FTPParam();
-        getMiddleware_ftpParam.setIp(flushbonadingEtinfo.getEtip());
-        getMiddleware_ftpParam.setPasswd(flushbonadingEtinfo.getPasswd());
-        getMiddleware_ftpParam.setPort(flushbonadingEtinfo.getPort());
-        getMiddleware_ftpParam.setUser(flushbonadingEtinfo.getUser());
-
-        RResult middlewareFtp = fdInterface.getMiddleware_FTP(getMiddleware_ftpParam, result);
-
-        if(!"FAIL".equals(middlewareFtp.getActioncode())){
-            GetMiddleware_FTPVO middlewareData = (GetMiddleware_FTPVO) middlewareFtp.getData();
-
-            //因为设备ID要和ftp上传存储路径名要保持一致
-            if(null != middlewareData && null != middlewareData.getDeviceid() && !middlewareData.getDeviceid().equals(paramParam.getUploadbasepath())){
-                SetMiddleware_FTPParam setMiddleware_ftpParam = new SetMiddleware_FTPParam();
-                setMiddleware_ftpParam.setEnable(middlewareData.getEnable());
-                setMiddleware_ftpParam.setPasvmode(middlewareData.getPassvmode());
-                setMiddleware_ftpParam.setServicename(middlewareData.getServicename());
-                setMiddleware_ftpParam.setServerport(middlewareData.getServiceport());
-                setMiddleware_ftpParam.setServerip(middlewareData.getServerip());
-                setMiddleware_ftpParam.setHreadbeatip(middlewareData.getHreadbeatip());
-                setMiddleware_ftpParam.setIp(paramParam.getEtip());
-                setMiddleware_ftpParam.setPort(paramParam.getPort());
-                setMiddleware_ftpParam.setPasswd(middlewareData.getPass());
-                setMiddleware_ftpParam.setUser(middlewareData.getUser());
-                setMiddleware_ftpParam.setLimit_speed(middlewareData.getLimit_speed());
-                setMiddleware_ftpParam.setFilter_enable(middlewareData.getFilter_enable());
-                setMiddleware_ftpParam.setSearch_filter(middlewareData.getSearch_filter());
-                setMiddleware_ftpParam.setDeviceid(paramParam.getUploadbasepath());
-
-                middlewareFtp = fdInterface.setMiddleware_FTP(setMiddleware_ftpParam, result);
-                LogUtil.intoLog(1, this.getClass(), "设备ID和ftp储路径名修改成一致：" + middlewareFtp.getMessage());
-            }
-        }
+        //异步修改ftp上传存储路径名和设备ID保持一致，保持最终一致性
+        middlewareAsyncService.updateMiddleware_ftpByID(flushbonadingEtinfo, result, paramParam);
 
         changeResultToSuccess(result);
     }
@@ -815,4 +790,8 @@ public class FlushbonadingService extends BaseService {
             result.setMessage("返回的数据是空的");
         }
     }
+
+
+
+
 }
