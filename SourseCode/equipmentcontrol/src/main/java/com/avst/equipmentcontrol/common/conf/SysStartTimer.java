@@ -50,6 +50,8 @@ public class SysStartTimer implements ApplicationRunner {
 
         pushMessageToZK();
 
+
+
         //清理以往的硬盘缓存
         try {
             new Thread(new Runnable() {

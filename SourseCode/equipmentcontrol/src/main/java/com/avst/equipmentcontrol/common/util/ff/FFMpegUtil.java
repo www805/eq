@@ -1,6 +1,7 @@
 package com.avst.equipmentcontrol.common.util.ff;
 
 import com.avst.equipmentcontrol.common.util.LogUtil;
+import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 
 import java.util.ArrayList;
@@ -33,8 +34,10 @@ public void videoChange(String inputurl, String outputurl) {
 	cmd.add(ffmpegpath+"ffmpeg");
 	cmd.add("-i");
 	cmd.add(inputurl);
-	cmd.add("-acodec");
-	cmd.add("copy");//linux 不能要音频copy，ffmpeg编的有问题
+	if(OpenUtil.osType()!=2){
+		cmd.add("-acodec");
+		cmd.add("copy");//linux 不能要音频copy，ffmpeg编的有问题
+	}
 	cmd.add("-vcodec");
 	cmd.add("copy");
 	cmd.add("-f");

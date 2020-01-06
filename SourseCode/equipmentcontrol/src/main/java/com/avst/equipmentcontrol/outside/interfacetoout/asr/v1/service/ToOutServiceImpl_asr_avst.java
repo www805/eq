@@ -1,16 +1,15 @@
 package com.avst.equipmentcontrol.outside.interfacetoout.asr.v1.service;
 
 import com.avst.equipmentcontrol.common.conf.AsrServerModel;
-import com.avst.equipmentcontrol.common.conf.NetTool;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.entity.Asr_et_ettype;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper.Asr_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.entity.Flushbonading_ettd;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_ettdMapper;
 import com.avst.equipmentcontrol.common.util.JacksonUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
-import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RRParam;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
+import com.avst.equipmentcontrol.common.util.iputil.SystemIpUtil;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.AVSTAsrParam_settaskinfo;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.req.param.TaskParam;
 import com.avst.equipmentcontrol.outside.dealoutinterface.asr.avstasr.v1.action.AvstAsrImpl;
@@ -94,7 +93,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         //参数txtcallbackurl如果接口不传就去缓存中拿
         String avstbacktxtinterface=asr_et_ettype.getBacktxtinterface();
         if(avstbacktxtinterface.indexOf("localhost") > -1){
-            avstbacktxtinterface=avstbacktxtinterface.replace("localhost", OpenUtil.getMyIP());
+            avstbacktxtinterface=avstbacktxtinterface.replace("localhost", SystemIpUtil.getOneUseableIp());
         }
         reg.setTxtcallbackurl(avstbacktxtinterface);
         RRParam<String> rrParam= AvstAsrImpl.reg(reg);
@@ -207,7 +206,7 @@ public class ToOutServiceImpl_asr_avst implements ToOutService_asr {
         //参数txtcallbackurl如果接口不传就去缓存中拿
         String avstbacktxtinterface=asr_et_ettype.getBacktxtinterface();
         if(avstbacktxtinterface.indexOf("localhost") > -1){
-            avstbacktxtinterface=avstbacktxtinterface.replace("localhost", OpenUtil.getMyIP());
+            avstbacktxtinterface=avstbacktxtinterface.replace("localhost", SystemIpUtil.getOneUseableIp());
         }
         reg.setTxtcallbackurl(avstbacktxtinterface);
         RRParam<String> rrParam= AvstAsrImpl.reg(reg);

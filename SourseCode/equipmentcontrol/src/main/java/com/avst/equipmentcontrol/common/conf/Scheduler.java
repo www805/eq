@@ -4,6 +4,7 @@ import com.avst.equipmentcontrol.common.util.DateUtil;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
+import com.avst.equipmentcontrol.common.util.iputil.SystemIpUtil;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.avst.equipmentcontrol.feignclient.base.req.ControlInfoParam;
 import com.avst.equipmentcontrol.feignclient.base.vo.ControlInfoParamVO;
@@ -39,14 +40,7 @@ public class Scheduler {
         ReqParam<ControlInfoParamVO> param = new ReqParam<>();
 
         //获取本机ip地址
-        String hostAddress = "localhost";
-        try {
-            InetAddress addr = InetAddress.getLocalHost();
-            hostAddress = addr.getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
+        String hostAddress = SystemIpUtil.getOneUseableIp();
         String servername = PropertiesListenerConfig.getProperty("spring.application.name");
         String url = PropertiesListenerConfig.getProperty("control.servser.url");
         String port = PropertiesListenerConfig.getProperty("server.port");

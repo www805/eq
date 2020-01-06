@@ -61,11 +61,11 @@ public class OpenUtil {
         LogUtil.intoLog(OpenUtil.class,"EncoderMd5_file MD5:"+md5);
 		return md5;
 		}
-	 /** 
-	     * 验证输入的邮箱格式是否符合 
-	     * @param email 
-	     * @return 是否合法 
-	     */ 
+	/**
+     * 验证输入的邮箱格式是否符合
+     * @param email
+     * @return 是否合法
+     */
 	public static boolean checkEmail(String email) {
 	    boolean flag = false;
 	    try {
@@ -1281,17 +1281,28 @@ public static String numtoStr(int digit,Integer num){
 		return b1;
 	}
 
-	//取得LOCALHOST的IP地址
-	public static String getMyIP() {
-		InetAddress myIPaddress=null;
-		try {
-			myIPaddress=InetAddress.getLocalHost();
-		}
-		catch (Exception e) {}
-		return (myIPaddress.getHostAddress());
+	public static String getOsName() {
+		String os = "";
+		os = System.getProperty("os.name");
+		return os;
 	}
 
-
+	/**
+	 * 1是win
+	 * 2是Linux
+	 * 3其他
+	 * @return
+	 */
+	public static int osType() {
+		String address = "";
+		String os = getOsName();
+		if (os.startsWith("Win")) {
+			return 1;
+		} else if (os.startsWith("Linux")) {
+			return 2;
+		}
+		return 2;
+	}
 
 
 

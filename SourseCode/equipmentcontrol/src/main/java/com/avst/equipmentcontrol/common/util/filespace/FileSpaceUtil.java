@@ -211,12 +211,12 @@ public class FileSpaceUtil {
             return null;
         }
         String savename=null;
-        if(filePath.indexOf("\\") > 0){
+        if(filePath.indexOf("\\") > -1){
             savename=filePath.substring(filePath.lastIndexOf("\\")+1);
-        }else if(filePath.indexOf("/") > 0){
+        }else if(filePath.indexOf("/") > -1){
             savename=filePath.substring(filePath.lastIndexOf("/")+1);
         }else{
-            LogUtil.intoLog(4,FileSpaceUtil.class,"filePath.indexOf(\\) and filePath.indexOf(/) is < 0,filePath:"+filePath);
+            LogUtil.intoLog(4,FileSpaceUtil.class,"getsavename filePath.indexOf(\\) and filePath.indexOf(/) is < 0,filePath:"+filePath);
             return null;
         }
 
@@ -234,12 +234,12 @@ public class FileSpaceUtil {
             return null;
         }
         String savapath=null;
-        if(filePath.indexOf("\\") > 0){
+        if(filePath.indexOf("\\") >= 0){
             savapath=filePath.substring(0,filePath.lastIndexOf("\\"));
-        }else if(filePath.indexOf("/") > 0){
+        }else if(filePath.indexOf("/") >= 0){
             savapath=filePath.substring(0,filePath.lastIndexOf("/"));
         }else{
-            LogUtil.intoLog(4,FileSpaceUtil.class,"filePath.indexOf(\\) and filePath.indexOf(/) is < 0,filePath:"+filePath);
+            LogUtil.intoLog(4,FileSpaceUtil.class,"getsavepath filePath.indexOf(\\) and filePath.indexOf(/) is < 0,filePath:"+filePath);
             return null;
         }
 

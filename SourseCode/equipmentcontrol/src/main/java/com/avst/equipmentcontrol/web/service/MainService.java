@@ -4,50 +4,33 @@ import com.avst.equipmentcontrol.common.cache.AppCache;
 import com.avst.equipmentcontrol.common.cache.BaseEcCache;
 import com.avst.equipmentcontrol.common.cache.param.AppCacheParam;
 import com.avst.equipmentcontrol.common.conf.Constant;
-import com.avst.equipmentcontrol.common.conf.NetTool;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.asr.mapper.Asr_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.flushbonading.mapper.Flushbonading_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.polygraph.mapper.Polygraph_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.storage.mapper.Ss_saveinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.extrasourse.tts.mapper.Tts_etinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_equipmentinfo;
-import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_ettype;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_equipmentinfoMapper;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_ettypeMapper;
-import com.avst.equipmentcontrol.common.util.LogUtil;
-import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.baseaction.BaseService;
 import com.avst.equipmentcontrol.common.util.baseaction.RResult;
-import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
-import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
-import com.avst.equipmentcontrol.feignclient.base.vo.ControlInfoParamVO;
-import com.avst.equipmentcontrol.feignclient.trm.TrmControl;
-import com.avst.equipmentcontrol.feignclient.zk.ZkControl;
 import com.avst.equipmentcontrol.web.req.GetBaseEcParam;
 import com.avst.equipmentcontrol.web.req.LoginParam;
 import com.avst.equipmentcontrol.web.vo.EcCountVO;
 import com.avst.equipmentcontrol.web.vo.GetLoginCookieVO;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.Yaml;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class MainService extends BaseService {
-
-    private Gson gson = new Gson();
 
     @Autowired
     private Flushbonading_etinfoMapper flushbonading_etinfoMapper;
@@ -65,9 +48,6 @@ public class MainService extends BaseService {
     private Base_ettypeMapper base_ettypeMapper;
 
     @Autowired
-    private TrmControl trmControl;
-
-    @Autowired
     private Base_equipmentinfoMapper base_equipmentinfoMapper;
 
     @Autowired
@@ -75,57 +55,27 @@ public class MainService extends BaseService {
 
     public RResult logining(RResult result, HttpServletRequest request, HttpServletResponse response, LoginParam loginParam){
 
-        String loginaccount = "";
-        Boolean loginbool = false;
-
-        if(StringUtils.isBlank(loginParam.getLoginaccount()) && StringUtils.isBlank(loginParam.getPassword())){
-
-            ReqParam reqParam = new ReqParam();
-            RResult userPwdResult = null;
-            try {
-                userPwdResult = trmControl.getUserPwd(reqParam);
-            } catch (Exception e) {
-                LogUtil.intoLog(4, this.getClass(), "远程请求trm获取账号密码失败。。。");
-            }
-
-            if(null != userPwdResult && "SUCCESS".equalsIgnoreCase(userPwdResult.getActioncode())){
-                ControlInfoParamVO vo = gson.fromJson(gson.toJson(userPwdResult.getData()), ControlInfoParamVO.class);
-                if(StringUtils.isNotBlank(vo.getLoginusername()) && StringUtils.isNotBlank(vo.getLoginpassword())){
-                    loginaccount = vo.getLoginusername();
-                    loginParam.setLoginaccount(loginaccount);
-                    loginParam.setPassword(vo.getLoginpassword());
-                    LogUtil.intoLog(1, this.getClass(), "获取trm账号密码成功！账号：" + loginParam.getLoginaccount() + " 密码：" + loginParam.getPassword());
-                    loginbool = true;
-                }
-            }
-
+        AppCacheParam cacheParam = AppCache.getAppCacheParam();
+        if (StringUtils.isBlank(cacheParam.getTitle()) || null == cacheParam.getData()) {
+            RResult rr = new RResult();
+            this.getNavList(rr);
         }
 
-        if(!loginbool){
-            AppCacheParam cacheParam = AppCache.getAppCacheParam();
-            if (StringUtils.isBlank(cacheParam.getTitle()) || null == cacheParam.getData()) {
-                RResult rr = new RResult();
-                this.getNavList(rr);
-            }
+        /**取出账号密码**/
+        Map<String, Object> loginData = cacheParam.getData();
 
-            /**取出账号密码**/
-            Map<String, Object> loginData = cacheParam.getData();
+        String loginaccount = (String) loginData.get("loginaccount");
+        String password = (String) loginData.get("password");
 
-            loginaccount = (String) loginData.get("loginaccount");
-            String password = (String) loginData.get("password");
-
-            if(null == loginParam.getLoginaccount() || !loginParam.getLoginaccount().equals(loginaccount)){
-                result.setMessage("用户不存在");
-                return result;
-            }
-
-            if(null == loginParam.getPassword() || !loginParam.getPassword().equals(password)){
-                result.setMessage("用户名或密码错误");
-                return result;
-            }
+        if(!loginParam.getLoginaccount().equals(loginaccount)){
+            result.setMessage("用户不存在");
+            return result;
         }
 
-
+        if(!loginParam.getPassword().equals(password)){
+            result.setMessage("用户名或密码错误");
+            return result;
+        }
 
         boolean rememberpassword=loginParam.isRememberpassword();
         if (rememberpassword){

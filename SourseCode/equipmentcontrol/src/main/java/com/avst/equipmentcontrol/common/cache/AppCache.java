@@ -1,16 +1,18 @@
 package com.avst.equipmentcontrol.common.cache;
 
 import com.avst.equipmentcontrol.common.cache.param.AppCacheParam;
-import com.avst.equipmentcontrol.common.conf.NetTool;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.entity.Base_ettype;
 import com.avst.equipmentcontrol.common.datasourse.publicsourse.mapper.Base_ettypeMapper;
 import com.avst.equipmentcontrol.common.util.LogUtil;
 import com.avst.equipmentcontrol.common.util.OpenUtil;
 import com.avst.equipmentcontrol.common.util.SpringUtil;
+import com.avst.equipmentcontrol.common.util.iputil.SystemIpUtil;
 import com.avst.equipmentcontrol.common.util.properties.PropertiesListenerConfig;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.apache.commons.lang.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ public class AppCache {
         String application_name = PropertiesListenerConfig.getProperty("spring.application.name");
         String nav_file_name = PropertiesListenerConfig.getProperty("nav.file.name");
 
-        String path = OpenUtil.getXMSoursePath() + "\\" + nav_file_name + ".yml";
+        String path = OpenUtil.getXMSoursePath() + File.separator + nav_file_name + ".yml";
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(path);
@@ -74,8 +76,12 @@ public class AppCache {
             Map<String,Object> guidepage = (Map<String, Object>) zkYml.get("guidepage");
             Map<String,Object> client_button = (Map<String, Object>) guidepage.get("client_button");
             String guidepageUrl = (String) client_button.get("url");
-            String myIP = NetTool.getMyIP();
-            avstYml.put("guidepageUrl" , "http://" + myIP + guidepageUrl);
+            String myIP = SystemIpUtil.getOneUseableIp();
+            String zkport=PropertiesListenerConfig.getProperty("zkport");
+            if(StringUtils.isEmpty(zkport)){
+                zkport="6059";
+            }
+            avstYml.put("guidepageUrl" , "http://" + myIP +":"+zkport+ guidepageUrl);
 
             avstYml.put("bottom", map.get("bottom"));
             if (null != map && map.size() > 0) {
