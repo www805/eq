@@ -7,6 +7,7 @@ import com.avst.equipmentcontrol.common.util.baseaction.RResult;
 import com.avst.equipmentcontrol.common.util.baseaction.ReqParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.base.req.GetServerIpALLParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.base.req.GetServerIpParam;
+import com.avst.equipmentcontrol.outside.interfacetoout.base.req.GetToOutBaseEcParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.base.req.GetToOutBaseListParam;
 import com.avst.equipmentcontrol.outside.interfacetoout.base.v1.service.ToOutMainServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,25 @@ public class ToOutMainAction extends BaseAction {
         if(null!=param){
             if(null != param.getBaseType()){
                 result=getToOutServiceImpl(param.getBaseType()).getToOutBaseList(result);
+            }
+        }
+        result.setEndtime(DateUtil.getDateAndMinute());
+        return result;
+    }
+
+
+    /**
+     * 获取所有基础设备
+     * @param param
+     * @return
+     */
+    @PostMapping(value = "/getToOutBaseEc")
+    @ResponseBody
+    public RResult getToOutBaseEc(@RequestBody GetToOutBaseEcParam param) {
+        RResult result=this.createNewResultOfFail();
+        if(null!=param){
+            if(null != param.getBaseType()){
+                result = getToOutServiceImpl(param.getBaseType()).getToOutBaseEc(param, result);
             }
         }
         result.setEndtime(DateUtil.getDateAndMinute());
